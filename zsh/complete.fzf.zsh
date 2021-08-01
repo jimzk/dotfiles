@@ -1,29 +1,32 @@
 
 # auto completion via fzf
 # I use multiple completion mechanism while no one can meet my needs in invidually.
-# working priority order: zsh completion -> faf-tab -> fzf completion (high)
+# priority order: zsh completion -> fzf-tab -> fzf completion (high)
 
-# fzf completion
-# ref: https://github.com/junegunn/fzf#settings
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap"
+export FZF_ALT_C_COMMAND="fd --hidden --follow --exclude .git --maxdepth=1 ."
+# todo: alt-c to simulate "/" in faz-tab
+export FZF_ALT_C_OPTS="--preview 'tree -CNFl -L 2 {} | head -200'"
+# ref: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
 export FZF_COMPLETION_OPTS="$FZF_BASE_OPTS"
 export FZF_COMPLETION_TRIGGER=';'
 
-# Functions about customized fzf completion:
-# - _fzf_compgen_path, _fzf_compgen_dir: customize default path and dir candidates
-# - _fzf_complete_xx: customize candidates for specified command "xx"
-# - _fzf_comprun: customize preview and output according to command
-# function started with __ won't be called directly by fzf
+# Functions to customize fzf completion
+#     _fzf_compgen_path, _fzf_compgen_dir: customize default path and dir candidates
+#     _fzf_complete_xx: customize candidates for specified command "xx"
+#     _fzf_comprun: customize preview and output according to command
+# ref: https://github.com/junegunn/fzf#settings
 
 # Use fd to generate the candidates for list completion
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
     # todo: fix $<tab> cannot show environment when setting FZF_COMPLETION_TRIGGER=''
-    fd --color=always --hidden --max-depth 1 --follow --exclude ".git" --exclude "\.Trash*" . "$1"
+    fd --hidden --max-depth 1 --exclude ".git" --exclude "\.Trash*" . "$1"
 }
 # Use fd to generate the candidates for directory completion
 _fzf_compgen_dir() {
-    fd --color=always --type d --max-depth 2 --hidden --follow --exclude ".git" . "$1"
+    fd --type d --max-depth 2 --hidden --exclude ".git" . "$1"
 }
 # Advanced customization of fzf options via _fzf_comprun function
 _fzf_comprun() {
@@ -122,7 +125,7 @@ _fzf_complete_git() {
             COMMAND="git -c color.status=always status --short | xargs -L1"
             local files=$(eval $COMMAND)
             # "git ls-files --error-unmatch FILE" will exit 1 if file is inexistent
-            _fzf_complete $DEFAULT_OPTS_HEIGHT --multi --nth 2.. --preview-window right,70%,wrap --bind 'ctrl-r:toggle-preview' --preview 'git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | sed 1,4d) || bat --style=plain {-1}' -- "$@" < <(
+            _fzf_complete $DEFAULT_OPTS_HEIGHT --multi --nth 2.. --preview-window right,70%,wrap --preview 'git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | sed 1,4d) || bat --style=plain {-1}' -- "$@" < <(
                 echo $files
             )
             ;;

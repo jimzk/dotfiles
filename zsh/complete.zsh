@@ -1,7 +1,6 @@
 # +---------+
 # | Options |
 # +---------+
-
 setopt MENU_COMPLETE        # Automatically highlight first element of completion menu
 setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
 setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
@@ -14,7 +13,6 @@ setopt LIST_PACKED          # completion menu takes less spaces
 # Some example:
 #     https://github.com/sorin-ionescu/prezto/blob/master/modules/completion/init.zsh
 #     https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
-
 # Set applied completers and the applied order
 zstyle ':completion:*' completer _extensions _complete _approximate
 # Enbale menu
@@ -44,7 +42,8 @@ zstyle ':completion:*' group-name ''  # group results by category
 zstyle ':completion:*:*:-command-:*:*' group-order alias builtins functions commands
 
 # Sort file by modification time (newest first), and use the target timestamp for symlinks (the option follow)
-zstyle ':completion:*' file-sort change reverse follow
+zstyle ':completion:*' file-sort modification follow
+
 # Expand // to /
 zstyle ':completion:*' squeeze-slashes true
 
@@ -59,40 +58,31 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
     rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
 
 # prevent duplicates (look like a bug of _git completion) when completing git alias
-zstyle ':completion:*:*:git:*' tag-order 'common-commands' 'alias-commands' 'all-commands'
-# zstyle ':completion:*:*:git:*' tag-order 'common-commands' 'all-commands' 'alias-commands'
-zstyle ':completion:*:*:git:*' complete-options false
-
-# +-------------+
-# | completions |
-# +-------------+
-
-# _gnu_generic can create completions for gnu commands that list option help (when --help is used) in a standardized way.
-compdef _gnu_generic fzf
-compdef _gnu_generic curl
-
-fpath=($DOTFILES_HOME/fzf/complete/ $fpath)
-compinit -u  # -u to avoid security check
-
+# zstyle ':completion:*:*:git:*' tag-order 'common-commands' 'alias-commands' 'all-commands'
+# zstyle ':completion:*:*:git:*' complete-options false
 
 # +---------+
 # | fzf-tab |
 # +---------+
-# https://github.com/Aloxaf/fzf-tab
-
 zstyle ':fzf-tab:*' switch-group ',' '.'
-zstyle ':fzf-tab:complete:*' fzf-flags --color=16,hl:green,header:bold --height=40% --preview-window right,75%,wrap,hidden
+zstyle ':fzf-tab:complete:*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=30% --preview-window right,75%,wrap,hidden
 zstyle ':fzf-tab:complete:*' fzf-preview 'less $realpath'
-# `less <file>` shows information according to file type
-export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
+zstyle ':fzf-tab:complete:*' query-string ''  # empty query string
+# ref: https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
+FZF_TAB_GROUP_COLORS=(
+    $'\033[94m' $'\033[38;5;75m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m' \
+    $'\033[38;5;100m' $'\033[38;5;98m' $'\033[91m' $'\033[38;5;80m' $'\033[92m' \
+    $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
+)
+zstyle ':fzf-tab:*' group-colors $FZF_TAB_GROUP_COLORS
+zstyle ':fzf-tab:*' prefix ''
 
 # environment variables
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'eval echo \$$word'
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-flags --color=16,hl:green --height=10% --preview-window up,30%,wrap
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' query-string ''  # empty query string
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'command -v $word 2>/dev/null || eval echo \$$word'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-flags --tac --no-sort --color=16,hl:green --height=30% --preview-window down,30%,wrap
 
 # preview for cd/ls
-zstyle ':fzf-tab:complete:(cd|ls):*' fzf-flags --color=16,hl:green,header:bold --height=40% --preview-window right,75%,wrap --header='^E Edit, ^O Open'
+zstyle ':fzf-tab:complete:(cd|ls):*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=35% --preview-window right,75%,wrap --header='^E Edit, ^O Open'
 zstyle ':fzf-tab:complete:(cd|ls):*' fzf-bindings \
     'ctrl-e:execute-silent({_FTB_INIT_}code "$realpath")+abort' \
     'ctrl-o:execute-silent({_FTB_INIT_}open "$realpath")+abort'
@@ -100,6 +90,6 @@ zstyle ':fzf-tab:complete:(cd|ls):*' fzf-bindings \
 # preview for kill/ps
 # zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
 zstyle ':completion:*:*:*:*:processes' command "ps -ef"
-zstyle ':completion:*:*:(kill|ps):*' complete-options false
+# zstyle ':completion:*:*:(kill|ps):*' complete-options false
 zstyle ':fzf-tab:complete:(kill|ps):*' fzf-preview $'[[ $group == "[process ID]" ]] && ps -f -p $word'  # only show items in group 'process ID'
-zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags --height=70% --color=16,hl:green --preview-window=down:20%:wrap --header='  UID   PID  PPID   C STIME   TTY           TIME CMD'
+zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags --tac --no-sort --height=60% --color=16,hl:green --preview-window=down:18%:wrap

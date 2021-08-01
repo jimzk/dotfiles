@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Print comment starting with ###
 # https://samizdat.dev/help-message-for-shell-scripts/
 sed -rn 's/^### ?//;T;p' "$1"

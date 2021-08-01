@@ -34,7 +34,7 @@ export HISTCONTROL='ignoreboth' # don't show duplicates and commands that begin 
 export WORKSPACE=$HOME/workspace
 
 # fzf
-export FZF_BASE_OPTS="--exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --no-sort --info=inline --layout=reverse --cycle \
+FZF_BASE_OPTS="--exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
 --bind 'tab:down' \
 --bind 'btab:up' \
 --bind='ctrl-n:down' \
@@ -71,6 +71,8 @@ export PAGER='less'
 #   -j2: lines between top and matched text (https://superuser.com/a/257626)
 #   --mouse: enable mouse input
 export LESS='-iMsFR -j2 --mouse'
+# `less <file>` shows information according to file type
+export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 
 if [[ -n $(command -v code) ]]; then
     EDITOR='code'
@@ -79,14 +81,22 @@ else
 fi
 export EDITOR
 
-# third commands
+# other environment variables
+alias fd='fd --color=always -L'
+alias rg='rg --color=always -L'
 alias python=python3
 export PYTHONIOENCODING='UTF-8'
 if [[ $OSTYPE == 'darwin'* ]]; then
     alias sed=gsed  # make sed compatible with linux version
 fi
+export NAVI_CONFIG=$DOTFILES_HOME/config/navi_config.yaml
+# export NAVI_FZF_OVERRIDES_VAR='--multi'
+source $HOME/.cargo/env
+
+# by default CDPATH=.
+CDPATH=.:$HOME
 
 # path
-export PATH=$DOTFILES_BIN_HOME:$HOME/.local/bin:$PATH
+export PATH=$DOTFILES_BIN_HOME:$HOME/.local/bin:/usr/local/sbin:$PATH
 
 [[ -e $DOTFILES_ZSH_HOME/zshenv.local ]] && source $DOTFILES_ZSH_HOME/zshenv.local

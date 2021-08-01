@@ -1,22 +1,71 @@
+# prevent > from overwriting existent file
+# using >| to write forcedly
+set -o noclobber
+unsetopt BEEP  # turn off bell/beep
+
 # history
 setopt SHARE_HISTORY  # adds history incrementally and share it across sessions
 setopt EXTENDED_HISTORY # add timestamps to history
 setopt HIST_IGNORE_ALL_DUPS # don't record duplicated commands in history
+setopt HIST_SAVE_NO_DUPS
 setopt HIST_REDUCE_BLANKS # Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
 
-source $DOTFILES_ZSH_HOME/appearance.zshrc
-plugins=(osx zsh-syntax-highlighting zsh-autosuggestions autojump timer zsh-completions fzf-tab)
+# directory stack
+# ref: https://zsh.sourceforge.io/Intro/intro_6.html
+setopt AUTO_PUSHD           # Push the current directory visited on the stack.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+
+# +-----------+
+# | plugins   |
+# +-----------+
+# tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
+source $DOTFILES_ZSH_HOME/appearance.zsh
+plugins=(osx autojump timer tldr alias-tips tmux)
 source $ZSH/oh-my-zsh.sh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# +------------+
+# | completion |
+# +------------+
+source $DOTFILES_ZSH_HOME/complete.fzf.zsh
+source $ZSH_CUSTOM/plugins/zsh-completions/zsh-completions.plugin.zsh
+
+# customized zsh completions
+fpath+=$DOTFILES_ZSH_HOME/completions
 # autoload loads script as function by searching $fpath.
 # ref: https://coderwall.com/p/ktv3hq/zsh-autoloading-functions-i
 # initialize autocomplete
 autoload -U compinit
-compinit -u  # -u to avoid security check
+# -u avoid security check
+# -d <dumpfile> specify dump file location
+compinit -u
+# _gnu_generic can create completions for gnu commands that list option help (when --help is used) in a standardized way.
+compdef _gnu_generic fzf curl
+source $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.zsh
+source $DOTFILES_ZSH_HOME/complete.zsh
 
-source $DOTFILES_ZSH_HOME/config.zshrc
-source $DOTFILES_ZSH_HOME/zle.zshrc
-source $DOTFILES_ZSH_HOME/alias.zshrc
+source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+# +----------------+
+# | other settings |
+# +----------------+
+# https://github.com/ohmyzsh/ohmyzsh/issues/8743
+WORDCHARS='*?_-.[]~|&;!#%^(){}<>'
+# zsh-autosuggestion
+bindkey '^[m' autosuggest-execute
+# disable zsh auto update
+DISABLE_AUTO_UPDATE="true"
+# skip the verification of insecure directories
+# if it doesn't work, try compaudit | xargs chmod g-w,o-w
+ZSH_DISABLE_COMPFIX="true"
+# brew install without updating (https://github.com/Homebrew/brew/issues/1670)
+export HOMEBREW_NO_AUTO_UPDATE=1
+# thefuck
+eval $(thefuck --alias)
+
+source $DOTFILES_ZSH_HOME/zle.zsh
+source $DOTFILES_ZSH_HOME/alias.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
-
-echo "Oh My Zsh!"  # Welcome

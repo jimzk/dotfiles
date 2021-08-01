@@ -94,7 +94,10 @@ alias 'info-user'='whoami'
 alias 'info-user-all'='less /etc/passwd'
 
 # utility
+alias l='exa --color=always -Fh --git --time-style=long-iso'
+alias navi='navi --path $DOTFILES_HOME/cheatsheets/navi/main'
 alias o=open
+alias app='open "$(ls /Applications | fzf)"'
 alias ipy=ipython
 alias pip=pip3
 alias timestamp='date "+%Y%m%dT%H%M%S"'
@@ -108,9 +111,6 @@ alias -s md='open -a Typora'    # open *.md with Typora by default
 # git
 alias g='git'
 alias gti='git'
-
-# resolve name conflit with cheatsheet finder 'm'
-alias m-cli='/usr/local/bin/m'
 
 # helper functions
 function _quick_grep {
