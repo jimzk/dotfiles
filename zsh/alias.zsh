@@ -22,23 +22,24 @@ case "$OSTYPE" in
         ;;
 esac
 
-# clear
-alias cl='clear'
+export ZSH_PLUGINS_ALIAS_TIPS_EXCLUDES="l gti g"
+
 alias cls='clear'
 
 # ls
-alias ll='ls -l'
-alias la='ls -A'
-alias lla='ls -Al'
+alias ls='gls --color=tty -F'
+alias l='exa'
+alias ll='exa -l'
+alias la='exa -a'
+alias lla='exa -al'
 # only list directories
-alias lld='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type d -not -path "." | xargs -I _ basename _) ); [ -n "$_fs" ] && ls -adl $_fs 2>/dev/null) }; _f'
-alias lsd='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type d -not -path "." | xargs -I _ basename _) ); [ -n "$_fs" ] && ls -ad $_fs 2>/dev/null) }; _f'
+alias ld='exa -D'
+alias lld='exa -Dl'
 # only list hidden files (dotfiles)
-alias l.='_f(){ (cd ${1:-.}; ls -d .*)}; _f'
-alias ls.='l.'
-alias ll.='_f(){ (cd ${1:-.}; ls -ld .??*)}; _f'
+alias l.='_f(){ (cd ${1:-.}; exa -ad .*)}; _f'
+alias ll.='_f(){ (cd ${1:-.}; exa -ald .*)}; _f'
 # only list symlinks
-alias ls-symlink='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && ls -adl $_fs) }; _f'
+alias ls-sym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -ald $_fs) }; _f'
 
 # cd
 alias cdl='_f(){ cd $1; ls }; _f'  # cd and list
@@ -54,12 +55,14 @@ alias mkd='_f(){ mkdir -p "$@" && cd "$_" }; _f'
 alias 'ls?'='_f() {
         local dir=$PWD
         [[ "$#" != 1 ]] && dir=$1 && shift
-        ls -a $dir | grep -i $1
+        _fs=( $(cd $dir && \fd -L -d1 --hidden | grep -i $1) );
+        exa -ad "$_fs" | grep -i $1
     }; _f'
 alias 'll?'='_f() {
         local dir=$PWD
         [[ "$#" != 1 ]] && dir=$1 && shift
-        ls -al $dir | grep -i $1
+        _fs=( $(cd $dir && \fd -L -d1 --hidden | grep -i $1) );
+        exa -ald $_fs | grep -i $1
     }; _f'
 alias 'ps?'='_quick_grep "ps aux" $@'
 alias 'alias?'='_quick_grep "_alias_format" $@'
@@ -72,6 +75,28 @@ alias 'bin?'='_quick_grep "_list_my_bin" $@'
 alias 'bindkey?'='_quick_grep "bindkey" $@'
 alias 'brew-list?'='_quick_grep "_brew_list" $@'
 alias 'zstyle?'='_quick_grep "zstyle -L" $@'
+
+# git
+alias gs='git status'
+alias gss='git status -sb'
+alias ga='git add'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gc!='git commit --amend -v'
+alias gc!!='git commit --amend -v -C HEAD'
+alias gco='git checkout'
+# to fix
+# alias 'gco?'='_f() { git checkout $(gb | grep $1 | awk "{print $NF}"); }; _f'
+alias gp='git push'
+alias gp!='git push -f'
+alias gb='git branch'
+alias gd='git diff'
+alias glg='git lg'
+alias gr='git rebase'
+alias gri='git rebase -i'
+alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; git commit -t <(echo "feat(xxx):" ) }; _f'
+alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; gc! }; _f'
+alias g='git'
 
 # more efficient
 alias 'vim$'="vim -c \"normal '0\""  # open last file
@@ -94,10 +119,9 @@ alias 'info-user'='whoami'
 alias 'info-user-all'='less /etc/passwd'
 
 # utility
-alias l='exa --color=always -Fh --git --time-style=long-iso'
 alias navi='navi --path $DOTFILES_HOME/cheatsheets/navi/main'
 alias o=open
-alias app='open "$(ls /Applications | fzf)"'
+alias app='open "/Applications/$(exa /Applications | fzf)"'
 alias ipy=ipython
 alias pip=pip3
 alias timestamp='date "+%Y%m%dT%H%M%S"'
@@ -107,10 +131,6 @@ alias cleanup='brew cleanup && pip cache purge'
 [ -n "$(command -v bat)" ] && alias cat=bat
 alias diff='colordiff'    # diff with color
 alias -s md='open -a Typora'    # open *.md with Typora by default
-
-# git
-alias g='git'
-alias gti='git'
 
 # helper functions
 function _quick_grep {
