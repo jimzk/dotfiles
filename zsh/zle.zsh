@@ -36,32 +36,38 @@ bindkey -e
 
 # from 'navi widget zsh'
 _navi_call() {
-    local result="$(navi "$@" </dev/tty)"
-    if [ -z "${result}" ]; then
-        result="$(navi --print </dev/tty)"
-    fi
-    printf "%s" "$result"
+    local result="$(navi --print "$@" </dev/tty)"
+    [[ -n "$result" ]] && printf "%s" "$result"
 }
 _navi_widget() {
-    local -r input="${LBUFFER}"
-    local -r last_command="$(echo "${input}" | navi fn widget::last_command)"
-    local find="$last_command"
-    local replacement="$last_command"
+    # trim space (https://stackoverflow.com/a/68288735)
+    local -r input="${(MS)LBUFFER##[[:graph:]]*[[:graph:]]}"
 
-    if [ -z "${last_command}" ]; then
-        replacement="$(_navi_call --print --fzf-overrides '--no-select-1')"
-    elif [ "${LASTWIDGET}" = "_navi_widget" ] && [ "$input" = "$previous_output" ]; then
-        find="$input"
-        replacement="$(_navi_call --print --query "${previous_last_command:-$last_command}")"
+    local -r last_command="$(echo $input | rev | cut -d'|' -f1 | rev | xargs)"
+    local prev_command="$(echo $input | rev | cut -d'|' -f2- | rev | xargs)"
+    [[ "$prev_command" == "$last_command" ]] && prev_command=
+
+    local replacement
+    if [ -z "$last_command" ]; then
+        replacement="$(_navi_call --fzf-overrides '--no-select-1')"
     else
-        replacement="$(_navi_call --print --query "${last_command}")"
+        replacement="$(_navi_call --query "$last_command")"
     fi
 
-    previous_last_command="$last_command"
-    previous_output="${input//$find/$replacement}"
+    if [[ -z "$last_command" ]]; then  # if input is "<command> | "
+        if [[ -z "$input" ]]; then
+            previous_output="$replacement"
+        else
+            previous_output="$input $replacement"
+        fi
+    elif [[ -n "$replacement" ]]; then  # if accept
+        previous_output="${input/%$last_command/$replacement}"  # only replace last occurrence
+    else  # if abort
+        previous_output="$input"
+    fi
 
     zle kill-whole-line
-    LBUFFER="${previous_output}"
+    LBUFFER="$previous_output"
     region_highlight=("P0 100 bold")
     zle redisplay
 }
