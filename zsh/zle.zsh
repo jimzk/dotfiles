@@ -40,37 +40,45 @@ _navi_call() {
     [[ -n "$result" ]] && printf "%s" "$result"
 }
 _navi_widget() {
-    # trim space (https://stackoverflow.com/a/68288735)
-    local -r input="${(MS)LBUFFER##[[:graph:]]*[[:graph:]]}"
+    local input=$(_trim_string $LBUFFER)
+    local ending
+    local commands
 
-    local -r last_command="$(echo $input | rev | cut -d'|' -f1 | rev | xargs)"
-    local prev_command="$(echo $input | rev | cut -d'|' -f2- | rev | xargs)"
-    [[ "$prev_command" == "$last_command" ]] && prev_command=
+    [[ $input[-1] == "|" ]] && input="$input "
+    commands=(${(s:|:)input})  # split input by |
+    local last_command=$(_trim_string $commands[-1])
+    # only get command after last $( if any
+    if [[ $last_command == *'$('* ]]; then
+        last_command="$last_command "
+        commands=(${(s:$(:)last_command})  # split input by $(
+        last_command=$(_trim_string $commands[-1])
+        ending=' )'
+    fi
+    local prev_command=$(_trim_string ${input%%$last_command})
 
-    local replacement
-    if [ -z "$last_command" ]; then
-        replacement="$(_navi_call --fzf-overrides '--no-select-1')"
-    else
+    # local replacement
+    if [ -n "$last_command" ]; then
         replacement="$(_navi_call --query "$last_command")"
+    else
+        replacement="$(_navi_call --fzf-overrides '--no-select-1')"
     fi
 
-    if [[ -z "$last_command" ]]; then  # if input is "<command> | "
-        if [[ -z "$input" ]]; then
-            previous_output="$replacement"
-        else
-            previous_output="$input $replacement"
-        fi
-    elif [[ -n "$replacement" ]]; then  # if accept
-        previous_output="${input/%$last_command/$replacement}"  # only replace last occurrence
-    else  # if abort
-        previous_output="$input"
+    if [[ -n "$replacement" ]]; then
+        output="$prev_command $replacement$ending"
+    else
+        output="$input"
     fi
 
     zle kill-whole-line
-    LBUFFER="$previous_output"
+    LBUFFER=$(_trim_string $output)
     region_highlight=("P0 100 bold")
     zle redisplay
 }
 
 zle -N _navi_widget
 bindkey '^g' _navi_widget
+
+_trim_string() {
+    # trim space (https://stackoverflow.com/a/68288735)
+    echo "${(MS)@##[[:graph:]]*[[:graph:]]}"
+}
