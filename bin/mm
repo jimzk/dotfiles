@@ -8,7 +8,7 @@ search_cheatsheets_filename() {
         query+=( "$line" )
     done < <(
         cd ${CHEATSHEETS_HOME} &&
-        fd "" --type f --follow --exec basename {} .md \; | sort |
+        fd "" -d 1 --type f --follow --exec basename {} .md \; | sort |
         fzf --query "$@" \
         --prompt 'filename> '
     )
@@ -21,7 +21,7 @@ search_cheatsheets_content() {
         query+=( "$line" )
     done < <(
         cd ${CHEATSHEETS_HOME} &&
-        rg -w --color=always --line-number --no-heading --smart-case "${*:-}" |
+        rg --max-depth 1 -w --color=always --line-number --no-heading --smart-case "${*:-}" |
         sed 's/.md//' |  # cut suffix ".md" from filename
         fzf --delimiter : \
         --prompt 'content> '

@@ -2,7 +2,6 @@
 #
 ### update software
 ###    -b, --brew         brew
-###        --brew-cask    brew cask
 ###    -p, --pip          python3 packages
 ###        --apt          apt packages
 ###    -z  --zsh          zsh
@@ -23,19 +22,10 @@ is_macOS() {
     return false
 }
 
-update_brew_cask() {
-    if is_macOS; then
-        info_begin "BREW CASK" "packages"
-        brew upgrade
-        brew cask reinstall `brew cask outdated`
-        info_end "BREW CASK" "packages"
-    fi
-}
 update_brew() {
     if is_macOS; then
         info_begin "BREW" "packages"
         brew upgrade
-        brew upgrade `brew outdated`
         info_end "BREW" "packages"
     fi
 }
@@ -75,9 +65,6 @@ update_zsh() {
 case "$1" in
     "-b" | "--brew" )
         update_brew
-        ;;
-    "--brew-cask" )
-        update_brew_cask
         ;;
     "-p" | "--pip" )
         update_pip
