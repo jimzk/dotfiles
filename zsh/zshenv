@@ -74,6 +74,23 @@ export LESS='-iMsFR -j2 --mouse'
 # `less <file>` shows information according to file type
 export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 
+# path
+typeset -U PATH  # prevent duplicate path
+_set_path() {
+    PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+    if [[ $OSTYPE == 'darwin'* ]]; then
+        local packages=(gnu-tar gnu-which grep gawk gnu-sed findutils coreutils)
+        for i in "${packages[@]}"; do
+            PATH="$(brew --prefix)/opt/$i/libexec/gnubin:$PATH"
+        done
+    fi
+    PATH="$HOME/.cargo/bin:$PATH"  # bin from third party
+    PATH="$DOTFILES_BIN_HOME:$HOME/.local/bin:$PATH"
+    export PATH
+}
+_set_path
+CDPATH=.:$HOME  # by default CDPATH=.
+
 if [[ -n $(command -v code) ]]; then
     EDITOR='code'
 else
@@ -86,17 +103,6 @@ alias rg='rg -L'
 alias exa='exa -Fh --git --time-style=long-iso --sort=name'
 alias python=python3
 export PYTHONIOENCODING='UTF-8'
-if [[ $OSTYPE == 'darwin'* ]]; then
-    alias sed=gsed  # make sed compatible with linux version
-fi
 export NAVI_CONFIG=$DOTFILES_HOME/config/navi_config.yaml
-# export NAVI_FZF_OVERRIDES_VAR='--multi'
-source $HOME/.cargo/env
-
-# by default CDPATH=.
-CDPATH=.:$HOME
-
-# path
-export PATH=$DOTFILES_BIN_HOME:$HOME/.local/bin:/usr/local/sbin:$PATH
 
 [[ -e $DOTFILES_ZSH_HOME/zshenv.local ]] && source $DOTFILES_ZSH_HOME/zshenv.local

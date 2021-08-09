@@ -26,6 +26,7 @@ source $DOTFILES_ZSH_HOME/appearance.zsh
 plugins=(osx autojump timer tldr alias-tips tmux)
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+_set_path  # solve PATH order mess by /etc/zprofile
 
 # +------------+
 # | completion |

@@ -1,6 +1,5 @@
 case "$OSTYPE" in
     darwin* )
-        alias less='/usr/local/bin/less'  # use less that brew installed
         alias proxy="_proxy; info-ip"
         alias unproxy="_unproxy; info-ip"
         _proxy() {

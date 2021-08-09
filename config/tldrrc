@@ -16,5 +16,5 @@
     }
   },
   "theme": "ocean",
-  "platform": "osx"
+  "platform": "linux"
 }
