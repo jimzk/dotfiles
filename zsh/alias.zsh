@@ -1,6 +1,5 @@
 case "$OSTYPE" in
     darwin* )
-        alias ls='ls -F -G'
         alias less='/usr/local/bin/less'  # use less that brew installed
         alias proxy="_proxy; info-ip"
         alias unproxy="_unproxy; info-ip"
@@ -15,7 +14,6 @@ case "$OSTYPE" in
         _proxy
         ;;
     linux* )
-        alias ls='ls -F --color=auto'
         alias open="_f(){ open_command ${@:-.} }; _f" # `open_command` is zsh builtin functions
         ;;
     * )
@@ -27,7 +25,8 @@ export ZSH_PLUGINS_ALIAS_TIPS_EXCLUDES="l gti g"
 alias cls='clear'
 
 # ls
-alias ls='gls --color=tty -F'
+alias gls='gls --color=tty -F'
+alias ls='exa'
 alias l='exa'
 alias ll='exa -l'
 alias la='exa -a'
@@ -55,14 +54,15 @@ alias mkd='_f(){ mkdir -p "$@" && cd "$_" }; _f'
 alias 'ls?'='_f() {
         local dir=$PWD
         [[ "$#" != 1 ]] && dir=$1 && shift
-        _fs=( $(cd $dir && \fd -L -d1 --hidden | grep -i $1) );
-        exa -ad "$_fs" | grep -i $1
+        _fs=( $(cd $dir && fd -d1 --hidden | grep -i $1) );
+        exa -ad -1 $_fs
     }; _f'
+alias 'l?'='ls?'
 alias 'll?'='_f() {
         local dir=$PWD
         [[ "$#" != 1 ]] && dir=$1 && shift
-        _fs=( $(cd $dir && \fd -L -d1 --hidden | grep -i $1) );
-        exa -ald $_fs | grep -i $1
+        _fs=( $(cd $dir && fd -d1 --hidden | grep -i $1) );
+        exa -ald $_fs
     }; _f'
 alias 'ps?'='_quick_grep "ps aux" $@'
 alias 'alias?'='_quick_grep "_alias_format" $@'

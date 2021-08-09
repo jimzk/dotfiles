@@ -82,9 +82,8 @@ fi
 export EDITOR
 
 # other environment variables
-alias fd='fd --color=always -L'
-alias rg='rg --color=always -L'
-alias exa='exa --color=always -Fh --git --time-style=long-iso --sort=name'
+alias rg='rg -L'
+alias exa='exa -Fh --git --time-style=long-iso --sort=name'
 alias python=python3
 export PYTHONIOENCODING='UTF-8'
 if [[ $OSTYPE == 'darwin'* ]]; then
