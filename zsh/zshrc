@@ -23,7 +23,8 @@ setopt PUSHD_SILENT         # Do not print the directory stack after pushd or po
 # +-----------+
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
-plugins=(osx autojump timer tldr alias-tips tmux)
+plugins=(osx autojump timer fancy-ctrl-z alias-tips colored-man-pages)
+plugins+=(rust rustup cargo zsh-completions)  # additional zsh completions
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 _set_path  # solve PATH order mess by /etc/zprofile
@@ -31,11 +32,9 @@ _set_path  # solve PATH order mess by /etc/zprofile
 # +------------+
 # | completion |
 # +------------+
+fpath+=$DOTFILES_ZSH_HOME/completions  # customized zsh completions
 source $DOTFILES_ZSH_HOME/complete.fzf.zsh
-source $ZSH_CUSTOM/plugins/zsh-completions/zsh-completions.plugin.zsh
 
-# customized zsh completions
-fpath+=$DOTFILES_ZSH_HOME/completions
 # autoload loads script as function by searching $fpath.
 # ref: https://coderwall.com/p/ktv3hq/zsh-autoloading-functions-i
 # initialize autocomplete

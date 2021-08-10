@@ -17,24 +17,10 @@
 #     - `bindkey '\eb'`: see <alt-b> maps to which zle widget.
 #     - `zle -la`: list all available zle widges.
 
-
-# <ctrl-z> switch Vim and ZSH
-fancy-ctrl-z () {
-    if [[ $#BUFFER -eq 0 ]]; then
-        BUFFER="fg"
-        zle accept-line
-    else
-        zle push-input
-        zle clear-screen
-    fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z  # Here ^z can be replace by \32 found by `showkey -a`
-
 # use `emacs' keymap
 bindkey -e
 
-# from 'navi widget zsh'
+# zsh navi widget
 _navi_call() {
     local result="$(navi --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"

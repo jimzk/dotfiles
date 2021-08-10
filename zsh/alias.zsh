@@ -97,12 +97,18 @@ alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && r
 alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; gc! }; _f'
 alias g='git'
 
+# tmux
+alias tn='tmux new'
+alias ta='tmux attach'
+alias tl='tmux list'
+alias tks='tmu kill-session -t'
+alias tkw='tmu kill-window -t'
+
 # more efficient
 alias 'vim$'="vim -c \"normal '0\""  # open last file
 alias ':q'='exit'
 alias h="fc -l"
 alias srcz='source ~/.zshrc'
-alias tmux-new='_f(){ tmux new-session -t ${1:-default} }; _f'
 
 # show information
 #alias 'info-user'="stat -c '%n %U:%G-%a' *"
@@ -121,9 +127,9 @@ alias 'info-user-all'='less /etc/passwd'
 alias navi='navi --path $DOTFILES_HOME/cheatsheets/navi/main'
 alias o=open
 alias app='open "/Applications/$(exa /Applications | fzf)"'
+alias man='colored man'  # supported by zsh plugin colored-man-pages
 alias ipy=ipython
 alias pip=pip3
-alias timestamp='date "+%Y%m%dT%H%M%S"'
 # -N show Chinese characters, -C print with color, -a show hidden files, -I exclude files, --dirsfirst show directory first
 alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FRX }; _f'
 alias cleanup='brew cleanup && pip cache purge'
