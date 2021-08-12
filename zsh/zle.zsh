@@ -25,22 +25,22 @@ _navi_call() {
     local result="$(navi --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"
 }
-_navi_widget() {
-    local input=$(_trim_string $LBUFFER)
+_fzf_navi_widget() {
+    local input=$(__trim_string $LBUFFER)
     local ending
     local commands
 
     [[ $input[-1] == "|" ]] && input="$input "
     commands=(${(s:|:)input})  # split input by |
-    local last_command=$(_trim_string $commands[-1])
+    local last_command=$(__trim_string $commands[-1])
     # only get command after last $( if any
     if [[ $last_command == *'$('* ]]; then
         last_command="$last_command "
         commands=(${(s:$(:)last_command})  # split input by $(
-        last_command=$(_trim_string $commands[-1])
+        last_command=$(__trim_string $commands[-1])
         ending=' )'
     fi
-    local prev_command=$(_trim_string ${input%%$last_command})
+    local prev_command=$(__trim_string ${input%%$last_command})
 
     # local replacement
     if [ -n "$last_command" ]; then
@@ -56,15 +56,102 @@ _navi_widget() {
     fi
 
     zle kill-whole-line
-    LBUFFER=$(_trim_string $output)
+    LBUFFER=$(__trim_string $output)
     region_highlight=("P0 100 bold")
     zle redisplay
 }
 
-zle -N _navi_widget
-bindkey '^g' _navi_widget
+# ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
+#      https://junegunn.kr/2016/07/fzf-git
+_fzf_git_branch_widget() {
+    git rev-parse HEAD > /dev/null || return
+    COMMAND="git branch --color=always -a"
+    local branches=$(
+        eval $COMMAND | fzf --preview 'git lga {-1} -20' \
+                            --height=50% --preview-window='down,60%,wrap,border' \
+                            --header='^d delete branch' \
+                            --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(eval $COMMAND)"
+    )
+    branches=$(echo $branches | awk '{print $NF}' | sed -e 's/remotes\///' | tr '\n' ' ')
+    branches=$(__trim_string $branches)
 
-_trim_string() {
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$branches
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+_fzf_git_file_widget() {
+    git rev-parse HEAD > /dev/null || return
+
+    COMMAND="git -c color.status=always status --short | xargs -L1"
+    PREVIEW_DIFF_INDEX='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | sed 1,4d) || bat --style=plain {-1}'
+    PREVIEW_DIFF_HEAD='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always HEAD -- {-1} | sed 1,4d) || bat --style=plain {-1}'
+
+    local files=$(
+        eval $COMMAND | fzf --nth 2.. --preview "$PREVIEW_DIFF_INDEX" \
+                            --height=90% --preview-window down,84%,wrap \
+                            --header='^a add; ^h vs. HEAD (vs. index by default)' \
+                            --bind "ctrl-a:execute(git add {-1} > /dev/null)+reload(eval $COMMAND)" \
+                            --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)"
+    )
+    files=$(echo $files | awk '{print $NF}' | tr '\n' ' ')
+    files=$(__trim_string $files)
+
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$files
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+_fzf_git_commit_widget() {
+    git rev-parse HEAD > /dev/null || return
+
+    # format placeholder ("git show --help" for more)
+    # %h abbreviated commit hash
+    # %s subject
+    # %b body, %B raw body (unwrapped subject and body)
+    # %cr committer date, relative
+    # %an author name
+    # %n newline
+    # >(40) padding on the left to make the next placeholder take at least 40 columns
+    COMMAND='git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
+    # -p: generat path (changed content)
+    PREVIEW_DEFAULT='git show --stat --color {1}'
+    PREVIEW_FULL='git show --stat --color -p {1}'
+    # PREVIEW='git show --stat --color --pretty=format:"%Cred%h%Creset%n%B%>(40)%Cgreen(%cr)%C(bold blue) <%an>%Creset%n" {1}'
+
+    local commits=$(
+        eval $COMMAND | fzf-tmux --preview "$PREVIEW_DEFAULT" \
+                            --height=90% --preview-window down,70%,wrap \
+                            --header='^f details' \
+                            --bind "ctrl-f:preview($PREVIEW_FULL)"
+    )
+    commits=$(echo $commits | awk '{print $1}' | tr '\n' ' ')
+    commits=$(__trim_string $commits)
+
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$commits
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+
+zle -N _fzf_navi_widget
+zle -N _fzf_git_branch_widget
+zle -N _fzf_git_file_widget
+zle -N _fzf_git_commit_widget
+bindkey -r '^g'
+bindkey '^g^g' _fzf_navi_widget
+bindkey '^g^b' _fzf_git_branch_widget
+bindkey '^g^f' _fzf_git_file_widget
+bindkey '^g^h' _fzf_git_commit_widget
+# todo: bindkey '^g^t' _git_tag_widget
+
+# todo: bindkey '^[g^[e' _env_widget
+# todo: bindkey '^[g^[g' _cheatsheets_widget
+
+__trim_string() {
     # trim space (https://stackoverflow.com/a/68288735)
     echo "${(MS)@##[[:graph:]]*[[:graph:]]}"
 }
