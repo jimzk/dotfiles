@@ -1267,7 +1267,7 @@
                 },
 
                 {
-                    "description": "Hide Chrome",
+                    "description": "Hide Edge",
                     "from": {
                         "key_code": "c",
                         "modifiers": {
@@ -1289,12 +1289,12 @@
                     "conditions": [
                         {
                             "type": "frontmost_application_if",
-                            "bundle_identifiers": ["com.google.Chrome"]
+                            "bundle_identifiers": ["com.microsoft.edgemac"]
                         }
                     ]
                 },
                 {
-                    "description": "Show Chrome",
+                    "description": "Show Edge",
                     "from": {
                         "key_code": "c",
                         "modifiers": {
@@ -1308,7 +1308,7 @@
                     },
                     "to": [
                         {
-                            "shell_command": "open -a 'Google Chrome'"
+                            "shell_command": "open -a 'Microsoft Edge'"
                         }
                     ],
                     "type": "basic"
