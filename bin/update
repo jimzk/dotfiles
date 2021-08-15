@@ -13,18 +13,11 @@ info_begin() {
 info_end() {
     printf "\r${CLEAR_SCRRN}..[ End ] upgrading ${UPURPLE}$1${COLOR_OFF} $2\n\n"
 }
-is_linux() {
-    [[ "$OSTYPE" =~ "^linux" ]] && return true
-    return false
-}
-is_macOS() {
-    [[ "$OSTYPE" =~ "^darwin" ]] && return true
-    return false
-}
 
 update_brew() {
-    if is_macOS; then
+    if [[ "$OSTYPE" =~ "^darwin" ]]; then
         info_begin "BREW" "packages"
+        brew update
         brew upgrade
         info_end "BREW" "packages"
     fi
@@ -35,7 +28,7 @@ update_pip() {
     info_end "PYTHON3" "packages"
 }
 update_apt() {
-    if is_linux; then
+    if [[ "$OSTYPE" =~ "^linux" ]]; then
         info_begin "APT" "packages"
         sudo apt-get upgrade -y
         sudo apt-get upgrade -y
