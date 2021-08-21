@@ -4,9 +4,9 @@
 # priority order: zsh completion -> fzf-tab -> fzf completion (high)
 
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap"
-export FZF_ALT_C_COMMAND="fd --hidden --follow --exclude .git --maxdepth=1 ."
+export FZF_ALT_C_COMMAND="fd --color=always --hidden --follow --exclude .git --maxdepth=1 ."
 # todo: alt-c to simulate "/" in faz-tab
-export FZF_ALT_C_OPTS="--preview 'tree -CNFl -L 2 {} | head -200'"
+export FZF_ALT_C_OPTS="--preview 'tree -CNFl -L 2 {} | head -200' --preview-window 'right,75%,wrap'"
 # ref: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
 export FZF_COMPLETION_OPTS="$FZF_BASE_OPTS"
 export FZF_COMPLETION_TRIGGER=';'
