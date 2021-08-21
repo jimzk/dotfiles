@@ -2,7 +2,7 @@
 [core]
     ignorecase = true
     # use diff-so-fancy for all diff output
-    pager = diff-so-fancy --colors | less --tab=4 -FRX
+    pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
     editor = vim
     autocrlf = input
@@ -23,9 +23,7 @@
     # Delete a branch locally and remotely
     b-delete-local-and-remote = "!_() { git branch -D $1; git push origin :$1; }; _"
 
-    lga = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-    lg = "lga -5"
-    lgv = "lg --decorate --name-status"  # show modified files in commit history
+    lg = "log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
 
     remotes = "remote -v"
     ts = "tag -l"
@@ -44,17 +42,19 @@
 [gui]
     encoding = utf-8
 [color "diff-highlight"]
+    # from https://github.com/so-fancy/diff-so-fancy
     oldNormal = red bold
     oldHighlight = red bold 52
     newNormal = green bold
     newHighlight = green bold 22
 [color "diff"]
-    meta = yellow
+    meta = 11
     frag = magenta bold
     commit = yellow bold
     old = red bold
     new = green bold
     whitespace = red reverse
+    func = 146 bold
 [color "grep"]
     linenumber = yellow bold
     match = red
@@ -67,3 +67,8 @@
     # Permanently authenticating with Git repositories
     # https://stackoverflow.com/a/28562712/10134408
     helper = store
+[log]
+    # --date format: https://strftime.org/
+    date = format:%Y %m-%d %H:%M:%S %a %z
+[interactive]
+    diffFilter = diff-so-fancy --patch

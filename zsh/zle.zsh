@@ -67,20 +67,18 @@ _fzf_git_branch_widget() {
     git rev-parse HEAD > /dev/null || return
     COMMAND="git branch --color=always -a"
     local branches=$(
-        eval $COMMAND | fzf --preview 'git lga {-1} -20' \
-                            --height=50% --preview-window='down,60%,wrap,border' \
-                            --header='^d delete branch' \
-                            --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(eval $COMMAND)"
+        eval $COMMAND |
+        fzf --preview 'git lg {-1} -20' \
+            --height=70% --preview-window='down,70%,wrap,border' \
+            --header='^d delete branch' \
+            --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(eval $COMMAND)" |
+        awk '{print $NF}' |  # get last column
+        sed -e 's/remotes\///' |
+        __join_lines
     )
-    branches=$(echo $branches | awk '{print $NF}' | sed -e 's/remotes\///' | tr '\n' ' ')
-    branches=$(__trim_string $branches)
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$branches
-    region_highlight=("P0 100 bold")
-    zle redisplay
+    __redraw $branches
 }
+
 _fzf_git_file_widget() {
     git rev-parse HEAD > /dev/null || return
 
@@ -89,20 +87,16 @@ _fzf_git_file_widget() {
     PREVIEW_DIFF_HEAD='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always HEAD -- {-1} | sed 1,4d) || bat --style=plain {-1}'
 
     local files=$(
-        eval $COMMAND | fzf --nth 2.. --preview "$PREVIEW_DIFF_INDEX" \
-                            --height=90% --preview-window down,84%,wrap \
-                            --header='^a add; ^h vs. HEAD (vs. index by default)' \
-                            --bind "ctrl-a:execute(git add {-1} > /dev/null)+reload(eval $COMMAND)" \
-                            --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)"
+        eval $COMMAND |
+        fzf --nth 2.. --preview "$PREVIEW_DIFF_INDEX" \
+            --height=90% --preview-window down,84%,wrap \
+            --header='^a add; ^h vs. HEAD (vs. index by default)' \
+            --bind "ctrl-a:execute(git add {-1} > /dev/null)+reload(eval $COMMAND)" \
+            --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)" |
+        awk '{print $NF}' | # get last column
+        __join_lines
     )
-    files=$(echo $files | awk '{print $NF}' | tr '\n' ' ')
-    files=$(__trim_string $files)
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$files
-    region_highlight=("P0 100 bold")
-    zle redisplay
+    __redraw $files
 }
 _fzf_git_commit_widget() {
     git rev-parse HEAD > /dev/null || return
@@ -118,57 +112,54 @@ _fzf_git_commit_widget() {
     COMMAND='git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
     # -p: generat path (changed content)
     PREVIEW_DEFAULT='git show --stat --color {1}'
-    PREVIEW_FULL='git show --stat --color -p {1}'
+    PREVIEW_FULL="$PREVIEW_DEFAULT -p | diff-so-fancy --colors"
     # PREVIEW='git show --stat --color --pretty=format:"%Cred%h%Creset%n%B%>(40)%Cgreen(%cr)%C(bold blue) <%an>%Creset%n" {1}'
 
     local commits=$(
-        eval $COMMAND | fzf-tmux --preview "$PREVIEW_DEFAULT" \
-                            --height=90% --preview-window down,70%,wrap \
-                            --header='^f details' \
-                            --bind "ctrl-f:preview($PREVIEW_FULL)"
+        eval $COMMAND |
+        fzf-tmux --preview "$PREVIEW_DEFAULT" \
+            --height=90% --preview-window down,70% \
+            --header='^f details' \
+            --bind "ctrl-f:preview($PREVIEW_FULL)" |
+        awk '{print $1}' | __join_lines
     )
-    commits=$(echo $commits | awk '{print $1}' | tr '\n' ' ')
-    commits=$(__trim_string $commits)
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$commits
-    region_highlight=("P0 100 bold")
-    zle redisplay
+    __redraw $commits
+}
+_fzf_git_stash_widget() {
+    git rev-parse HEAD > /dev/null || return
+    local stash=$(
+        git stash list |
+        fzf --reverse -d: --preview 'git show --color=always {1} | diff-so-fancy --colors | less ' \
+            --no-multi --reverse \
+            --height=80% --preview-window down,85% \
+            --header='^d drop stash' \
+            --bind='ctrl-d:execute(git stash drop {1} > /dev/null)+reload(git stash list)' |
+        cut -d':' -f1
+    )
+    __redraw $stash
 }
 
 _fzf_env_widget() {
     local envs=$(
-        env | sed -e 's/=.*//' |
-            fzf --preview "eval echo '\${}'" \
-                --preview-window down,25%,wrap
-    )
-    envs=$(echo $envs | awk '{print "$"$1}' | tr '\n' ' ')
-    envs=$(__trim_string $envs)
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$envs
-    region_highlight=("P0 100 bold")
-    zle redisplay
+        env |
+        sed -e 's/=.*//' |
+        fzf --preview "eval echo '\${}'" \
+            --preview-window down,25%,wrap |
+        awk '{print "$"$1}' |
+        __join_lines)
+    __redraw $envs
 }
 _fzf_alias_widget() {
     # escape single quotes in content "alias" prints, e.g. 'alia?'=
     all_aliases=$(alias | sed "s/^'//" | sed "s/'=/=/" | sort)
     local alias=$(
         echo -E $all_aliases |
-            fzf -0 --no-multi --preview "echo {}" \
-                --height=45% --preview-window down,35%,wrap \
-                --header='^g git alias' \
-                --bind="ctrl-g:reload(git alias)"
-    )
-    alias=$(echo "$alias" | sed -e 's/\=.*//')
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$alias
-    region_highlight=("P0 100 bold")
-    zle redisplay
+        fzf --no-multi --preview "echo {}" \
+            --height=45% --preview-window down,35%,wrap \
+            --header='^g git alias' \
+            --bind="ctrl-g:reload(git alias)" |
+        sed -e 's/\=.*//')
+    __redraw $alias
 }
 
 _fzf_cht_widget() {
@@ -177,16 +168,12 @@ _fzf_cht_widget() {
 }
 
 _fzf_file_widget() {
-    local files=$(fd --color=always --hidden --follow --exclude .git --maxdepth=1 . |
-        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window 'right,75%,wrap')
-    files=$(echo $files | tr '\n' ' ')
-    files=$(__trim_string $files)
-
-    local input=$LBUFFER
-    zle kill-whole-line
-    LBUFFER=$input$files
-    region_highlight=("P0 100 bold")
-    zle redisplay
+    local files=$(
+        fd --color=always --hidden --follow --exclude .git --maxdepth=1 . |
+        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window 'right,75%,wrap' |
+        __join_lines)
+    # files=$(__trim_string $files)
+    __redraw $files
 }
 
 zle -N _fzf_navi_widget
@@ -197,18 +184,30 @@ zle -N _fzf_env_widget
 zle -N _fzf_alias_widget
 zle -N _fzf_cht_widget
 zle -N _fzf_file_widget
+zle -N _fzf_git_stash_widget
 bindkey -r '^g'
-bindkey '^g^g' _fzf_navi_widget
-bindkey '^g^b' _fzf_git_branch_widget
-bindkey '^g^d' _fzf_git_file_widget
-bindkey '^g^h' _fzf_git_commit_widget
+bindkey '^gg' _fzf_navi_widget
+bindkey '^gb' _fzf_git_branch_widget
+bindkey '^gd' _fzf_git_file_widget
+bindkey '^gh' _fzf_git_commit_widget
+bindkey '^gs' _fzf_git_stash_widget
 # todo: bindkey '^g^t' _git_tag_widget
-bindkey '^g^e' _fzf_env_widget
-bindkey '^g^a' _fzf_alias_widget
-bindkey '^g^t' _fzf_cht_widget
-bindkey '^g^f' _fzf_file_widget
+bindkey '^ge' _fzf_env_widget
+bindkey '^ga' _fzf_alias_widget
+bindkey '^gt' _fzf_cht_widget
+bindkey '^gf' _fzf_file_widget
 
 __trim_string() {
     # trim space (https://stackoverflow.com/a/68288735)
     echo "${(MS)@##[[:graph:]]*[[:graph:]]}"
+}
+__redraw() {
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$@
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+__join_lines() {
+    tr '\n' ' ' | sed -e 's/ *$//'
 }

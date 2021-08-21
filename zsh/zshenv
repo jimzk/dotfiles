@@ -39,8 +39,6 @@ FZF_BASE_OPTS="--exact --extended --multi --color=16,hl:green,header:bold --ansi
 --bind='btab:up' \
 --bind='ctrl-n:down' \
 --bind='ctrl-p:up' \
---bind='right:page-down' \
---bind='left:page-up' \
 --bind='ctrl-j:page-down' \
 --bind='ctrl-k:page-up' \
 --bind='ctrl-s:toggle' \
@@ -72,7 +70,7 @@ export PAGER='less'
 #   -R: not show escape sequences like ESC[, and will convert them into ANSI color
 #   -j2: lines between top and matched text (https://superuser.com/a/257626)
 #   --mouse: enable mouse input
-export LESS='-iMsFR -j2 --mouse'
+export LESS='-j2 -iMsFR'
 # `less <file>` shows information according to file type
 export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 
