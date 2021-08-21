@@ -171,12 +171,18 @@ _fzf_alias_widget() {
     zle redisplay
 }
 
+_fzf_cht_widget() {
+    $DOTFILES_BIN_HOME/_cht
+    zle accept-line -w
+}
+
 zle -N _fzf_navi_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
 zle -N _fzf_git_commit_widget
 zle -N _fzf_env_widget
 zle -N _fzf_alias_widget
+zle -N _fzf_cht_widget
 bindkey -r '^g'
 bindkey '^g^g' _fzf_navi_widget
 bindkey '^g^b' _fzf_git_branch_widget
@@ -185,8 +191,7 @@ bindkey '^g^h' _fzf_git_commit_widget
 # todo: bindkey '^g^t' _git_tag_widget
 bindkey '^g^e' _fzf_env_widget
 bindkey '^g^a' _fzf_alias_widget
-
-# todo: bindkey '^[g^[g' _cheatsheets_widget
+bindkey '^g^t' _fzf_cht_widget
 
 __trim_string() {
     # trim space (https://stackoverflow.com/a/68288735)

@@ -7,7 +7,7 @@ search_cheatsheets_filename() {
     while read -r line; do
         query+=( "$line" )
     done < <(
-        cd ${CHEATSHEETS_HOME} &&
+        cd $CHEATSHEETS_HOME/cht &&
         fd "" -d 1 --type f --follow --exec basename {} .md \; | sort |
         fzf --query "$@" \
         --prompt 'filename> '
@@ -20,7 +20,7 @@ search_cheatsheets_content() {
     while read -r line; do
         query+=( "$line" )
     done < <(
-        cd ${CHEATSHEETS_HOME} &&
+        cd $CHEATSHEETS_HOME/cht &&
         rg --max-depth 1 -w --color=always --line-number --no-heading --smart-case "${*:-}" |
         sed 's/.md//' |  # cut suffix ".md" from filename
         fzf --delimiter : \
@@ -40,7 +40,7 @@ _execute_cheatsheet() {
 
     local query_text="$(echo -e $1 | xargs echo -n)"
     local matched_line="$(echo -e $2 | xargs echo -n)"
-    case "${query_text}" in
+    case "$query_text" in
         *\. )
             search_cheatsheets_filename ${query_text:0:-1}
             ;;
@@ -49,10 +49,10 @@ _execute_cheatsheet() {
             ;;
         * )
             matched_line=${matched_line%.md}  # remove suffix ".md"
-            if [[ -n ${matched_line} ]]; then
-                glow -s ${DOTFILES_HOME}/config/glow.style.json ${CHEATSHEETS_HOME}/${matched_line}.md
+            if [[ -n $matched_line ]]; then
+                glow -s $DOTFILES_HOME/config/glow.style.json $CHEATSHEETS_HOME/cht/$matched_line.md
             else
-                [[ -n ${query_text} ]] && ${EDITOR:-vim} ${CHEATSHEETS_HOME}/${query_text}.md
+                [[ -n $query_text ]] && ${EDITOR:-vim} $CHEATSHEETS_HOME/cht/$query_text.md
             fi
             ;;
     esac
@@ -63,13 +63,13 @@ fzf_header=$(cat <<EOF
 EOF
 )
 fzf_preview='expr="bat --style=plain {1}.md"; [[ -z {2} ]] && eval "$expr" || eval "$expr --highlight-line {2}"'
-FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --height=72% --info=hidden \
---header '${fzf_header}' \
---preview '${fzf_preview}' \
---preview-window down,75%:wrap,border \
+FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height=90% --info=hidden \
+--header '$fzf_header' \
+--preview '$fzf_preview' \
+--preview-window down,70%,wrap,border \
 --print-query \
---bind='ctrl-o:execute(cd ${CHEATSHEETS_HOME}; [[ -n {1} ]] && ${EDITOR:-vim} {1}.md || ${EDITOR:-vim} {q}.md)+abort'
-"
+--bind='ctrl-o:execute(cd $CHEATSHEETS_HOME/cht; [[ -n {1} ]] && ${EDITOR:-vim} {1}.md || ${EDITOR:-vim} {q}.md)+abort'"
+
 LESS='-iMsR -j3'
 
 [[ "$#" > 1 ]] && echo "ERROR: only accpet ONE parameter!" && exit 1
