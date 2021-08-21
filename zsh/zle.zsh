@@ -176,6 +176,19 @@ _fzf_cht_widget() {
     zle accept-line -w
 }
 
+_fzf_file_widget() {
+    local files=$(fd --color=always --hidden --follow --exclude .git --maxdepth=1 . |
+        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window 'right,75%,wrap')
+    files=$(echo $files | tr '\n' ' ')
+    files=$(__trim_string $files)
+
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$files
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+
 zle -N _fzf_navi_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
@@ -183,15 +196,17 @@ zle -N _fzf_git_commit_widget
 zle -N _fzf_env_widget
 zle -N _fzf_alias_widget
 zle -N _fzf_cht_widget
+zle -N _fzf_file_widget
 bindkey -r '^g'
 bindkey '^g^g' _fzf_navi_widget
 bindkey '^g^b' _fzf_git_branch_widget
-bindkey '^g^f' _fzf_git_file_widget
+bindkey '^g^d' _fzf_git_file_widget
 bindkey '^g^h' _fzf_git_commit_widget
 # todo: bindkey '^g^t' _git_tag_widget
 bindkey '^g^e' _fzf_env_widget
 bindkey '^g^a' _fzf_alias_widget
 bindkey '^g^t' _fzf_cht_widget
+bindkey '^g^f' _fzf_file_widget
 
 __trim_string() {
     # trim space (https://stackoverflow.com/a/68288735)
