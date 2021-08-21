@@ -137,18 +137,55 @@ _fzf_git_commit_widget() {
     zle redisplay
 }
 
+_fzf_env_widget() {
+    local envs=$(
+        env | sed -e 's/=.*//' |
+            fzf --preview "eval echo '\${}'" \
+                --preview-window down,25%,wrap
+    )
+    envs=$(echo $envs | awk '{print "$"$1}' | tr '\n' ' ')
+    envs=$(__trim_string $envs)
+
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$envs
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+_fzf_alias_widget() {
+    # escape single quotes in content "alias" prints, e.g. 'alia?'=
+    all_aliases=$(alias | sed "s/^'//" | sed "s/'=/=/" | sort)
+    local alias=$(
+        echo -E $all_aliases |
+            fzf -0 --no-multi --preview "echo {}" \
+                --height=45% --preview-window down,35%,wrap \
+                --header='^g git alias' \
+                --bind="ctrl-g:reload(git alias)"
+    )
+    alias=$(echo "$alias" | sed -e 's/\=.*//')
+
+    local input=$LBUFFER
+    zle kill-whole-line
+    LBUFFER=$input$alias
+    region_highlight=("P0 100 bold")
+    zle redisplay
+}
+
 zle -N _fzf_navi_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
 zle -N _fzf_git_commit_widget
+zle -N _fzf_env_widget
+zle -N _fzf_alias_widget
 bindkey -r '^g'
 bindkey '^g^g' _fzf_navi_widget
 bindkey '^g^b' _fzf_git_branch_widget
 bindkey '^g^f' _fzf_git_file_widget
 bindkey '^g^h' _fzf_git_commit_widget
 # todo: bindkey '^g^t' _git_tag_widget
+bindkey '^g^e' _fzf_env_widget
+bindkey '^g^a' _fzf_alias_widget
 
-# todo: bindkey '^[g^[e' _env_widget
 # todo: bindkey '^[g^[g' _cheatsheets_widget
 
 __trim_string() {

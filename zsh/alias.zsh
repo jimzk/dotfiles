@@ -64,11 +64,6 @@ alias 'll?'='_f() {
         exa -ald $_fs
     }; _f'
 alias 'ps?'='_quick_grep "ps aux" $@'
-alias 'alias?'='_quick_grep "_alias_format" $@'
-alias 'a?'='alias?'
-alias 'alias?g'='_quick_grep "git alias" $@'
-alias 'a?g'='alias?g'
-alias 'env?'='_quick_grep "env" $@'
 alias 'path?'='_quick_grep "_list_path" $@'
 alias 'bin?'='_quick_grep "_list_my_bin" $@'
 alias 'bindkey?'='_quick_grep "bindkey" $@'
@@ -175,11 +170,6 @@ function _list_my_bin() {
 
 function _list_path() {
     echo $PATH | tr ":" "\n"
-}
-
-# escape single quotes in content "alias" prints, e.g. 'alia?'=
-function _alias_format() {
-    alias | sed "s/^'//" | sed "s/'=/=/" | sort
 }
 
 function _wtf() {
