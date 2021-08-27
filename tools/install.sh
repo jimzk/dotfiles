@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-local installers=($(find $DOTFILES_HOME/tools/installers -type f -name "*"))
-local flag=
+installers=$(find $DOTFILES_HOME/tools/installers -type f -name "*")
+flag=
 case "$OSTYPE" in
     darwin* )
         flag="#darwin"
@@ -15,7 +15,7 @@ case "$OSTYPE" in
         exit 1
         ;;
 esac
-for file in "${installers[@]}"; do
+for file in ${installers[@]}; do
     cmd=$(grep -A1 "#cmd" ${file} | tail -n -1)
     # if command is existent, then no need to install and step into the next
     # note: if cmd is empty, it will go on to install

@@ -5,6 +5,7 @@
 
 prepare() {
     export DOTFILES_HOME=$HOME/.dotfiles
+
     [[ ! -e $DOTFILES_HOME ]] && git clone https://github.com/fjchen7/dotfiles $DOTFILES_HOME
     source $DOTFILES_HOME/zsh/zshenv  # load environment varibales
     source $DOTFILES_HOME/bin/_msg    # helper functions for print
@@ -29,6 +30,15 @@ setup_zsh() {
         local file=$DOTFILES_ZSH_HOME/$i.local
         [[ ! -e $file ]] && cp $file.example $file
     done
+    # install oh-my-zsh
+    [[ ! -d $HOME/.config ]] && mkdir -p $HOME/.config
+    ZSH=$HOME/.config/oh-my-zsh
+    ZSH_CUSTOM=$ZSH/custom
+    if [[ ! -d $ZSH ]]; do
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        mv $HOME/.oh-my-zsh $ZSH
+    fi
+    ln -sf $DOTFILES_HOME/zsh/custom $ZSH_CUSTOM
 }
 
 setup_cheatsheets() {
@@ -82,12 +92,16 @@ setup_git() {
     fi
     if [[ -z "$(command -v diff-so-fancy)" ]]; then
         git clone https://github.com/so-fancy/diff-so-fancy $HOME/.local/diff-so-fancy
-        ln -s $HOME/.local/diff-so-fancy/bin/diff-so-fancy /usr/local/bin/diff-so-fancy
+        ln -s $HOME/.local/diff-so-fancy/diff-so-fancy /usr/local/bin/diff-so-fancy
     fi
     _print_info "End setting up git"
 }
 
 setup_vim() {
+    _print_ask "Do you want to set up vim? [y/n]"
+    read -n 1 yn
+    [[ $yn != 'y' ]] && return
+
     _print_info "Start setting up vim"
     [[ ! -e $XDG_CACHE_HOME/vim ]] && mkdir -p $XDG_CACHE_HOME/vim
     [[ ! -e $XDG_CONFIG_HOME/vim ]] && ln -s $DOTFILES_HOME/vim $XDG_CONFIG_HOME/vim
@@ -103,6 +117,10 @@ setup_vim() {
 }
 
 setup_tools() {
+    _print_ask "Do you want to set up tools? [y/n]"
+    read -n 1 yn
+    [[ $yn != 'y' ]] && return
+
     _print_info "Start setting up tools"
 
     [ -z "$(command -v python3)" ] && sudo apt-get -y install python3.8
@@ -110,7 +128,7 @@ setup_tools() {
     [[ -z "$(command -v tmux)" ]] && sudo apt-get -y install tmux
 
     while read -r line; do
-        sh -c "$line"
+        bash -c "$line"
     done < <(cat $DOTFILES_HOME/tools/install.sh)
 
     setup_tools_config

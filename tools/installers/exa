@@ -1,0 +1,8 @@
+#command
+exa
+
+#darwin
+brew install exa
+
+#linux
+sudo apt install exa
