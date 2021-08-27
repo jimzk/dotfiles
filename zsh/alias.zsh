@@ -3,12 +3,15 @@ case "$OSTYPE" in
         alias proxy="_proxy; info-ip"
         alias unproxy="_unproxy; info-ip"
         _proxy() {
-            export http_proxy=http://127.0.0.1:1087
-            export https_proxy=http://127.0.0.1:1087
+            export https_proxy=http://127.0.0.1:7890
+            export http_proxy=$https_proxy
+            export all_proxy=socks5://127.0.0.1:7890
         }
+        _proxy
         _unproxy() {
             unset http_proxy
             unset https_proxy
+            unset all_proxy
         }
         _proxy
         ;;
@@ -27,17 +30,17 @@ alias cls='clear'
 alias gls='gls --color=tty -F'
 alias ls='exa'
 alias l='exa'
-alias ll='exa -l'
+alias ll='exa -lg'
 alias la='exa -a'
-alias lla='exa -al'
+alias lla='exa -alg'
 # only list directories
 alias ld='exa -D'
-alias lld='exa -Dl'
+alias lld='exa -Dlg'
 # only list hidden files (dotfiles)
 alias l.='_f(){ (cd ${1:-.}; exa -ad .*)}; _f'
-alias ll.='_f(){ (cd ${1:-.}; exa -ald .*)}; _f'
+alias ll.='_f(){ (cd ${1:-.}; exa -algd .*)}; _f'
 # only list symlinks
-alias ls-sym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -ald $_fs) }; _f'
+alias ls-sym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -algd $_fs) }; _f'
 
 # cd
 alias cdl='_f(){ cd $1; ls }; _f'  # cd and list
@@ -74,13 +77,10 @@ alias 'zstyle?'='_quick_grep "zstyle -L" $@'
 alias gs='git status'
 alias gss='git status -sb'
 alias ga='git add'
-alias gc='git commit'
-alias gcm='git commit -m'
+alias gc='git commit -v'
 alias gc!='git commit --amend -v'
 alias gc!!='git commit --amend -v -C HEAD'
 alias gco='git checkout'
-# to fix
-# alias 'gco?'='_f() { git checkout $(gb | grep $1 | awk "{print $NF}"); }; _f'
 alias gp='git push'
 alias gp!='git push -f'
 alias gb='git branch'
@@ -93,11 +93,9 @@ alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && 
 alias g='git'
 
 # tmux
-alias tn='tmux new'
+alias tn='tmux new -A -s main'
 alias ta='tmux attach'
-alias tl='tmux list'
-alias tks='tmu kill-session -t'
-alias tkw='tmu kill-window -t'
+alias tl='tmux list-session'
 
 # more efficient
 alias 'vim$'="vim -c \"normal '0\""  # open last file
@@ -126,7 +124,7 @@ alias man='colored man'  # supported by zsh plugin colored-man-pages
 alias ipy=ipython
 alias pip=pip3
 # -N show Chinese characters, -C print with color, -a show hidden files, -I exclude files, --dirsfirst show directory first
-alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FRX }; _f'
+alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FR }; _f'
 alias cleanup='brew cleanup && pip cache purge'
 [ -n "$(command -v bat)" ] && alias cat=bat
 alias diff='colordiff'    # diff with color

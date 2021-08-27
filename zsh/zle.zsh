@@ -22,7 +22,7 @@ bindkey -e
 
 # zsh navi widget
 _navi_call() {
-    local result="$(navi --print "$@" </dev/tty)"
+    local result="$(navi --fzf-overrides '--tiebreak=begin,length' --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"
 }
 _fzf_navi_widget() {
@@ -46,7 +46,7 @@ _fzf_navi_widget() {
     if [ -n "$last_command" ]; then
         replacement="$(_navi_call --query "$last_command")"
     else
-        replacement="$(_navi_call --fzf-overrides '--no-select-1')"
+        replacement="$(_navi_call)"
     fi
 
     if [[ -n "$replacement" ]]; then

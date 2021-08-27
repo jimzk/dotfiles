@@ -65,6 +65,7 @@ ZSH_DISABLE_COMPFIX="true"
 export HOMEBREW_NO_AUTO_UPDATE=1
 # thefuck
 eval $(thefuck --alias)
+[[ -e $XDG_CONFIG_HOME/broot/launcher/bash/br ]] && source $XDG_CONFIG_HOME/broot/launcher/bash/br
 
 source $DOTFILES_ZSH_HOME/zle.zsh
 source $DOTFILES_ZSH_HOME/alias.zsh

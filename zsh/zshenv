@@ -41,7 +41,7 @@ FZF_BASE_OPTS="--exact --extended --multi --color=16,hl:green,header:bold --ansi
 --bind='ctrl-p:up' \
 --bind='ctrl-j:page-down' \
 --bind='ctrl-k:page-up' \
---bind='ctrl-s:toggle' \
+--bind='ctrl-x:toggle' \
 --bind='alt-j:preview-down' \
 --bind='alt-k:preview-up' \
 --bind='alt-d:preview-half-page-down' \

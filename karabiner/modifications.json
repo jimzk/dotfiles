@@ -1185,64 +1185,9 @@
                 },
 
                 {
-                    "description": "Toggle v2ray on/off",
-                    "from": {
-                        "key_code": "v",
-                        "modifiers": {
-                            "mandatory": [
-                                "right_control",
-                                "right_command",
-                                "right_shift",
-                                "right_option"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "2",
-                            "modifiers": [
-                                "left_command",
-                                "left_control",
-                                "left_shift",
-                                "left_option"
-                            ]
-                        }
-                    ],
-                    "type": "basic"
-                },
-
-                {
-                    "description": "Switch v2ray proxy mode",
-                    "from": {
-                        "key_code": "v",
-                        "modifiers": {
-                            "mandatory": [
-                                "right_control",
-                                "right_command",
-                                "right_shift",
-                                "right_option",
-                                "left_command"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "1",
-                            "modifiers": [
-                                "left_command",
-                                "left_control",
-                                "left_shift",
-                                "left_option"
-                            ]
-                        }
-                    ],
-                    "type": "basic"
-                },
-
-                {
                     "description": "Trigger Moom",
                     "from": {
-                        "key_code": "m",
+                        "key_code": "r",
                         "modifiers": {
                             "mandatory": [
                                 "right_control",
@@ -1631,6 +1576,102 @@
                                 "left_control",
                                 "left_option"
                             ]
+                        }
+                    ],
+                    "type": "basic"
+                },
+
+                {
+                    "description": "Hide Wechat",
+                    "from": {
+                        "key_code": "x",
+                        "modifiers": {
+                            "mandatory": [
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "h",
+                            "modifiers": ["left_command"]
+                        }
+                    ],
+                    "type": "basic",
+                    "conditions": [
+                        {
+                            "type": "frontmost_application_if",
+                            "bundle_identifiers": ["xinWeChat"]
+                        }
+                    ]
+                },
+                {
+                    "description": "Show Discord",
+                    "from": {
+                        "key_code": "x",
+                        "modifiers": {
+                            "mandatory": [
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "shell_command": "open -a 'Wechat'"
+                        }
+                    ],
+                    "type": "basic"
+                },
+
+                {
+                    "description": "Hide Discord",
+                    "from": {
+                        "key_code": "z",
+                        "modifiers": {
+                            "mandatory": [
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "h",
+                            "modifiers": ["left_command"]
+                        }
+                    ],
+                    "type": "basic",
+                    "conditions": [
+                        {
+                            "type": "frontmost_application_if",
+                            "bundle_identifiers": ["com.hnc.Discord"]
+                        }
+                    ]
+                },
+                {
+                    "description": "Show Discord",
+                    "from": {
+                        "key_code": "z",
+                        "modifiers": {
+                            "mandatory": [
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "shell_command": "open -a 'Discord'"
                         }
                     ],
                     "type": "basic"
