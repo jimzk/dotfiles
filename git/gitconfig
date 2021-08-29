@@ -23,7 +23,7 @@
     # Delete a branch locally and remotely
     b-delete-local-and-remote = "!_() { git branch -D $1; git push origin :$1; }; _"
 
-    lg = "log --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
+    lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
 
     remotes = "remote -v"
     ts = "tag -l"

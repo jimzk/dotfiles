@@ -125,6 +125,19 @@ _fzf_git_commit_widget() {
     )
     __redraw $commits
 }
+_fzf_git_tag_widget() {
+    git rev-parse HEAD > /dev/null || return
+    COMMAND="git tag --list --color=always --format='%(refname:strip=2) %(creatordate:short)' | sort -k2 -r | column -t -s' '"
+    local tags=$(
+        eval $COMMAND |
+        fzf --preview 'git lg {1} -20' \
+            --height=70% --preview-window='down,70%,wrap,border' |
+        awk '{print $1}' |  # get first column
+        __join_lines
+    )
+    __redraw $tags
+}
+
 _fzf_git_stash_widget() {
     git rev-parse HEAD > /dev/null || return
     local stash=$(
@@ -180,6 +193,7 @@ zle -N _fzf_navi_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
 zle -N _fzf_git_commit_widget
+zle -N _fzf_git_tag_widget
 zle -N _fzf_env_widget
 zle -N _fzf_alias_widget
 zle -N _fzf_cht_widget
@@ -190,11 +204,11 @@ bindkey '^gg' _fzf_navi_widget
 bindkey '^gb' _fzf_git_branch_widget
 bindkey '^gd' _fzf_git_file_widget
 bindkey '^gh' _fzf_git_commit_widget
+bindkey '^gt' _fzf_git_tag_widget
 bindkey '^gs' _fzf_git_stash_widget
-# todo: bindkey '^g^t' _git_tag_widget
 bindkey '^ge' _fzf_env_widget
 bindkey '^ga' _fzf_alias_widget
-bindkey '^gt' _fzf_cht_widget
+bindkey '^gc' _fzf_cht_widget
 bindkey '^gf' _fzf_file_widget
 
 __trim_string() {
