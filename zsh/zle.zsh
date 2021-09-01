@@ -64,8 +64,11 @@ _fzf_navi_widget() {
 # ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
 #      https://junegunn.kr/2016/07/fzf-git
 _fzf_git_branch_widget() {
-    git rev-parse HEAD > /dev/null || return
-    COMMAND="git branch --color=always -a"
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mbranch\033[0m, not a git repository!" && zle accept-line && return
+
+    # --sort=-committerdate: sort by latest commit date
+    COMMAND="git branch --sort=-committerdate --color=always -a"
     local branches=$(
         eval $COMMAND |
         fzf --preview 'git lg {-1} -20' \
@@ -80,14 +83,18 @@ _fzf_git_branch_widget() {
 }
 
 _fzf_git_file_widget() {
-    git rev-parse HEAD > /dev/null || return
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mchanged files\033[0m, not a git repository!" && zle accept-line && return
 
     COMMAND="git -c color.status=always status --short | xargs -L1"
     PREVIEW_DIFF_INDEX='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | sed 1,4d) || bat --style=plain {-1}'
     PREVIEW_DIFF_HEAD='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always HEAD -- {-1} | sed 1,4d) || bat --style=plain {-1}'
 
+    local files=$(git -c color.status=always status --short | xargs -L1)
+    [[ -z $files ]] && >&2 printf "\033[0;31merror\033[0m: no git changed files!" && zle accept-line && return
+
     local files=$(
-        eval $COMMAND |
+        echo $files |
         fzf --nth 2.. --preview "$PREVIEW_DIFF_INDEX" \
             --height=90% --preview-window down,84%,wrap \
             --header='^a add; ^h vs. HEAD (vs. index by default)' \
@@ -99,7 +106,8 @@ _fzf_git_file_widget() {
     __redraw $files
 }
 _fzf_git_commit_widget() {
-    git rev-parse HEAD > /dev/null || return
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mcommits\033[0m, not a git repository!" && zle accept-line && return
 
     # format placeholder ("git show --help" for more)
     # %h abbreviated commit hash
@@ -126,10 +134,14 @@ _fzf_git_commit_widget() {
     __redraw $commits
 }
 _fzf_git_tag_widget() {
-    git rev-parse HEAD > /dev/null || return
-    COMMAND="git tag --list --color=always --format='%(refname:strip=2) %(creatordate:short)' | sort -k2 -r | column -t -s' '"
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mtags\033[0m, not a git repository!" && zle accept-line && return
+
+    local tags=$(git tag --list --color=always --format='%(refname:strip=2) %(creatordate:short)' | sort -k2 -r | column -t -s' ')
+    [[ -z $tags ]] && >&2 printf "\033[0;31merror\033[0m: no git tags!" && zle accept-line && return
+
     local tags=$(
-        eval $COMMAND |
+        echo $tags |
         fzf --preview 'git lg {1} -20' \
             --height=70% --preview-window='down,70%,wrap,border' |
         awk '{print $1}' |  # get first column
@@ -139,9 +151,14 @@ _fzf_git_tag_widget() {
 }
 
 _fzf_git_stash_widget() {
-    git rev-parse HEAD > /dev/null || return
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mstashes\033[0m, not a git repository!" && zle accept-line && return
+
+    local stashes=$(git stash list)
+    [[ -z $stashes ]] && >&2 printf "\033[0;31merror\033[0m: no git stashed changes!" && zle accept-line && return
+
     local stash=$(
-        git stash list |
+        echo $stashes |
         fzf --reverse -d: --preview 'git show --color=always {1} | diff-so-fancy --colors | less ' \
             --no-multi --reverse \
             --height=80% --preview-window down,85% \
