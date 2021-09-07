@@ -117,7 +117,6 @@ alias 'info-user'='whoami'
 alias 'info-user-all'='less /etc/passwd'
 
 # utility
-alias navi='navi --path $DOTFILES_HOME/cheatsheets/navi'
 alias o=open
 alias app='open "/Applications/$(exa /Applications | fzf)"'
 alias man='colored man'  # supported by zsh plugin colored-man-pages

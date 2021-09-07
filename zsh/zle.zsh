@@ -25,7 +25,7 @@ _navi_call() {
     local result="$(navi --fzf-overrides '--tiebreak=begin,length' --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"
 }
-_fzf_navi_widget() {
+__fzf_navi() {
     local input=$(__trim_string $LBUFFER)
     local ending
     local commands
@@ -44,9 +44,9 @@ _fzf_navi_widget() {
 
     # local replacement
     if [ -n "$last_command" ]; then
-        replacement="$(_navi_call --query "$last_command")"
+        replacement="$(_navi_call --path "$1" --query "$last_command")"
     else
-        replacement="$(_navi_call)"
+        replacement="$(_navi_call --path "$1")"
     fi
 
     if [[ -n "$replacement" ]]; then
@@ -60,6 +60,9 @@ _fzf_navi_widget() {
     region_highlight=("P0 100 bold")
     zle redisplay
 }
+_fzf_navi_widget() {
+    __fzf_navi "$DOTFILES_HOME/cheatsheets/navi"
+}
 
 # ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
 #      https://junegunn.kr/2016/07/fzf-git
@@ -71,7 +74,7 @@ _fzf_git_branch_widget() {
     COMMAND="git branch --sort=-committerdate --color=always -a"
     local branches=$(
         eval $COMMAND |
-        fzf --preview 'git lg {-1} -20' \
+        fzf --query '!remote ' --preview 'git lg {-1} -20' \
             --height=70% --preview-window='down,70%,wrap,border' \
             --header='^d delete branch' \
             --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(eval $COMMAND)" |
@@ -125,12 +128,27 @@ _fzf_git_commit_widget() {
 
     local commits=$(
         eval $COMMAND |
-        fzf-tmux --preview "$PREVIEW_DEFAULT" \
-            --height=90% --preview-window down,70% \
-            --header='^f details' \
-            --bind "ctrl-f:preview($PREVIEW_FULL)" |
+        fzf --no-cycle --preview "$PREVIEW_FULL" \
+            --height=80% --preview-window down,65% \
+            --header='^f short info' \
+            --bind "ctrl-f:preview($PREVIEW_DEFAULT)" |
         awk '{print $1}' | __join_lines
     )
+    __redraw $commits
+}
+_fzf_git_file_commit_widget() {
+    local error=$(git rev-parse HEAD 2>&1 >/dev/null)
+    [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mfile commits\033[0m, not a git repository!" && zle accept-line && return
+    local file=$(fd | fzf --header="Choose the file to show commits history")
+    local commits=$(git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" -- $file |
+                    fzf --height=80% \
+                        --header="Commits History for file <$file>" \
+                        --preview "git show --stat --color {1} -p $file | diff-so-fancy --colors" \
+                        --preview-window 'down,65%' |
+                    awk '{print $1}' | __join_lines
+    )
+    # local commits=$(git log --format=%h -- $file | fzf --height=80% --preview "git show --stat --color {} -p $file | diff-so-fancy --colors" --preview-window 'down,65%')
+
     __redraw $commits
 }
 _fzf_git_tag_widget() {
@@ -210,6 +228,7 @@ zle -N _fzf_navi_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
 zle -N _fzf_git_commit_widget
+zle -N _fzf_git_file_commit_widget
 zle -N _fzf_git_tag_widget
 zle -N _fzf_env_widget
 zle -N _fzf_alias_widget
@@ -220,7 +239,8 @@ bindkey -r '^g'
 bindkey '^gg' _fzf_navi_widget
 bindkey '^gb' _fzf_git_branch_widget
 bindkey '^gd' _fzf_git_file_widget
-bindkey '^gh' _fzf_git_commit_widget
+bindkey '^gl' _fzf_git_commit_widget
+bindkey '^gh' _fzf_git_file_commit_widget
 bindkey '^gt' _fzf_git_tag_widget
 bindkey '^gs' _fzf_git_stash_widget
 bindkey '^ge' _fzf_env_widget
