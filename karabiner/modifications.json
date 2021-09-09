@@ -53,8 +53,8 @@
                     },
                     "to": [
                         {
-                            "key_code": "open_bracket",
-                            "modifiers": ["left_shift", "left_command"]
+                            "key_code": "hyphen",
+                            "modifiers": ["left_command"]
                         }
                     ],
                     "type": "basic",
@@ -80,8 +80,8 @@
                     },
                     "to": [
                         {
-                            "key_code": "close_bracket",
-                            "modifiers": ["left_shift", "left_command"]
+                            "key_code": "equal_sign",
+                            "modifiers": ["left_command"]
                         }
                     ],
                     "type": "basic",
@@ -130,6 +130,50 @@
                         {
                             "key_code": "tab",
                             "modifiers": ["left_control"]
+                        }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "description": "Go Back",
+                    "from": {
+                        "key_code": "j",
+                        "modifiers": {
+                            "mandatory": [
+                                "left_command",
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "open_bracket",
+                            "modifiers": ["left_command"]
+                        }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "description": "Go Forward",
+                    "from": {
+                        "key_code": "k",
+                        "modifiers": {
+                            "mandatory": [
+                                "left_command",
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "close_bracket",
+                            "modifiers": ["left_command"]
                         }
                     ],
                     "type": "basic"
@@ -264,6 +308,26 @@
                     "description": "Press enter",
                     "from": {
                         "key_code": "spacebar",
+                        "modifiers": {
+                            "mandatory": [
+                                "right_control",
+                                "right_command",
+                                "right_shift",
+                                "right_option"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "return_or_enter"
+                        }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "description": "Press enter",
+                    "from": {
+                        "key_code": "m",
                         "modifiers": {
                             "mandatory": [
                                 "right_control",
