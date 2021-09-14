@@ -3,6 +3,7 @@ zsh/zshrc.local
 zsh/zshenv.local
 cheatsheets
 vim/bundle
+.vscode
 
 # Compiled Python files
 *.pyc
