@@ -25,7 +25,7 @@ _navi_call() {
     local result="$(navi --fzf-overrides '--tiebreak=begin,length' --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"
 }
-__fzf_navi() {
+_fzf_navi_widget() {
     local input=$(__trim_string $LBUFFER)
     local ending
     local commands
@@ -40,17 +40,17 @@ __fzf_navi() {
         last_command=$(__trim_string $commands[-1])
         ending=' )'
     fi
-    local prev_command=$(__trim_string ${input%%$last_command})
+    local prev_commands=$(__trim_string ${input%%$last_command})
 
     # local replacement
     if [ -n "$last_command" ]; then
-        replacement="$(_navi_call --path "$1" --query "$last_command")"
+        replacement="$(_navi_call --path "$DOTFILES_HOME/cheatsheets/navi" --query "$last_command")"
     else
-        replacement="$(_navi_call --path "$1")"
+        replacement="$(_navi_call --path "$DOTFILES_HOME/cheatsheets/navi")"
     fi
 
     if [[ -n "$replacement" ]]; then
-        output="$prev_command $replacement$ending"
+        output="$prev_commands $replacement$ending"
     else
         output="$input"
     fi
@@ -60,8 +60,10 @@ __fzf_navi() {
     region_highlight=("P0 100 bold")
     zle redisplay
 }
-_fzf_navi_widget() {
-    __fzf_navi "$DOTFILES_HOME/cheatsheets/navi"
+
+_fzf_navi_shortcut_widget() {
+    _navi_call --path "$DOTFILES_HOME/cheatsheets/shortcut"
+    zle accept-line
 }
 
 # ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
@@ -140,6 +142,7 @@ _fzf_git_file_commit_widget() {
     local error=$(git rev-parse HEAD 2>&1 >/dev/null)
     [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mfile commits\033[0m, not a git repository!" && zle accept-line && return
     local file=$(fd | fzf --header="Choose the file to show commits history")
+    [[ -z $file ]] && __redraw && return
     local commits=$(git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" -- $file |
                     fzf --height=80% \
                         --header="Commits History for file <$file>" \
@@ -225,6 +228,7 @@ _fzf_file_widget() {
 }
 
 zle -N _fzf_navi_widget
+zle -N _fzf_navi_shortcut_widget
 zle -N _fzf_git_branch_widget
 zle -N _fzf_git_file_widget
 zle -N _fzf_git_commit_widget
@@ -237,6 +241,7 @@ zle -N _fzf_file_widget
 zle -N _fzf_git_stash_widget
 bindkey -r '^g'
 bindkey '^gg' _fzf_navi_widget
+bindkey '^gc' _fzf_navi_shortcut_widget
 bindkey '^gb' _fzf_git_branch_widget
 bindkey '^gd' _fzf_git_file_widget
 bindkey '^gl' _fzf_git_commit_widget
@@ -245,7 +250,7 @@ bindkey '^gt' _fzf_git_tag_widget
 bindkey '^gs' _fzf_git_stash_widget
 bindkey '^ge' _fzf_env_widget
 bindkey '^ga' _fzf_alias_widget
-bindkey '^gc' _fzf_cht_widget
+bindkey '^gv' _fzf_cht_widget
 bindkey '^gf' _fzf_file_widget
 
 __trim_string() {
