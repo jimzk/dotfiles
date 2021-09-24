@@ -17,16 +17,10 @@
 [alias]
     # I do not load zsh plugin "git" (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git) and only add those I need from it
 
-    # todo: move to bin
-    # Delete all local branches that have been merged into HEAD.
-    b-delete-local-merged = "!git branch -d `git branch --merged | grep -v '^*' | grep -v 'master' | tr -d '\n'`"
-    # Delete a branch locally and remotely
-    b-delete-local-and-remote = "!_() { git branch -D $1; git push origin :$1; }; _"
+    lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    lgv = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
+    lgvv = "lgv --name-status"
 
-    lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
-
-    remotes = "remote -v"
-    ts = "tag -l"
     diff-stat = "diff --stat"
     # Show the diff of everything you haven't pushed yet.
     diff-unpushed = "!${DOTFILES_BIN_HOME}/git/git-unpushed"
@@ -34,7 +28,7 @@
     diff-unpushed-stat = "!${DOTFILES_BIN_HOME}/git/git-unpushed-stat"
 
     # list all git alias and format 'ts tag -l' as 'ts="tag -l"'
-    alias = "!git config --get-regexp ^alias\\. | sort | cut -c7- | sed \"s/ /='/\" | sed \"s/$/'/\""
+    aliax = "!git config --get-regexp ^alias\\. | sort | cut -c7- | sed -e \"s/ '/ /\" -e \"s/'$/$/\" | sed -e \"s/ / = '/\" -e \"s/$/'/\""
     # Undo last commit, but don't throw away your changes
     undo = "reset --soft HEAD^"
 [color]  # Improved colors for the highlighted bits

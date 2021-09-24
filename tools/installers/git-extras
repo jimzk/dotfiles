@@ -1,0 +1,8 @@
+#cmd
+git summary
+
+#darwin
+brew install git-extras
+
+#linux
+sudo apt-get install git-extras
