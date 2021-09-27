@@ -22,46 +22,7 @@ Plugin 'easymotion/vim-easymotion'  " 移动增强
 "Plugin 'klen/python-mode'
 call vundle#end()
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => easymotion
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" bd 表示光标前后都是跳转的范围
-" overwin 表示可以跨文件移动
-
-" Move to word
-map <leader>w <Plug>(easymotion-w)
-map <leader>b <Plug>(easymotion-b)
-map <Leader><leader>w <Plug>(easymotion-bd-w)
-nmap <Leader><leader>w <Plug>(easymotion-overwin-w)
-imap /w <Esc><leader>w
-imap /b <Esc><leader>b
-imap /,w <Esc><leader><leader>w
-
-" Move to line
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
-imap /j <Esc><leader>j
-imap /k <Esc><leader>k
-imap /L <Esc><leader>L
-
-" <Leader>f{char} to move to {char}
-map  <Leader>f <Plug>(easymotion-bd-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
-" <leader>F{char}{char} to move to {char}{char}
-map <leader>2f <Plug>(easymotion-f2)
-nmap <leader>2f <Plug>(easymotion-overwin-f2)
-imap /f <Esc><leader>f
-imap /2f <Esc><leader>F
-
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-
-" Turn off case insensitive feature -
-" type `l` no matching `l`&`L`
-let g:EasyMotion_smartcase = 0
-
+runtime plugin.d/easymotion.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nerdtree

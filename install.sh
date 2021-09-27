@@ -107,6 +107,7 @@ setup_vim() {
     [[ ! -e $XDG_CONFIG_HOME/vim ]] && ln -s $DOTFILES_HOME/vim $XDG_CONFIG_HOME/vim
     [[ ! -e $HOME/.vim ]] && ln -s $DOTFILES_HOME/vim $HOME/.vim
     [[ ! -e $HOME/.vimrc ]] && ln -s $DOTFILES_HOME/vim/vimrc $HOME/.vimrc
+    [[ ! -e $HOME/.ideavimrc ]] && ln -s $DOTFILES_HOME/vim/ideavimrc $HOME/.ideavimrc
 
     # install vim plugin manager
     local vim_bundle=$XDG_CONFIG_HOME/vim/bundle
