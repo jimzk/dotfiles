@@ -36,7 +36,7 @@
             ]
         },
         {
-            "description": "Navigations",
+            "description": "Navigation",
             "manipulators": [
                 {
                     "description": "Previous tab in VSCode/iTerm",
@@ -53,8 +53,8 @@
                     },
                     "to": [
                         {
-                            "key_code": "hyphen",
-                            "modifiers": ["left_command"]
+                            "key_code": "open_bracket",
+                            "modifiers": ["left_command", "left_shift"]
                         }
                     ],
                     "type": "basic",
@@ -80,8 +80,8 @@
                     },
                     "to": [
                         {
-                            "key_code": "equal_sign",
-                            "modifiers": ["left_command"]
+                            "key_code": "close_bracket",
+                            "modifiers": ["left_command", "left_shift"]
                         }
                     ],
                     "type": "basic",
@@ -307,26 +307,6 @@
                 {
                     "description": "Press enter",
                     "from": {
-                        "key_code": "spacebar",
-                        "modifiers": {
-                            "mandatory": [
-                                "right_control",
-                                "right_command",
-                                "right_shift",
-                                "right_option"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "return_or_enter"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "description": "Press enter",
-                    "from": {
                         "key_code": "m",
                         "modifiers": {
                             "mandatory": [
@@ -345,28 +325,6 @@
                     "type": "basic"
                 },
 
-                {
-                    "description": "Close All",
-                    "from": {
-                        "key_code": "w",
-                        "modifiers": {
-                            "mandatory": [
-                                "right_control",
-                                "right_command",
-                                "right_shift",
-                                "right_option",
-                                "left_command"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "w",
-                            "modifiers": ["left_command", "left_shift"]
-                        }
-                    ],
-                    "type": "basic"
-                },
                 {
                     "description": "SIGINT",
                     "from": {
@@ -1008,7 +966,7 @@
                 },
 
                 {
-                    "description": "Launch Spotlight",
+                    "description": "Launch Alfred",
                     "from": {
                         "key_code": "spacebar",
                         "modifiers": {
@@ -1021,13 +979,12 @@
                         }
                     },
                     "to": {
-                        "key_code": "spacebar",
                         "modifiers": {
                             "mandatory": [
                                 "left_control",
                                 "left_command",
-                                "left_shift",
-                                "left_option"
+                                "left_option",
+                                "left_shift"
                             ]
                         }
                     },
@@ -1100,7 +1057,7 @@
                 {
                     "description": "Show/hide TickTick",
                     "from": {
-                        "key_code": "t",
+                        "key_code": "w",
                         "modifiers": {
                             "mandatory": [
                                 "right_control",
@@ -1127,7 +1084,7 @@
                 {
                     "description": "Quick add Ticktick task",
                     "from": {
-                        "key_code": "t",
+                        "key_code": "w",
                         "modifiers": {
                             "mandatory": [
                                 "right_control",
