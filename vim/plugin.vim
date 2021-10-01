@@ -1,28 +1,26 @@
-set rtp+=$XDG_CONFIG_HOME/vim/bundle/Vundle.vim
-
-call vundle#begin() " 插件管理
-Plugin 'VundleVim/Vundle.vim'
-
-""" Recommend Plugins
-Plugin 'Lokaltog/vim-powerline' " vim 软件底部的命令行美化
-Plugin 'yianwillis/vimcdoc' "中文帮助文档
-Plugin 'scrooloose/nerdtree'  " 目录树
-"Plugin 'Xuyuanp/nerdtree-git-plugin' " NERDTree git 增强
-Plugin 'ctrlpvim/ctrlp.vim'  "跳转到声明处
-"Plugin 'Valloric/YouCompleteMe'  " 自动补全，支持大部分语言
-Plugin 'AndrewRadev/splitjoin.vim'  "拆分与合并结构体
-Plugin 'tpope/vim-surround'  "快速插入[{'等符号
-Plugin 'easymotion/vim-easymotion'  " 移动增强
-"Plugin 'Visual-Mark'  "可视化mm标记，F2和Shift+F2往后和往前导航标记
-"Plugin 'jistr/vim-nerdtree-tabs' " 打开多个tab时，共用一个NERDTree
-
-""" Development
-"Plugin 'tomlion/vim-solidity'
-"Plugin 'fatih/vim-go
-"Plugin 'klen/python-mode'
-call vundle#end()
-
-runtime plugin.d/easymotion.vim
+call plug#begin('~/.vim/plugged')
+    " Basic (also load in minilal.vim)
+    Plug 'easymotion/vim-easymotion'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'
+    Plug 'machakann/vim-highlightedyank'
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'wellle/targets.vim'
+    " Advance
+    Plug 'Lokaltog/vim-powerline' " vim 软件底部的命令行美化
+    Plug 'yianwillis/vimcdoc' "中文帮助文档
+    Plug 'scrooloose/nerdtree'  " 目录树
+    "Plug 'Xuyuanp/nerdtree-git-plugin' " NERDTree git 增强
+    Plug 'ctrlpvim/ctrlp.vim'  "跳转到声明处
+    "Plug 'Valloric/YouCompleteMe'  " 自动补全，支持大部分语言
+    Plug 'AndrewRadev/splitjoin.vim'  "拆分与合并结构体
+    "Plug 'Visual-Mark'  "可视化mm标记，F2和Shift+F2往后和往前导航标记
+    "Plug 'jistr/vim-nerdtree-tabs' " 打开多个tab时，共用一个NERDTree
+    " Language
+    "Plug 'tomlion/vim-solidity'
+    "Plug 'fatih/vim-go
+    "Plug 'klen/python-mode'
+call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nerdtree

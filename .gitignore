@@ -2,7 +2,7 @@ git/gitconfig.local
 zsh/zshrc.local
 zsh/zshenv.local
 cheatsheets
-vim/bundle
+vim/plugged
 .vscode
 
 # Compiled Python files

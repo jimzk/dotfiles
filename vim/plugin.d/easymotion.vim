@@ -1,8 +1,3 @@
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => easymotion
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " bd: 光标前后都是跳转范围
 " overwin: 可以跨文件移动
 
@@ -50,8 +45,9 @@ imap <leader>T <Esc><leader>F
 map  <leader>/ <Plug>(easymotion-sn)
 imap <leader>/ <Esc><leader>/
 
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-
-" Smart case sensitive
-" typing l matches l and L, but typing L only match L
-let g:EasyMotion_smartcase = 1
+" doc: https://github.com/easymotion/vim-easymotion/blob/master/doc/easymotion.txt
+" ref: https://github.com/easymotion/vim-easymotion/blob/master/plugin/EasyMotion.vim
+let g:EasyMotion_space_jump_first = 1
+let g:EasyMotion_startofline = 1 " set 0 if you want to kepp cursor at the same column after line move
+let g:EasyMotion_smartcase = 1 " smart case sensitive
+let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj123'

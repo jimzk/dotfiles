@@ -1,11 +1,8 @@
-" leader key
-let mapleader = ","
-let g:mapleader = ","
-" 方向键
-nnoremap j gj
-nnoremap k gk
-" 取消搜索高亮
-map <silent> <leader><cr> :noh<cr>
-
 set easymotion
+set commentary
+set surround
+set highlightedyank
+set textobj-indent
+
+source ~/.dotfiles/vim/minimal.vim
 source ~/.dotfiles/vim/plugin.d/easymotion.vim

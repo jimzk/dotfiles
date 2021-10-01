@@ -17,13 +17,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Init
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" leader key
-let mapleader = ","
-let g:mapleader = ","
-" 方向键
-nnoremap j gj
-nnoremap k gk
-
 " 设置命令行模式的别名
 " https://stackoverflow.com/a/7515418/10134408
 fun! SetupCommandAlias(from, to)
@@ -35,27 +28,10 @@ endfun
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Feature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 检查是否开启：:filetype；
-" :h vimrc-filetype
-filetype plugin indent on " 插件、缩进和文件类型
-
 set nocompatible " 关闭 vi 兼容模式
 set mouse-=a " 不启用鼠标
 set history=500 " history 存储容量
 "set shell=zsh\ -i " 在 iTerm2 的 vi 下用 :NERDTreeToggle 时起冲突
-
-" 语言和编码
-let $LANG='en'
-set encoding=utf-8
-set langmenu=en
-set helplang=cn
-
-" turn off bell
-set belloff=all
-set novisualbell
-set noerrorbells
-set t_vb=
-set tm=500
 
 " Properly disable sound on errors on MacVim
 if has("gui_macvim")
@@ -75,12 +51,6 @@ set nowb
 " 执行宏时不重绘界面（提高性能）
 set lazyredraw
 
-" For regular expressions turn magic on
-set magic
-
-" zsh的自动补全风格
-set wildmode=full
-
 " wildmenu：命令模式里按 Tab 后显示的候选项菜单
 set wildmenu
 " wildmenu 里忽略显示的文件
@@ -95,9 +65,6 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 语法高亮
-syntax enable
-
 " Highlight line and column
 set cursorline
 set cursorcolumn
@@ -106,9 +73,7 @@ set scrolloff=4
 " 禁止光标闪烁
 "set gcr=a:block-blinkon0
 
-" 显示行号
-set number
-"" 显示相对行号: 行号变成相对，可以用 nj/nk 进行跳转
+" 显示相对行号: 行号变成相对，可以用 nj/nk 进行跳转
 "set relativenumber number
 "au FocusLost * :set norelativenumber number
 "au FocusGained * :set relativenumber
@@ -123,9 +88,6 @@ function! NumberToggle()
     endif
 endfunc
 "nnoremap <C-n> :call NumberToggle()<cr>
-
-set showmatch " 高亮匹配的括号
-set matchtime=2 " 匹配括号时的响应时间（1/10s 为单位）
 
 " 只让高亮行出现在当前窗口，且在插入模式中关闭这个效果
 " https://github.com/mhinz/vim-galore#smarter-cursorline
@@ -152,15 +114,11 @@ let g:Powerline_colorscheme='solarized256'
 " http://www.xefan.com/archives/83820.html
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c\ \ %p%%
 
-" 右下角
-set ruler " 显示当前光标坐标
-set showcmd " 显示普通模式下输入的命令
-set showmode " 显示当前vim 模式
-
 " theme
-colorscheme molokai
+colorscheme dracula
 set background=dark
 set t_Co=256 " 色彩范围
+highlight Visual  guifg=White guibg=LightBlue gui=none  " 选区颜色
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -173,52 +131,9 @@ if exists('$TMUX')
     set term=screen-256color
 endif
 
-" 根据模式改变光标类型
-" https://github.com/mhinz/vim-galore#change-cursor-style-dependent-on-mode
-if empty($TMUX)
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-else
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => indent & wrap
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" tab indent
-set tabstop=4  " <tab> witdh equals to 4 spaces
-set expandtab  " replace <tab> with space
-set shiftwidth=4 " < and > give 4-spaces indent
-set softtabstop=4  " <delete> remove 4 space at ont time
-set smarttab
-
-" indent
-set autoindent " 新行自动缩进
-set smartindent " auto indent 的增强版
-"set cindent " C-style indent
-
-set wrap " 窗口宽度小于行长度时，自动换行
-set linebreak " 换行时不会切断英文单词
-set textwidth=500 " 超过字符后自动换行
-
-" line width limit
-let &colorcolumn="120"  " show column when one line exceeds 120 char
-"let &colorcolumn="80,".join(range(120,999),",")
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map 0 ^
-nnoremap U <C-r>
-
 " 上下滚动
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
@@ -243,8 +158,6 @@ nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
 nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
-" Paste
-nnoremap Y y$
 "set clipboard=unnamed " 使用系统剪切板
 noremap <leader>y "+y
 noremap <leader>Y "+y$
@@ -263,40 +176,12 @@ inoremap ^P <Esc>:pu! +<cr>
 " paste mode 下，vim 去掉粘贴代码的缩进
 map <leader>mp :setlocal paste!<cr>
 
-" select block
-nnoremap <leader>v v`}
-nnoremap <leader>V V`}
-
-" 调整缩进时防止失去选区
-" https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
-xnoremap <  <gv
-xnoremap >  >gv
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"nmap <space> /
-set hlsearch " 高亮搜索结果
-set incsearch " 即时高亮第一个搜索结果
-set ignorecase " 搜索忽略大小写
-set smartcase " 关键词全小写字母时，忽略大小写；存在大写字母时，不忽略大小写；
-
-" 取消搜索高亮
-map <silent> <leader><cr> :noh<cr>
-
 " 保持搜索结果在屏幕中间
 "nnoremap <silent> n nzzzv
 "nnoremap <silent> N Nzzzv
-
-" 可视模式下，*/# 搜索可视内容（默认是搜索光标所在单词）
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
-" n / N 始终为向前 / 后搜索，不会因为 / 或 ? 的搜索方式而改变。
-" https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
-nnoremap <expr> n  'Nn'[v:searchforward]
-nnoremap <expr> N  'nN'[v:searchforward]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Buffer
@@ -430,18 +315,13 @@ nnoremap <silent> \ :!open <C-R>%<cr>
 " 关闭 quickfix
 "nnoremap <Leader>a :cclose<CR>
 
-" 方便选择命令行历史和补全
-" https://github.com/mhinz/vim-galore#saner-command-line-history
-cnoremap <c-n> <down>
-cnoremap <c-p> <up>
-
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 "set autochdir " 自动将 CWD 切换为当前缓冲区所在目录
 
 " 重绘当前屏幕
 " https://github.com/mhinz/vim-galore#saner-ctrl-l
-nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
+" nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 
 " Automatic commands
 if has("autocmd")
@@ -452,7 +332,6 @@ if has("autocmd")
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 endif
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -500,21 +379,4 @@ function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
     unmenu Foo
-endfunction
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
 endfunction

@@ -1,8 +1,8 @@
 if empty($XDG_CACHE_HOME)
-  let $XDG_CACHE_HOME = '~/.cache'
+    let $XDG_CACHE_HOME = '~/.cache'
 endif
 if empty($XDG_CONFIG_HOME)
-  let $XDG_CONFIG_HOME = '~/.config'
+    let $XDG_CONFIG_HOME = '~/.config'
 endif
 
 set directory=$XDG_CACHE_HOME/vim/swap,~/,/tmp
@@ -13,10 +13,10 @@ set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
 
 " source vim configuration by relative path
+runtime minimal.vim
 runtime basic.vim  " OR source $XDG_CONFIG_HOME/vim/basic.vim
-runtime plugin.vim
-" runtime extended.vim
 try
     runtime plugin.vim
+    "runtime extended.vim
 catch
 endtry
