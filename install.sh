@@ -34,7 +34,7 @@ setup_zsh() {
     [[ ! -d $HOME/.config ]] && mkdir -p $HOME/.config
     ZSH=$HOME/.config/oh-my-zsh
     ZSH_CUSTOM=$ZSH/custom
-    if [[ ! -d $ZSH ]]; do
+    if [[ ! -d $ZSH ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
         mv $HOME/.oh-my-zsh $ZSH
     fi
@@ -117,6 +117,15 @@ setup_vim() {
     _print_info "End setting up vim"
 }
 
+setup_tmux() {
+    _print_info "Start setting up tmux configuration"
+    local DOEFILES_TMUX_HOME=$DOTFILES_HOME/tmux
+    ln -s $DOEFILES_TMUX_HOME/tmux.conf $HOME/.tmux.conf
+    ln -s $DOEFILES_TMUX_HOME/tmux.conf.local $HOME/.tmux.conf.local
+
+    _print_info "End setting up tmux configuration"
+}
+
 setup_tools() {
     _print_ask "Do you want to set up tools? [y/n]"
     read -n 1 yn
@@ -143,7 +152,6 @@ setup_tools_config() {
 
     [[ ! -e $XDG_CONFIG_HOME/bat ]] && mkdir $XDG_CONFIG_HOME/bat
     ln -s $DOEFILES_CONFIG_HOME/bat.config $XDG_CONFIG_HOME/bat/config
-    ln -s $DOEFILES_CONFIG_HOME/tmux.conf $HOME/.tmux.conf
     ln -s $DOEFILES_CONFIG_HOME/tldrrc $HOME/.tldrrc
 
     _print_info "End setting up tools configuration"
@@ -153,5 +161,6 @@ prepare
 setup_zsh
 setup_git
 setup_vim
+setup_tmux
 setup_cheatsheets
 setup_tools
