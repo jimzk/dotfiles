@@ -34,7 +34,7 @@ export HISTCONTROL='ignoreboth' # don't show duplicates and commands that begin 
 export WORKSPACE=$HOME/workspace
 
 # fzf
-FZF_BASE_OPTS="--exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
+FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
 --bind='tab:down' \
 --bind='btab:up' \
 --bind='ctrl-n:down' \
