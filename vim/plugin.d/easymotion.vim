@@ -2,48 +2,31 @@
 " overwin: 可以跨文件移动
 
 " Move to start of word forward
-map <leader>w <Plug>(easymotion-w)
-imap <leader>w <Esc><leader>w
-"map <Leader><leader>w <Plug>(easymotion-bd-w)
-"nmap <Leader><leader>w <Plug>(easymotion-overwin-w)
-"imap <leader>,w <Esc><leader><leader>w
+map <leader><leader>w <Plug>(easymotion-w)
 " Move to start of word backward
-map <leader>b <Plug>(easymotion-b)
-imap <leader>b <Esc><leader>b
+map <leader><leader>b <Plug>(easymotion-b)
 " Move to end of word forward
-map <leader>e <Plug>(easymotion-e)
-imap <leader>e <Esc><leader>e
+map <leader><leader>e <Plug>(easymotion-e)
 " Move to end of word backward
-map <leader>ge <Plug>(easymotion-ge)
-imap <leader>ge <Esc><leader>ge
+map <leader><leader>ge <Plug>(easymotion-ge)
 
 " Move to word in current line
-map <Leader>l <Plug>(easymotion-lineforward)
-imap <leader>l <Esc><leader>l
-map <Leader>h <Plug>(easymotion-linebackward)
-imap <leader>h <Esc><leader>h
+map <Leader><leader>l <Plug>(easymotion-lineforward)
+map <Leader><leader>h <Plug>(easymotion-linebackward)
 
 " Move to line
-map <Leader>j <Plug>(easymotion-j)
-imap <leader>j <Esc><leader>j
-map <Leader>k <Plug>(easymotion-k)
-imap <leader>k <Esc><leader>k
-map <Leader>L <Plug>(easymotion-bd-jk)
+map <Leader><leader>j <Plug>(easymotion-j)
+map <Leader><leader>k <Plug>(easymotion-k)
+map <Leader><leader><leader>bdjk <Plug>(easymotion-bd-jk)
 " nmap <Leader>L <Plug>(easymotion-overwin-line)
-imap <leader>L <Esc><leader>L
 
 " Search by {char}
-map <Leader>f <Plug>(easymotion-f)
-imap <leader>f <Esc><leader>f
-map <Leader>F <Plug>(easymotion-F)
-imap <leader>F <Esc><leader>F
-map <Leader>t <Plug>(easymotion-t)
-imap <leader>t <Esc><leader>t
-map <Leader>T <Plug>(easymotion-T)
-imap <leader>T <Esc><leader>F
+map <Leader><leader>f <Plug>(easymotion-f)
+map <Leader><leader>F <Plug>(easymotion-F)
+map <Leader><leader>t <Plug>(easymotion-t)
+map <Leader><leader>T <Plug>(easymotion-T)
 " <leader>/{char}{char}... to search n characters
-map  <leader>/ <Plug>(easymotion-sn)
-imap <leader>/ <Esc><leader>/
+map  <leader><leader>/ <Plug>(easymotion-sn)
 
 " doc: https://github.com/easymotion/vim-easymotion/blob/master/doc/easymotion.txt
 " ref: https://github.com/easymotion/vim-easymotion/blob/master/plugin/EasyMotion.vim

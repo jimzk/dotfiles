@@ -3,9 +3,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'easymotion/vim-easymotion'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
+    Plug 'bkad/CamelCaseMotion'
     Plug 'machakann/vim-highlightedyank'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'wellle/targets.vim'
+    Plug 'kana/vim-textobj-user'
+    Plug 'kana/vim-textobj-entire'
+    Plug 'terryma/vim-expand-region'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'dbakker/vim-paragraph-motion'
     " Advance
     Plug 'Lokaltog/vim-powerline' " vim 软件底部的命令行美化
     Plug 'yianwillis/vimcdoc' "中文帮助文档
@@ -21,6 +27,20 @@ call plug#begin('~/.vim/plugged')
     "Plug 'fatih/vim-go
     "Plug 'klen/python-mode'
 call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => CamelCaseMotion
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <silent> <leader>w <Plug>CamelCaseMotion_w
+map <silent> <leader>b <Plug>CamelCaseMotion_b
+map <silent> <leader>e <Plug>CamelCaseMotion_e
+sunmap <leader>w
+sunmap <leader>b
+sunmap <leader>e
+sunmap <leader>ge
+map <silent> <leader>ge <Plug>CamelCaseMotion_ge
+omap <silent> i<leader>w <Plug>CamelCaseMotion_iw
+xmap <silent> i<leader>w <Plug>CamelCaseMotion_iw
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nerdtree

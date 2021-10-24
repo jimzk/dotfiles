@@ -5,6 +5,7 @@ if empty($TMUX)
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 else
+    set term=screen-256color
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
     let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
@@ -97,10 +98,6 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
 
-" better edit
-map 0 ^
-map 1 $
-
 try
     call plug#begin('~/.vim/plugged')
         Plug 'easymotion/vim-easymotion'
@@ -109,8 +106,25 @@ try
         Plug 'machakann/vim-highlightedyank'
         Plug 'michaeljsmith/vim-indent-object'
         Plug 'wellle/targets.vim'
+        Plug 'kana/vim-textobj-user'
+        Plug 'kana/vim-textobj-entire'
+        Plug 'terryma/vim-expand-region'
+        Plug 'terryma/vim-multiple-cursors'
+        Plug 'dbakker/vim-paragraph-motion'
     call plug#end()
     runtime plugin.d/easymotion.vim
+    " targets.vim
+    let g:targets_aiAI = 'aIAi'
+    autocmd User targets#mappings#user call targets#mappings#extend({
+    \ 'a': {'argument': [{'o': '[({[]', 'c': '[]})]', 's': ','}]},
+    \ 'b': {'pair': [{'o':'(', 'c':')'}]}
+    \ })
+    " expand-region
+    map ak <Plug>(expand_region_expand)
+    map aj <Plug>(expand_region_shrink)
+    let g:expand_region_use_select_mode = 0
+    " multiple-cursors
+    let g:multi_cursor_select_all_key = 'g<C-n>'
 catch
 endtry
 

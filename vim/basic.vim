@@ -126,11 +126,6 @@ set ffs=unix,dos,mac
 " 测试字体效果：:set guifont=* 和 :put=&guifont测试字体效果
 set guifont=Monaco:h14
 
-" 在 tmux 里色彩更一致
-if exists('$TMUX')
-    set term=screen-256color
-endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
