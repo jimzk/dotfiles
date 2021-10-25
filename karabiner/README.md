@@ -19,16 +19,6 @@ I assign shortcuts`⌃⌘⌥⇧+F1~F12` and `⌃⌘⌥⇧+F1~F9` for application
 | F9  |                                    |
 | F10 |                                    |
 | F11 | Show Desktop                       |
-| F12 | iTerm2                             |
-| 1   | Spotlight                          |
-| 2   | turn of/on v2ray                   |
-| 3   | Dash                               |
-| 4   | Tick                               |
-| 5   | Tick Quick Task                    |
-| 6   | Moon                               |
-| 7   | Unclutter                          |
-| 8   |                                    |
-| 0   |                                    |
 
 ## Reference
 
