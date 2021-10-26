@@ -170,34 +170,60 @@ if spoon.WinWin then
     cmodal:bind('', 'escape', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
     cmodal:bind('', 'Q', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
     cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+    cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
+
     cmodal:bind('', 'A', 'Move Leftward', function() spoon.WinWin:stepMove("left") end, nil, function() spoon.WinWin:stepMove("left") end)
     cmodal:bind('', 'D', 'Move Rightward', function() spoon.WinWin:stepMove("right") end, nil, function() spoon.WinWin:stepMove("right") end)
     cmodal:bind('', 'W', 'Move Upward', function() spoon.WinWin:stepMove("up") end, nil, function() spoon.WinWin:stepMove("up") end)
     cmodal:bind('', 'S', 'Move Downward', function() spoon.WinWin:stepMove("down") end, nil, function() spoon.WinWin:stepMove("down") end)
-    cmodal:bind('', 'H', 'Lefthalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfleft") end)
-    cmodal:bind('', 'L', 'Righthalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfright") end)
-    cmodal:bind('', 'K', 'Uphalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfup") end)
-    cmodal:bind('', 'J', 'Downhalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfdown") end)
-    cmodal:bind('', 'Y', 'NorthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNW") end)
-    cmodal:bind('', 'U', 'NorthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNE") end)
-    cmodal:bind('', 'I', 'SouthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSW") end)
-    cmodal:bind('', 'O', 'SouthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSE") end)
-    cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("fullscreen") end)
-    cmodal:bind('', 'C', 'Center Window', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("center") end)
-    cmodal:bind('', '=', 'Stretch Outward', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
-    cmodal:bind('', '-', 'Shrink Inward', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
-    cmodal:bind('shift', 'H', 'Move Leftward', function() spoon.WinWin:stepResize("left") end, nil, function() spoon.WinWin:stepResize("left") end)
-    cmodal:bind('shift', 'L', 'Move Rightward', function() spoon.WinWin:stepResize("right") end, nil, function() spoon.WinWin:stepResize("right") end)
-    cmodal:bind('shift', 'K', 'Move Upward', function() spoon.WinWin:stepResize("up") end, nil, function() spoon.WinWin:stepResize("up") end)
-    cmodal:bind('shift', 'J', 'Move Downward', function() spoon.WinWin:stepResize("down") end, nil, function() spoon.WinWin:stepResize("down") end)
-    cmodal:bind('', 'left', 'Move to Left Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("left") end)
-    cmodal:bind('', 'right', 'Move to Right Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("right") end)
-    cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("up") end)
-    cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("down") end)
-    cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("next") end)
-    cmodal:bind('', '[', 'Undo Window Manipulation', function() spoon.WinWin:undo() end)
-    cmodal:bind('', ']', 'Redo Window Manipulation', function() spoon.WinWin:redo() end)
-    cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
+
+    cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:moveAndResize("fullscreen") end)
+    cmodal:bind('', 'C', 'Center Window', function() spoon.WinWin:moveAndResize("center") end)
+
+    cmodal:bind('', '=', 'Expand', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
+    cmodal:bind('', '-', 'Shrink', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
+
+    cmodal:bind('shift', 'H', 'Horizontal Shrink', function() spoon.WinWin:stepResize("left") end, nil, function() spoon.WinWin:stepResize("left") end)
+    cmodal:bind('shift', 'L', 'Horizontal Expand', function() spoon.WinWin:stepResize("right") end, nil, function() spoon.WinWin:stepResize("right") end)
+    cmodal:bind('shift', 'J', 'Vertical Expand', function() spoon.WinWin:stepResize("down") end, nil, function() spoon.WinWin:stepResize("down") end)
+    cmodal:bind('shift', 'K', 'Vertical Shrink', function() spoon.WinWin:stepResize("up") end, nil, function() spoon.WinWin:stepResize("up") end)
+
+    cmodal:bind('', 'Y', 'Left Top', function() resizeWindow("[0, 0, 50, 50]") end)
+    cmodal:bind('', 'U', 'Right Top', function() resizeWindow("[50, 0, 100, 50]") end)
+    cmodal:bind('', 'I', 'Left Bottom', function() resizeWindow("[0, 50, 50, 100]") end)
+    cmodal:bind('', 'O', 'Right Bottom', function() resizeWindow("[50, 50, 100, 100]") end)
+
+    cmodal:bind('', 'H', '50 Left', function() resizeWindow("[0, 0, 50, 100]") end)
+    cmodal:bind('', 'L', '', function() resizeWindow("[50, 0, 100, 100]") end)
+    cmodal:bind('', 'J', '', function() resizeWindow("[0, 50, 100, 100]") end)
+    cmodal:bind('', 'K', '', function() resizeWindow("[0, 0, 100, 50]") end)
+    cmodal:bind('alt', 'H', '35 Left', function() resizeWindow("[0, 0, 35, 100]") end)
+    cmodal:bind('alt', 'L', '', function() resizeWindow("[65, 0, 100, 100]") end)
+    cmodal:bind('alt', 'J', '', function() resizeWindow("[0, 65, 100, 100]") end)
+    cmodal:bind('alt', 'K', '', function() resizeWindow("[0, 0, 100, 35]") end)
+    cmodal:bind('cmd', 'H', '65 Left', function() resizeWindow("[0, 0, 65, 100]") end)
+    cmodal:bind('cmd', 'L', '', function() resizeWindow("[35, 0, 100, 100]") end)
+    cmodal:bind('cmd', 'J', '', function() resizeWindow("[0, 35, 100, 100]") end)
+    cmodal:bind('cmd', 'K', '', function() resizeWindow("[0, 0, 100, 65]") end)
+
+    cmodal:bind('ctrl', 'H', '50 Left (Fill)', function() resizeWindow("[0, 0, 50, 100]", "[50, 0, 100, 100]") end)
+    cmodal:bind('ctrl', 'L', '', function() resizeWindow("[50, 0, 100, 100]", "[0, 0, 50, 100]") end)
+    cmodal:bind('ctrl', 'J', '', function() resizeWindow("[0, 50, 100, 100]", "[0, 0, 100, 50]") end)
+    cmodal:bind('ctrl', 'K', '', function() resizeWindow("[0, 0, 100, 50]", "[0, 50, 100, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'H', '35 Left (Fill)', function() resizeWindow("[0, 0, 35, 100]", "[35, 0, 100, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'L', '', function() resizeWindow("[65, 0, 100, 100]", "[0, 0, 65, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'J', '', function() resizeWindow("[0, 65, 100, 100]", "[0, 0, 100, 65]") end)
+    cmodal:bind('{ctrl, alt}', 'K', '', function() resizeWindow("[0, 0, 100, 35]", "[0, 35, 100, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'H', '65 Left (Fill)', function() resizeWindow("[0, 0, 65, 100]", "[65, 0, 100, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'L', '', function() resizeWindow("[35, 0, 100, 100]", "[0, 0, 35, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'J', '', function() resizeWindow("[0, 35, 100, 100]", "[0, 0, 100, 35]") end)
+    cmodal:bind('{ctrl, cmd}', 'K', '', function() resizeWindow("[0, 0, 100, 65]", "[0, 65, 100, 100]") end)
+
+    cmodal:bind('', 'left', 'Move to Left Monitor', function() spoon.WinWin:moveToScreen("left") end)
+    cmodal:bind('', 'right', 'Move to Right Monitor', function() spoon.WinWin:moveToScreen("right") end)
+    cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:moveToScreen("up") end)
+    cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:moveToScreen("down") end)
+    cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:moveToScreen("next") end)
 
     -- Register resizeM with modal supervisor
     spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "W", "resizeM Environment", function()
@@ -207,6 +233,35 @@ if spoon.WinWin then
         spoon.ModalMgr:activate({"resizeM"}, "#B22222")
     end)
 
+end
+
+function resizeWindow(size1, size2)
+    local w1 = hs.window.focusedWindow()
+    if w1 then
+        w1:moveToUnit(size1, 0)
+        -- hs.alert("w1: ".. w1:application():name()..", "..w1:id().." size: "..size1)
+        if size2 then
+            w1:sendToBack()
+            local w2 = hs.window.focusedWindow()
+            local i = 0
+            local ws = hs.window.orderedWindows()
+            -- the other window should be a different one
+            while w2 and (w2:id() == w1:id() or w2:screen() ~= w1:screen()) do
+                i = i + 1
+                w2 = ws[i]
+                -- hs.alert.show("i: "..i)
+            end
+            if w2 then
+                w2:moveToUnit(size2, 0)
+                -- hs.alert("w2: ".. w2:application():name()..", "..w2:id().." size: "..size2)
+            else
+                hs.alert.show("No another window found!")
+            end
+        end
+        w1:focus()
+    else
+        hs.alert.show("No focused window found!")
+    end
 end
 
 ----------------------------------------------------------------------------------------------------
