@@ -13,6 +13,19 @@ end
 hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon", reloadConfig):start()
 hs.alert.show("Hammerspoon Config Reloaded")
 
+-- vim mode anywhere
+--- https://github.com/dbalatero/VimMode.spoon
+local VimMode = hs.loadSpoon('VimMode')
+local vim = VimMode:new()
+vim
+    :disableForApp('iTerm')
+    :disableForApp('Terminal')
+    :disableForApp('Code')
+    :disableForApp('MacVim')
+    :disableForApp('zoom.us')
+    :shouldDimScreenInNormalMode(false)
+    :bindHotKeys({ enter = {{"alt", "ctrl", "cmd", "shift"}, 'V'} })
+
 -- ModalMgr
 -- https://github.com/ashfinal/awesome-hammerspoon
 hs.hotkey.alertDuration = 0
