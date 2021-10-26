@@ -1,7 +1,3 @@
-hs.hotkey.alertDuration = 0
-hs.hints.showTitleThresh = 0
-hs.window.animationDuration = 0
-
 -- http://www.hammerspoon.org/go/#fancyreload
 function reloadConfig(files)
     doReload = false
@@ -17,6 +13,12 @@ end
 hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon", reloadConfig):start()
 hs.alert.show("Hammerspoon Config Reloaded")
 
+-- ModalMgr
+-- https://github.com/ashfinal/awesome-hammerspoon
+hs.hotkey.alertDuration = 0
+hs.hints.showTitleThresh = 0
+hs.window.animationDuration = 0
+
 -- ModalMgr Spoon must be loaded explicitly, because this repository heavily relies upon it.
 hs.loadSpoon("ModalMgr")
 
@@ -27,6 +29,7 @@ if not hspoon_list then
         "ClipShow",
         "WinWin",
         "KSheet",
+        "IME",
     }
 end
 
@@ -163,9 +166,9 @@ if spoon.WinWin then
     cmodal:bind('', 'K', 'Uphalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfup") end)
     cmodal:bind('', 'J', 'Downhalf of Screen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("halfdown") end)
     cmodal:bind('', 'Y', 'NorthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNW") end)
-    cmodal:bind('', 'O', 'NorthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNE") end)
-    cmodal:bind('', 'U', 'SouthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSW") end)
-    cmodal:bind('', 'I', 'SouthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSE") end)
+    cmodal:bind('', 'U', 'NorthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerNE") end)
+    cmodal:bind('', 'I', 'SouthWest Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSW") end)
+    cmodal:bind('', 'O', 'SouthEast Corner', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("cornerSE") end)
     cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("fullscreen") end)
     cmodal:bind('', 'C', 'Center Window', function() spoon.WinWin:stash() spoon.WinWin:moveAndResize("center") end)
     cmodal:bind('', '=', 'Stretch Outward', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
@@ -184,7 +187,7 @@ if spoon.WinWin then
     cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
 
     -- Register resizeM with modal supervisor
-    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "X", "resizeM Environment", function()
+    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "W", "resizeM Environment", function()
         -- Deactivate some modal environments or not before activating a new one
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
