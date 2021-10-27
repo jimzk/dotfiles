@@ -66,12 +66,6 @@ function obj:toggleCheatsheet(iterList, force)
     else
         local cscreen = hs.screen.mainScreen()
         local cres = cscreen:fullFrame()
-        obj.which_key:frame({
-            x = cres.x + cres.w / 5,
-            y = cres.y + cres.h / 5,
-            w = cres.w / 5,
-            h = cres.h / 5 * 3
-        })
         local keys_pool = {}
         local tmplist = iterList or obj.active_list
         for i, v in pairs(tmplist) do
@@ -87,15 +81,36 @@ function obj:toggleCheatsheet(iterList, force)
                 end
             end
         end
+        local keys_len = #keys_pool
+        -- hs.alert.show("keys_pool: "..inspect(keys_pool[1]))
+        -- local w = cres.w / 5 * 2
+        -- local h = cres.h / 30 * (keys_len / 2)
+        local w = 800
+        local h = 36 * (keys_len / 2)
+        obj.which_key:frame({
+            x = cres.x + cres.w / 2 - w / 2,
+            y = cres.y + cres.h / 2 - h / 2,
+            w = w,
+            h = h,
+        })
         for idx, val in ipairs(keys_pool) do
+            local index = string.find(val, ": ")
+            -- hs.alert.show("index: "..inspect(index))
+            local len = string.len(val)
+            local text = string.format("[%s]", val)
+            if index then  -- if no key description
+                local k = string.sub(keys_pool[idx], 0, index - 1)
+                local v = string.sub(keys_pool[idx], index + 1, len)
+                text = string.format("[%s] %s", k, v)
+            end
             if idx % 2 == 1 then
                 obj.which_key[idx + 1] = {
                     type = "text",
-                    text = keys_pool[idx],
+                    text = text,
                     textFont = "Courier-Bold",
                     textSize = 16,
                     textColor = {hex = "#2390FF", alpha = 1},
-                    textAlignment = "left",
+                    textAlignment = "justified",
                     frame = {
                         x = tostring(40 / (cres.w / 5 * 3)),
                         y = tostring((30 + (idx - math.ceil(idx / 2)) * math.ceil((cres.h / 5 * 3 - 60) / #keys_pool) * 2) / (cres.h / 5 * 3)),
@@ -106,11 +121,11 @@ function obj:toggleCheatsheet(iterList, force)
             else
                 obj.which_key[idx + 1] = {
                     type = "text",
-                    text = keys_pool[idx],
+                    text = text,
                     textFont = "Courier-Bold",
                     textSize = 16,
                     textColor = {hex = "#2390FF"},
-                    textAlignment = "right",
+                    textAlignment = "justified",
                     frame = {
                         x = "50%",
                         y = tostring((30 + (idx - math.ceil(idx / 2) - 1) * math.ceil((cres.h / 5 * 3 - 60) / #keys_pool) * 2) / (cres.h / 5 * 3)),

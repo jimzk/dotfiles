@@ -75,7 +75,7 @@ spoon.ModalMgr:new("appM")
 local cmodal = spoon.ModalMgr.modal_list["appM"]
 cmodal:bind('', 'escape', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
 cmodal:bind('', 'Q', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
-cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet({"appM"}, true) end)
+cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
 
 cmodal:bind('cmd', 'C', 'Clipboard', function()
     -- We need to take action upon hsclipsM_keys is pressed, since pressing another key to showing ClipShow panel is redundant.
@@ -93,7 +93,7 @@ cmodal:bind("cmd", 'S', 'Cheatsheet', function()
     spoon.ModalMgr:activate({"cheatsheetM"})
 end)
 
-cmodal:bind('cmd', '.', 'Reload HammerSpoon Configuration', function()
+cmodal:bind('cmd', '.', 'Reload HammerSpoon', function()
     spoon.ModalMgr:deactivate({"appM"})
     hs.reload()
 end)
@@ -104,46 +104,45 @@ cmodal:bind('alt', '.', 'HammerSpoon Help', function()
     hs.doc.hsdocs.help()
 end)
 
-cmodal:bind('cmd', 'w', 'Quick add Ticktick task', function()
-    spoon.ModalMgr:deactivate({"appM"})
-    hs.eventtap.keyStroke({"alt", "ctrl", "cmd", "shift"}, '5')
-end)
-
 hsapp_list = {
     {key = 'w', id = 'com.TickTick.task.mac'},
-    {key = 'e', name = 'Finder'},
-    {key = 'd', name = 'iTerm', key_stroke = {{"cmd", "ctrl", "alt", "shift"}, "'"}},
-    {key = 's', id = 'com.microsoft.VSCode'},
-    {key = 'c', id = 'com.microsoft.edgemac'},
+    {mod = 'cmd', key = 'w', key_stroke = {{"alt", "ctrl", "cmd", "shift"}, '5'}, message = 'Add TickTick Task'},
+    {key = 'e', id = 'com.apple.finder'},
     {key = 'r', id = 'com.reederapp.5.macOS'},
+    {key = 'y', id = 'com.youdao.YoudaoDict'},
+    {key = 'u', key_stroke = {{"cmd", "ctrl", "alt", "shift"}, "7"}, message = 'Unclutter'},
+    {key = 'p', id = 'com.jetbrains.intellij'},
+    {key = 'p', id = 'com.readdle.PDFExpert-Mac'},
+    {key = 's', id = 'com.microsoft.VSCode', message = 'VSCoded'},
+    -- {key = 'd', id = 'com.googlecode.iterm2'},
     {key = 'f', id = 'md.obsidian'},
     {key = 'g', id = 'abnerworks.Typora'},
-    {key = 'u', name = 'Unclutter', key_stroke = {{"cmd", "ctrl", "alt", "shift"}, "7"}},
-    {key = 'y', id = 'com.youdao.YoudaoDict'},
-    {key = 'p', id = 'com.apple.systempreferences'},
-    {key = 'x', id = 'com.hnc.Discord'},
     {key = 'z', id = 'com.tencent.xinWeChat'},
-    {key = 'p', id = 'com.readdle.PDFExpert-Mac'},
+    {key = 'x', id = 'com.hnc.Discord'},
+    {key = 'c', id = 'com.microsoft.edgemac'},
     {key = 'n', id = 'com.apple.Notes'},
     {key = 'm', id = 'com.apple.ActivityMonitor'},
+    {key = ',', id = 'com.apple.systempreferences'},
     {key = '.', id = 'org.hammerspoon.Hammerspoon'},
 }
 
 for _, v in ipairs(hsapp_list) do
+    local mod = v.mod and v.mod or ''
     if v.id then
         local located_name = hs.application.nameForBundleID(v.id)
+        local message = v.message and v.message or located_name
         if located_name then
-            cmodal:bind('', v.key, located_name, function()
+            cmodal:bind(mod, v.key, message, function()
                 spoon.ModalMgr:deactivate({"appM"})
                 if hs.application.frontmostApplication():name() == located_name then
-                    hs.eventtap.keyStroke('cmd', 'H')
+                    hs.application.frontmostApplication():hide()
                 else
                     hs.application.launchOrFocusByBundleID(v.id)
                 end
             end)
         end
     elseif v.key_stroke then
-        cmodal:bind('', v.key, v.name, function()
+        cmodal:bind(mod, v.key, v.message, function()
             spoon.ModalMgr:deactivate({"appM"})
             hs.eventtap.keyStroke(v.key_stroke[1], v.key_stroke[2])
         end)
@@ -152,6 +151,8 @@ for _, v in ipairs(hsapp_list) do
             spoon.ModalMgr:deactivate({"appM"})
             hs.application.launchOrFocus(v.name)
         end)
+    else
+        hs.alert.show("Can't find application!")
     end
 end
 
@@ -172,61 +173,61 @@ if spoon.WinWin then
     cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
     cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
 
-    cmodal:bind('', 'A', 'Move Leftward', function() spoon.WinWin:stepMove("left") end, nil, function() spoon.WinWin:stepMove("left") end)
-    cmodal:bind('', 'D', 'Move Rightward', function() spoon.WinWin:stepMove("right") end, nil, function() spoon.WinWin:stepMove("right") end)
-    cmodal:bind('', 'W', 'Move Upward', function() spoon.WinWin:stepMove("up") end, nil, function() spoon.WinWin:stepMove("up") end)
-    cmodal:bind('', 'S', 'Move Downward', function() spoon.WinWin:stepMove("down") end, nil, function() spoon.WinWin:stepMove("down") end)
-
-    cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:moveAndResize("fullscreen") end)
-    cmodal:bind('', 'C', 'Center Window', function() spoon.WinWin:moveAndResize("center") end)
-
-    cmodal:bind('', '=', 'Expand', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
     cmodal:bind('', '-', 'Shrink', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
+    cmodal:bind('', '=', 'Expand', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
 
     cmodal:bind('shift', 'H', 'Horizontal Shrink', function() spoon.WinWin:stepResize("left") end, nil, function() spoon.WinWin:stepResize("left") end)
     cmodal:bind('shift', 'L', 'Horizontal Expand', function() spoon.WinWin:stepResize("right") end, nil, function() spoon.WinWin:stepResize("right") end)
     cmodal:bind('shift', 'J', 'Vertical Expand', function() spoon.WinWin:stepResize("down") end, nil, function() spoon.WinWin:stepResize("down") end)
     cmodal:bind('shift', 'K', 'Vertical Shrink', function() spoon.WinWin:stepResize("up") end, nil, function() spoon.WinWin:stepResize("up") end)
 
+    cmodal:bind('', 'F', 'Fullscreen', function() spoon.WinWin:moveAndResize("fullscreen") end)
+    cmodal:bind('', 'C', 'Center', function() spoon.WinWin:moveAndResize("center") end)
+
     cmodal:bind('', 'Y', 'Left Top', function() resizeWindow("[0, 0, 50, 50]") end)
     cmodal:bind('', 'U', 'Right Top', function() resizeWindow("[50, 0, 100, 50]") end)
     cmodal:bind('', 'I', 'Left Bottom', function() resizeWindow("[0, 50, 50, 100]") end)
     cmodal:bind('', 'O', 'Right Bottom', function() resizeWindow("[50, 50, 100, 100]") end)
 
-    cmodal:bind('', 'H', '50 Left', function() resizeWindow("[0, 0, 50, 100]") end)
+    cmodal:bind('', 'H', '1/2 Left', function() resizeWindow("[0, 0, 50, 100]") end)
     cmodal:bind('', 'L', '', function() resizeWindow("[50, 0, 100, 100]") end)
     cmodal:bind('', 'J', '', function() resizeWindow("[0, 50, 100, 100]") end)
     cmodal:bind('', 'K', '', function() resizeWindow("[0, 0, 100, 50]") end)
-    cmodal:bind('alt', 'H', '35 Left', function() resizeWindow("[0, 0, 35, 100]") end)
-    cmodal:bind('alt', 'L', '', function() resizeWindow("[65, 0, 100, 100]") end)
-    cmodal:bind('alt', 'J', '', function() resizeWindow("[0, 65, 100, 100]") end)
-    cmodal:bind('alt', 'K', '', function() resizeWindow("[0, 0, 100, 35]") end)
-    cmodal:bind('cmd', 'H', '65 Left', function() resizeWindow("[0, 0, 65, 100]") end)
-    cmodal:bind('cmd', 'L', '', function() resizeWindow("[35, 0, 100, 100]") end)
-    cmodal:bind('cmd', 'J', '', function() resizeWindow("[0, 35, 100, 100]") end)
-    cmodal:bind('cmd', 'K', '', function() resizeWindow("[0, 0, 100, 65]") end)
+    cmodal:bind('alt', 'H', '1/3 Left', function() resizeWindow("[0, 0, 34, 100]") end)
+    cmodal:bind('alt', 'L', '', function() resizeWindow("[66, 0, 100, 100]") end)
+    cmodal:bind('alt', 'J', '', function() resizeWindow("[0, 66, 100, 100]") end)
+    cmodal:bind('alt', 'K', '', function() resizeWindow("[0, 0, 100, 34]") end)
+    cmodal:bind('cmd', 'H', '2/3 Left', function() resizeWindow("[0, 0, 66, 100]") end)
+    cmodal:bind('cmd', 'L', '', function() resizeWindow("[34, 0, 100, 100]") end)
+    cmodal:bind('cmd', 'J', '', function() resizeWindow("[0, 34, 100, 100]") end)
+    cmodal:bind('cmd', 'K', '', function() resizeWindow("[0, 0, 100, 66]") end)
 
-    cmodal:bind('ctrl', 'H', '50 Left (Fill)', function() resizeWindow("[0, 0, 50, 100]", "[50, 0, 100, 100]") end)
+    cmodal:bind('ctrl', 'H', '1/2 Left (Fill)', function() resizeWindow("[0, 0, 50, 100]", "[50, 0, 100, 100]") end)
     cmodal:bind('ctrl', 'L', '', function() resizeWindow("[50, 0, 100, 100]", "[0, 0, 50, 100]") end)
     cmodal:bind('ctrl', 'J', '', function() resizeWindow("[0, 50, 100, 100]", "[0, 0, 100, 50]") end)
     cmodal:bind('ctrl', 'K', '', function() resizeWindow("[0, 0, 100, 50]", "[0, 50, 100, 100]") end)
-    cmodal:bind('{ctrl, alt}', 'H', '35 Left (Fill)', function() resizeWindow("[0, 0, 35, 100]", "[35, 0, 100, 100]") end)
-    cmodal:bind('{ctrl, alt}', 'L', '', function() resizeWindow("[65, 0, 100, 100]", "[0, 0, 65, 100]") end)
-    cmodal:bind('{ctrl, alt}', 'J', '', function() resizeWindow("[0, 65, 100, 100]", "[0, 0, 100, 65]") end)
-    cmodal:bind('{ctrl, alt}', 'K', '', function() resizeWindow("[0, 0, 100, 35]", "[0, 35, 100, 100]") end)
-    cmodal:bind('{ctrl, cmd}', 'H', '65 Left (Fill)', function() resizeWindow("[0, 0, 65, 100]", "[65, 0, 100, 100]") end)
-    cmodal:bind('{ctrl, cmd}', 'L', '', function() resizeWindow("[35, 0, 100, 100]", "[0, 0, 35, 100]") end)
-    cmodal:bind('{ctrl, cmd}', 'J', '', function() resizeWindow("[0, 35, 100, 100]", "[0, 0, 100, 35]") end)
-    cmodal:bind('{ctrl, cmd}', 'K', '', function() resizeWindow("[0, 0, 100, 65]", "[0, 65, 100, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'H', '1/3 Left (Fill)', function() resizeWindow("[0, 0, 34, 100]", "[34, 0, 100, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'L', '', function() resizeWindow("[66, 0, 100, 100]", "[0, 0, 66, 100]") end)
+    cmodal:bind('{ctrl, alt}', 'J', '', function() resizeWindow("[0, 66, 100, 100]", "[0, 0, 100, 66]") end)
+    cmodal:bind('{ctrl, alt}', 'K', '', function() resizeWindow("[0, 0, 100, 34]", "[0, 34, 100, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'H', '2/3 Left (Fill)', function() resizeWindow("[0, 0, 66, 100]", "[66, 0, 100, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'L', '', function() resizeWindow("[34, 0, 100, 100]", "[0, 0, 34, 100]") end)
+    cmodal:bind('{ctrl, cmd}', 'J', '', function() resizeWindow("[0, 34, 100, 100]", "[0, 0, 100, 34]") end)
+    cmodal:bind('{ctrl, cmd}', 'K', '', function() resizeWindow("[0, 0, 100, 66]", "[0, 66, 100, 100]") end)
+
+    cmodal:bind('', 'A', 'Move Leftward', function() spoon.WinWin:stepMove("left") end, nil, function() spoon.WinWin:stepMove("left") end)
+    cmodal:bind('', 'D', '', function() spoon.WinWin:stepMove("right") end, nil, function() spoon.WinWin:stepMove("right") end)
+    cmodal:bind('', 'W', '', function() spoon.WinWin:stepMove("up") end, nil, function() spoon.WinWin:stepMove("up") end)
+    cmodal:bind('', 'S', '', function() spoon.WinWin:stepMove("down") end, nil, function() spoon.WinWin:stepMove("down") end)
 
     cmodal:bind('', 'left', 'Move to Left Monitor', function() spoon.WinWin:moveToScreen("left") end)
-    cmodal:bind('', 'right', 'Move to Right Monitor', function() spoon.WinWin:moveToScreen("right") end)
-    cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:moveToScreen("up") end)
-    cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:moveToScreen("down") end)
+    cmodal:bind('', 'right', '', function() spoon.WinWin:moveToScreen("right") end)
+    cmodal:bind('', 'up', '', function() spoon.WinWin:moveToScreen("up") end)
+    cmodal:bind('', 'down', '', function() spoon.WinWin:moveToScreen("down") end)
     cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:moveToScreen("next") end)
 
     -- Register resizeM with modal supervisor
-    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "W", "resizeM Environment", function()
+    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "E", "resizeM Environment", function()
         -- Deactivate some modal environments or not before activating a new one
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
