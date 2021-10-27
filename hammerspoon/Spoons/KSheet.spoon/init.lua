@@ -108,7 +108,7 @@ local function generateHtml(application)
             li.title{padding: 0  10px 15px}
             .content{
               padding: 0 0 15px;
-              font-size:12px;
+              font-size:14px;
               overflow:hidden;
             }
             .content.maincontent{
@@ -184,11 +184,15 @@ function obj:show()
     local capp = hs.application.frontmostApplication()
     local cscreen = hs.screen.mainScreen()
     local cres = cscreen:fullFrame()
+    local w = cres.w * 0.5
+    local h = cres.h * 0.65
+    w = w < 1280 and 1280 or w
+    h = h < 720 and 720 or h
     self.sheetView:frame({
-        x = cres.x+cres.w*0.15/2,
-        y = cres.y+cres.h*0.25/2,
-        w = cres.w*0.85,
-        h = cres.h*0.75
+        x = cres.x + cres.w / 2 - w / 2,
+        y = cres.y + cres.h / 2 - h / 2,
+        w = w,
+        h = h
     })
     local webcontent = generateHtml(capp)
     self.sheetView:html(webcontent)
