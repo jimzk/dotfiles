@@ -1,16 +1,23 @@
 case "$OSTYPE" in
     darwin* )
-        alias proxy="_proxy; info-ip"
-        alias unproxy="_unproxy; info-ip"
-        _proxy() {
-            export https_proxy=http://127.0.0.1:1087
-            export http_proxy=$https_proxy
-            export all_proxy=socks5://127.0.0.1:1080
-        }
+        alias pc=pbcopy
+        alias pp=pbpaste
+        alias proxy="_proxy"
+        alias unproxy="_unproxy"
         _unproxy() {
-            unset http_proxy
-            unset https_proxy
-            unset all_proxy
+            unset http_proxy https_proxy all_proxy
+        }
+        _proxy() {
+            export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+        }
+        alias 'proxy?'="_is_proxy"
+        _is_proxy() {
+            r=$(curl -sL -vv https://www.google.com --max-time 3 2>/dev/null)
+            if [[ -z "$r" ]]; then
+                echo "❗️ $(tput setaf 1)"No Proxy!"$(tput sgr0)"
+            else
+                echo "✅ $(tput setaf 2)"In Proxy!"$(tput sgr0)"
+            fi
         }
         _proxy
         ;;
@@ -39,7 +46,7 @@ alias lld='exa -Dlg'
 alias l.='_f(){ (cd ${1:-.}; exa -ad .*)}; _f'
 alias ll.='_f(){ (cd ${1:-.}; exa -algd .*)}; _f'
 # only list symlinks
-alias ls-sym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -algd $_fs) }; _f'
+alias llsym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -algd $_fs) }; _f'
 
 # cd
 alias cdl='_f(){ cd $1; ls }; _f'  # cd and list
