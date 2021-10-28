@@ -37,10 +37,10 @@ export WORKSPACE=$HOME/workspace
 FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
 --bind='tab:down' \
 --bind='btab:up' \
---bind='ctrl-n:down' \
---bind='ctrl-p:up' \
---bind='ctrl-j:page-down' \
---bind='ctrl-k:page-up' \
+--bind='ctrl-j:down' \
+--bind='ctrl-k:up' \
+--bind='ctrl-n:page-down' \
+--bind='ctrl-p:page-up' \
 --bind='ctrl-x:toggle' \
 --bind='alt-j:preview-down' \
 --bind='alt-k:preview-up' \
