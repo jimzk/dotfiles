@@ -62,8 +62,11 @@ _fzf_navi_widget() {
 }
 
 _fzf_navi_shortcut_widget() {
-    _navi_call --path "$DOTFILES_HOME/cheatsheets/shortcut"
-    zle accept-line
+    output=$(_navi_call --path "$DOTFILES_HOME/cheatsheets/shortcut")
+    if [[ -n "$output" ]]; then
+        echo "$output\n"
+    fi
+    zle redisplay
 }
 
 # ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
@@ -255,7 +258,8 @@ bindkey '^gf' _fzf_file_widget
 
 __trim_string() {
     # trim space (https://stackoverflow.com/a/68288735)
-    echo "${(MS)@##[[:graph:]]*[[:graph:]]}"
+    # echo -n "${(MS)@##[[:graph:]]*[[:graph:]]}"
+    echo -n "$@" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 __redraw() {
     local input=$LBUFFER
