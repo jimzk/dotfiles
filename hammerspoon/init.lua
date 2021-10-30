@@ -227,7 +227,7 @@ if spoon.WinWin then
     cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:moveToScreen("next") end)
 
     -- Register resizeM with modal supervisor
-    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "E", "resizeM Environment", function()
+    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "Q", "resizeM Environment", function()
         -- Deactivate some modal environments or not before activating a new one
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
@@ -242,16 +242,18 @@ function resizeWindow(size1, size2)
         w1:moveToUnit(size1, 0)
         -- hs.alert("w1: ".. w1:application():name()..", "..w1:id().." size: "..size1)
         if size2 then
-            w1:sendToBack()
-            local w2 = hs.window.focusedWindow()
-            local i = 0
+            local w2
             local ws = hs.window.orderedWindows()
-            -- the other window should be a different one
-            while w2 and (w2:id() == w1:id() or w2:screen() ~= w1:screen()) do
+            local i = 0
+            repeat
                 i = i + 1
                 w2 = ws[i]
-                -- hs.alert.show("i: "..i)
-            end
+            until not w2 or (w2:id() ~= w1:id()
+                        and w2:screen() == w1:screen()
+                        and not w2:isMinimized()
+                        and w2:isVisible()
+                        and w2:isStandard())
+
             if w2 then
                 w2:moveToUnit(size2, 0)
                 -- hs.alert("w2: ".. w2:application():name()..", "..w2:id().." size: "..size2)
