@@ -340,11 +340,7 @@ function safeOpen(bundleId)
     -- bundleId = "com.apple.systempreferences"  -- test
     local runningApps = hs.application.get(bundleId)
     if runningApps then
-        hs.application.launchOrFocusByBundleID(v.id)
-        -- for i, v in ipairs(runningApps) do
-        --     -- v:activate()
-        -- hs.alert.show(v)
-        -- end
+        hs.application.launchOrFocusByBundleID(bundleId)
     else
         hs.alert.show("⚠️[ "..bundleId.." ] is not running")
     end

@@ -140,6 +140,9 @@ alias cleanup='brew cleanup && pip cache purge'
 alias diff='colordiff'    # diff with color
 alias -s md='open -a Typora'    # open *.md with Typora by default
 
+alias rr="hs -c 'hs.reload()' && goku; echo 'HammerSpoon, goku are reloaded!'"
+alias rz="echo 'Reload zsh!'; exec zsh"
+
 # helper functions
 function _quick_grep {
     [[ "$#" == 0 ]] && exit 1

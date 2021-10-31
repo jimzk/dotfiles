@@ -127,6 +127,9 @@ setup_tmux() {
 }
 
 setup_tools() {
+    ln -s $DOTFILES_HOME/hammerspoon $HOME/.hammerspoon
+    ln -s $DOTFILES_HOME/karabiner/karabiner.edn $XDG_CONFIG_HOME/karabiner.edn
+
     _print_ask "Do you want to set up tools? [y/n]"
     read -n 1 yn
     [[ $yn != 'y' ]] && return
@@ -146,10 +149,6 @@ setup_tools() {
     _print_info "End setting up tools"
 }
 
-setup_hammerspoon() {
-    ln -s $DOTFILES_HOME/hammerspoon $HOME/.hammerspoon
-}
-
 setup_tools_config() {
     _print_info "Start setting up tools configuration"
     local DOEFILES_CONFIG_HOME=$DOTFILES_HOME/config
@@ -167,5 +166,4 @@ setup_git
 setup_vim
 setup_tmux
 setup_cheatsheets
-setup_hammerspoon
 setup_tools

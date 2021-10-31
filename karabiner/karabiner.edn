@@ -1,0 +1,492 @@
+;; ref
+;;   - example: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org
+;;   - example configuration: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/resources/configurations/edn/example.edn
+;;   - tutorial: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/tutorial.md
+;;   - keycodes: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj
+;;   - karabiner:
+;;     - keycodes: https://github.com/pqrs-org/Karabiner-Elements/blob/master/src/apps/PreferencesWindow/Resources/simple_modifications.json
+;;     - modifiers keys: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/#frommodifiersmandatory
+;;     - complex_modifications manipulator definition: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/
+;;   - helpful user configuration examples
+;;     - https://github.com/nikitavoloboev/dotfiles/blob/master/karabiner/karabiner.edn
+
+;; code won't read cheatsheet section
+;; ! for mandatory
+;; # for optional
+;; ## for optional any
+;; C T O S for left command control optional shift
+;; Q W E R for right command control optional shift
+;; !! for mandatory command + control + optional + shift (hyper)
+;; need to prefix C T O S F with ! or #
+;; F for fn
+;; P for caps_lock
+{
+  ;; Casesensitive
+  :applications {
+    :browser ["^com\\.microsoft\\.edgemac$" "^com\\.google\\.Chrome$" "^com\\.apple\\.Safari$"]
+    :terminal ["^com\\.googlecode\\.iterm2$" "^com.jetbrains" "^com\\.microsoft\\.VSCode$" "^com\\.apple\\.Terminal$"]
+    :intelliJ ["^com.jetbrains"]
+
+    :Edge ["^com\\.microsoft\\.edgemac$"]
+    :iTerm ["^com\\.googlecode\\.iterm2$"]
+    :VSCode ["^com\\.microsoft\\.VSCode$"]
+    :intelliJ-IDEA ["^com\\.jetbrains\\.intellij$"]
+    :intelliJ-GoLand ["^com\\.jetbrains\\.goland$"]
+
+    :WeChat ["^com\\.tencent\\.xinWeChat$"]
+    :Discord ["^com\\.hnc\\.Discord$"]
+    :Telegram ["^ru\\.keepcoder\\.Telegram$"]
+
+    :Obsidian ["^md\\.obsidian$"]
+    :Ticktick ["^com\\.TickTick\\.task\\.mac$"]
+    :Bitwarden ["^com\\.bitwarden\\.desktop$"]
+    :Youdao ["^com\\.youdao\\.YoudaoDict$"]
+    :PDFExpert ["^com\\.readdle\\.PDFExpert-Mac$"]
+
+    :Karabiner-Elements ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
+    :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
+    :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
+
+    :Finder ["^com\\.apple\\.finder$"]
+    :SystemReferences ["^com\\.apple\\.systempreferences$"]
+    :Music ["^com\\.apple\\.Music$"]
+    :Notes ["^com\\.apple\\.Notes$"]
+    :ActivityMonitor ["^com\\.apple\\.ActivityMonitor$"]
+  }
+
+  :input-sources {
+    :pinyin {
+        :input_mode_id "com.apple.inputmethod.SCIM.Shuangpin"
+        :input_source_id "com.apple.inputmethod.SCIM.Shuangpin"
+        :language "zh-Hans"
+    }
+    :us {
+      :input_mode_id ""
+      :input_source_id "com.apple.keylayout.US"
+      :language "en"
+    }
+  }
+
+  :templates {
+    ;; :launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%sument \"\"'"
+    :open "open \"%s\""
+    :safeOpen "/usr/local/bin/hs -c \"safeOpen('%s')\""
+    :edit "/usr/local/bin/code \"%s\""
+    :yabai "/usr/local/bin/yabai -m %s"
+    ;; execute for bsp or floating windows
+    :yabai-bsp "if [[ $(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq -r '.floating') == 0 && $(/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[0].type') == 'bsp' ]]; then /usr/local/bin/yabai -m %s; else /usr/local/bin/yabai -m %s; fi"
+    :yabai-focus "cur_window=$(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq '.id' 2>/dev/null) && (%s) && /usr/local/bin/yabai -m window --focus ${cur_window}"
+    ;; AppleScipt keystroke and key code table: https://eastmanreference.com/complete-list-of-applescript-key-codes
+    ;; have permission issues: 'System Events got an error: osascript is not allowed to send keystrokes.'
+    ;; :alfred "osascript -e 'tell application \"Alfred 4\" to search' -e 'tell application \"System Events\" to keystroke \"%s\"'"
+    ;; :alfred-execute "osascript -e 'tell application \"Alfred 4\" to search' -e 'tell application \"System Events\"' -e 'keystroke \"%s\"' -e 'key code 36' -e 'end tell'"
+    :alfred "/usr/local/bin/hs -c \"alfred('%s')\""
+    :alfred-execute "/usr/local/bin/hs -c \"alfred('%s', true)\""
+    :alfred-flow "osascript -e 'tell application \"Alfred 4\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"
+    :hs "/usr/local/bin/hs -c \"%s\""
+    :script "/usr/local/bin/bash ~/.dotfiles/karabiner/scripts/%s"
+  }
+
+  ;;; helper function to generate things little bit quicker
+  ;; quick define "layers" or "state" feature(use set_variable)
+  ;; can use as conditions in rule list
+  ;; {:<layer name> {:from <froms>}}
+  :simlayers {
+    ;; most frequently used modes
+    :space-mode {:key :spacebar}
+    :caps-mode {:key :caps_lock}
+    :mouse-mode {:key :a}
+    :window-management-mode {:key :w}
+    :terminal-mode {:key :j}
+
+    :config-mode {:key :s}
+    :dev-mode {:key :v}
+    :browser-mode {:key :b}
+    :number-sign-mode {:key :m}
+  }
+  :simlayer-threshold 250
+
+  ;; some examples
+  ;; [:0 [:!!5] nil {:alone :pinyin}] change input method
+  :main [
+    {:des "keys without prefix"
+      :rules [
+        [:##caps_lock {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :escape}]
+        ; simultaneously =⌫ to delete backward
+        [[:equal_sign :delete_or_backspace] :delete_forward]
+      ]
+    }
+    {:des "caps_lock"
+      :rules [
+        ;; QWER is hyper key
+        ;; Esc
+        [:!QWERopen_bracket :escape]
+        [:!QWERq :escape]
+        ;; space -> enter
+        [:!QWERspacebar :return_or_enter]
+        [:!QWERCspacebar :!Creturn_or_enter]
+        [:!QWEROspacebar :!Oreturn_or_enter]
+        [:!QWERSspacebar :!Sreturn_or_enter]
+        ;; 0 -> delete
+        [:!QWERdelete_or_backspace :delete_or_backspace]
+        [:!QWERCdelete_or_backspace :!Cdelete_or_backspace]
+        [:!QWEROdelete_or_backspace :!Odelete_or_backspace]
+        ;; - -> home, = -> end
+        [:!QWERhyphen :home]
+        [:!QWERequal_sign :end]
+        ;; better type
+        ;; [:!QWERhyphen :!Shyphen]
+        ;; [:!QWERequal_signls :!Sequal_sign]
+        ;; [:!QWERslash :!Sslash]
+        ;; [:!QWERbackslash :!Sbackslash]
+        ;; arrow
+        [:!QWERh :left_arrow]
+        [:!QWERj :down_arrow]
+        [:!QWERl :right_arrow]
+        [:!QWERk :up_arrow]
+        [:!QWERCh :!Cleft_arrow] ;; + command
+        [:!QWERCj :!Cdown_arrow]
+        [:!QWERCl :!Cright_arrow]
+        [:!QWERCk :!Cup_arrow]
+        [:!QWERTh :!Tleft_arrow] ;; + ctrl
+        [:!QWERTj :!Tdown_arrow]
+        [:!QWERTl :!Tright_arrow]
+        [:!QWERTk :!Tup_arrow]
+        [:!QWERSh :!Sleft_arrow] ;; + shift
+        [:!QWERSj :!Sdown_arrow]
+        [:!QWERSl :!Sright_arrow]
+        [:!QWERSk :!Sup_arrow]
+        [:!QWEROh :!Oleft_arrow] ;; + option
+        [:!QWEROj :!Odown_arrow]
+        [:!QWEROl :!Oright_arrow]
+        [:!QWEROk :!Oup_arrow]
+        [:!QWERCSh :!CSleft_arrow] ;; + command + shift
+        [:!QWERCSj :!CSdown_arrow]
+        [:!QWERCSl :!CSright_arrow]
+        [:!QWERCSk :!CSup_arrow]
+        [:!QWERCOh :!COleft_arrow] ;; + command + option
+        [:!QWERCOj :!COdown_arrow]
+        [:!QWERCOl :!COright_arrow]
+        [:!QWERCOk :!COup_arrow]
+        [:!QWERTOh :!TOleft_arrow] ;; + ctrl + option
+        [:!QWERTOj :!TOdown_arrow]
+        [:!QWERTOl :!TOright_arrow]
+        [:!QWERTOk :!TOup_arrow]
+        [:!QWEROSh :!OSleft_arrow] ;; + option + shift
+        [:!QWEROSj :!OSdown_arrow]
+        [:!QWEROSl :!OSright_arrow]
+        [:!QWEROSk :!OSup_arrow]
+        ;; for command line
+        [:!QWERw :!Tw]
+        [:!QWERe :!Te]
+        [:!QWERr :!Tr]
+        [:!QWERt :!Tt]
+        [:!QWERu :!Tu]
+        [:!QWERi :!Ti]
+        [:!QWERo :!To]
+        [:!QWERp :!Tp]
+        [:!QWERa :!Ta]
+        [:!QWERs :!Ts]
+        [:!QWERd :!Td]
+        [:!QWERf :!Tf]
+        [:!QWERg :!Tg]
+        [:!QWERz :!Tz]
+        [:!QWERx :!Tx]
+        [:!QWERc :!Tc]
+        [:!QWERv :!Tv]
+        [:!QWERb :!Tb]
+        [:!QWERn :!Tn]
+        [:!QWERm :!Tm]
+      ]
+    }
+    {:des "mouse move"
+      :rules [:mouse-mode
+        [:k {:mkey {:y -1600}}]
+        [:j {:mkey {:y 1600}}]
+        [:h {:mkey {:x -1600}}]
+        [:l {:mkey {:x 1600}}]
+        [:!Ck {:mkey {:y -3200}}]
+        [:!Cj {:mkey {:y 3200}}]
+        [:!Ch {:mkey {:x -3200}}]
+        [:!Cl {:mkey {:x 3200}}]
+        [:!Ok {:mkey {:y -800}}]
+        [:!Oj {:mkey {:y 800}}]
+        [:!Oh {:mkey {:x -800}}]
+        [:!Ol {:mkey {:x 800}}]
+        ;; scroll
+        [:u {:mkey {:vwheel -32}}]
+        [:d {:mkey {:vwheel 32}}]
+        [:!Cu {:mkey {:vwheel -64}}]
+        [:!Cd {:mkey {:vwheel 64}}]
+        [:!Ou {:mkey {:vwheel -16}}]
+        [:!Od {:mkey {:vwheel 16}}]
+        ;; left click
+        [:spacebar :button1]
+        [:!Cspacebar {:pkey :button1 :modi :left_command}]
+        [:!Sspacebar {:pkey :button1 :modi :left_shift}]
+        [:!Ospacebar {:pkey :button1 :modi :left_option}]
+        ;; right click
+        [:m :button2]
+        [:q :escape]
+        ;; delete
+        [:0 :delete_or_backspace]
+        [:!C0 :!Cdelete_or_backspace]
+        [:!O0 :!Odelete_or_backspace]
+      ]
+    }
+    {:des "window management (move and resize)"
+      :rules [:window-management-mode
+        ;; :resize-window is defined in :templates
+        [:h [:yabai-bsp "window --swap prev" "window --grid 2:2:0:0:1:2"]] ;; 1/2 screen
+        [:l [:yabai-bsp "window --swap next" "window --grid 2:2:1:0:1:2"]]
+        [:j [:yabai-bsp "window --warp prev" "window --grid 2:2:0:1:2:1"]]
+        [:k [:yabai-bsp "window --warp next" "window --grid 2:2:0:0:2:1"]]
+        [:!Ch [:yabai "window --grid 2:3:0:0:2:2"]] ;; 2/3 screen
+        [:!Cl [:yabai "window --grid 2:3:1:0:2:2"]]
+        [:!Cj [:yabai "window --grid 3:2:0:1:2:2"]]
+        [:!Ck [:yabai "window --grid 3:2:0:0:2:2"]]
+        [:!Oh [:yabai "window --grid 2:3:0:0:1:2"]] ;; 1/3 screen
+        [:!Ol [:yabai "window --grid 2:3:2:0:1:2"]]
+        [:!Oj [:yabai "window --grid 3:2:0:2:2:1"]]
+        [:!Ok [:yabai "window --grid 3:2:0:0:2:1"]]
+        [:!Om [:yabai "window --grid 3:2:0:1:2:1"]]
+        [:!On [:yabai "window --grid 2:3:1:0:1:2"]]
+
+        [:left_arrow [:hs "resizeWindow('[0, 0, 50, 100]', '[50, 0, 100, 100]')"]]
+        [:right_arrow [:hs "resizeWindow('[50, 0, 100, 100]','[0, 0, 50, 100]')"]]
+        [:down_arrow [:hs "resizeWindow('[0, 50, 100, 100]','[0, 0, 100, 50]')"]]
+        [:up_arrow [:hs "resizeWindow('[0, 0, 100, 50]','[0, 50, 100, 100]')"]]
+        [:!Cleft_arrow [:hs "resizeWindow('[0, 0, 34, 100]','[34, 0, 100, 100]')"]]
+        [:!Cright_arrow [:hs "resizeWindow('[66, 0, 100, 100]','[0, 0, 66, 100]')"]]
+        [:!Cdown_arrow [:hs "resizeWindow('[0, 66, 100, 100]','[0, 0, 100, 66]')"]]
+        [:!Cup_arrow [:hs "resizeWindow('[0, 0, 100, 34]','[0, 34, 100, 100]')"]]
+        [:!Oleft_arrow [:hs "resizeWindow('[0, 0, 66, 100]','[66, 0, 100, 100]')"]]
+        [:!Oright_arrow [:hs "resizeWindow('[34, 0, 100, 100]','[0, 0, 34, 100]')"]]
+        [:!Odown_arrow [:hs "resizeWindow('[0, 34, 100, 100]','[0, 0, 100, 34]')"]]
+        [:!Oup_arrow [:hs "resizeWindow('[0, 0, 100, 66]','[0, 66, 100, 100]')"]]
+
+        [:y [:yabai-bsp "space --mirror y-axis" "window --grid 2:2:0:0:1:1"]] ;; corner screen
+        [:u [:yabai-bsp "space --mirror x-axis" "window --grid 2:2:0:1:1:2"]]
+        [:i [:yabai-bsp "space --rotate 90" "window --grid 2:2:1:0:1:1"]]
+        [:o [:yabai-bsp "space --rotate 270" "window --grid 2:2:1:1:1:2"]]
+        ;; full screen
+        [:g [:yabai "window --grid 2:2:0:0:2:2"]]
+        ;; center screen
+        [:c [:yabai "window --grid 2:4:1:0:2:2"]]
+        ;; maximize Window
+        [:f :!Creturn_or_enter :iTerm]
+        [:f :!CTf] ;; Maximize Window
+        [:m :!Cm] ;; Minimize Window
+
+        ;; resize window
+        ;; [:left_arrow [:yabai "window --move rel:-10:0"]]
+        ;; [:right_arrow [:yabai "window --move rel:10:0"]]
+        ;; [:up_arrow [:yabai "window --move rel:0:-10"]]
+        ;; [:down_arrow [:yabai "window --move rel:0:+10"]]
+        ;; [:!Cleft_arrow [:yabai "window --resize right:-50:0"]]
+        ;; [:!Cright_arrow [:yabai "window --resize right:+50:0"]]
+        ;; [:!Cup_arrow [:yabai "window --resize bottom:0:-50"]]
+        ;; [:!Cdown_arrow [:yabai "window --resize bottom:0:+50"]]
+
+        ;; Duplicates from space-mode
+        ;; show active windows (supported by HammerSpoon)
+        [:delete_or_backspace :!CTSslash]
+        ;; move window to space but no focus
+        [:hyphen [:yabai "window --space prev"]]
+        [:equal_sign [:yabai "window --space next"]]
+        ;; move window to space and focus
+        [:open_bracket [:yabai-focus "/usr/local/bin/yabai -m window --space prev"]]
+        [:close_bracket [:yabai-focus "/usr/local/bin/yabai -m window --space next"]]
+        ;; move window to recent display and focus
+        [:backslash [:!CTSf]]  ;; supported by HammerSpoon
+        ;; show window and sapce information from yabai
+        [:return_or_enter [:hs "showSpaceWindowInfo()"]]  ;; supported by HammerSpoon
+      ]
+    }
+    {:des "space"
+      :rules [:space-mode
+        ;; previous / next tabs
+        [:i :!CSopen_bracket :iTerm]
+        [:o :!CSclose_bracket :iTerm]
+        [:i :!Copen_bracket :Finder]
+        [:o :!Cclose_bracket :Finder]
+        [:i :!CSopen_bracket :VSCode]
+        [:o :!CSclose_bracket :VSCode]
+        [:i :!Oup_arrow :Discord]
+        [:o :!Odown_arrow :Discord]
+        [:i :!Oup_arrow :Telegram]
+        [:o :!Odown_arrow :Telegram]
+        [:i :!TStab]
+        [:o :!Ttab]
+        ;; misc
+        [:tab :!Cm :Hammerspoon]  ;; application that can't work with cmd-h lg
+        [:tab :!Ch]
+
+        ;; space navigation
+        [:a :!CTOf7] ;; Previous Space
+        [:d :!CTOf9] ;; Next Space
+        [:s :mission_control] ;; Mission Control
+        ;; display navigation
+        ;; [:caps_lock {:shell "/usr/local/bin/yabai -m display --focus recent || /usr/local/bin/yabai -m display --focus prev || /usr/local/bin/yabai -m display --focus next; sleep 0.5; /usr/local/bin/hs -c \"showDisplayInfo()\""}]
+        [:caps_lock :!CTSg]  ; recent display (supported by HammerSpoon)
+
+        ;; show active windows (supported by HammerSpoon)
+        [:delete_or_backspace :!CTSslash]
+        ;; move window to space but no focus
+        [:hyphen [:yabai "window --space prev"]]
+        [:equal_sign [:yabai "window --space next"]]
+        ;; move window to space and focus
+        [:open_bracket [:yabai-focus "/usr/local/bin/yabai -m window --space prev"]]
+        [:close_bracket [:yabai-focus "/usr/local/bin/yabai -m window --space next"]]
+        ;; move window to recent display and focus
+        [:backslash [:!CTSf]]  ;; supported by HammerSpoon
+        ;; show window and sapce information from yabai
+        [:return_or_enter [:hs "showSpaceWindowInfo()"]]  ;; supported by HammerSpoon
+        ;; space layout
+        ;; [:open_bracket {:shell "/usr/local/bin/yabai -m space --layout float; /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; /usr/local/bin/hs -c \"hs.alert(\\\"to FLOATING Space\\\")\""}]
+        ;; [:close_bracket {:shell "/usr/local/bin/yabai -m space --layout bsp; /usr/local/bin/hs -c \"hs.alert(\\\"to BSP Space\\\")\""}]
+        ;; ;; window layout (only in bsp space)
+        ;; [:backslash {:shell "/usr/local/bin/yabai -m window --toggle float; if [[ $(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq '.floating') == '1' ]]; then msg='FLOATING Window'; else msg='BSP Window'; fi; if [[ \"$msg\" == 'FLOATING Window' ]]; then /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; fi; /usr/local/bin/hs -c \"hs.alert(\\\"To $msg\\\")\""}]
+
+        ;; system applicaton management
+        [:f1 :launchpad]  ;; Expose
+        [:f2 :mission_control] ;; Mission Control
+        [:f3 :!!f2] ;; Application Windows
+        [:f4 :!!f4] ;; Notification Center
+        [:f5 :!!f11] ;; Show Desktop
+        [:f6 :!CTSf2] ;; hide/show Dock
+
+
+        [:1 :!CTOSspacebar]  ;; alfred
+        [:2 [:!!5]]  ;; add Tickti task
+        ; show clipboard (supported by Alfred)
+        [:3 :!OSv]
+        ; search file via alfred
+        ;; [:3 [:alfred "\\' "]]
+        [:4 :!CTS4] ;; Screenshot
+
+        ;; open application
+        [:q [:open "/Applications/TickTick.app"]]
+        [:e [:open "/System/Library/CoreServices/Finder.app"]]
+        [:w [:safeOpen "com.jetbrains.intellij"]]
+        [:r [:open "/Applications/Obsidian.app"]]
+        [:t [:safeOpen "ru.keepcoder.Telegram"]]
+        [:y [:open "/Applications/网易有道词典.app"]]
+        [:p [:safeOpen "com.readdle.PDFExpert-Mac"]]
+        [:h [:open "/Applications/Microsoft Edge.app"]]
+        [:j [:!TOf12]] ;; iTerm2
+        [:k [:open "/Applications/Visual Studio Code.app"]]
+        [:z [:safeOpen "com.tencent.xinWeChat"]]
+        [:x [:safeOpen "com.jetbrains.goland"]]
+        [:c [:open "/Applications/Discord.app"]]
+        [:b [:open "/Applications/Bitwarden.app"]]
+        [:n [:open "/System/Applications/Notes.app/"]]
+      ]
+    }
+    {:des "configuration / system control"
+      :rules [:config-mode
+        [:q [:open "/Applications/Karabiner-EventViewer.app"]]
+        [:w [:open "/Applications/Karabiner-Elements.app"]]
+        [:e [:open "/Applications/Hammerspoon.app"]]
+        [:r [:script "reload_config.sh"]]
+        [:a [:open "/System/Applications/Utilities/Activity Monitor.app/"]]
+        [:d [:open "/System/Applications/System Preferences.app"]]
+        [:f [:open "/System/Applications/Music.app/"]]
+        ;; open documentation in browser
+        ;; goku
+        [:1 {:shell "open https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj https://github.com/yqrashawn/GokuRakuJoudo/blob/master/tutorial.md https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org https://github.com/yqrashawn/GokuRakuJoudo/blob/master/resources/configurations/edn/example.edn https://github.com/nikitavoloboev/dotfiles/blob/master/karabiner/karabiner.edn"}]
+        ;; yabai
+        [:2 {:shell "open https://github.com/koekeishiya/yabai/wiki/Commands https://github.com/koekeishiya/yabai/blob/master/doc/yabai.asciidoc"}]
+        ;; Hammerspoon
+        [:3 {:shell "open https://www.hammerspoon.org/docs/index.html"}]
+        ;; AppleScript
+        [:4 {:shell "open https://eastmanreference.com/complete-list-of-applescript-key-codes https://sspai.com/post/46912 https://sspai.com/post/43758"}]
+
+        ;; system control
+        ;; brightness
+        [:comma :display_brightness_decrement]
+        [:period :display_brightness_increment]
+        ;; volume
+        [:return_or_enter :mute]
+        [:quote :volume_increment]
+        [:semicolon :volume_decrement]
+        ;; play
+        [:backslash :play_or_pause]
+        [:open_bracket :vk_consumer_previous]
+        [:close_bracket :vk_consumer_next]
+      ]
+    }
+    {:des "browser"
+      :rules [:browser-mode
+        [:1 [:alfred "g "]]
+        [:2 [:alfred "b "]]
+        [:3 [:alfred "gh "]]
+        [:4 [:alfred "ghnervos "]]
+        [:5 [:alfred "db "]]
+        [:i [:alfred-execute "cdcd"]]
+        [:t [:open "https://twitter.com"]]
+        [:w [:open "https://webo.com"]]
+        [:n [:open "https://github.com/notifications"]]
+        [:l [:open "https://www.bilibili.com/watchlater/#/list"]]
+        [:m [:open "https://mail.google.com/mail"]]
+        [:k :!COb :browser] ;; open bookmarks
+      ]
+    }
+    {:des "dev documentation"
+      :rules [:dev-mode
+        [:b [:open "https://devhints.io/bash"]]
+        [:r [:open "dash://rust:"]]
+        [:p [:open "dash://py:"]]
+        [:l {:shell "open https://learnxinyminutes.com https://devhints.io"}]
+      ]
+    }
+    {:des "terminal"
+      :rules [[:condi :terminal-mode :terminal]
+        ;; terminal
+        [:tab [:!Tu :e :x :i :t :return_or_enter]] ; exit terminal
+        [:r [:!Ta :t :l :d :r :spacebar :return_or_enter]] ; tldr
+        [:u [:!Tu :c :l :e :a :r :return_or_enter]] ; clear screen
+        ;; vim
+        [:q [:escape :escape :!Ssemicolon :!Tu :q :!S1 :return_or_enter]] ; exit in vim
+        [:w [:escape :escape :!Ssemicolon :!Tu :w :q :!S1 :return_or_enter]] ; save and exit in vim
+        [:v [:spacebar :!Sbackslash :spacebar :v :i :m :spacebar :hyphen :return_or_enter]] ; temporary cat in vim
+        ;; frequently used commands
+        [:1 [:!Tu :l :l :return_or_enter]]
+        [:2 [:!Tu :g :s :return_or_enter]]
+        [:0 [:!Tu :r :r :return_or_enter]]
+        ;; zle widget
+        [:c [:!Tg :c]] ; command cheatsheet
+        [:g [:!Tg :g]] ; shortcut cheatsheet
+        ;; [:v [:!Tg :v]] ; old cheat
+        [:b [:!Tg :b]] ; git branch
+        [:d [:!Tg :d]] ; git file
+        [:l [:!Tg :l]] ; git commit
+        [:h [:!Tg :h]] ; git file commit
+        [:t [:!Tg :t]] ; git tag
+        [:s [:!Tg :s]] ; git status
+        [:e [:!Tg :e]] ; env
+        [:a [:!Tg :a]] ; alias
+        [:f [:!Tg :f]] ; env
+        ;; reuse commands
+        [:p [:!S1 :!S4 :return_or_enter]] ;; !$ last argument in last argument
+        ;; [:6 [:!S1 :!S6 :return_or_enter]] ;; !^ first argument in last argument
+        ;; [:8 [:!S1 :!S8 :return_or_enter]] ;; !* all arguments in last argument
+        ;; [:9 [:!Tu :!S1 :!Ssemicolon :hyphen :return_or_enter]] ;; !-: last command excpt for last argument
+        ;; [:0 [:!Tu :r :return_or_enter]] ;; execute last command
+      ]
+    }
+    {:des "number sign"
+      :rules [:number-sign-mode
+        [:1 [:!S1]]
+        [:2 [:!S2]]
+        [:3 [:!S3]]
+        [:4 [:!S4]]
+        [:5 [:!S5]]
+        [:6 [:!S6]]
+        [:7 [:!S7]]
+        [:8 [:!S8]]
+        [:9 [:!S9]]
+      ]
+    }
+  ]
+}
