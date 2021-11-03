@@ -19,6 +19,8 @@
 
 # use `emacs' keymap
 bindkey -e
+# zsh-autosuggestion
+bindkey '^o' autosuggest-execute
 
 # zsh navi widget
 _navi_call() {
@@ -243,8 +245,8 @@ zle -N _fzf_cht_widget
 zle -N _fzf_file_widget
 zle -N _fzf_git_stash_widget
 bindkey -r '^g'
-bindkey '^gg' _fzf_navi_widget
-bindkey '^gc' _fzf_navi_shortcut_widget
+bindkey '^gc' _fzf_navi_widget
+bindkey '^gg' _fzf_navi_shortcut_widget
 bindkey '^gb' _fzf_git_branch_widget
 bindkey '^gd' _fzf_git_file_widget
 bindkey '^gl' _fzf_git_commit_widget

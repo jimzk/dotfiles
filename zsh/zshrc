@@ -54,8 +54,6 @@ source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugi
 # +----------------+
 # https://github.com/ohmyzsh/ohmyzsh/issues/8743
 WORDCHARS='*?_-.[]~|&;!#%^(){}<>'
-# zsh-autosuggestion
-bindkey '^[m' autosuggest-execute
 # disable zsh auto update
 DISABLE_AUTO_UPDATE="true"
 # skip the verification of insecure directories
