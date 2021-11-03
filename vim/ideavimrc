@@ -3,6 +3,11 @@ set commentary
 set surround
 set highlightedyank
 set textobj-indent
+set argtextobj
+set textobj-entire
+set multiple-cursors
+set vim-paragraph-motion
+set exchange
 
 source ~/.dotfiles/vim/minimal.vim
 source ~/.dotfiles/vim/plugin.d/easymotion.vim

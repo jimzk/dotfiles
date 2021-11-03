@@ -111,6 +111,7 @@ try
         Plug 'terryma/vim-expand-region'
         Plug 'terryma/vim-multiple-cursors'
         Plug 'dbakker/vim-paragraph-motion'
+        Plug 'tommcdo/vim-exchange'
     call plug#end()
     runtime plugin.d/easymotion.vim
     " targets.vim

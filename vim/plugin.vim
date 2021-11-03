@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'easymotion/vim-easymotion'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
-    Plug 'bkad/CamelCaseMotion'
     Plug 'machakann/vim-highlightedyank'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'wellle/targets.vim'
@@ -12,7 +11,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'terryma/vim-expand-region'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'dbakker/vim-paragraph-motion'
+    Plug 'tommcdo/vim-exchange'
     " Advance
+    Plug 'bkad/CamelCaseMotion'
     Plug 'Lokaltog/vim-powerline' " vim 软件底部的命令行美化
     Plug 'yianwillis/vimcdoc' "中文帮助文档
     Plug 'scrooloose/nerdtree'  " 目录树
