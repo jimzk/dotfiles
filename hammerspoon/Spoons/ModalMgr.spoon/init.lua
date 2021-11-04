@@ -14,13 +14,13 @@ obj.active_list = {}
 obj.supervisor = nil
 
 function obj:init()
-    hsupervisor_keys = {{"cmd", "shift", "ctrl"}, "f1"}
+    hsupervisor_keys = {{"alt", "shift"}, "f1"}
     obj.supervisor = hs.hotkey.modal.new(hsupervisor_keys[1], hsupervisor_keys[2], "Initialize Modal Environment")
     obj.supervisor:bind(hsupervisor_keys[1], hsupervisor_keys[2], "Toggle Hammerspoon", function()
         obj.supervisor:exit()
         hs.alert.show("Disable Hammerspoon")
     end)
-    obj.supervisor:bind({"alt", "shift"}, "f1", "Toggle Help Panel", function()
+    obj.supervisor:bind({"ctrl", "cmd", "shift"}, "f1", "Toggle Help Panel", function()
         obj:toggleCheatsheet({all=obj.supervisor})
     end)
 

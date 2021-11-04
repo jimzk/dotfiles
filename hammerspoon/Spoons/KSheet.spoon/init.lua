@@ -10,6 +10,7 @@ obj.__index = obj
 -- Workaround for "Dictation" menuitem
 hs.application.menuGlyphs[148]="fn fn"
 
+obj.isShown = false
 obj.commandEnum = {
     cmd = '⌘',
     shift = '⇧',

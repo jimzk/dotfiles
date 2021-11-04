@@ -1,3 +1,4 @@
+hs.ipc.cliInstall()
 -- http://www.hammerspoon.org/go/#fancyreload
 function reloadConfig(files)
     doReload = false
@@ -26,9 +27,9 @@ hs.loadSpoon("ModalMgr")
 if not hspoon_list then
     hspoon_list = {
         "BingDaily",
-        "ClipShow",
+        -- "ClipShow",
         "WinWin",
-        "KSheet",
+        -- "KSheet",
         "IME",
     }
 end
@@ -41,91 +42,25 @@ end
 ----------------------------------------------------------------------------------------------------
 -- Then we create/register all kinds of modal keybindings environments.
 ----------------------------------------------------------------------------------------------------
--- Register windowHints (Register a keybinding which is NOT modal environment with modal supervisor)
+-- Window move and windowHints
 
-spoon.ModalMgr.supervisor:bind({"alt", "shift"}, "/", 'Show Window Hints', function()
-    spoon.ModalMgr.deactivateAll()
+hs.hotkey.bind({"ctrl", "cmd", "shift"}, "/", function()
     hs.hints.windowHints()
 end)
-spoon.ModalMgr.supervisor:bind({"alt", "shift"}, ".", "Next Window", function()
-    spoon.ModalMgr.deactivateAll()
+hs.hotkey.bind({"ctrl", "cmd", "shift"}, ".", function()
     hs.window.switcher.nextWindow()
 end)
-spoon.ModalMgr.supervisor:bind({"alt", "shift"}, ",", "Previous Window", function()
-    spoon.ModalMgr.deactivateAll()
+hs.hotkey.bind({"ctrl", "cmd", "shift"}, ",", function()
     hs.window.switcher.previousWindow()
 end)
 
-spoon.ModalMgr.supervisor:bind({"alt", "shift"}, "f11", "Yabai Information", function()
-    local a = hs.application.frontmostApplication()
-    local w = hs.window.focusedWindow()
-    local s = w:screen()
-    -- local d = hs.window.desktop()
-
-    local focusedSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[].index'"):sub(1, -2))
-    local firstSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[0].index'"):sub(1, -2))
-    local lastSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[-1].index'"):sub(1, -2))
-
-    local focusedSpaceType = "UNKOWN"
-    if focusedSpaceIndex then
-        focusedSpaceIndex = focusedSpaceIndex - firstSpaceIndex + 1
-        focusedSpaceType = hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[0].type'"):sub(1, -2)
-    else
-        focusedSpaceIndex = "N/A"
-    end
-    local totalSpacesCount = "UNKNOWN"
-    if lastSpaceIndex and lastSpaceIndex then
-        totalSpacesCount = lastSpaceIndex - firstSpaceIndex + 1
-    end
-
-    local focusedWindowType = tonumber(hs.execute("/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq -r '.floating'"):sub(1, -2))
-    focusedWindowType = focusedWindowType == 1 and "floating" or "tiled"
-
-    local isManaged = "UNKNOWN"
-    if focusedSpaceType ~= "UNKNOWN" then
-        isManaged = (focusedWindowType == "tiled" and focusedSpaceType == "bsp") and "YES" or "NO"
-    end
-
-    -- alert style :https://github.com/Hammerspoon/hammerspoon/blob/master/extensions/alert/init.lua
-    hs.alert.show(  "Display  : "..s:name()..
-                    "\nApp      : "..a:name()..
-                    "\nSpace"..
-                    "\n  BSP    : "..(focusedSpaceType == "bsp" and "YES" or "NO")..
-                    "\n  Total  : "..totalSpacesCount..
-                    "\n  Focused: #"..focusedSpaceIndex.." *"..
-                    "\nWindow"..
-                    "\n  Float  : "..(focusedWindowType == "floating" and "YES" or "NO")..
-                    "\n  Managed: "..isManaged.." *",
-                    {
-                        radius = 10,
-                        textFont = "Monaco",
-                        atScreenEdge = 0  -- screen center
-                    }, s, 5)
-end)
-
-----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- appM modal environment
 spoon.ModalMgr:new("appM")
 local cmodal = spoon.ModalMgr.modal_list["appM"]
 cmodal:bind('', 'escape', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
 cmodal:bind('', 'Q', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
 cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
-
-cmodal:bind('cmd', 'C', 'Clipboard', function()
-    -- We need to take action upon hsclipsM_keys is pressed, since pressing another key to showing ClipShow panel is redundant.
-    spoon.ClipShow:toggleShow()
-    -- Need a little trick here. Since the content type of system clipboard may be "URL", in which case we don't need to activate clipshowM.
-    if spoon.ClipShow.canvas:isShowing() then
-        spoon.ModalMgr:deactivate({"appM"})
-        spoon.ModalMgr:activate({"clipshowM"})
-    end
-end)
-
-cmodal:bind("cmd", 'S', 'Cheatsheet', function()
-    spoon.ModalMgr:deactivate({"appM"})
-    spoon.KSheet:show()
-    spoon.ModalMgr:activate({"cheatsheetM"})
-end)
 
 cmodal:bind('cmd', '.', 'Reload HammerSpoon', function()
     spoon.ModalMgr:deactivate({"appM"})
@@ -303,70 +238,217 @@ end
 
 ----------------------------------------------------------------------------------------------------
 -- clipshowM modal environment
-if spoon.ClipShow then
-    spoon.ModalMgr:new("clipshowM")
-    local cmodal = spoon.ModalMgr.modal_list["clipshowM"]
-    cmodal:bind('', 'escape', 'Deactivate clipshowM', function()
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'Q', 'Deactivate clipshowM', function()
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'N', 'Save this Session', function()
-        spoon.ClipShow:saveToSession()
-    end)
-    cmodal:bind('', 'R', 'Restore last Session', function()
-        spoon.ClipShow:restoreLastSession()
-    end)
-    cmodal:bind('', 'B', 'Open in Browser', function()
-        spoon.ClipShow:openInBrowserWithRef()
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'S', 'Search with Bing', function()
-        spoon.ClipShow:openInBrowserWithRef("https://www.bing.com/search?q=")
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'G', 'Search with Google', function()
-        spoon.ClipShow:openInBrowserWithRef("https://www.google.com/search?q=")
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'H', 'Search in Github', function()
-        spoon.ClipShow:openInBrowserWithRef("https://github.com/search?q=")
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'D', 'Save to Desktop', function()
-        spoon.ClipShow:saveToFile()
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-    cmodal:bind('', 'V', 'Edit in VSCode', function()
-        spoon.ClipShow:EditWithCommand("/usr/local/bin/code")
-        spoon.ClipShow:toggleShow()
-        spoon.ModalMgr:deactivate({"clipshowM"})
-    end)
-end
+-- if spoon.ClipShow then
+--     spoon.ModalMgr:new("clipshowM")
+--     local cmodal = spoon.ModalMgr.modal_list["clipshowM"]
+--     cmodal:bind('', 'escape', 'Deactivate clipshowM', function()
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'Q', 'Deactivate clipshowM', function()
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'N', 'Save this Session', function()
+--         spoon.ClipShow:saveToSession()
+--     end)
+--     cmodal:bind('', 'R', 'Restore last Session', function()
+--         spoon.ClipShow:restoreLastSession()
+--     end)
+--     cmodal:bind('', 'B', 'Open in Browser', function()
+--         spoon.ClipShow:openInBrowserWithRef()
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'S', 'Search in Bing', function()
+--         spoon.ClipShow:openInBrowserWithRef("https://www.bing.com/search?q=")
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'G', 'Search in Google', function()
+--         spoon.ClipShow:openInBrowserWithRef("https://www.google.com/search?q=")
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'H', 'Search in Github', function()
+--         spoon.ClipShow:openInBrowserWithRef("https://github.com/search?q=")
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'D', 'Save to Desktop', function()
+--         spoon.ClipShow:saveToFile()
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+--     cmodal:bind('', 'V', 'Edit in VSCode', function()
+--         spoon.ClipShow:EditWithCommand("/usr/local/bin/code")
+--         spoon.ClipShow:toggleShow()
+--         spoon.ModalMgr:deactivate({"clipshowM"})
+--     end)
+-- end
+-- spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, 'C', 'Clipboard', function()
+--     -- We need to take action upon hsclipsM_keys is pressed, since pressing another key to showing ClipShow panel is redundant.
+--     spoon.ClipShow:toggleShow()
+--     -- Need a little trick here. Since the content type of system clipboard may be "URL", in which case we don't need to activate clipshowM.
+--     if spoon.ClipShow.canvas:isShowing() then
+--         spoon.ModalMgr:deactivateAll()
+--         spoon.ModalMgr:activate({"clipshowM"})
+--     end
+-- end)
+
 
 ----------------------------------------------------------------------------------------------------
 -- cheatsheetM modal environment (Because KSheet Spoon is NOT loaded, cheatsheetM will NOT be activated)
-if spoon.KSheet then
-    spoon.ModalMgr:new("cheatsheetM")
-    local cmodal = spoon.ModalMgr.modal_list["cheatsheetM"]
-    cmodal:bind('', 'escape', 'Deactivate cheatsheetM', function()
-        spoon.KSheet:hide()
-        spoon.ModalMgr:deactivate({"cheatsheetM"})
-    end)
-    cmodal:bind('', 'Q', 'Deactivate cheatsheetM', function()
-        spoon.KSheet:hide()
-        spoon.ModalMgr:deactivate({"cheatsheetM"})
-    end)
+-- spoon.ModalMgr:new("cheatsheetM")
+-- spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, 'S', 'Cheatsheet', function()
+--     if spoon.KSheet.isShown == false then
+--         spoon.ModalMgr:deactivateAll()
+--         spoon.KSheet.isShown = true
+--         spoon.ModalMgr:activate({"cheatsheetM"})
+--         spoon.KSheet:show()
+--     else
+--         spoon.KSheet.isShown = false
+--         spoon.KSheet:hide()
+--         spoon.ModalMgr:deactivate({"cheatsheetM"})
+--     end
+-- end)
+-- local cmodal = spoon.ModalMgr.modal_list["cheatsheetM"]
+-- cmodal:bind('', 'escape', 'Deactivate cheatsheetM', function()
+--     spoon.KSheet.isShown = false
+--     spoon.KSheet:hide()
+--     spoon.ModalMgr:deactivate({"cheatsheetM"})
+-- end)
+-- cmodal:bind('', 'Q', 'Deactivate cheatsheetM', function()
+--     spoon.KSheet.isShown = false
+--     spoon.KSheet:hide()
+--     spoon.ModalMgr:deactivate({"cheatsheetM"})
+-- end)
+
+----------------------------------------------------------------------------------------------------
+-- Utility functions for goku / karabiner
+function alfred(text, execute)
+    hs.eventtap.keyStroke({"ctrl", "cmd", "alt", "shift"}, "space")
+    hs.eventtap.keyStrokes(text)
+    if execute then
+        hs.timer.doAfter(0.1, function()
+            hs.eventtap.keyStroke({}, "return")
+        end)
+    end
 end
 
+function safeOpen(bundleId)
+    -- bundleId = "com.apple.systempreferences"  -- test
+    local runningApps = hs.application.get(bundleId)
+    if runningApps then
+        hs.application.launchOrFocusByBundleID(v.id)
+        -- for i, v in ipairs(runningApps) do
+        --     -- v:activate()
+        -- hs.alert.show(v)
+        -- end
+    else
+        hs.alert.show("⚠️[ "..bundleId.." ] is not running")
+    end
+end
+
+function showFocusInfo()
+    local application = hs.application.frontmostApplication()
+    local screen = hs.window.focusedWindow():screen()
+
+    local cmd = [[
+        /usr/local/bin/yabai -m query --spaces --display >| /tmp/hammerspoon_space_info;
+        focused=$(/bin/cat /tmp/hammerspoon_space_info | /usr/local/bin/jq '.[] | select(.focused==1) | .index');
+        first=$(/bin/cat /tmp/hammerspoon_space_info | /usr/local/bin/jq '.[0] | .index');
+        last=$(/bin/cat /tmp/hammerspoon_space_info | /usr/local/bin/jq '.[-1] | .index');
+        echo "$(( $focused - $first + 1 )) / $(( $last - $first + 1 ))"
+    ]]
+    local spaceInfo = hs.execute(cmd):sub(1, -2)
+
+    hs.alert.show(  "Display: "..screen:name()..
+                    "\nApp    : "..application:name()..
+                    "\nSpace  : "..spaceInfo
+                    ,
+                    {
+                        radius = 10,
+                        textFont = "Monaco",
+                        atScreenEdge = 0  -- screen center
+                    }, screen, 2)
+end
+
+function showSpaceWindowInfo()
+    local application = hs.application.frontmostApplication()
+    local screen = hs.window.focusedWindow():screen()
+
+    local focusedWindowType = tonumber(hs.execute("/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq -r '.floating'"):sub(1, -2))
+    focusedWindowType = focusedWindowType == 1 and "floating" or "tiled"
+
+    local focusedSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[].index'"):sub(1, -2))
+    local firstSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[0].index'"):sub(1, -2))
+    local lastSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[-1].index'"):sub(1, -2))
+    local totalSpacesCount = (firstSpaceIndex and lastSpaceIndex) and (lastSpaceIndex - firstSpaceIndex + 1) or "UNKOWN"
+
+    local focusedSpaceType = "UNKOWN"
+    local isManaged = "UNKNOWN"
+    if focusedSpaceIndex then
+        focusedSpaceIndex = focusedSpaceIndex - firstSpaceIndex + 1
+        focusedSpaceType = hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[0].type'"):sub(1, -2)
+        isManaged = (focusedWindowType == "tiled" and focusedSpaceType == "bsp") and "YES" or "NO"
+    else
+        focusedSpaceIndex = "UNKOWN"
+    end
+
+    -- alert style :https://github.com/Hammerspoon/hammerspoon/blob/master/extensions/alert/init.lua
+    hs.alert.show(  "Display: "..screen:name()..
+                    "\nApp    : "..application:name()..
+                    "\nWindow : "..focusedWindowType..
+                    "\nSpace  : "..focusedSpaceType..
+                    "\n         "..focusedSpaceIndex.."/"..totalSpacesCount..
+                    -- "\nSpace   : "..focusedSpaceIndex.." / "..totalSpacesCount..
+                    "\nManaged: "..isManaged,
+                    {
+                        radius = 10,
+                        textFont = "Monaco",
+                        atScreenEdge = 0  -- screen center
+                    }, screen, 2)
+end
+
+function focusScreen(direction)
+    local cwin = hs.window.focusedWindow()
+    if cwin then
+        local otherScreen = cwin:screen():next()
+        if direction == "previous" then
+            otherScreen = cwin:screen():previous()
+        end
+        local windows = hs.fnutils.filter(hs.window.orderedWindows(),
+            hs.fnutils.partial(function(screen, win) return win:screen() == screen end, otherScreen))
+        if #windows > 0 then
+            windows[1]:focus()
+        else
+            hs.window.desktop():focus()
+        end
+    else
+        hs.alert.show("No focused window!")
+    end
+end
+
+function moveToScreen(direction)
+    local cwin = hs.window.focusedWindow()
+    if cwin then
+        local cscreen = cwin:screen()
+        if direction == "previous" then
+            cwin:moveToScreen(cscreen:previous(), false, true)
+        else
+            cwin:moveToScreen(cscreen:next(), false, true)
+        end
+    else
+        hs.alert.show("No focused window!")
+    end
+end
+spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "g", 'Focus Screen', function()
+    focusScreen()
+end)
+spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "f", 'Move to Screen', function()
+    moveToScreen()
+end)
 ----------------------------------------------------------------------------------------------------
 -- Finally we initialize ModalMgr supervisor
 spoon.ModalMgr.supervisor:enter()

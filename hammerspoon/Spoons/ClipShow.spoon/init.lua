@@ -23,16 +23,16 @@ function obj:init()
         type = "segments",
         strokeColor = {hex = "#FFFFFF", alpha = 0.1},
         coordinates = {
-            {x="1%", y="72%"},
-            {x="72%", y="72%"}
+            {x="1%", y="62%"},
+            {x="62%", y="62%"}
         }
     }
     obj.canvas[3] = {
         type = "segments",
         strokeColor = {hex = "#FFFFFF", alpha = 0.1},
         coordinates = {
-            {x="72%", y="1%"},
-            {x="72%", y="99%"}
+            {x="62%", y="1%"},
+            {x="62%", y="99%"}
         }
     }
     obj.canvas[4] = {type = "text", text = ""}
@@ -53,11 +53,13 @@ end
 function obj:adjustCanvas()
     local cscreen = hs.screen.mainScreen()
     local cres = cscreen:fullFrame()
+    local w = cres.w * 0.5
+    local h = cres.h * 0.5
     obj.canvas:frame({
-        x = cres.x+cres.w*0.15/2,
-        y = cres.y+cres.h*0.25/2,
-        w = cres.w*0.85,
-        h = cres.h*0.75
+        x = cres.x + cres.w / 2 - w / 2,
+        y = cres.y + cres.h / 2 - h / 2,
+        w = w,
+        h = h
     })
 end
 
@@ -78,7 +80,7 @@ function obj:fillModalKeys()
                     textSize = 16,
                     textColor = {hex = "#2390FF", alpha = 1},
                     frame = {
-                        x = "74%",
+                        x = "64%",
                         y = tostring(idx * 30 / (obj.canvas:frame().h - 60)),
                         w = "24%",
                         h = tostring(30 / (obj.canvas:frame().h - 60))
@@ -125,7 +127,7 @@ function obj:processClipboard()
                             obj.canvas[4] = {
                                 type = "text",
                                 text = file_content,
-                                textSize = 20,
+                                textSize = 18,
                                 frame = {
                                     x = "1%",
                                     y = "1%",
