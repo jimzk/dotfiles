@@ -69,6 +69,53 @@ spoon.ModalMgr.supervisor:bind({"alt", "shift"}, ",", "Previous Window", functio
     hs.window.switcher.previousWindow()
 end)
 
+spoon.ModalMgr.supervisor:bind({"alt", "shift"}, "f11", "Yabai Information", function()
+    local a = hs.application.frontmostApplication()
+    local w = hs.window.focusedWindow()
+    local s = w:screen()
+    -- local d = hs.window.desktop()
+
+    local focusedSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[].index'"):sub(1, -2))
+    local firstSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[0].index'"):sub(1, -2))
+    local lastSpaceIndex = tonumber(hs.execute("/usr/local/bin/yabai -m query --spaces --display | /usr/local/bin/jq '.[-1].index'"):sub(1, -2))
+
+    local focusedSpaceType = "UNKOWN"
+    if focusedSpaceIndex then
+        focusedSpaceIndex = focusedSpaceIndex - firstSpaceIndex + 1
+        focusedSpaceType = hs.execute("/usr/local/bin/yabai -m query --spaces --window | /usr/local/bin/jq -r '.[0].type'"):sub(1, -2)
+    else
+        focusedSpaceIndex = "N/A"
+    end
+    local totalSpacesCount = "UNKNOWN"
+    if lastSpaceIndex and lastSpaceIndex then
+        totalSpacesCount = lastSpaceIndex - firstSpaceIndex + 1
+    end
+
+    local focusedWindowType = tonumber(hs.execute("/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq -r '.floating'"):sub(1, -2))
+    focusedWindowType = focusedWindowType == 1 and "floating" or "tiled"
+
+    local isManaged = "UNKNOWN"
+    if focusedSpaceType ~= "UNKNOWN" then
+        isManaged = (focusedWindowType == "tiled" and focusedSpaceType == "bsp") and "YES" or "NO"
+    end
+
+    -- alert style :https://github.com/Hammerspoon/hammerspoon/blob/master/extensions/alert/init.lua
+    hs.alert.show(  "Display  : "..s:name()..
+                    "\nApp      : "..a:name()..
+                    "\nSpace"..
+                    "\n  BSP    : "..(focusedSpaceType == "bsp" and "YES" or "NO")..
+                    "\n  Total  : "..totalSpacesCount..
+                    "\n  Focused: #"..focusedSpaceIndex.." *"..
+                    "\nWindow"..
+                    "\n  Float  : "..(focusedWindowType == "floating" and "YES" or "NO")..
+                    "\n  Managed: "..isManaged.." *",
+                    {
+                        radius = 10,
+                        textFont = "Monaco",
+                        atScreenEdge = 0  -- screen center
+                    }, s, 5)
+end)
+
 ----------------------------------------------------------------------------------------------------
 -- appM modal environment
 spoon.ModalMgr:new("appM")
