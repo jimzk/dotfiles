@@ -1,4 +1,5 @@
 #darwin
 formulas="qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize suspicious-package apparency qlvideo"
 brew install $formulas
-brew install koekeishiya/formulae/yabai
+formulas="koekeishiya/formulae/yabai git-delta"
+brew install $formulas

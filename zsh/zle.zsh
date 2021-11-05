@@ -71,6 +71,7 @@ _fzf_navi_shortcut_widget() {
     zle redisplay
 }
 
+GIT_WIDGET_PAGER="delta -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}"
 # ref: https://github.com/junegunn/fzf/wiki/Examples-(completion)#zsh-complete-git-co-for-example
 #      https://junegunn.kr/2016/07/fzf-git
 _fzf_git_branch_widget() {
@@ -82,13 +83,12 @@ _fzf_git_branch_widget() {
     local branches=$(
         eval $COMMAND |
         fzf --query '!remote ' --preview 'git lg {-1} -20' \
-            --height=70% --preview-window='down,70%,wrap,border' \
+            --height=70% --preview-window down,70%,wrap,border \
             --header='^d delete branch' \
             --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(eval $COMMAND)" |
         awk '{print $NF}' |  # get last column
         sed -e 's/remotes\///' |
-        __join_lines
-    )
+        __join_lines)
     __redraw $branches
 }
 
@@ -97,22 +97,27 @@ _fzf_git_file_widget() {
     [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mchanged files\033[0m, not a git repository!" && zle accept-line && return
 
     COMMAND="git -c color.status=always status --short | xargs -L1"
-    PREVIEW_DIFF_INDEX='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | sed 1,4d) || bat --style=plain {-1}'
-    PREVIEW_DIFF_HEAD='git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always HEAD -- {-1} | sed 1,4d) || bat --style=plain {-1}'
+    # We need to use `delta` explicitly while git diff won't use pager here (in fzf preview),
+    # delta fails to extend full width in fzf preview, which can be solve by -w
+    # See https://github.com/dandavison/delta/issues/368
+    PREVIEW_DIFF="git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always -- {-1} | $GIT_WIDGET_PAGER) || bat --style=plain {-1}"
+    PREVIEW_DIFF_HEAD="git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --color=always HEAD -- {-1} | $GIT_WIDGET_PAGER) || bat --style=plain {-1}"
+    PREVIEW_DIFF_CACHED="git ls-files --error-unmatch {-1} >/dev/null 2>&1 && (git diff --cached --color=always -- {-1} | $GIT_WIDGET_PAGER) || bat --style=plain {-1}"
 
     local files=$(git -c color.status=always status --short | xargs -L1)
     [[ -z $files ]] && >&2 printf "\033[0;31merror\033[0m: no git changed files!" && zle accept-line && return
 
     local files=$(
         echo $files |
-        fzf --nth 2.. --preview "$PREVIEW_DIFF_INDEX" \
+        fzf --nth 2.. --preview "$PREVIEW_DIFF" \
             --height=90% --preview-window down,84%,wrap \
-            --header='^a add; ^h vs. HEAD (vs. index by default)' \
+            --header='^a add | ^l unstaged vs. staged (default) | ^h unstaged vs. HEAD | ^s staged vs. HEAD' \
             --bind "ctrl-a:execute(git add {-1} > /dev/null)+reload(eval $COMMAND)" \
-            --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)" |
+            --bind "ctrl-l:preview($PREVIEW_DIFF)" \
+            --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)" \
+            --bind "ctrl-s:preview($PREVIEW_DIFF_CACHED)" |
         awk '{print $NF}' | # get last column
-        __join_lines
-    )
+        __join_lines)
     __redraw $files
 }
 _fzf_git_commit_widget() {
@@ -130,31 +135,31 @@ _fzf_git_commit_widget() {
     COMMAND='git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
     # -p: generat path (changed content)
     PREVIEW_DEFAULT='git show --stat --color {1}'
-    PREVIEW_FULL="$PREVIEW_DEFAULT -p | diff-so-fancy --colors"
+    PREVIEW_FULL="$PREVIEW_DEFAULT -p | $GIT_WIDGET_PAGER"
     # PREVIEW='git show --stat --color --pretty=format:"%Cred%h%Creset%n%B%>(40)%Cgreen(%cr)%C(bold blue) <%an>%Creset%n" {1}'
 
     local commits=$(
         eval $COMMAND |
         fzf --no-cycle --preview "$PREVIEW_FULL" \
-            --height=80% --preview-window down,65% \
+            --height=80% --preview-window down,65%,wrap \
             --header='^f short info' \
             --bind "ctrl-f:preview($PREVIEW_DEFAULT)" |
-        awk '{print $1}' | __join_lines
-    )
+        awk '{print $1}' | __join_lines)
     __redraw $commits
 }
 _fzf_git_file_commit_widget() {
     local error=$(git rev-parse HEAD 2>&1 >/dev/null)
     [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mfile commits\033[0m, not a git repository!" && zle accept-line && return
-    local file=$(fd | fzf --header="Choose the file to show commits history")
+    local file=$(fd | fzf --header="Choose the file to show commits history" \
+                        --preview 'git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" -- {1}' \
+                        --preview-window 70%,wrap)
     [[ -z $file ]] && __redraw && return
     local commits=$(git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" -- $file |
                     fzf --height=80% \
                         --header="Commits History for file <$file>" \
-                        --preview "git show --stat --color {1} -p $file | diff-so-fancy --colors" \
-                        --preview-window 'down,65%' |
-                    awk '{print $1}' | __join_lines
-    )
+                        --preview "git show --stat --color {1} -p $file | $GIT_WIDGET_PAGER" \
+                        --preview-window down,65% |
+                    awk '{print $1}' | __join_lines)
     # local commits=$(git log --format=%h -- $file | fzf --height=80% --preview "git show --stat --color {} -p $file | diff-so-fancy --colors" --preview-window 'down,65%')
 
     __redraw $commits
@@ -168,11 +173,9 @@ _fzf_git_tag_widget() {
 
     local tags=$(
         echo $tags |
-        fzf --preview 'git lg {1} -20' \
-            --height=70% --preview-window='down,70%,wrap,border' |
+        fzf --height=70% --preview 'git lg {1} -20' --preview-window down,70%,wrap,border |
         awk '{print $1}' |  # get first column
-        __join_lines
-    )
+        __join_lines)
     __redraw $tags
 }
 
@@ -185,20 +188,18 @@ _fzf_git_stash_widget() {
 
     local stash=$(
         echo $stashes |
-        fzf --reverse -d: --preview 'git show --color=always {1} | diff-so-fancy --colors | less ' \
+        fzf --reverse -d: --preview "git show --color=always {1} | $GIT_WIDGET_PAGER" \
             --no-multi --reverse \
-            --height=80% --preview-window down,85% \
+            --height=80% --preview-window down,85%,wrap \
             --header='^d drop stash' \
             --bind='ctrl-d:execute(git stash drop {1} > /dev/null)+reload(git stash list)' |
-        cut -d':' -f1
-    )
+        cut -d':' -f1)
     __redraw $stash
 }
 
 _fzf_env_widget() {
     local envs=$(
-        env |
-        sed -e 's/=.*//' |
+        env | sed -e 's/=.*//' |
         fzf --preview "eval echo '\${}'" \
             --preview-window down,25%,wrap |
         awk '{print "$"$1}' |
@@ -226,7 +227,7 @@ _fzf_cht_widget() {
 _fzf_file_widget() {
     local files=$(
         fd --color=always --hidden --follow --exclude .git --maxdepth=1 . |
-        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window 'right,75%,wrap' |
+        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window right,75%,wrap |
         __join_lines)
     # files=$(__trim_string $files)
     __redraw $files

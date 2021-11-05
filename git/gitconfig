@@ -1,8 +1,7 @@
 # This is Git's per-user configuration file.
 [core]
     ignorecase = true
-    # use diff-so-fancy for all diff output
-    pager = diff-so-fancy --colors | less --tab=4 -RF
+    # pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
     editor = vim
     autocrlf = input
@@ -12,6 +11,8 @@
     preloadindex = true
     fscache = true
     quotepath = off
+[diff]
+    colorMoved = default
 [push]
     default = simple
 [alias]
@@ -53,10 +54,6 @@
     linenumber = yellow bold
     match = red
     filename = magenta
-
-# Inclucde local config
-[include]
-    path = ~/.dotfiles/git/gitconfig.local
 [credential]
     # Permanently authenticating with Git repositories
     # https://stackoverflow.com/a/28562712/10134408
@@ -64,5 +61,8 @@
 [log]
     # --date format: https://strftime.org/
     date = format:%Y %m-%d %H:%M:%S %a %z
-[interactive]
-    diffFilter = diff-so-fancy --patch
+
+# Inclucde local config
+[include]
+    path = ~/.dotfiles/git/gitconfig.local
+    path = ~/.dotfiles/git/delta.gitconfig
