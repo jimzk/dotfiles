@@ -64,10 +64,10 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 # +---------+
 # | fzf-tab |
 # +---------+
-zstyle ':fzf-tab:*' switch-group ',' '.'
 zstyle ':fzf-tab:complete:*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=30% --preview-window right,75%,wrap,hidden
 zstyle ':fzf-tab:complete:*' fzf-preview 'less $realpath'
 zstyle ':fzf-tab:complete:*' query-string ''  # empty query string
+zstyle ':fzf-tab:*' switch-group 'F1' 'F2'
 # ref: https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
 FZF_TAB_GROUP_COLORS=(
     $'\033[94m' $'\033[38;5;75m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m' \
@@ -75,6 +75,8 @@ FZF_TAB_GROUP_COLORS=(
     $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
 )
 zstyle ':fzf-tab:*' group-colors $FZF_TAB_GROUP_COLORS
+zstyle ':fzf-tab:*' single-group color
+zstyle ':fzf-tab:*' show-group full
 zstyle ':fzf-tab:*' prefix ''
 
 # environment variables

@@ -49,7 +49,7 @@ FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:b
 --bind 'ctrl-/:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS="$FZF_BASE_OPTS --height=40%"
+export FZF_DEFAULT_OPTS="$FZF_BASE_OPTS --height=60%"
 export CLICOLOR_FORCE=1  # Interpret ANSI color codes from the input (https://github.com/junegunn/fzf/issues/150)
 
 # enable en_US locale with UTF-8 encodings
@@ -70,12 +70,11 @@ export PAGER='less'
 #   -R: not show escape sequences like ESC[, and will convert them into ANSI color
 #   -j2: lines between top and matched text (https://superuser.com/a/257626)
 #   --mouse: enable mouse input
-export LESS='-j2 -iMsFR'
+export LESS='--tabs 4 -j2 -iMsFR'
 # `less <file>` shows information according to file type
 export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 
 # path
-typeset -U PATH  # prevent duplicate path
 _set_path() {
     PATH="/usr/local/bin:/usr/local/sbin:$PATH"
     if [[ $OSTYPE == 'darwin'* ]]; then
@@ -103,6 +102,6 @@ alias rg='rg -L'
 alias exa='exa -Fh --git --time-style=long-iso --sort=name'
 alias python=python3
 export PYTHONIOENCODING='UTF-8'
-export NAVI_CONFIG=$DOTFILES_HOME/config/navi_config.yaml
+export NAVI_CONFIG_YAML="$(cat $XDG_CONFIG_HOME/navi/config.yaml)"
 
 [[ -e $DOTFILES_ZSH_HOME/zshenv.local ]] && source $DOTFILES_ZSH_HOME/zshenv.local

@@ -28,3 +28,8 @@
 	url = https://github.com/romkatv/powerlevel10k.git
 	shallow = true
 	branch = master
+[submodule "config/oh-my-zsh"]
+	path = config/oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh
+	shallow = true
+	branch = master

@@ -10,6 +10,9 @@ set backupdir=$XDG_CACHE_HOME/vim/backup,~/,/tmp
 set undodir=$XDG_CACHE_HOME/vim/undo,~/,/tmp
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
+" `:set runtimepath?` to list all runtime path in vim
+" `vim -V` to show all runtime path at vim starup
+" https://thevaluable.dev/vim-runtime-guide-example/
 set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
 
 " source vim configuration by relative path

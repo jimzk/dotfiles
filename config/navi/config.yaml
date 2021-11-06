@@ -1,14 +1,15 @@
-# https://github.com/denisidoro/navi/blob/master/docs/config_file_example.yaml
+# THIS IS EXPERIMENTAL
+# the config file schema may change at any time
+
 style:
   tag:
     color: cyan # text color. possible values: https://bit.ly/3gloNNI
-    width_percentage: 20 # column width relative to the terminal window
+    width_percentage: 17 # column width relative to the terminal window
     min_width: 20 # minimum column width as number of characters
   comment:
     color: blue
     width_percentage: 50
     min_width: 70
-    # max_width: 65
   snippet:
     color: white
 
@@ -18,10 +19,13 @@ finder:
   # overrides_var: --tac # equivalent to the --fzf-overrides-var option
 
 # cheats:
-  # path: /path/to/some/dir # equivalent to the --path option
+  # paths:
+    # - /path/to/some/dir
+    # - /path/to/another/dir
+  # path: /path/to/some/dir # (DEPRECATED) equivalent to the --path option
 
 # search:
   # tags: git,!checkout # equivalent to the --tag-rules option
 
 shell:
-  command: bash # shell used for shell out. possible values: bash, zsh, dash, ...
+  command: zsh # shell used for shell out. possible values: bash, zsh, dash, ...

@@ -70,8 +70,8 @@ nnoremap U <C-r>
 imap jj <Esc>
 
 " leader key
-let mapleader = ","
-let g:mapleader = ","
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 " cancel search highlight
 map <silent> <leader><cr> :noh<cr>
 " paste
@@ -99,6 +99,13 @@ nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
 
 try
+    " Automatic vim-plug installation
+    " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+    let data_dir = $XDG_CONFIG_HOME . '/vim'
+    if empty(glob(data_dir . '/autoload/plug.vim'))
+        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
     call plug#begin('~/.vim/plugged')
         Plug 'easymotion/vim-easymotion'
         Plug 'tpope/vim-commentary'

@@ -3,7 +3,7 @@
     ignorecase = true
     # pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
-    editor = vim
+	editor = vim
     autocrlf = input
     fileMode = false
     symlinks=true
@@ -12,7 +12,7 @@
     fscache = true
     quotepath = off
 [diff]
-    colorMoved = default
+    # colorMoved = default
 [push]
     default = simple
 [alias]

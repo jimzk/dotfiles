@@ -1,7 +1,10 @@
 # prevent > from overwriting existent file
 # using >| to write forcedly
 set -o noclobber
-unsetopt BEEP  # turn off bell/beep
+# turn off bell/beep
+unsetopt BEEP
+# prevent duplicate path
+typeset -U PATH
 
 # history
 setopt SHARE_HISTORY  # adds history incrementally and share it across sessions
@@ -23,7 +26,7 @@ setopt PUSHD_SILENT         # Do not print the directory stack after pushd or po
 # +-----------+
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
-plugins=(osx autojump timer fancy-ctrl-z alias-tips colored-man-pages)
+plugins=(macos autojump timer fancy-ctrl-z alias-tips colored-man-pages)
 plugins+=(rust rustup cargo zsh-completions)  # additional zsh completions
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -49,6 +52,7 @@ source $DOTFILES_ZSH_HOME/complete.zsh
 
 source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+
 # +----------------+
 # | other settings |
 # +----------------+
