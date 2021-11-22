@@ -1,17 +1,3 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Reference:
-"       https://github.com/amix/vimrc
-"       https://github.com/wklken/k-vim
-"       https://github.com/liuchengxu/space-vim
-"       https://spacevim.org/
-"
-" Help:
-"   搜索对应 Section：/=> key
-"   映射的符号见：:h notation
-"   查看映射是否被占用：:map <leader>p
-"   查看所有的命令：:command
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 "set shellcmdflag=-ci
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -60,7 +46,6 @@ if has("win16") || has("win32")
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI
@@ -129,10 +114,6 @@ set guifont=Monaco:h14
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 上下滚动
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
-
 " 将 meta 设成 Alt 键，只在 GUIVim 下有效。
 if has("gui_macvim")
     set macmeta
@@ -148,28 +129,7 @@ endif
 nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
 
-" 快速添加空行，可配合数字
-" https://github.com/mhinz/vim-galore#quickly-add-empty-lines
-nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
-nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
-
-"set clipboard=unnamed " 使用系统剪切板
-noremap <leader>y "+y
-noremap <leader>Y "+y$
-noremap <leader>d "+d
-noremap <leader>D "+D
-noremap <leader>p "+p
-noremap <leader>P "+P
-inoremap ^"p <Esc>p
-inoremap ^"P <Esc>:pu!<cr>
-inoremap ^p <Esc>"+p
-inoremap ^P <Esc>:pu! +<cr>
-
 "noremap <C-[> <C-t>" 回退
-
-" 打开/关闭 paste mode
-" paste mode 下，vim 去掉粘贴代码的缩进
-map <leader>mp :setlocal paste!<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
@@ -192,39 +152,8 @@ call SetupCommandAlias("bc", "Bclose")
 "command! BcloseA :bufdo bd
 call SetupCommandAlias("bca", "bufdo bd<cr>")
 
-" 切换缓冲区
-nnoremap <tab> <C-S-^>
-nnoremap - :bprevious<cr>
-nnoremap = :bnext<cr>
-nnoremap <left> :bprevious<cr>
-nnoremap <right> :bnext<cr>
-"nnoremap ]b :bnext<cr>
-"nnoremap [b :bprevious<cr>
-"nnoremap <leader>l :bnext<cr>
-"nnoremap <leader>h :bprevious<cr>
-"nnoremap <leader><tab> :bnext<cr>
-"nnoremap <leader><S-tab> :bprevious<cr>
-
 " 切换到缓冲区的行为
 set switchbuf=useopen,usetab
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Windows
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 切换窗口
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" 新建窗口打开 buffer 里的轮换文件
-map <leader>^ <C-W><C-^>
-
-" 只留当前窗口
-"map <leader>on :only<cr>
-
-set splitright " 垂直分屏在右边
-set splitbelow " 水平分屏在下面
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tabs
@@ -235,44 +164,16 @@ call SetupCommandAlias("tc", "tabclose")
 call SetupCommandAlias("to", "tabonly")
 call SetupCommandAlias("tm", "tabmove")
 
-
 " 切换 tab
 if has("gui_running")
     " 在终端vim里不起作用
     map <C-tab> :tabnext<cr>
     map <C-S-tab> :tabprev<cr>
 endif
-map ]t :tabnext<cr>
-map [t :tabnext<cr>
-
-" Toggles between the active and last active tab "
-" The first tab is always 1 "
-let g:last_active_tab = 1
-nmap <Leader>t :execute "tabnext ".g:last_active_tab<CR>
-autocmd TabLeave * let g:last_active_tab = tabpagenr()
-
-" normal模式下<⌘-number>切换到指定tab。
-noremap <D-1> 1gt
-noremap <D-2> 2gt
-noremap <D-3> 3gt
-noremap <D-4> 4gt
-noremap <D-5> 5gt
-noremap <D-6> 6gt
-noremap <D-7> 7gt
-noremap <D-8> 8gt
-noremap <D-9> 9gt
-noremap <D-0> :tablast<cr>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Save and exit
-nmap <leader>s :w<cr>
-imap ^s <Esc>:w<cr>
-" 使用 sudo 对文件进行保存（当没有权限时候很有用）
-command! W w !sudo tee % > /dev/null
-
 " Auto read file if modified
 set autoread
 " 文件未保存时，也不会禁止切换到其他文件
@@ -311,7 +212,7 @@ nnoremap <silent> \ :!open <C-R>%<cr>
 "nnoremap <Leader>a :cclose<CR>
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+" map <leader>cd :cd %:p:h<cr>:pwd<cr>
 "set autochdir " 自动将 CWD 切换为当前缓冲区所在目录
 
 " 重绘当前屏幕
