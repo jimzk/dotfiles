@@ -368,7 +368,7 @@
         ;; open application
         [:q [:open "/Applications/TickTick.app"]]
         [:e [:open "/System/Library/CoreServices/Finder.app"]]
-        [:w [:safeOpen "com.jetbrains.intellij"]]
+        [:w [:safeOpen "com.jetbrains.intellij.ce"]]
         [:r [:open "/Applications/Obsidian.app"]]
         [:t [:safeOpen "ru.keepcoder.Telegram"]]
         [:y [:open "/Applications/网易有道词典.app"]]
