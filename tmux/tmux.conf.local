@@ -434,6 +434,15 @@ set -g @plugin 'laktak/extrakto'
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
 
+set -g @plugin 'dracula/tmux'
+set -g @dracula-border-contrast true
+set -g @dracula-show-flags true
+set -g @dracula-plugins "cpu-usage ram-usage"
+set -g @dracula-network-colors "green dark_gray"
+set -g @dracula-network-bandwidth-colors "light_purple dark_gray"
+set -g @dracula-cpu-usage-colors "pink dark_gray"
+set -g @dracula-ram-usage-colors "orange dark_gray"
+
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
