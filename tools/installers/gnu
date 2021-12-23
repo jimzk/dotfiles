@@ -1,3 +1,0 @@
-#darwin
-packages="coreutils findutils gnutls gnu-sed gnu-which gawk grep gnu-tar gzip watch"
-brew install $packages

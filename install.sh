@@ -94,19 +94,20 @@ setup_tools() {
     [[ $yn != 'y' ]] && echo_info "Won't steup tools" && return
 
     # install formulas
+    brew update
     # basic
-    brew install zsh tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie gh git-extras git-delta yabai yqrashawn/goku/goku
+    brew install zsh tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
     # good tools
     brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf
     # dev tools
-    brew install python shellcheck yarn cmake openssl
+    brew install python shellcheck yarn node cmake openssl
     # gnu replacement
     brew install coreutils findutils gnutls gnu-sed gnu-which gawk grep gnu-tar gzip watch
     # macos utility
     brew install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize suspicious-package apparency qlvideo
 
-    # install casks
-    brew install --cask hammerspoon iina
+    # install nodejs package
+    npm install -g tldr
 }
 
 setup_config() {

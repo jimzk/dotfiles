@@ -1,2 +1,0 @@
-#darwin #linux
-[ -z "$(command -v tldr)" ] && pip3 install thefuck

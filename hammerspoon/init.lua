@@ -1,4 +1,4 @@
-hs.ipc.cliInstall()
+hs.ipc.cliInstall("/opt/homebrew")
 -- http://www.hammerspoon.org/go/#fancyreload
 function reloadConfig(files)
     doReload = false

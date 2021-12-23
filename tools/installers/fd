@@ -1,8 +1,0 @@
-#cmd
-fd
-
-#darwin
-brew install fd
-
-#linux
-sudo apt-get install fd-find

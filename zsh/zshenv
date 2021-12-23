@@ -76,7 +76,7 @@ export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 
 # path
 _set_path() {
-    PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+    PATH="/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:$PATH"
     if [[ $OSTYPE == 'darwin'* ]]; then
         local packages=(gnu-tar gnu-which grep gawk gnu-sed findutils coreutils)
         for i in "${packages[@]}"; do

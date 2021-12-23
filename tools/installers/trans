@@ -1,4 +1,0 @@
-# https://github.com/soimort/translate-shell
-
-#darwin #linux
-[ -z "$(command -v trans)" ] && (cd /usr/bin; curl -O -L -s git.io/trans > /usr/local/bin/trans; chmod +x /usr/local/bin/trans)

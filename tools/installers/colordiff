@@ -1,8 +1,0 @@
-#cmd
-colordiff
-
-#darwin
-brew install colordiff
-
-#linux
-sudo apt-get install colordiff

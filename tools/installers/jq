@@ -1,8 +1,0 @@
-#cmd
-jq
-
-#darwin
-brew install jq
-
-#linux
-sudo apt-get install jq
