@@ -27,7 +27,7 @@ setopt PUSHD_SILENT         # Do not print the directory stack after pushd or po
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
 plugins=(macos autojump timer fancy-ctrl-z alias-tips colored-man-pages)
-plugins+=(rust rustup cargo zsh-completions)  # additional zsh completions
+plugins+=(rust zsh-completions)  # additional zsh completions
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 _set_path  # solve PATH order mess by /etc/zprofile
