@@ -14,6 +14,8 @@ config/thefuck
 config/configstore
 config/htop
 config/iterm2
+config/nnn
+config/clash
 
 # Compiled Python files
 *.pyc

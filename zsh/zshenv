@@ -98,10 +98,9 @@ fi
 export EDITOR
 
 # other environment variables
-alias rg='rg -L'
-alias exa='exa -Fh --git --time-style=long-iso --sort=name'
-alias python=python3
 export PYTHONIOENCODING='UTF-8'
 export NAVI_CONFIG_YAML="$(cat $XDG_CONFIG_HOME/navi/config.yaml)"
+export NNN_FIFO=/tmp/nnn.fifo
+export NNN_PLUG='f:finder;o:fzopen;c:fzcd;d:diffs;i:imgview;p:fzplug;v:preview-tui'
 
 [[ -e $DOTFILES_ZSH_HOME/zshenv.local ]] && source $DOTFILES_ZSH_HOME/zshenv.local

@@ -98,7 +98,7 @@ setup_tools() {
     # basic
     brew install zsh tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
     # good tools
-    brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf
+    brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf nnn
     # dev tools
     brew install python shellcheck yarn node cmake openssl
     # gnu replacement
