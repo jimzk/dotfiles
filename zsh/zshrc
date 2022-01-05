@@ -30,7 +30,6 @@ plugins=(macos autojump timer fancy-ctrl-z alias-tips colored-man-pages)
 plugins+=(rust zsh-completions)  # additional zsh completions
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-_set_path  # solve PATH order mess by /etc/zprofile
 
 # +------------+
 # | completion |
@@ -69,6 +68,8 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 eval $(thefuck --alias)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# Load zshenv again to reoder PATH order messed by /etc/zprofile
+source $DOTFILES_ZSH_HOME/zshenv
 source $DOTFILES_ZSH_HOME/zle.zsh
 source $DOTFILES_ZSH_HOME/alias.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
