@@ -191,50 +191,8 @@ nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
+" => Helper function
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-try
-    " Automatic vim-plug installation
-    " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
-    let data_dir = $XDG_CONFIG_HOME . '/vim'
-    if empty(glob(data_dir . '/autoload/plug.vim'))
-        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    endif
-    call plug#begin('~/.vim/plugged')
-        Plug 'easymotion/vim-easymotion'
-        Plug 'tpope/vim-commentary'
-        Plug 'tpope/vim-surround'
-        Plug 'machakann/vim-highlightedyank'
-        Plug 'michaeljsmith/vim-indent-object'
-        Plug 'wellle/targets.vim'
-        Plug 'kana/vim-textobj-user'
-        Plug 'kana/vim-textobj-entire'
-        Plug 'terryma/vim-expand-region'
-        Plug 'terryma/vim-multiple-cursors'
-        Plug 'dbakker/vim-paragraph-motion'
-        Plug 'tommcdo/vim-exchange'
-    call plug#end()
-catch
-endtry
-
-try
-    runtime plugin.d/easymotion.vim
-    " targets.vim
-    let g:targets_aiAI = 'aIAi'
-    autocmd User targets#mappings#user call targets#mappings#extend({
-    \ 'a': {'argument': [{'o': '[({[]', 'c': '[]})]', 's': ','}]},
-    \ 'b': {'pair': [{'o':'(', 'c':')'}]}
-    \ })
-    " expand-region
-    map ak <Plug>(expand_region_expand)
-    map aj <Plug>(expand_region_shrink)
-    let g:expand_region_use_select_mode = 0
-    " multiple-cursors
-    let g:multi_cursor_select_all_key = 'g<C-n>'
-catch
-endtry
-
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"

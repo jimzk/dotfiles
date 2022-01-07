@@ -15,11 +15,10 @@ set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 " https://thevaluable.dev/vim-runtime-guide-example/
 set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
 
-" source vim configuration by relative path
+" runtime to load vim configuration by relative path
 runtime minimal.vim
 runtime basic.vim  " OR source $XDG_CONFIG_HOME/vim/basic.vim
-try
+if !has('ide')  " if not in ideavim
     runtime plugin.vim
-    "runtime extended.vim
-catch
-endtry
+    " runtime extended.vimm
+endif

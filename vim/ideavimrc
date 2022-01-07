@@ -11,3 +11,6 @@ set exchange
 
 source ~/.dotfiles/vim/minimal.vim
 source ~/.dotfiles/vim/plugin.d/easymotion.vim
+source ~/.dotfiles/vim/plugin.d/targets.vim
+source ~/.dotfiles/vim/plugin.d/multiple-cursors.vim
+source ~/.dotfiles/vim/plugin.d/expand-region.vim
