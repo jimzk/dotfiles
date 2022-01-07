@@ -378,7 +378,7 @@
         [:k [:open "/Applications/Visual Studio Code.app"]]
         [:z [:safeOpen "com.tencent.xinWeChat"]]
         [:x [:safeOpen "com.jetbrains.goland"]]
-        [:c [:open "/Applications/Discord.app"]]
+        [:c [:safeOpen "com.hnc.Discord"]]
         [:b [:open "/Applications/Bitwarden.app"]]
         [:n [:open "/System/Applications/Notes.app/"]]
       ]

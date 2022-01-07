@@ -33,6 +33,7 @@ export ZSH_PLUGINS_ALIAS_TIPS_EXCLUDES="l gti g"
 alias cls='clear'
 
 # ls
+alias exa='exa -Fh --git --time-style=long-iso --sort=name'
 alias gls='gls --color=tty -F'
 alias ls='exa'
 alias l='exa'
@@ -43,13 +44,13 @@ alias lla='exa -alg'
 alias ld='exa -D'
 alias lld='exa -Dlg'
 # only list hidden files (dotfiles)
-alias l.='_f(){ (cd ${1:-.}; exa -ad .*)}; _f'
-alias ll.='_f(){ (cd ${1:-.}; exa -algd .*)}; _f'
+alias l.='_f(){ (cd ${@:-.}; exa -ad .*)}; _f'
+alias ll.='_f(){ (cd ${@:-.}; exa -algd .*)}; _f'
 # only list symlinks
-alias llsym='_f(){ (cd ${1:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -algd $_fs) }; _f'
+alias lls='_f(){ (cd ${@:-.}; _fs=( $(find . -maxdepth 1 -type l | xargs -I _ basename _) ); [ -n "$_fs" ] && exa -algd $_fs) }; _f'
 
 # cd
-alias cdl='_f(){ cd $1; ls }; _f'  # cd and list
+alias cdl='_f(){ cd $@; ls }; _f'  # cd and list
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
@@ -76,7 +77,8 @@ alias 'ps?'='_quick_grep "ps aux" $@'
 alias 'path?'='_quick_grep "_list_path" $@'
 alias 'bin?'='_quick_grep "_list_my_bin" $@'
 alias 'bindkey?'='_quick_grep "bindkey" $@'
-alias 'brew-list?'='_quick_grep "_brew_list" $@'
+alias 'key?'='_quick_grep "bindkey" $@'
+alias 'brew?'='_quick_grep "_brew_list" $@'
 alias 'zstyle?'='_quick_grep "zstyle -L" $@'
 
 # git
@@ -103,44 +105,74 @@ alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && r
 alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; gc! }; _f'
 alias g='git'
 
-# tmux
-alias tn='tmux new -A -s main'
-alias ta='tmux attach'
-alias tl='tmux list-session'
+# show information
+alias shellpid='echo $$'
+alias shellname='echo $0'
+alias shell='echo $SHELL'
+alias sysinfo='echo "[System]: $(uname -a)" && echo "[Uptime]: $(uptime)" && echo "[User]: $(whoami)" '
+alias systeminfo=sysinfo
+#alias ip='curl -s "ipinfo.io" | jq'
+alias user='whoami'
+alias userall='less /etc/passwd'
+alias lspermission="stat -c '%n %U:%G-%a' * | column -t"
+alias ip='curl -s "cip.cc"'
+alias wtf='_wtf'
 
 # more efficient
 alias 'vim$'="vim -c \"normal '0\""  # open last file
 alias ':q'='exit'
+alias now='date +"%Y-%m-%d %T"'
+
+# Shorter
+alias o="open"
+alias c="clear"
 alias h="fc -l"
-alias srcz='source ~/.zshrc'
+alias e="exit"
+alias n='nnn -T d -io -P v'
+alias d='_f(){ du -sh $@ | sort -h }; _f'
+alias 'd*'='_f(){ du -sh * | sort -h }; _f'
+alias trn='tr -d "\n"'
+alias tn='tmux new -A -s main'
+alias ta='tmux attach'
+alias tl='tmux list-session'
 
-# show information
-#alias 'info-user'="stat -c '%n %U:%G-%a' *"
-alias 'info-shell-pid'='echo $$'
-alias 'info-shell-name'='echo $0'
-alias 'info-shell'='echo $SHELL'
-alias 'info-machine'='echo "[system]: $(uname -a)" && echo "[uptime]: $(uptime)" && echo "[user]: $(whoami)" '
-alias 'info-ip'='curl -s "cip.cc"'
-#alias ip='curl -s "ipinfo.io" | jq'
-alias 'info-cli'='_wtf'
-alias wtf='_wtf'
-alias 'info-user'='whoami'
-alias 'info-user-all'='less /etc/passwd'
-
-# utility
-alias o=open
-alias app='open "/Applications/$(exa /Applications | fzf)"'
+# Replace default
+alias rg='rg -L'
+# tree: -N show Chinese characters, -C print with color, -a show hidden files, -I exclude files, --dirsfirst show directory first
+alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FR }; _f'
 alias man='colored man'  # supported by zsh plugin colored-man-pages
+alias diff='colordiff'  # diff with color
+alias ping='ping -c 5'  # Stop after sending count ECHO_REQUEST packets #
+alias curl='curl -SL'  # Show error && redirect
 alias ipy=ipython
 alias pip=pip3
-# -N show Chinese characters, -C print with color, -a show hidden files, -I exclude files, --dirsfirst show directory first
-alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FR }; _f'
+alias python=python3
+alias py=python3
+
+# Safety alias
+# do not delete & prompt if deleting more than 3 files at a time
+alias rm='rm -I --preserve-root'
+# prompt before overwrite
+alias mv='mv -i -v'
+alias cp='cp -i -v'
+alias ln='ln -i -v'
+# Parenting changing perms on / #
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
+# Others
+alias app='open "/Applications/$(exa /Applications | fzf)"'
 alias cleanup='brew cleanup && pip cache purge'
-alias diff='colordiff'    # diff with color
 alias -s md='open -a Typora'    # open *.md with Typora by default
 
-alias rr="hs -c 'hs.reload()' && goku; echo 'HammerSpoon, goku are reloaded!'"
-alias rz="echo 'Reload zsh!'; exec zsh"
+# alias loadzsh='source ~/.zshrc'
+alias loadzsh="echo 'Zsh is reloaded!'; exec zsh"
+alias loadhammerspoon="hs -c 'hs.reload()'; echo 'HammerSpoon is reloaded!'"
+alias loadgoku="goku; echo 'Goku is reloaded!'"
+alias loadall="loadhammerspoon; loadgoku; loadzsh"
+alias configdot="code ~/.dotfiles"
+alias configssh="code ~/.ssh/config"
 
 # helper functions
 function _quick_grep {
