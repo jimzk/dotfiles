@@ -165,6 +165,10 @@ alias chgrp='chgrp --preserve-root'
 alias app='open "/Applications/$(exa /Applications | fzf)"'
 alias cleanup='brew cleanup && pip cache purge'
 alias -s md='open -a Typora'    # open *.md with Typora by default
+# Blog
+alias bp='hugo server --source $BLOG_HOME -e production --disableFastRender -F'
+alias bn='_f() { hugo new -s $BLOG_HOME posts/$1.md; open $BLOG_HOME/content/posts/$1.md; }; _f'
+alias bb='code $BLOG_HOME'
 
 # alias loadzsh='source ~/.zshrc'
 alias loadzsh="echo 'Zsh is reloaded!'; exec zsh"
