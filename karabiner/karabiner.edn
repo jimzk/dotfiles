@@ -358,7 +358,7 @@
 
 
         [:1 :!CTOSspacebar]  ;; alfred
-        [:2 [:!!5]]  ;; add Tickti task
+        [:2 [:!!5]]  ;; add Things3 task
         ; show clipboard (supported by Alfred)
         [:3 :!OSv]
         ; search file via alfred
@@ -366,7 +366,7 @@
         [:4 :!CTS4] ;; Screenshot
 
         ;; open application
-        [:q [:open "/Applications/TickTick.app"]]
+        [:q [:open "/Applications/Things3.app"]]
         [:e [:open "/System/Library/CoreServices/Finder.app"]]
         [:w [:safeOpen "com.jetbrains.intellij.ce"]]
         [:r [:open "/Applications/Obsidian.app"]]
@@ -453,7 +453,7 @@
         ;; frequently used commands
         [:1 [:!Tu :l :l :return_or_enter]]
         [:2 [:!Tu :g :s :return_or_enter]]
-        [:0 [:!Tu :r :r :return_or_enter]]
+        [:0 [:!Tu :l :o :a :d :a :l :l :return_or_enter]]
         ;; zle widget
         [:c [:!Tg :c]] ; command cheatsheet
         [:g [:!Tg :g]] ; shortcut cheatsheet
