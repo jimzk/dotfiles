@@ -39,6 +39,9 @@ prepare() {
     [[ ! -e $DOTFILES_HOME ]] && git clone https://github.com/fjchen7/dotfiles "$DOTFILES_HOME"
     export XDG_CONFIG_HOME=$HOME/.config
     [[ ! -d $XDG_CONFIG_HOME ]] && mkdir -p "$XDG_CONFIG_HOME"
+    # soft link oh-my-zsh custom configuration
+    rm -rf $DOTFILES_HOME/config/oh-my-zsh/custom
+    ln -sf $DOTFILES_ZSH_HOME/custom $DOTFILES_HOME/config/oh-my-zsh/custom
 }
 
 setup_zsh() {
