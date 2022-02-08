@@ -140,6 +140,9 @@ alias tl='tmux list-session'
 alias rg='rg -L'
 # tree: -N show Chinese characters, -C print with color, -a show hidden files, -I exclude files, --dirsfirst show directory first
 alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --dirsfirst "$@" | less -FR }; _f'
+alias tree1='tree -L 1'
+alias tree2='tree -L 2'
+alias tree3='tree -L 3'
 alias man='colored man'  # supported by zsh plugin colored-man-pages
 alias diff='colordiff'  # diff with color
 alias ping='ping -c 5'  # Stop after sending count ECHO_REQUEST packets #
