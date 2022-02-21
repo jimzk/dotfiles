@@ -16,6 +16,7 @@ config/htop
 config/iterm2
 config/nnn
 config/clash
+config/dlv
 
 # Compiled Python files
 *.pyc
