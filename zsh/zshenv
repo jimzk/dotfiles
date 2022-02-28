@@ -98,6 +98,9 @@ else
 fi
 export EDITOR
 
+# https://news.ycombinator.com/item?id=30483417
+unset NO_COLOR
+
 # other environment variables
 export PYTHONIOENCODING='UTF-8'
 export NAVI_CONFIG_YAML="$(cat $XDG_CONFIG_HOME/navi/config.yaml)"
