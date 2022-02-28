@@ -1,0 +1,29 @@
+### +-----------------------+
+### | Subject               |
+### +------+----------------+
+### |      |  paragraph 1   |
+### | Body +-+--------+-----+
+### |      |  paragraph 2   |
+### |      +-+--------+-----+
+### |      |  paragraph ... |
+### +------+-+--------+-----+
+### | Footer                |
+### +-----------------------+
+###
+### [How to Write a Git Commit Message]
+### - Separate subject, body (each paragraphs), footer by blank line.
+### - Subject explains *how*
+###     - Limit to 50 characters.
+###     - Capitalize first letter.
+###     - Do not end with period.
+###     - Use imperative mood.
+### - Body explains *what* and *why* (not *how*) in detail
+###     - wrap manually at 72 characters.
+### - Footer example
+###     - PR Close: #123
+###     - See Also: #456 #789 http://example.com/
+###
+### [Reference]
+###     - https://chris.beams.io/posts/git-commit/
+###     - https://gist.github.com/lisawolderiksen/a7b99d94c92c6671181611be1641c733
+###     - https://nitayneeman.com/posts/understanding-semantic-commit-messages-using-git-and-angular/

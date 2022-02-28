@@ -87,10 +87,14 @@ alias gss='git status -sb'
 alias gsh='git stash'
 alias gshp='git stash push -m'
 alias ga='git add'
-alias gc='git commit -v'
+alias gaa='git add -A'
+alias gc='git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) -v'
 alias gc!='git commit --amend -v'
 alias gc!!='git commit --amend -v -C HEAD'
-alias gco='git checkout'
+alias gk='git checkout'
+alias gk-='git checkout -'
+# checkout branch
+alias gkb='git checkout $(git branch --sort=-committerdate --color=always -a | fzf --query "!remote " --preview "git lg {-1} -20" --height=70% --preview-window down,70%,wrap,border --header="^d delete branch" --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(git branch --sort=-committerdate --color=always -a)" | awk "{print $NF}" |  sed -e "s/remotes\///" -e "s/*//")'
 alias gp='git push'
 alias gp!='git push -f'
 alias gb='git branch'
@@ -101,21 +105,22 @@ alias glgv='git lgv'
 alias glgvv='git lgvv'
 alias gr='git rebase'
 alias gri='git rebase -i'
-alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; git commit -t <(echo "$(git log --format=%B -n 1 HEAD)" ) }; _f'
+alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) }; _f'
+alias gac.='gac .'
 alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; gc! }; _f'
 alias g='git'
 
 # show information
-alias shellpid='echo $$'
-alias shellname='echo $0'
-alias shell='echo $SHELL'
-alias sysinfo='echo "[System]: $(uname -a)" && echo "[Uptime]: $(uptime)" && echo "[User]: $(whoami)" '
-alias systeminfo=sysinfo
+alias @shell-pid='echo $$'
+alias @shell-name='echo $0'
+alias @shell='echo $SHELL'
+# alias @sysinfo=
+alias @system='echo "[System]: $(uname -a)" && echo "[Uptime]: $(uptime)" && echo "[User]: $(whoami)" '
 #alias ip='curl -s "ipinfo.io" | jq'
-alias user='whoami'
-alias userall='less /etc/passwd'
-alias lspermission="stat -c '%n %U:%G-%a' * | column -t"
-alias ip='curl -s "cip.cc"'
+alias @user='whoami'
+alias @user-all='less /etc/passwd'
+alias @file-permission="stat -c '%n %U:%G-%a' * | column -t"
+alias @ip='curl -s "cip.cc"'
 alias wtf='_wtf'
 
 # more efficient
@@ -178,8 +183,8 @@ alias loadzsh="echo 'Zsh is reloaded!'; exec zsh"
 alias loadhammerspoon="hs -c 'hs.reload()'; echo 'HammerSpoon is reloaded!'"
 alias loadgoku="goku; echo 'Goku is reloaded!'"
 alias loadall="loadhammerspoon; loadgoku; loadzsh"
-alias configdot="code ~/.dotfiles"
-alias configssh="code ~/.ssh/config"
+alias "]dot"="code ~/.dotfiles"
+alias "]ssh-config"="code ~/.ssh/config"
 
 # helper functions
 function _quick_grep {

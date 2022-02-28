@@ -66,3 +66,5 @@
 [include]
     path = ~/.dotfiles/git/gitconfig.local
     path = ~/.dotfiles/git/delta.gitconfig
+[commit]
+	template = ~/.dotfiles/git/gitmessage
