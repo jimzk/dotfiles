@@ -23,11 +23,6 @@
 	url = https://github.com/zsh-users/zsh-completions
 	shallow = true
 	branch = master
-[submodule "zsh/custom/themes/powerlevel10k"]
-	path = zsh/custom/themes/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
-	shallow = true
-	branch = master
 [submodule "config/oh-my-zsh"]
 	path = config/oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh
