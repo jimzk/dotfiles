@@ -170,21 +170,22 @@ alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
 # Others
-alias app='open "/Applications/$(exa /Applications | fzf)"'
 alias cleanup='brew cleanup && pip cache purge'
 alias -s md='open -a Typora'    # open *.md with Typora by default
 # Blog
-alias bp='hugo server --source $BLOG_HOME -e production --disableFastRender -F'
-alias bn='_f() { hugo new -s $BLOG_HOME posts/$1.md; open $BLOG_HOME/content/posts/$1.md; }; _f'
-alias bb='code $BLOG_HOME'
+alias blog-deploy='hugo server --source $BLOG_HOME -e production --disableFastRender -F'
+alias blog-new='_f() { hugo new -s $BLOG_HOME posts/$1.md; open $BLOG_HOME/content/posts/$1.md; }; _f'
 
 # alias loadzsh='source ~/.zshrc'
 alias loadzsh="echo 'Zsh is reloaded!'; exec zsh"
 alias loadhammerspoon="hs -c 'hs.reload()'; echo 'HammerSpoon is reloaded!'"
 alias loadgoku="goku; echo 'Goku is reloaded!'"
 alias loadall="loadhammerspoon; loadgoku; loadzsh"
+alias "]app"='open "/Applications/$(exa /Applications | fzf)"'
+alias "]blog"='code $BLOG_HOME'
 alias "]dot"="code ~/.dotfiles"
-alias "]ssh-config"="code ~/.ssh/config"
+alias "]ssh"="code ~/.ssh"
+alias "]starship"="rich $XDG_CONFIG_HOME/starship.toml"
 
 # helper functions
 function _quick_grep {

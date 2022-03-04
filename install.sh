@@ -99,7 +99,7 @@ setup_tools() {
     # install formulas
     brew update
     # basic
-    brew install zsh tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie procs gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
+    brew install zsh starship tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie procs gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
     # good tools
     brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf nnn
     # dev tools

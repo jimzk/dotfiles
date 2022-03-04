@@ -1,0 +1,32 @@
+# https://starship.rs/config
+continuation_prompt = "[▶ ](bold green)"
+
+[directory]
+truncation_length = 4
+
+[git_branch]
+always_show_remote = true
+format = "on [$branch]($style) "
+
+# https://starship.rs/config/#git-status
+[git_status]
+ahead = "[△${count}](bold green)"
+behind = "[▽${count}](bold red)"
+diverged = "[△${ahead_count}](bold green)[▽${behind_count}](bold red)"
+up_to_date = "[✓](bold green)"
+untracked = "[?${count}](bold #EEEEEE)"
+modified = "[!${count}](bold fg:#FFF89A)"
+staged = "[+${count}](bold fg:#9ADCFF)"
+stashed = "[•${count}](bold fg:#A2DBFA)"
+renamed = "[»${count}](bold fg:#FFF89A)"
+deleted = "[✘${count}](bold fg:#FFF89A)"
+format = '($stashed$untracked$conflicted$deleted$renamed$modified$staged )([\[$ahead_behind\]]($style) )'
+style = "bold #bababa"
+
+[git_metrics]
+format = '([+$added]($added_style)/[-$deleted]($deleted_style) )'
+disabled = false
+
+[cmd_duration]
+show_notifications = true
+min_time_to_notify = 120_000

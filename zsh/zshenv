@@ -14,7 +14,6 @@ export XDG_STATE_HOME=$HOME/.local/state
 # zsh
 export ZSH=$XDG_CONFIG_HOME/oh-my-zsh
 export ZSH_CUSTOM=$ZSH/custom
-export ZSH_THEME=$ZSH/themes
 
 # dotfiles
 export DOTFILES_HOME=$HOME/.dotfiles
