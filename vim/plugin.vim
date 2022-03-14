@@ -6,7 +6,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin($XDG_CONFIG_HOME . '/vim/plugged')
     " Basic
     Plug 'easymotion/vim-easymotion'
     Plug 'tpope/vim-commentary'
