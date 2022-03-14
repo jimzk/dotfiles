@@ -132,7 +132,7 @@ function obj:centerCursor()
     local cscreen = cwin:screen()
     local cres = cscreen:fullFrame()
     if cwin then
-        -- Center the cursor one the focused window
+        -- Center the cursor on the focused window
         hs.mouse.setAbsolutePosition({x=wf.x+wf.w/2, y=wf.y+wf.h/2})
     else
         -- Center the cursor on the screen

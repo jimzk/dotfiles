@@ -445,6 +445,24 @@ end)
 spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "f", 'Move to Screen', function()
     moveToScreen()
 end)
+
+function rightClickFocusedWindow()
+    local cwin = hs.window.focusedWindow()
+    local wf = cwin:frame()
+    local m = hs.mouse.absolutePosition()
+    if cwin then
+        if m.x > wf.x and m.x < (wf.x + wf.w) and m.y > wf.y and m.y < (wf.y + wf.h) then
+            -- Right click on current position
+            hs.eventtap.rightClick({x=m.x, y=m.y})
+        else
+            -- Center the cursor on the focused window and right click
+            hs.eventtap.rightClick({x=wf.x+wf.w/2, y=wf.y+wf.h/2})
+        end
+    else
+        -- Right click on current position
+        hs.eventtap.rightClick({x=m.x, y=m.y})
+    end
+end
 ----------------------------------------------------------------------------------------------------
 -- Finally we initialize ModalMgr supervisor
 spoon.ModalMgr.supervisor:enter()
