@@ -37,12 +37,6 @@
     :Discord ["^com\\.hnc\\.Discord$"]
     :Telegram ["^ru\\.keepcoder\\.Telegram$"]
 
-    :Obsidian ["^md\\.obsidian$"]
-    :Ticktick ["^com\\.TickTick\\.task\\.mac$"]
-    :Bitwarden ["^com\\.bitwarden\\.desktop$"]
-    :Youdao ["^com\\.youdao\\.YoudaoDict$"]
-    :PDFExpert ["^com\\.readdle\\.PDFExpert-Mac$"]
-
     :Karabiner-Elements ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
     :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
     :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
@@ -98,10 +92,8 @@
     :window-management-mode {:key :w}
     :terminal-mode {:key :j}
 
-    :config-mode {:key :s}
-    :dev-mode {:key :v}
+    :config-mode {:key :e}
     :browser-mode {:key :b}
-    :number-sign-mode {:key :m}
   }
   :simlayer-threshold 250
 
@@ -115,24 +107,26 @@
         ;; [[:equal_sign :delete_or_backspace] :delete_forward]
       ]
     }
-    {:des "caps_lock (map to QWER)"
+    {:des "hyperkey (caps_lock) (QWER)"
       :rules [
-        ;; QWER is hyper key
         ;; Esc
         [:!QWERopen_bracket :escape]
         [:!QWERq :escape]
         ;; space -> enter
         [:!QWERspacebar :return_or_enter]
         [:!QWERCspacebar :!Creturn_or_enter]
+        [:!QWERTspacebar :!Treturn_or_enter]
         [:!QWEROspacebar :!Oreturn_or_enter]
         [:!QWERSspacebar :!Sreturn_or_enter]
         ;; delete -> delete_forward
         [:!QWERdelete_or_backspace :delete_forward]
         ;; - -> home
         [:!QWERhyphen :!Cleft_arrow :WeChat]
+        [:!QWERhyphen :!Ta :terminal]
         [:!QWERhyphen :home]
         ;; = -> end
         [:!QWERequal_sign :!Cright_arrow :WeChat]
+        [:!QWERequal_sign :!Te :terminal]
         [:!QWERequal_sign :end]
         ;; better type
         ;; [:!QWERhyphen :!Shyphen]
@@ -185,35 +179,49 @@
         [:!QWEROSl :!OSright_arrow]
         [:!QWEROSk :!OSup_arrow]
 
-        ;; focus to menu bar
-        [:!QWERm :!Tf2]
         ;; right click menu on focused window
-        [:!QWERreturn_or_enter [:hs "rightClickFocusedWindow()"]]
-        ;; focus to docker
-        [:!QWERd :!Tf3]
+        [:!QWERm [:hs "rightClickFocusedWindow()"]]
+        ;; system applicaton management
+        [:!QWERa [:!Tf2 :down_arrow :right_arrow :right_arrow]]  ;; focus to menu bar
+        [:!QWERs :!!f4] ;; Notification Center
+        [:!QWERd :!Tf3]  ;; focus to docker
+        [:!QWERCd :!CTSf2]  ;; hide/show Dock
 
-        ;; for command line
-        ;; caps_lock + ？ -> ctrl + ?
-        [:!QWERw :!Tw]  ;; delete last word
-        [:!QWERe :!Te]  ;; move to end
-        [:!QWERr :!Tr]  ;; history
-        ;; [:!QWERt :!Tt]
-        [:!QWERu :!Tu]  ;; clear to start
-        ;; [:!QWERi :!Ti]
-        [:!QWERo :!To]  ;; execute suggestion
-        ;; [:!QWERp :!Tp]
-        [:!QWERa :!Ta]  ;; move to start
-        ;; [:!QWERs :!Ts]
-        ;; [:!QWERd :!Td]
-        ;; [:!QWERf :!Tf]
-        ;; [:!QWERg :!Tg]
-        ;; [:!QWERz :!Tz]
-        ;; [:!QWERx :!Tx]
-        [:!QWERc :!Tc]  ;; interruption
-        ;; [:!QWERv :!Tv]
-        ;; [:!QWERb :!Tb]
-        ;; [:!QWERn :!Tn]
-        ;; [:!QWERm :!Tm]
+        ;; system control
+        ;; volume
+        [:!QWERsemicolon :volume_decrement]
+        [:!QWERquote :volume_increment]
+        [:!QWERreturn_or_enter :mute]
+        ;; play
+        [:!QWERopen_bracket :vk_consumer_previous]
+        [:!QWERclose_bracket :vk_consumer_next]
+        [:!QWERbackslash :play_or_pause]
+        ;; brightness
+        [:!QWERcomma :display_brightness_decrement]
+        [:!QWERperiod :display_brightness_increment]
+
+        ;; ;; for command line
+        ;; ;; caps_lock + ？ -> ctrl + ?
+        ;; [:!QWERw :!Tw]  ;; delete last word
+        ;; [:!QWERe :!Te]  ;; move to end
+        ;; [:!QWERr :!Tr]  ;; history
+        ;; ;; [:!QWERt :!Tt]
+        ;; [:!QWERu :!Tu]  ;; clear to start
+        ;; ;; [:!QWERi :!Ti]
+        ;; [:!QWERo :!To]  ;; execute suggestion
+        ;; ;; [:!QWERp :!Tp]
+        ;; [:!QWERa :!Ta]  ;; move to start
+        ;; ;; [:!QWERs :!Ts]
+        ;; ;; [:!QWERd :!Td]
+        ;; ;; [:!QWERf :!Tf]
+        ;; ;; [:!QWERg :!Tg]
+        ;; ;; [:!QWERz :!Tz]
+        ;; ;; [:!QWERx :!Tx]
+        ;; [:!QWERc :!Tc]  ;; interruption
+        ;; ;; [:!QWERv :!Tv]
+        ;; ;; [:!QWERb :!Tb]
+        ;; ;; [:!QWERn :!Tn]
+        ;; ;; [:!QWERm :!Tm]
       ]
     }
     {:des "mouse move (a)"
@@ -239,12 +247,13 @@
         [:!Ou {:mkey {:vwheel -16}}]
         [:!Od {:mkey {:vwheel 16}}]
         ;; left click
-        [:spacebar :button1]
-        [:!Cspacebar {:pkey :button1 :modi :left_command}]
-        [:!Sspacebar {:pkey :button1 :modi :left_shift}]
-        [:!Ospacebar {:pkey :button1 :modi :left_option}]
+        [:return_or_enter :button1]
+        [:!Creturn_or_enter {:pkey :button1 :modi :left_command}]
+        [:!Treturn_or_enter {:pkey :button1 :modi :left_control}]
+        [:!Oreturn_or_enter {:pkey :button1 :modi :left_option}]
+        [:!Sreturn_or_enter {:pkey :button1 :modi :left_shift}]
         ;; right click
-        [:return_or_enter :button2]
+        [:spacebar :button2]
         [:q :escape]
       ]
     }
@@ -252,49 +261,50 @@
       :rules [:window-management-mode
         ;; :resize-window is defined in :templates
         ;; 1/2 screen
-        [:h [:yabai-bsp "window --swap prev" "window --grid 2:2:0:0:1:2"]]
-        [:l [:yabai-bsp "window --swap next" "window --grid 2:2:1:0:1:2"]]
-        [:j [:yabai-bsp "window --warp prev" "window --grid 2:2:0:1:2:1"]]
-        [:k [:yabai-bsp "window --warp next" "window --grid 2:2:0:0:2:1"]]
+        [:a [:yabai-bsp "window --swap prev" "window --grid 2:2:0:0:1:2"]]
+        [:d [:yabai-bsp "window --swap next" "window --grid 2:2:1:0:1:2"]]
+        [:x [:yabai-bsp "window --warp prev" "window --grid 2:2:0:1:2:1"]]
+        [:s [:yabai-bsp "window --warp next" "window --grid 2:2:0:0:2:1"]]
         ;; 2/3 screen
-        [:!Ch [:yabai "window --grid 2:3:0:0:2:2"]]
-        [:!Cl [:yabai "window --grid 2:3:1:0:2:2"]]
-        [:!Cj [:yabai "window --grid 3:2:0:1:2:2"]]
-        [:!Ck [:yabai "window --grid 3:2:0:0:2:2"]]
+        [:!Ca [:yabai "window --grid 2:3:0:0:2:2"]]
+        [:!Cd [:yabai "window --grid 2:3:1:0:2:2"]]
+        [:!Cx [:yabai "window --grid 3:2:0:1:2:2"]]
+        [:!Cs [:yabai "window --grid 3:2:0:0:2:2"]]
         ;; 1/3 screen
-        [:!Oh [:yabai "window --grid 2:3:0:0:1:2"]]
-        [:!Ol [:yabai "window --grid 2:3:2:0:1:2"]]
-        [:!Oj [:yabai "window --grid 3:2:0:2:2:1"]]
-        [:!Ok [:yabai "window --grid 3:2:0:0:2:1"]]
-        [:!Om [:yabai "window --grid 3:2:0:1:2:1"]]
-        [:!On [:yabai "window --grid 2:3:1:0:1:2"]]
-
-        ;; 1/2 screen (layout)
-        [:left_arrow [:hs "resizeWindow('[0, 0, 50, 100]', '[50, 0, 100, 100]')"]]
-        [:right_arrow [:hs "resizeWindow('[50, 0, 100, 100]','[0, 0, 50, 100]')"]]
-        [:down_arrow [:hs "resizeWindow('[0, 50, 100, 100]','[0, 0, 100, 50]')"]]
-        [:up_arrow [:hs "resizeWindow('[0, 0, 100, 50]','[0, 50, 100, 100]')"]]
-        ;; 2/3 screen (layout)
-        [:!Cleft_arrow [:hs "resizeWindow('[0, 0, 66, 100]','[66, 0, 100, 100]')"]]
-        [:!Cright_arrow [:hs "resizeWindow('[34, 0, 100, 100]','[0, 0, 34, 100]')"]]
-        [:!Cdown_arrow [:hs "resizeWindow('[0, 34, 100, 100]','[0, 0, 100, 34]')"]]
-        [:!Cup_arrow [:hs "resizeWindow('[0, 0, 100, 66]','[0, 66, 100, 100]')"]]
-        ;; 1/3 screen (layout)
-        [:!Oleft_arrow [:hs "resizeWindow('[0, 0, 34, 100]','[34, 0, 100, 100]')"]]
-        [:!Oright_arrow [:hs "resizeWindow('[66, 0, 100, 100]','[0, 0, 66, 100]')"]]
-        [:!Odown_arrow [:hs "resizeWindow('[0, 66, 100, 100]','[0, 0, 100, 66]')"]]
-        [:!Oup_arrow [:hs "resizeWindow('[0, 0, 100, 34]','[0, 34, 100, 100]')"]]
+        [:!Sa [:yabai "window --grid 2:3:0:0:1:2"]]
+        [:!Sd [:yabai "window --grid 2:3:2:0:1:2"]]
+        [:!Sx [:yabai "window --grid 3:2:0:2:2:1"]]
+        [:!Ss [:yabai "window --grid 3:2:0:0:2:1"]]
+        [:!Se [:yabai "window --grid 3:2:0:1:2:1"]]
+        [:!Sr [:yabai "window --grid 2:3:1:0:1:2"]]
 
         ;; corner screen
         [:y [:yabai-bsp "space --mirror y-axis" "window --grid 2:2:0:0:1:1"]]
-        [:u [:yabai-bsp "space --mirror x-axis" "window --grid 2:2:0:1:1:2"]]
-        [:i [:yabai-bsp "space --rotate 90" "window --grid 2:2:1:0:1:1"]]
+        [:i [:yabai-bsp "space --mirror x-axis" "window --grid 2:2:0:1:1:2"]]
+        [:u [:yabai-bsp "space --rotate 90" "window --grid 2:2:1:0:1:1"]]
         [:o [:yabai-bsp "space --rotate 270" "window --grid 2:2:1:1:1:2"]]
+
+        ;; 1/2 screen (layout)
+        [:h [:hs "resizeWindow('[0, 0, 50, 100]', '[50, 0, 100, 100]')"]]
+        [:l [:hs "resizeWindow('[50, 0, 100, 100]','[0, 0, 50, 100]')"]]
+        [:j [:hs "resizeWindow('[0, 50, 100, 100]','[0, 0, 100, 50]')"]]
+        [:k [:hs "resizeWindow('[0, 0, 100, 50]','[0, 50, 100, 100]')"]]
+        ;; 2/3 screen (layout)
+        [:!Ch [:hs "resizeWindow('[0, 0, 66, 100]','[66, 0, 100, 100]')"]]
+        [:!Cl [:hs "resizeWindow('[34, 0, 100, 100]','[0, 0, 34, 100]')"]]
+        [:!Cj [:hs "resizeWindow('[0, 34, 100, 100]','[0, 0, 100, 34]')"]]
+        [:!Ck [:hs "resizeWindow('[0, 0, 100, 66]','[0, 66, 100, 100]')"]]
+        ;; 1/3 screen (layout)
+        [:!Sh [:hs "resizeWindow('[0, 0, 34, 100]','[34, 0, 100, 100]')"]]
+        [:!Sl [:hs "resizeWindow('[66, 0, 100, 100]','[0, 0, 66, 100]')"]]
+        [:!Sj [:hs "resizeWindow('[0, 66, 100, 100]','[0, 0, 100, 66]')"]]
+        [:!Sk [:hs "resizeWindow('[0, 0, 100, 34]','[0, 34, 100, 100]')"]]
 
         ;; full screen
         [:g [:yabai "window --grid 2:2:0:0:2:2"]]
         ;; center screen
-        [:c [:yabai "window --grid 2:4:1:0:2:2"]]
+        [:c [:yabai "window --grid 2:5:1:0:3:2"]]
+        [:!Cc [:yabai "window --grid 2:4:1:0::2"]]
         ;; maximize Window
         [:f :!Creturn_or_enter :iTerm]
         [:f :!CTf] ;; Maximize Window
@@ -375,52 +385,59 @@
         ;; ;; window layout (only in bsp space)
         ;; [:backslash {:shell "/usr/local/bin/yabai -m window --toggle float; if [[ $(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq '.floating') == '1' ]]; then msg='FLOATING Window'; else msg='BSP Window'; fi; if [[ \"$msg\" == 'FLOATING Window' ]]; then /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; fi; /usr/local/bin/hs -c \"hs.alert(\\\"To $msg\\\")\""}]
 
-        ;; system applicaton management
-        [:f1 :launchpad]  ;; Expose
-        [:f2 :mission_control] ;; Mission Control
-        [:f3 :!!f2] ;; Application Windows
-        [:f4 :!!f4] ;; Notification Center
-        [:f5 :!!f11] ;; Show Desktop
-        [:f6 :!CTSf2] ;; hide/show Dock
-
-        ;; Alfred
-        [:1 :!CTOSspacebar]
-        ;; add Things3 task
-        [:2 [:!!5]]
-        ; show clipboard (supported by Alfred)
-        [:3 :!OSv]
-        ;; Screenshot
-        [:4 :!CTS4]
-        ;; search file via alfred
-        ;; [:5 [:alfred "\\' "]]
+        [:1 :!CTOSspacebar]  ;; Alfred
+        [:2 [:!!5]]  ;; add Things3 task
+        [:3 :!OSv]  ; show clipboard (supported by Alfred)
+        [:4 :!CTS4]  ;; Look word up in Eudic dictionary
+        [:8 :!!f11] ;; Show Desktop
+        [:9 :!!f2] ;; Application Windows
+        [:0 :launchpad]  ;; Expose
 
         ;; open application
         [:q [:open "/Applications/Things3.app"]]
-        [:e [:open "/System/Library/CoreServices/Finder.app"]]
         [:w [:safeOpen "com.jetbrains.intellij.ce"]]
+        [:e [:open "/System/Library/CoreServices/Finder.app"]]
         [:r [:open "/Applications/Obsidian.app"]]
         [:t [:safeOpen "ru.keepcoder.Telegram"]]
         [:y [:open "/Applications/网易有道词典.app"]]
+        [:u [:open "/Applications/Dash.app"]]
         [:p [:safeOpen "com.readdle.PDFExpert-Mac"]]
+        ;; [:f ]
+        ;; [:g ]
         [:h [:open "/Applications/Microsoft Edge.app"]]
         [:j [:!TOf12]] ;; iTerm2
         [:k [:open "/Applications/Visual Studio Code.app"]]
+        ;; [:l ]
         [:z [:safeOpen "com.tencent.xinWeChat"]]
         [:x [:safeOpen "com.jetbrains.goland"]]
         [:c [:safeOpen "com.hnc.Discord"]]
+        ;; [:v ]
         [:b [:open "/Applications/Bitwarden.app"]]
         [:n [:open "/System/Applications/Notes.app/"]]
         [:m [:open "/System/Applications/Music.app/"]]
       ]
     }
-    {:des "configuration / system control (s)"
+    {:des "configuration (e)"
       :rules [:config-mode
-        [:q [:open "/Applications/Karabiner-EventViewer.app"]]
-        [:w [:open "/Applications/Karabiner-Elements.app"]]
-        [:e [:open "/Applications/Hammerspoon.app"]]
-        [:r [:script "reload_config.sh"]]
+        [:l [:open "/Applications/Karabiner-EventViewer.app"]]
+        [:k [:open "/Applications/Karabiner-Elements.app"]]
+        [:h [:open "/Applications/Hammerspoon.app"]]
         [:p [:open "/System/Applications/System Preferences.app"]]
         [:m [:open "/System/Applications/Utilities/Activity Monitor.app/"]]
+
+        ;; reload hammerspoon, goku
+        [:r [:script "reload_config.sh"]]
+      ]
+    }
+    {:des "browser (b)"
+      :rules [:browser-mode
+        ;; [:i [:alfred-execute "cdcd"]]
+        [:w [:open "https://webo.com"]]
+        [:t [:open "https://twitter.com"]]
+        [:g [:open "https://github.com/notifications"]]
+        [:l [:open "https://www.bilibili.com/watchlater/#/list"]]
+        [:m [:open "https://mail.google.com/mail"]]
+        [:k :!COb :browser] ;; open bookmarks
 
         ;; open documentation in browser
         ;; goku
@@ -432,58 +449,24 @@
         ;; AppleScript
         [:4 {:shell "open https://eastmanreference.com/complete-list-of-applescript-key-codes https://sspai.com/post/46912 https://sspai.com/post/43758"}]
 
-        ;; system control
-        ;; brightness
-        [:comma :display_brightness_decrement]
-        [:period :display_brightness_increment]
-        ;; volume
-        [:return_or_enter :mute]
-        [:quote :volume_increment]
-        [:semicolon :volume_decrement]
-        ;; play
-        [:backslash :play_or_pause]
-        [:open_bracket :vk_consumer_previous]
-        [:close_bracket :vk_consumer_next]
-      ]
-    }
-    {:des "browser (b)"
-      :rules [:browser-mode
-        [:1 [:alfred "g "]]
-        [:2 [:alfred "b "]]
-        [:3 [:alfred "gh "]]
-        [:4 [:alfred "ghnervos "]]
-        [:5 [:alfred "db "]]
-        [:i [:alfred-execute "cdcd"]]
-        [:t [:open "https://twitter.com"]]
-        [:w [:open "https://webo.com"]]
-        [:n [:open "https://github.com/notifications"]]
-        [:l [:open "https://www.bilibili.com/watchlater/#/list"]]
-        [:m [:open "https://mail.google.com/mail"]]
-        [:k :!COb :browser] ;; open bookmarks
-      ]
-    }
-    {:des "dev documentation"
-      :rules [:dev-mode
-        [:b [:open "https://devhints.io/bash"]]
-        [:r [:open "dash://rust:"]]
-        [:p [:open "dash://py:"]]
-        [:l {:shell "open https://learnxinyminutes.com https://devhints.io"}]
+        ;; development documentation
+        [:0 {:shell "open https://www.baeldung.com/ https://www.geeksforgeeks.org https://stackoverflow.com/ https://programming-idioms.org/cheatsheet/Java"}]
+        [:slash {:shell "open https://learnxinyminutes.com https://devhints.io https://quickref.me"}]
       ]
     }
     {:des "terminal (j)"
       :rules [[:condi :terminal-mode :terminal]
         ;; terminal
-        [:tab [:!Tu :e :x :i :t :return_or_enter]] ; exit terminal
+        [:escape [:!Tu :e :x :i :t :return_or_enter]] ; exit terminal
         [:r [:!Ta :t :l :d :r :spacebar :return_or_enter]] ; tldr
         [:u [:!Tu :c :l :e :a :r :return_or_enter]] ; clear screen
         ;; vim
         [:q [:escape :escape :!Ssemicolon :!Tu :q :!S1 :return_or_enter]] ; exit in vim
         [:w [:escape :escape :!Ssemicolon :!Tu :w :q :!S1 :return_or_enter]] ; save and exit in vim
         [:v [:spacebar :!Sbackslash :spacebar :v :i :m :spacebar :hyphen :return_or_enter]] ; temporary cat in vim
-        ;; frequently used commands
-        [:1 [:!Tu :l :l :return_or_enter]]
-        [:2 [:!Tu :g :s :return_or_enter]]
-        [:0 [:!Tu :l :o :a :d :a :l :l :return_or_enter]]
+        ;; reload zsh
+        [:z [:!Tu :e :x :e :c :spacebar :z :s :h :return_or_enter]]
+
         ;; zle widget
         [:c [:!Tg :c]] ; command cheatsheet
         [:g [:!Tg :g]] ; shortcut cheatsheet
@@ -503,19 +486,6 @@
         ;; [:8 [:!S1 :!S8 :return_or_enter]] ;; !* all arguments in last argument
         ;; [:9 [:!Tu :!S1 :!Ssemicolon :hyphen :return_or_enter]] ;; !-: last command excpt for last argument
         ;; [:0 [:!Tu :r :return_or_enter]] ;; execute last command
-      ]
-    }
-    {:des "number sign (m)"
-      :rules [:number-sign-mode
-        [:1 [:!S1]]
-        [:2 [:!S2]]
-        [:3 [:!S3]]
-        [:4 [:!S4]]
-        [:5 [:!S5]]
-        [:6 [:!S6]]
-        [:7 [:!S7]]
-        [:8 [:!S8]]
-        [:9 [:!S9]]
       ]
     }
   ]
