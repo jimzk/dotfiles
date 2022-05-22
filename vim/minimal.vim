@@ -85,8 +85,10 @@ set whichwrap+=<,>,h,l
 "   查看映射是否被占用：:map <leader>p
 "   查看所有的命令：:command
 " leader key
-nnoremap <SPACE> <Nop>
-let mapleader=" "
+" nnoremap <SPACE> <Nop>
+" let mapleader=" "
+nnoremap , <Nop>
+let mapleader=","
 
 " cancel search highlight
 nnoremap <silent> <leader><cr> :noh<cr>
