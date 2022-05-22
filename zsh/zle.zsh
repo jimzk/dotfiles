@@ -150,7 +150,7 @@ _fzf_git_commit_widget() {
 _fzf_git_file_commit_widget() {
     local error=$(git rev-parse HEAD 2>&1 >/dev/null)
     [[ -n $error ]] && printf "\033[0;31mfatal\033[0m: fail to list \033[0;32mfile commits\033[0m, not a git repository!" && zle accept-line && return
-    local file=$(fd | fzf --header="Choose the file to show commits history" \
+    local file=$(fd -H -E .git | fzf --header="Choose the file to show commits history" \
                         --preview 'git log --color --pretty=format:"%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" -- {1}' \
                         --preview-window 70%,wrap)
     [[ -z $file ]] && __redraw && return

@@ -39,8 +39,8 @@ update_apt() {
 update_zsh() {
     info_begin "zsh"
 
-    printf "⚙️  updating zsh theme <powerlevel10k>...\n"
-    git -C $ZSH_CUSTOM/themes/powerlevel10k pull
+    # printf "⚙️  updating zsh theme <powerlevel10k>...\n"
+    # git -C $ZSH_CUSTOM/themes/powerlevel10k pull
 
     while read -r plugin_root; do
         printf "⚙️  updating zsh plugin <${plugin_root##*/}>...\n"
