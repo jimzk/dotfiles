@@ -100,7 +100,7 @@ let g:Powerline_colorscheme='solarized256'
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c\ \ %p%%
 
 " theme
-colorscheme dracula
+colorscheme gruvbox
 set background=dark
 set t_Co=256 " 色彩范围
 highlight Visual  guifg=White guibg=LightBlue gui=none  " 选区颜色

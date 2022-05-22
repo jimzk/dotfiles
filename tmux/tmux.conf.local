@@ -434,7 +434,8 @@ set -g @plugin 'laktak/extrakto'
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
 
-set -g @plugin 'dracula/tmux'
+# https://github.com/rothgar/awesome-tmux#themes
+set -g @plugin "arcticicestudio/nord-tmux"
 set -g @dracula-border-contrast true
 set -g @dracula-show-flags true
 set -g @dracula-plugins "cpu-usage ram-usage"

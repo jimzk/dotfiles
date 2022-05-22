@@ -9,7 +9,7 @@
     features = line-numbers decorations
     side-by-side = false
     # delta --show-syntax-themes to see all available themes
-    syntax-theme = Dracula
+    syntax-theme = ansi
     plus-style = syntax "#006b00"
     minus-style = syntax "#8c0002"
 [delta "decorations"]
