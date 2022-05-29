@@ -404,7 +404,7 @@
         [:p [:safeOpen "com.readdle.PDFExpert-Mac"]]
         ;; [:f ]
         ;; [:g ]
-        [:h [:open "/Applications/Microsoft Edge.app"]]
+        [:h [:open "/Applications/Google Chrome.app"]]
         [:j [:!TOf12]] ;; iTerm2
         [:k [:open "/Applications/Visual Studio Code.app"]]
         ;; [:l ]
