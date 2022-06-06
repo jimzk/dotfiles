@@ -6,6 +6,8 @@ zsh/zshrc.local
 zsh/zshenv.local
 vim/plugged
 vim/autoload/plug.vim
+config/github-copilot
+config/neofetch
 config/gh/hosts.yml
 config/zsh_history
 config/karabiner

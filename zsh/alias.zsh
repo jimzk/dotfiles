@@ -1,6 +1,6 @@
 case "$OSTYPE" in
     darwin* )
-        alias pc=pbcopy
+        alias pc='tee >(pbcopy)' # copy + stdout
         alias pp=pbpaste
         alias proxy="_proxy"
         alias unproxy="_unproxy"
@@ -148,7 +148,6 @@ alias tree='_f(){ tree -aNC -I ".git|node_modules|bower_components|.DS_Store" --
 alias tree1='tree -L 1'
 alias tree2='tree -L 2'
 alias tree3='tree -L 3'
-alias man='colored man'  # supported by zsh plugin colored-man-pages
 alias diff='colordiff'  # diff with color
 alias ping='ping -c 5'  # Stop after sending count ECHO_REQUEST packets #
 alias curl='curl -SL'  # Show error && redirect

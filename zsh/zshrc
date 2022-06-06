@@ -1,40 +1,61 @@
 # prevent > from overwriting existent file
 # using >| to write forcedly
 set -o noclobber
-# turn off bell/beep
-unsetopt BEEP
-# prevent duplicate path
-typeset -U PATH
+unsetopt BEEP             # turn off bell/beep
+typeset -U PATH           # prevent duplicate path
+setopt EXTENDED_GLOB      # extended globbing
+# https://github.com/ohmyzsh/ohmyzsh/issues/8743
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  # remove '/'
+DISABLE_AUTO_UPDATE="true" # disable zsh auto update
+# skip the verification of insecure directories
+# if it doesn't work, try compaudit | xargs chmod g-w,o-w
+ZSH_DISABLE_COMPFIX="true"
 
 # history
-setopt SHARE_HISTORY  # adds history incrementally and share it across sessions
-setopt EXTENDED_HISTORY # add timestamps to history
+setopt SHARE_HISTORY        # adds history incrementally and share it across sessions
+setopt EXTENDED_HISTORY     # add timestamps to history
 setopt HIST_IGNORE_ALL_DUPS # don't record duplicated commands in history
-setopt HIST_SAVE_NO_DUPS
-setopt HIST_REDUCE_BLANKS # Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_SAVE_NO_DUPS    # don't save duplicates
+setopt HIST_REDUCE_BLANKS   # Remove superfluous blanks from each command line being added to the history list.
 setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
+export HISTFILE=$XDG_CONFIG_HOME/zsh_history
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTCONTROL='ignoreboth' # don't show duplicates and commands that begin with a space in history.
 
 # directory stack
 # ref: https://zsh.sourceforge.io/Intro/intro_6.html
-setopt AUTO_PUSHD           # Push the current directory visited on the stack.
-setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
-setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+setopt AUTO_CD              # simply type dir name to cd
+setopt AUTO_PUSHD           # push the current directory visited on the stack.
+setopt PUSHD_IGNORE_DUPS    # do not store duplicates in the stack.
+setopt PUSHD_SILENT         # do not print the directory stack after pushd or popd.
 
 # +-----------+
 # | plugins   |
 # +-----------+
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
-plugins=(macos autojump timer fancy-ctrl-z alias-tips colored-man-pages)
-plugins+=(rust zsh-completions)  # additional zsh completions
+plugins=(
+    macos
+    autojump
+    timer
+    # fancy-ctrl-Z
+    # colored-man-pages
+    alias-tips
+    extract
+    rust
+    zsh-completions
+)
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # +------------+
 # | completion |
 # +------------+
-fpath+=$DOTFILES_ZSH_HOME/completions  # customized zsh completions
+fpath+=(
+    $DOTFILES_ZSH_HOME/completions  # customized zsh completions
+)
 source $DOTFILES_ZSH_HOME/complete.fzf.zsh
 
 # autoload loads script as function by searching $fpath.
@@ -48,20 +69,23 @@ compinit -u
 compdef _gnu_generic fzf curl
 source $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.zsh
 source $DOTFILES_ZSH_HOME/complete.zsh
-
+# load plugins by manual
 source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 # +----------------+
+# |  key bindings  |
+# +----------------+
+# https://blog.quarticcat.com/posts/how-do-i-make-my-zsh-smooth-as-fuck/#key-bindingszsh
+bindkey -r '^['  # [Esc] (Default: vi-cmd-mode)
+bindkey '^Z' undo         # [Ctrl-Z]
+bindkey '^Y' redo         # [Ctrl-Y]
+bindkey '^Q' push-line    # [Ctrl-Q]
+bindkey ' '  magic-space  # [Space] Do history expansion. !! will print command at first but not execute directly
+
+# +----------------+
 # | other settings |
 # +----------------+
-# https://github.com/ohmyzsh/ohmyzsh/issues/8743
-WORDCHARS='*?_-.[]~|&;!#%^(){}<>'
-# disable zsh auto update
-DISABLE_AUTO_UPDATE="true"
-# skip the verification of insecure directories
-# if it doesn't work, try compaudit | xargs chmod g-w,o-w
-ZSH_DISABLE_COMPFIX="true"
 # brew install without updating (https://github.com/Homebrew/brew/issues/1670)
 export HOMEBREW_NO_AUTO_UPDATE=1
 # thefuck

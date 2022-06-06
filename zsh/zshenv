@@ -23,15 +23,17 @@ export DOTFILES_ZSH_HOME=$DOTFILES_HOME/zsh
 export CHEATSHEETS_HOME=$DOTFILES_HOME/cheatsheets
 export TMUX_CONF=$HOME/.tmux.conf
 
-# history
-export HISTFILE=$XDG_CONFIG_HOME/zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
-export HISTCONTROL='ignoreboth' # don't show duplicates and commands that begin with a space in history.
-
 # my workspace
 export WORKSPACE=$HOME/workspace
 export BLOG_HOME=$WORKSPACE/blog
+
+# editor
+if [[ -n $(command -v code) ]]; then
+    EDITOR='code'
+else
+    EDITOR='vim'
+fi
+export EDITOR
 
 # fzf
 FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
@@ -62,6 +64,10 @@ export LSCOLORS=ExFxCxDxBxegedabagacad  # for FreeBSD/macOS
 export LS_COLORS=${LS_COLORS:-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'}  # for linux (https://github.com/
 export ZLS_COLORS=$LS_COLORS
 export PAGER='less'
+# colorful man
+# https://blog.quarticcat.com/posts/how-do-i-make-my-zsh-smooth-as-fuck/#man-pages
+export MANPAGER='sh -c "col -bx | bat -pl man --theme=Monokai\ Extended"'
+export MANROFFOPT='-c'
 # less color
 #   -i: ignore case at search
 #   -M: more information in prompt
@@ -77,6 +83,7 @@ export LESSOPEN='|$DOTFILES_HOME/bin/_lessfilter %s'
 # path
 _set_path() {
     PATH="/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+    # use homebew gnu command line tools instead of built-in those
     if [[ $OSTYPE == 'darwin'* ]]; then
         local packages=(gnu-tar gnu-which grep gawk gnu-sed findutils coreutils)
         for i in "${packages[@]}"; do
@@ -89,13 +96,6 @@ _set_path() {
 }
 _set_path
 CDPATH=.:$HOME  # by default CDPATH=.
-
-if [[ -n $(command -v code) ]]; then
-    EDITOR='code'
-else
-    EDITOR='vim'
-fi
-export EDITOR
 
 # https://news.ycombinator.com/item?id=30483417
 unset NO_COLOR
