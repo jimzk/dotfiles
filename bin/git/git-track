@@ -2,7 +2,7 @@
 #
 ### Sets up your branch to track a remote branch. Assumes you mean
 ### `origin/$branch-name`.
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 git branch $branch --set-upstream-to origin/$branch

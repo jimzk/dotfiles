@@ -5,7 +5,7 @@
 ###
 ### Thanks to ENTP:
 ### http://hoth.entp.com/2008/11/10/improving-my-git-workflow
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 curr_branch=$(git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||')
 

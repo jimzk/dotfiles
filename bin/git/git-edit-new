@@ -6,6 +6,6 @@
 ### file or three in your working directory, and you know you want to immediately
 ### edit them in your editor next. Why waste time clicking around like some sort
 ### of plebian when you can just run another command?
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 $EDITOR $(git ls-files --others --exclude-standard)

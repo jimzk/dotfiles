@@ -3,7 +3,7 @@
 ### Print headers received from server
 ###
 ### https://github.com/rtomayko/dotfiles/blob/rtomayko/.local/bin/headers
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 curl -sv "$@" 2>&1 >/dev/null |
     grep -v "^\*" |

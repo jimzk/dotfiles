@@ -8,6 +8,6 @@
 ### Examples
 #
 ###   git credit "Zach Holman" zach@example.com
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 git commit --amend --author "$1 <$2>" -C HEAD

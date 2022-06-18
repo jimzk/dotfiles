@@ -11,7 +11,7 @@
 ###
 ### Stolen from Ryan Tomayko
 ### http://github.com/rtomayko/dotfiles/blob/rtomayko/bin/git-up
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 set -e
 

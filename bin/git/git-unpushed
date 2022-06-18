@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 ### Show the diff of everything you haven't pushed yet.
-[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"
+[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)" && return
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 git diff origin/$branch..HEAD

@@ -4,26 +4,26 @@
 ###     hosts(h)
 ###     dotfiles(d)
 ###     cht(c)
-###     bin(b) <binary>    create new one if <binary> is nonexistent
+###     bin(b)
 
-edit_bin() {
-    local file=$1
-    if [[ -z $1 ]]; then
-        file=$(fd --type executable --max-depth 1 --exclude '_*' . "${DOTFILES_BIN_HOME}" --exec basename {} \; | fzf --preview 'bat --style=grid ${DOTFILES_BIN_HOME}/{}' --preview-window right,80%)
-    fi
-    file=${DOTFILES_BIN_HOME}/${file}
+# edit_bin() {
+#     local file=$1
+#     if [[ -z $1 ]]; then
+#         file=$(fd --type executable --max-depth 1 --exclude '_*' . "${DOTFILES_BIN_HOME}" --exec basename {} \; | fzf --preview 'bat --style=grid ${DOTFILES_BIN_HOME}/{}' --preview-window right,80%)
+#     fi
+#     file=${DOTFILES_BIN_HOME}/${file}
 
-    if [[ ! -e ${file} ]]; then
-        touch ${file}
-        chmod 755 ${file}
-        echo '#!/usr/bin/env zsh' >> ${file}
-        echo '#' >> ${file}
-        echo '### Your documentations' >> ${file}
-        echo '[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"' >> ${file}
-    fi
+#     if [[ ! -e ${file} ]]; then
+#         touch ${file}
+#         chmod 755 ${file}
+#         echo '#!/usr/bin/env zsh' >> ${file}
+#         echo '#' >> ${file}
+#         echo '### Your documentations' >> ${file}
+#         echo '[[ $1 =~ ("-h"|"--help") ]] && _print_help "$(realpath $0)"' >> ${file}
+#     fi
 
-    exec "$EDITOR" --reuse-window ${file}
-}
+#     exec "$EDITOR" --reuse-window ${file}
+# }
 
 case "$1" in
     host* | h )
@@ -36,7 +36,8 @@ case "$1" in
         exec "$EDITOR" $(realpath ${DOTFILES_HOME}/cheatsheets)
         ;;
     b | bin* )
-        edit_bin $2
+        exec "$EDITOR" $(realpath ${DOTFILES_HOME}/bin)
+        # edit_bin $2
         ;;
     * )
         _print_help "$(realpath $0)"

@@ -91,7 +91,7 @@ _set_path() {
         done
     fi
     PATH="$HOME/.cargo/bin:$PATH"  # bin from third party
-    PATH="$DOTFILES_BIN_HOME:$HOME/.local/bin:$PATH"
+    PATH="$DOTFILES_BIN_HOME:$DOTFILES_BIN_HOME/git:$HOME/.local/bin:$PATH"
     export PATH
 }
 _set_path
