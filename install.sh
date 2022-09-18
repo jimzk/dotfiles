@@ -99,9 +99,9 @@ setup_tools() {
     # install formulas
     brew update
     # basic
-    brew install zsh starship tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie procs gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
+    brew install go zsh starship tmux autojump bash vim less ripgrep exa fd fzf navi bat jq httpie procs gh git-extras git-delta koekeishiya/formulae/yabai yqrashawn/goku/goku
     # good tools
-    brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf nnn
+    brew install tree thefuck tokei beeftornado/rmtree/brew-rmtree pstree dust duf nnn dog
     # dev tools
     brew install python shellcheck yarn node cmake openssl
     # gnu replacement
@@ -117,7 +117,7 @@ setup_config() {
     echo_start "Start to setup ~/.config"
 
     safe_ln "$DOTFILES_HOME/config" "$XDG_CONFIG_HOME"
-    local -r home_configs=( $(find "$XDG_CONFIG_HOME/HOME" -mindepth 1) )
+    local -r home_configs=($(find "$XDG_CONFIG_HOME/HOME" -mindepth 1))
     for file_path in "${home_configs[@]}"; do
         safe_ln "$file_path" "$HOME/.$(basename "$file_path")"
     done

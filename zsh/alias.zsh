@@ -151,6 +151,9 @@ alias tree3='tree -L 3'
 alias diff='colordiff'  # diff with color
 alias ping='ping -c 5'  # Stop after sending count ECHO_REQUEST packets #
 alias curl='curl -SL'  # Show error && redirect
+# https://twitter.com/carsonyangk8s/status/1498254329429762054
+alias ping='_f(){ping -c5 $@ | nali}; _f' # -c5 Stop after sending count ECHO_REQUEST packets #
+alias dig='_f(){dog $@ | nali}; _f'
 alias ipy=ipython
 alias pip=pip3
 alias python=python3
