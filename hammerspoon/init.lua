@@ -61,6 +61,7 @@ local cmodal = spoon.ModalMgr.modal_list["appM"]
 cmodal:bind('', 'escape', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
 cmodal:bind('', 'Q', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"appM"}) end)
 cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+cmodal:bind('shift', '/', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
 
 cmodal:bind('cmd', '.', 'Reload HammerSpoon', function()
     spoon.ModalMgr:deactivate({"appM"})
@@ -125,7 +126,7 @@ for _, v in ipairs(hsapp_list) do
     end
 end
 
--- Then we register some keybindings with modal supervisor
+-- Register keybindings with modal supervisor
 spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "D", "Enter AppM Environment", function()
     spoon.ModalMgr:deactivateAll()
     -- Show the keybindings cheatsheet once appM is activated
@@ -140,6 +141,7 @@ if spoon.WinWin then
     cmodal:bind('', 'escape', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
     cmodal:bind('', 'Q', 'Deactivate resizeM', function() spoon.ModalMgr:deactivate({"resizeM"}) end)
     cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+    cmodal:bind('shift', '/', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
     cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
 
     cmodal:bind('', '-', 'Shrink', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
@@ -196,7 +198,7 @@ if spoon.WinWin then
     cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:moveToScreen("next") end)
 
     -- Register resizeM with modal supervisor
-    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "Q", "resizeM Environment", function()
+    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "W", "resizeM Environment", function()
         -- Deactivate some modal environments or not before activating a new one
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now

@@ -122,10 +122,12 @@
         [:!QWERdelete_or_backspace :delete_forward]
         ;; - -> home
         [:!QWERhyphen :!Cleft_arrow :WeChat]
+        [:!QWERhyphen :!Cleft_arrow :VSCode]
         [:!QWERhyphen :!Ta :terminal]
         [:!QWERhyphen :home]
         ;; = -> end
         [:!QWERequal_sign :!Cright_arrow :WeChat]
+        [:!QWERequal_sign :!Cright_arrow :VSCode]
         [:!QWERequal_sign :!Te :terminal]
         [:!QWERequal_sign :end]
         ;; better type
@@ -322,7 +324,7 @@
 
         ;; Duplicated keys from space-mode
         ;; show active windows (supported by HammerSpoon)
-        [:delete_or_backspace :!CTSslash]
+        [:tab :!CTSslash]
         ;; move window to space but no focus
         [:hyphen [:yabai "window --space prev"]]
         [:equal_sign [:yabai "window --space next"]]
@@ -367,8 +369,6 @@
         ;; [:caps_lock {:shell "/usr/local/bin/yabai -m display --focus recent || /usr/local/bin/yabai -m display --focus prev || /usr/local/bin/yabai -m display --focus next; sleep 0.5; /usr/local/bin/hs -c \"showDisplayInfo()\""}]
         [:caps_lock :!CTSg]  ;; recent display (supported by HammerSpoon)
 
-        ;; show active windows (supported by HammerSpoon)
-        [:delete_or_backspace :!CTSslash]
         ;; move window to space but no focus
         [:hyphen [:yabai "window --space prev"]]
         [:equal_sign [:yabai "window --space next"]]
@@ -411,7 +411,7 @@
         [:z [:safeOpen "com.tencent.xinWeChat"]]
         [:x [:safeOpen "com.jetbrains.goland"]]
         [:c [:safeOpen "com.hnc.Discord"]]
-        ;; [:v ]
+        [:v [:safeOpen "io.raindrop.macapp"]]
         [:b [:open "/Applications/Bitwarden.app"]]
         [:n [:open "/System/Applications/Notes.app/"]]
         [:m [:open "/System/Applications/Music.app/"]]
