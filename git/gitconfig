@@ -68,3 +68,6 @@
     path = ~/.dotfiles/git/delta.gitconfig
 [commit]
 	template = ~/.dotfiles/git/gitmessage
+[gc]
+    # https://donatstudios.com/yagni-git-gc
+	auto = 0
