@@ -84,9 +84,9 @@ zstyle ':fzf-tab:*' continuous-trigger 'ctrl-g'
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'command -v $word 2>/dev/null || eval echo \$$word'
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-flags --tac --no-sort --color=16,hl:green --height=30% --preview-window down,30%,wrap
 
-# preview for cd/ls
-zstyle ':fzf-tab:complete:(cd|ls):*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=35% --preview-window right,75%,wrap --header='^E Edit, ^O Open'
-zstyle ':fzf-tab:complete:(cd|ls):*' fzf-bindings \
+# preview for cd/ls/vim/code
+zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=35% --preview-window right,75%,wrap --header='^E Edit, ^O Open'
+zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-bindings \
     'ctrl-e:execute-silent({_FTB_INIT_}code "$realpath")+abort' \
     'ctrl-o:execute-silent({_FTB_INIT_}open "$realpath")+abort'
 
