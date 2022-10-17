@@ -78,6 +78,7 @@ zstyle ':fzf-tab:*' group-colors $FZF_TAB_GROUP_COLORS
 zstyle ':fzf-tab:*' single-group color
 zstyle ':fzf-tab:*' show-group full
 zstyle ':fzf-tab:*' prefix ''
+zstyle ':fzf-tab:*' continuous-trigger 'ctrl-g'
 
 # environment variables
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'command -v $word 2>/dev/null || eval echo \$$word'
