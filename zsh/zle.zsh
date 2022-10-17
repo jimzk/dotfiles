@@ -199,9 +199,9 @@ _fzf_git_stash_widget() {
 
 _fzf_env_widget() {
     local envs=$(
-        env | sed -e 's/=.*//' |
+        env | grep '=' | sed -e 's/=.*//' |
         fzf --preview "eval echo '\${}'" \
-            --preview-window down,25%,wrap |
+            --preview-window down,40%,wrap |
         awk '{print "$"$1}' |
         __join_lines)
     __redraw $envs
@@ -226,7 +226,7 @@ _fzf_cht_widget() {
 
 _fzf_file_widget() {
     local files=$(
-        fd --color=always --hidden --follow --exclude .git --maxdepth=1 . |
+        fd --color=always --hidden --follow --exclude .git --maxdepth=3 . |
         fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window right,75%,wrap |
         __join_lines)
     # files=$(__trim_string $files)
