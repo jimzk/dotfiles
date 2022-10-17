@@ -65,7 +65,8 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 # | fzf-tab |
 # +---------+
 zstyle ':fzf-tab:complete:*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=30% --preview-window right,75%,wrap,hidden
-zstyle ':fzf-tab:complete:*' fzf-preview 'less $realpath'
+# https://github.com/Aloxaf/fzf-tab/wiki/Preview#show-file-contents
+zstyle ':fzf-tab:complete:*' fzf-preview 'less ${(Q)realpath}'
 zstyle ':fzf-tab:complete:*' query-string ''  # empty query string
 zstyle ':fzf-tab:*' switch-group 'F1' 'F2'
 # ref: https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
@@ -81,7 +82,8 @@ zstyle ':fzf-tab:*' prefix ''
 zstyle ':fzf-tab:*' continuous-trigger 'ctrl-g'
 
 # environment variables
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'command -v $word 2>/dev/null || eval echo \$$word'
+# https://github.com/Aloxaf/fzf-tab/wiki/Preview#environment-variable
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-flags --tac --no-sort --color=16,hl:green --height=30% --preview-window down,30%,wrap
 
 # preview for cd/ls/vim/code
@@ -91,8 +93,8 @@ zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-bindings \
     'ctrl-o:execute-silent({_FTB_INIT_}open "$realpath")+abort'
 
 # preview for kill/ps
-# zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
-zstyle ':completion:*:*:*:*:processes' command "ps -ef"
+# https://github.com/Aloxaf/fzf-tab/wiki/Preview#killps-preview-of-full-commandline-arguments
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
 # zstyle ':completion:*:*:(kill|ps):*' complete-options false
 zstyle ':fzf-tab:complete:(kill|ps):*' fzf-preview $'[[ $group == "[process ID]" ]] && ps -f -p $word'  # only show items in group 'process ID'
-zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags --tac --no-sort --height=60% --color=16,hl:green --preview-window=down:18%:wrap
+zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags --no-sort --height=60% --color=16,hl:green --preview-window=down:18%:wrap
