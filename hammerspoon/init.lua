@@ -127,7 +127,7 @@ for _, v in ipairs(hsapp_list) do
 end
 
 -- Register keybindings with modal supervisor
-spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "D", "Enter AppM Environment", function()
+spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "f1", "Enter AppM Environment", function()
     spoon.ModalMgr:deactivateAll()
     -- Show the keybindings cheatsheet once appM is activated
     spoon.ModalMgr:activate({"appM"}, "#FFBD2E", false)
@@ -198,7 +198,7 @@ if spoon.WinWin then
     cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:moveToScreen("next") end)
 
     -- Register resizeM with modal supervisor
-    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "W", "resizeM Environment", function()
+    spoon.ModalMgr.supervisor:bind({"alt", "ctrl", "cmd", "shift"}, "f2", "resizeM Environment", function()
         -- Deactivate some modal environments or not before activating a new one
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
