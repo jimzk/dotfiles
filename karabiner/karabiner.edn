@@ -27,6 +27,9 @@
     :terminal ["^com\\.googlecode\\.iterm2$" "^com.jetbrains" "^com\\.microsoft\\.VSCode$" "^com\\.apple\\.Terminal$"]
     :intelliJ ["^com.jetbrains"]
 
+    :IDEA ["^com\\.jetbrains\\.intellij\\.ce$"]
+    :GoLand ["^com\\.jetbrains\\.goland$"]
+
     :Edge ["^com\\.microsoft\\.edgemac$"]
     :iTerm ["^com\\.googlecode\\.iterm2$"]
     :VSCode ["^com\\.microsoft\\.VSCode$"]
@@ -41,6 +44,12 @@
     :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
     :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
 
+    :Obsidian ["^md\\.obsidian$"]
+    :Things3 ["^com\\.culturedcode\\.ThingsMac$"]
+    :Raindrop ["^io\\.raindrop\\.macapp$"]
+    :Bitwarden ["^com\\.bitwarden\\.desktop$"]
+    :PDFExpert ["^com\\.readdle\\.PDFExpert-Mac$"]
+    :Youdao ["^com\\.youdao\\.YoudaoDict"]
     :Finder ["^com\\.apple\\.finder$"]
     :SystemReferences ["^com\\.apple\\.systempreferences$"]
     :Music ["^com\\.apple\\.Music$"]
@@ -97,12 +106,15 @@
   }
   :simlayer-threshold 250
 
-  ;; some examples
+  ;; Examples
   ;; [:0 [:!!5] nil {:alone :pinyin}] change input method
   :main [
     {:des "keys without prefix"
       :rules [
-        [:##caps_lock {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :escape}]
+        ; map caps_lock to control
+        [:##caps_lock {:key :left_control} nil {:alone :escape}]
+        ; super key
+        [:##q {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :q}]
         ; simultaneously =⌫ to delete backward
         ;; [[:equal_sign :delete_or_backspace] :delete_forward]
       ]
@@ -111,7 +123,6 @@
       :rules [
         ;; Esc
         [:!QWERopen_bracket :escape]
-        [:!QWERq :escape]
         ;; space -> enter
         [:!QWERspacebar :return_or_enter]
         [:!QWERCspacebar :!Creturn_or_enter]
@@ -120,21 +131,6 @@
         [:!QWERSspacebar :!Sreturn_or_enter]
         ;; delete -> delete_forward
         [:!QWERdelete_or_backspace :delete_forward]
-        ;; - -> home
-        [:!QWERhyphen :!Cleft_arrow :WeChat]
-        [:!QWERhyphen :!Cleft_arrow :VSCode]
-        [:!QWERhyphen :!Ta :terminal]
-        [:!QWERhyphen :home]
-        ;; = -> end
-        [:!QWERequal_sign :!Cright_arrow :WeChat]
-        [:!QWERequal_sign :!Cright_arrow :VSCode]
-        [:!QWERequal_sign :!Te :terminal]
-        [:!QWERequal_sign :end]
-        ;; better type
-        ;; [:!QWERhyphen :!Shyphen]
-        ;; [:!QWERequal_signls :!Sequal_sign]
-        ;; [:!QWERslash :!Sslash]
-        ;; [:!QWERbackslash :!Sbackslash]
         ;; arrow
         [:!QWERh :left_arrow]
         [:!QWERj :down_arrow]
@@ -181,82 +177,65 @@
         [:!QWEROSl :!OSright_arrow]
         [:!QWEROSk :!OSup_arrow]
 
-        ;; right click menu on focused window
-        [:!QWERm [:hs "rightClickFocusedWindow()"]]
+        ;; - -> home
+        [:!QWERn :!Cleft_arrow :WeChat]
+        [:!QWERn :!Cleft_arrow :VSCode]
+        [:!QWERn :!Ta :terminal]
+        [:!QWERn :home]
+        ;; = -> end
+        [:!QWERm :!Cright_arrow :WeChat]
+        [:!QWERm :!Cright_arrow :VSCode]
+        [:!QWERm :!Te :terminal]
+        [:!QWERm :end]
+
         ;; system applicaton management
-        [:!QWERa [:!Tf2 :down_arrow :right_arrow :right_arrow]]  ;; focus to menu bar
-        [:!QWERs :!!f4] ;; Notification Center
-        [:!QWERd :!Tf3]  ;; focus to docker
-        [:!QWERCd :!CTSf2]  ;; hide/show Dock
+        [:!QWERu [:hs "rightClickFocusedWindow()"]]  ;; right click menu on focused window
+        [:!QWERy [:!Tf2 :down_arrow :right_arrow :right_arrow]]  ;; focus on menu bar
+        [:!QWERc :!!f4] ;; Notification Center
+        [:!QWERv :!Tf3]  ;; focus on docker
+        [:!QWERCv :!CTSf2]  ;; hide/show Dock
 
         ;; system control
         ;; volume
-        [:!QWERsemicolon :volume_decrement]
-        [:!QWERquote :volume_increment]
-        [:!QWERreturn_or_enter :mute]
+        [:!QWERe :volume_decrement]
+        [:!QWERr :volume_increment]
+        [:!QWERw :mute]
         ;; play
-        [:!QWERopen_bracket :vk_consumer_previous]
-        [:!QWERclose_bracket :vk_consumer_next]
-        [:!QWERbackslash :play_or_pause]
-        ;; brightness
-        [:!QWERcomma :display_brightness_decrement]
-        [:!QWERperiod :display_brightness_increment]
-
-        ;; ;; for command line
-        ;; ;; caps_lock + ？ -> ctrl + ?
-        ;; [:!QWERw :!Tw]  ;; delete last word
-        ;; [:!QWERe :!Te]  ;; move to end
-        ;; [:!QWERr :!Tr]  ;; history
-        ;; ;; [:!QWERt :!Tt]
-        ;; [:!QWERu :!Tu]  ;; clear to start
-        ;; ;; [:!QWERi :!Ti]
-        ;; [:!QWERo :!To]  ;; execute suggestion
-        ;; ;; [:!QWERp :!Tp]
-        ;; [:!QWERa :!Ta]  ;; move to start
-        ;; ;; [:!QWERs :!Ts]
-        ;; ;; [:!QWERd :!Td]
-        ;; ;; [:!QWERf :!Tf]
-        ;; ;; [:!QWERg :!Tg]
-        ;; ;; [:!QWERz :!Tz]
-        ;; ;; [:!QWERx :!Tx]
-        ;; [:!QWERc :!Tc]  ;; interruption
-        ;; ;; [:!QWERv :!Tv]
-        ;; ;; [:!QWERb :!Tb]
-        ;; ;; [:!QWERn :!Tn]
-        ;; ;; [:!QWERm :!Tm]
+        [:!QWERs :vk_consumer_previous]
+        [:!QWERd :vk_consumer_next]
+        [:!QWERf :play_or_pause]
       ]
     }
     {:des "mouse move (a)"
       :rules [:mouse-mode
         ;; mouse move
-        [:k {:mkey {:y -1600}}]
-        [:j {:mkey {:y 1600}}]
-        [:h {:mkey {:x -1600}}]
-        [:l {:mkey {:x 1600}}]
-        [:!Ck {:mkey {:y -3200}}]
-        [:!Cj {:mkey {:y 3200}}]
-        [:!Ch {:mkey {:x -3200}}]
-        [:!Cl {:mkey {:x 3200}}]
-        [:!Ok {:mkey {:y -800}}]
-        [:!Oj {:mkey {:y 800}}]
-        [:!Oh {:mkey {:x -800}}]
-        [:!Ol {:mkey {:x 800}}]
+        [:k {:mkey {:y -1600 :speed 1.20}}]
+        [:j {:mkey {:y 1600 :speed 1.20}}]
+        [:h {:mkey {:x -1600 :speed 1.20}}]
+        [:l {:mkey {:x 1600 :speed 1.20}}]
+        [:!Ck {:mkey {:y -3200 :speed 1.10}}]
+        [:!Cj {:mkey {:y 3200 :speed 1.10}}]
+        [:!Ch {:mkey {:x -3200 :speed 1.10}}]
+        [:!Cl {:mkey {:x 3200 :speed 1.10}}]
+        [:!Ok {:mkey {:y -800 :speed 1.20}}]
+        [:!Oj {:mkey {:y 800 :speed 1.20}}]
+        [:!Oh {:mkey {:x -800 :speed 1.20}}]
+        [:!Ol {:mkey {:x 800 :speed 1.20}}]
         ;; scroll
-        [:u {:mkey {:vwheel -32}}]
-        [:d {:mkey {:vwheel 32}}]
-        [:!Cu {:mkey {:vwheel -64}}]
-        [:!Cd {:mkey {:vwheel 64}}]
-        [:!Ou {:mkey {:vwheel -16}}]
-        [:!Od {:mkey {:vwheel 16}}]
+        [:u {:mkey {:vwheel -32 :speed 1.30}}]
+        [:d {:mkey {:vwheel 32 :speed 1.30}}]
+        [:!Cu {:mkey {:vwheel -64 :speed 1.30}}]
+        [:!Cd {:mkey {:vwheel 64 :speed 1.30}}]
+        [:!Ou {:mkey {:vwheel -16 :speed 1.30}}]
+        [:!Od {:mkey {:vwheel 16 :speed 1.30}}]
         ;; left click
-        [:return_or_enter :button1]
-        [:!Creturn_or_enter {:pkey :button1 :modi :left_command}]
-        [:!Treturn_or_enter {:pkey :button1 :modi :left_control}]
-        [:!Oreturn_or_enter {:pkey :button1 :modi :left_option}]
-        [:!Sreturn_or_enter {:pkey :button1 :modi :left_shift}]
+        [:spacebar :button1]
+        [:!Cspacebar {:pkey :button1 :modi :left_command}]
+        [:!Tspacebar {:pkey :button1 :modi :left_control}]
+        [:!Ospacebar {:pkey :button1 :modi :left_option}]
+        [:!Sspacebar {:pkey :button1 :modi :left_shift}]
         ;; right click
-        [:spacebar :button2]
-        [:q :escape]
+        [:comma :button2]
       ]
     }
     {:des "window management (w)"
@@ -265,20 +244,21 @@
         ;; 1/2 screen
         [:a [:yabai-bsp "window --swap prev" "window --grid 2:2:0:0:1:2"]]
         [:d [:yabai-bsp "window --swap next" "window --grid 2:2:1:0:1:2"]]
-        [:x [:yabai-bsp "window --warp prev" "window --grid 2:2:0:1:2:1"]]
-        [:s [:yabai-bsp "window --warp next" "window --grid 2:2:0:0:2:1"]]
+        [:q [:yabai-bsp "window --warp prev" "window --grid 2:2:0:1:2:1"]]
+        [:e [:yabai-bsp "window --warp next" "window --grid 2:2:0:0:2:1"]]
         ;; 2/3 screen
         [:!Ca [:yabai "window --grid 2:3:0:0:2:2"]]
         [:!Cd [:yabai "window --grid 2:3:1:0:2:2"]]
-        [:!Cx [:yabai "window --grid 3:2:0:1:2:2"]]
-        [:!Cs [:yabai "window --grid 3:2:0:0:2:2"]]
+        [:!Cq [:yabai "window --grid 3:2:0:1:2:2"]]
+        [:!Ce [:yabai "window --grid 3:2:0:0:2:2"]]
         ;; 1/3 screen
         [:!Sa [:yabai "window --grid 2:3:0:0:1:2"]]
         [:!Sd [:yabai "window --grid 2:3:2:0:1:2"]]
-        [:!Sx [:yabai "window --grid 3:2:0:2:2:1"]]
-        [:!Ss [:yabai "window --grid 3:2:0:0:2:1"]]
-        [:!Se [:yabai "window --grid 3:2:0:1:2:1"]]
-        [:!Sr [:yabai "window --grid 2:3:1:0:1:2"]]
+        [:!Sq [:yabai "window --grid 3:2:0:2:2:1"]]
+        [:!Se [:yabai "window --grid 3:2:0:0:2:1"]]
+        ;; 1/3 screen middle
+        [:!Sr [:yabai "window --grid 3:2:0:1:2:1"]]
+        [:!St [:yabai "window --grid 2:3:1:0:1:2"]]
 
         ;; corner screen
         [:y [:yabai-bsp "space --mirror y-axis" "window --grid 2:2:0:0:1:1"]]
@@ -306,7 +286,7 @@
         [:g [:yabai "window --grid 2:2:0:0:2:2"]]
         ;; center screen
         [:c [:yabai "window --grid 2:5:1:0:3:2"]]
-        [:!Cc [:yabai "window --grid 2:4:1:0::2"]]
+        [:v [:yabai "window --grid 2:9:1:0:7:2"]]  ;; bigger iniare in center
         ;; maximize Window
         [:f :!Creturn_or_enter :iTerm]
         [:f :!CTf] ;; Maximize Window
@@ -342,8 +322,8 @@
         ;; previous / next tabs
         [:i :!CSopen_bracket :iTerm]
         [:o :!CSclose_bracket :iTerm]
-        [:i :!Copen_bracket :Finder]
-        [:o :!Cclose_bracket :Finder]
+        [:i :!TStab :Finder]
+        [:o :!Ttab :Finder]
         [:i :!CSopen_bracket :VSCode]
         [:o :!CSclose_bracket :VSCode]
         [:i :!CSopen_bracket :intelliJ]
@@ -385,59 +365,62 @@
         ;; ;; window layout (only in bsp space)
         ;; [:backslash {:shell "/usr/local/bin/yabai -m window --toggle float; if [[ $(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq '.floating') == '1' ]]; then msg='FLOATING Window'; else msg='BSP Window'; fi; if [[ \"$msg\" == 'FLOATING Window' ]]; then /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; fi; /usr/local/bin/hs -c \"hs.alert(\\\"To $msg\\\")\""}]
 
-        [:1 :!CTOSspacebar]  ;; Alfred
+        [:1 :launchpad]  ;; Expose
         [:2 [:!!5]]  ;; add Things3 task
         [:3 :!OSv]  ; show clipboard (supported by Alfred)
         [:4 :!CTS4]  ;; Look word up in Eudic dictionary
+        [:5 :!Ch :Youdao]
+        [:5 [:open "/Applications/网易有道词典.app"]]
         [:8 :!!f11] ;; Show Desktop
         [:9 :!!f2] ;; Application Windows
-        [:0 :launchpad]  ;; Expose
 
         ;; open application
+        [:q :!Ch :Things3]
         [:q [:open "/Applications/Things3.app"]]
-        [:w [:safeOpen "com.jetbrains.intellij.ce"]]
-        [:e [:open "/System/Library/CoreServices/Finder.app"]]
+        [:w :!Ch :browser]
+        [:w [:open "/Applications/Google Chrome.app"]]
+        [:e :!Ch :VSCode]
+        [:e [:open "/Applications/Visual Studio Code.app"]]
+        [:r :!Ch :Obsidian]
         [:r [:open "/Applications/Obsidian.app"]]
+        [:t :!Ch :Telegram]
         [:t [:safeOpen "ru.keepcoder.Telegram"]]
-        [:y [:open "/Applications/网易有道词典.app"]]
-        [:u [:open "/Applications/Dash.app"]]
+        [:p :!Ch :PDFExpert]
         [:p [:safeOpen "com.readdle.PDFExpert-Mac"]]
-        ;; [:f ]
-        ;; [:g ]
-        [:h [:open "/Applications/Google Chrome.app"]]
-        [:j [:!TOf12]] ;; iTerm2
-        [:k [:open "/Applications/Visual Studio Code.app"]]
-        ;; [:l ]
+
+        [:f :!CTOSspacebar]  ;; Alfred
+        [:g :!Ch :Finder]
+        [:g [:open "/System/Library/CoreServices/Finder.app"]]
+        [:h :!Ch :Raindrop]
+        [:h [:safeOpen "io.raindrop.macapp"]]
+        [:k :!Ch :IDEA]
+        [:k [:safeOpen "com.jetbrains.intellij.ce"]]
+        [:l :!Ch :GoLand]
+        [:l [:safeOpen "com.jetbrains.goland"]]
+
+        [:z :!Ch :WeChat]
         [:z [:safeOpen "com.tencent.xinWeChat"]]
-        [:x [:safeOpen "com.jetbrains.goland"]]
-        [:c [:safeOpen "com.hnc.Discord"]]
-        [:v [:safeOpen "io.raindrop.macapp"]]
+        [:x :!Ch :Discord]
+        [:x [:safeOpen "com.hnc.Discord"]]
+        [:c [:!TOf12]] ;; iTerm2
+        [:v :!Ch :Music]
+        [:v [:open "/System/Applications/Music.app/"]]
+        [:b :!Ch :Bitwarden]
         [:b [:open "/Applications/Bitwarden.app"]]
+        [:n :!Ch :Notes]
         [:n [:open "/System/Applications/Notes.app/"]]
-        [:m [:open "/System/Applications/Music.app/"]]
       ]
     }
     {:des "configuration (e)"
       :rules [:config-mode
-        [:l [:open "/Applications/Karabiner-EventViewer.app"]]
-        [:k [:open "/Applications/Karabiner-Elements.app"]]
-        [:h [:open "/Applications/Hammerspoon.app"]]
-        [:p [:open "/System/Applications/System Preferences.app"]]
-        [:m [:open "/System/Applications/Utilities/Activity Monitor.app/"]]
+        [:q [:open "/Applications/Karabiner-EventViewer.app"]]
+        [:w [:open "/Applications/Karabiner-Elements.app"]]
+        [:d [:open "/Applications/Hammerspoon.app"]]
+        [:f [:open "/System/Applications/System Preferences.app"]]
+        [:a [:open "/System/Applications/Utilities/Activity Monitor.app/"]]
 
         ;; reload hammerspoon, goku
         [:r [:script "reload_config.sh"]]
-      ]
-    }
-    {:des "browser (b)"
-      :rules [:browser-mode
-        ;; [:i [:alfred-execute "cdcd"]]
-        [:w [:open "https://webo.com"]]
-        [:t [:open "https://twitter.com"]]
-        [:g [:open "https://github.com/notifications"]]
-        [:l [:open "https://www.bilibili.com/watchlater/#/list"]]
-        [:m [:open "https://mail.google.com/mail"]]
-        [:k :!COb :browser] ;; open bookmarks
 
         ;; open documentation in browser
         ;; goku
@@ -452,6 +435,17 @@
         ;; development documentation
         [:0 {:shell "open https://www.baeldung.com/ https://www.geeksforgeeks.org https://stackoverflow.com/ https://programming-idioms.org/cheatsheet/Java"}]
         [:slash {:shell "open https://learnxinyminutes.com https://devhints.io https://quickref.me"}]
+      ]
+    }
+    {:des "browser (b)"
+      :rules [:browser-mode
+        ;; [:i [:alfred-execute "cdcd"]]
+        [:w [:open "https://webo.com"]]
+        [:t [:open "https://twitter.com"]]
+        [:g [:open "https://github.com/notifications"]]
+        [:l [:open "https://www.bilibili.com/watchlater/#/list"]]
+        [:m [:open "https://mail.google.com/mail"]]
+        [:k :!COb :browser] ;; open bookmarks
       ]
     }
     {:des "terminal (j)"
