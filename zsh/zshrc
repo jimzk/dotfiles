@@ -76,7 +76,7 @@ source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugi
 # +----------------+
 # |  key bindings  |
 # +----------------+
-# https://blog.quarticcat.com/posts/how-do-i-make-my-zsh-smooth-as-fuck/#key-bindingszsh
+# https://blog.quarticcat.com/zh/posts/how-do-i-make-my-zsh-smooth-as-fuck/#key-bindingszsh
 bindkey -r '^['  # [Esc] (Default: vi-cmd-mode)
 bindkey '^Z' undo         # [Ctrl-Z]
 bindkey '^Y' redo         # [Ctrl-Y]
