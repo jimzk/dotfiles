@@ -62,6 +62,7 @@ set tm=500
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Esc
 imap jj <Esc>
+imap jk <Enter>
 " redo
 nnoremap U <C-r>
 
@@ -132,14 +133,11 @@ set splitright " vertical split in right
 set splitbelow " horizontal split in below
 nnoremap <leader><bar> :vsplit<cr>
 nnoremap <leader>_ :split<cr>
-nnoremap <leader>j <C-W>j
-nnoremap <leader>k <C-W>k
-nnoremap <leader>h <C-W>h
-nnoremap <leader>l <C-W>l
-nnoremap <leader>J <C-W>J
-nnoremap <leader>K <C-W>K
-nnoremap <leader>H <C-W>H
-nnoremap <leader>L <C-W>L
+" keybindings for split panes
+" <C-w><C-w>: focus on next split pane
+" <C-w> j/k/h/l: focus on split pane in direction
+" <C-w><C-r>: location swap with next split pane
+" <C-w> H/K/H/l: location swap with split pane in direction
 
 " select block
 nnoremap <leader>v v`}

@@ -23,7 +23,7 @@ let NERDTreeShowHidden=0  " 默认不显示隐藏文件
 let NERDTreeQuitOnOpen=0  " 打开文件后：1 关闭 NERDTRee；2 不关闭 NERDTRee
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-nnoremap <leader>N :NERDTreeToggle<cr>
+nnoremap <leader>n :NERDTreeToggle<cr>
 
 "autocmd VimEnter * NERDTree " 启动 vim 时自动打开 NEERDTree
 " 自动打开 NEERDTree 后，焦点在文件区

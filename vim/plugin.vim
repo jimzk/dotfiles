@@ -24,7 +24,7 @@ call plug#begin($XDG_CONFIG_HOME . '/vim/plugged')
     Plug 'bkad/CamelCaseMotion'
     Plug 'vim-airline/vim-airline'
     Plug 'yianwillis/vimcdoc' "中文帮助文档
-    Plug 'scrooloose/nerdtree'  " 目录树
+    Plug 'preservim/nerdtree'  " 目录树
     "Plug 'Xuyuanp/nerdtree-git-plugin' " NERDTree git 增强
     Plug 'ctrlpvim/ctrlp.vim'  "跳转到声明处
     "Plug 'Valloric/YouCompleteMe'  " 自动补全，支持大部分语言
