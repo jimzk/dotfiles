@@ -1,0 +1,16 @@
+set easymotion
+set commentary
+set surround
+set highlightedyank
+set textobj-indent
+set argtextobj
+set textobj-entire
+set multiple-cursors
+set vim-paragraph-motion
+set exchange
+
+source ~/.config/nvim/minimal.vim
+source ~/.config/nvim/plugin/easymotion.vim
+source ~/.config/nvim/plugin/targets.vim
+source ~/.config/nvim/plugin/multiple-cursors.vim
+source ~/.config/nvim/plugin/expand-region.vim

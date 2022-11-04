@@ -50,8 +50,6 @@ set t_vb=
 set tm=500
 " enable mouse
 set mouse=a
-" no redraw screen while executing macros (improve performance)
-set lazyredraw
 " timeout length to wait for mapped sequence
 set timeoutlen=500
 " auto read file if modified
@@ -112,6 +110,8 @@ else
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
     let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
 endif
+" enable 24-bit color
+set termguicolors
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Key mapping
@@ -119,6 +119,9 @@ endif
 " move to wrapped line
 nnoremap j gj
 nnoremap k gk
+nnoremap 0 g0
+nnoremap $ g$
+nnoremap ^ g^
 set whichwrap+=<,>,h,l
 "  let &colorcolumn="120"  " show column when line exceeds 120 chars
 " let &colorcolumn="80,".join(range(120,999),",")
@@ -169,24 +172,13 @@ command! W w !sudo tee % > /dev/null
 " switch between the active and last active tab "
 " The first tab is always 1 "
 let g:last_active_tab = 1
-nnoremap <leader>` :execute "tabnext ".g:last_active_tab<CR>
+nnoremap <silent> g<tab> :execute "tabnext ".g:last_active_tab<cr>
 autocmd TabLeave * let g:last_active_tab = tabpagenr()
-" tab navigation
-nnoremap g1 1gt
-nnoremap g2 2gt
-nnoremap g3 3gt
-nnoremap g4 4gt
-nnoremap g5 5gt
-nnoremap g6 6gt
-nnoremap g7 7gt
-nnoremap g8 8gt
-nnoremap g9 9gt
-nnoremap g0 :tablast<cr>
 
 " move line up and down
 " https://github.com/mhinz/vim-galore#quickly-move-current-line
-nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+nnoremap <silent> [e  :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap <silent> ]e  :<c-u>execute 'move +'. v:count1<cr>
 
 " copy and paste
 "set clipboard=unnamed " 使用系统剪切板
