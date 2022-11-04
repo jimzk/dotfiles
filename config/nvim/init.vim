@@ -1,4 +1,5 @@
-set runtimepath^=~/.config/vim runtimepath+=~/.config/vim/after
-let &packpath = &runtimepath
+" Run `:help 'runtimepath'` to see configuration files in what directories that will be automatically loaded.
 
-source ~/.config/vim/minimal.vim
+runtime minimal.vim
+runtime plugin.vim
+runtime extended.vim
