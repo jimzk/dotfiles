@@ -1,3 +1,4 @@
+"  https://github.com/bkad/CamelCaseMotion
 map <silent> <leader>w <Plug>CamelCaseMotion_w
 map <silent> <leader>b <Plug>CamelCaseMotion_b
 map <silent> <leader>e <Plug>CamelCaseMotion_e

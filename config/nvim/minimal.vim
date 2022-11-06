@@ -227,7 +227,9 @@ nnoremap <expr> N  'nN'[v:searchforward]
 cnoremap <c-j> <up>
 cnoremap <c-k> <down>  " complete and move to next selection menu
 cnoremap <c-a> <home>
-cnoremap <c-r> <end>
+cnoremap <c-e> <end>
+inoremap <c-a> <home>
+inoremap <c-e> <end>
 " move to word backward and forward
 cnoremap <m-b> <s-left>
 cnoremap <m-f> <s-right>
