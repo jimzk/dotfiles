@@ -39,16 +39,16 @@ export EDITOR
 FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
 --bind='tab:down' \
 --bind='btab:up' \
---bind='ctrl-j:down' \
---bind='ctrl-k:up' \
---bind='ctrl-n:page-down' \
---bind='ctrl-p:page-up' \
---bind='ctrl-x:toggle' \
+--bind='ctrl-n:down' \
+--bind='ctrl-p:up' \
+--bind='ctrl-j:page-down' \
+--bind='ctrl-k:page-up' \
+--bind='ctrl-space:toggle' \
 --bind='alt-j:preview-down' \
 --bind='alt-k:preview-up' \
 --bind='alt-d:preview-half-page-down' \
 --bind='alt-u:preview-half-page-up' \
---bind 'ctrl-/:toggle-preview' \
+--bind 'ctrl-\:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS="$FZF_BASE_OPTS --height=60%"

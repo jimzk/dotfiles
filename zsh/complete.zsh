@@ -87,7 +87,7 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-flags --tac --no-sort --color=16,hl:green --height=30% --preview-window down,30%,wrap
 
 # preview for cd/ls/vim/code
-zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=35% --preview-window right,75%,wrap --header='^E Edit, ^O Open'
+zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-flags --tac --no-sort --color=16,hl:green,header:bold --height=35% --preview-window right,75%,wrap --header='^E Edit, ^O Open, ^G Continuous'
 zstyle ':fzf-tab:complete:(cd|ls|vim|code):*' fzf-bindings \
     'ctrl-e:execute-silent({_FTB_INIT_}code "$realpath")+abort' \
     'ctrl-o:execute-silent({_FTB_INIT_}open "$realpath")+abort'
