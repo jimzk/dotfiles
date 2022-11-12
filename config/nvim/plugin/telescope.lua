@@ -1,9 +1,4 @@
-local builtin = require'telescope.builtin'
-local themes = require'telescope.themes'
-local actions = require'telescope.actions'
-local actions_layout = require'telescope.actions.layout'
-
-require("telescope").setup{
+require("telescope").setup {
   -- https://github.com/nvim-telescope/telescope.nvim/issues/1351
   defaults = {
     sorting_strategy = "ascending",  -- cursor starts from top result
@@ -17,19 +12,17 @@ require("telescope").setup{
       },
       vertical = {
         mirror = true,
-        height = 0.9,
+        -- height = 0.9,
         -- width = {0.9, max = 160},  -- set width 0.9 when min < buffer column < max
-        width = 140,
         preview_height = 0.5,
       },
       horizontal = {
-        height = 0.6,
-        width = 0.85,
+        -- height = 0.6,
+        -- width = 0.85,
         preview_cutoff = 60,  -- hide preview when columns < preview_cutoff
         preview_width = 0.6,
       },
     },
-    wrap_results = true,
     results_title = false,  -- hide results title
     dynamic_preview_title = true,  -- show file name dynamically in preview title
     path_display = {
@@ -37,18 +30,22 @@ require("telescope").setup{
     },
     file_ignore_patterns = {"node_modules", "/dist"},
     mappings = {
+      -- C-/ toggles keymap cheatsheet
       i = {
-        ["<C-Space>"] = require("telescope.actions").toggle_selection,
-        ["<C-j>"] = require("telescope.actions").results_scrolling_up,
-        ["<C-k>"] = require("telescope.actions").results_scrolling_down,
-        ["<C-l>"] = require("telescope.actions").cycle_previewers_next,
-        ["<C-h>"] = require("telescope.actions").cycle_previewers_prev,
-        ["<right>"] = require("telescope.actions").cycle_previewers_next,
-        ["<left>"] = require("telescope.actions").cycle_previewers_prev,
-        ["<down>"] = require("telescope.actions").move_selection_next,
-        ["<up>"] = require("telescope.actions").move_selection_previous,
-        ["<esc>"] = require("telescope.actions").close,-- disable normal mode
-        ["<M-space>"] = require("telescope.actions.layout").toggle_preview,
+        -- NOTE: "toggle_selection" will be parsed to require("telescope.actions").toggle_selection
+        ["<C-j>"] = "results_scrolling_up",
+        ["<C-k>"] = "results_scrolling_down",
+        ["<C-l>"] = "cycle_previewers_next",
+        ["<down>"] = "move_selection_next",
+        ["<up>"] = "move_selection_previous",
+        ["<esc>"] = "close",  -- disable normal mode
+        ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
+        ["<C-s>"] = "select_horizontal",
+        ["<C-x>"] = false,
+        ["<M-u>"] = "preview_scrolling_up",
+        ["<M-d>"] = "preview_scrolling_down",
+        ["<C-u>"] = false,
+        ["<C-d>"] = false,
       },
     },
   },
@@ -57,19 +54,35 @@ require("telescope").setup{
       find_command = { "rg", "--files", "--no-binary", "--hidden", "--glob", "!{**/.git/*,**/node_modules/*}" },
       mappings = {
         i = {
-          -- TODO: show notification
-          ["<C-o>"] = function(prompt_bufnr)
+          -- change working directory
+          ["<C-=>"] = function(prompt_bufnr)
             local selection = require("telescope.actions.state").get_selected_entry()
             local dir = vim.fn.fnamemodify(selection.path, ":p:h")
             require("telescope.actions").close(prompt_bufnr)
             -- Depending on what you want put `cd`, `lcd`, `tcd`
             vim.cmd(string.format("lcd %s", dir))
+            -- TODO: show to avoid error msg when module can't be found?
+            require("notify").notify(string.format("cd to %s", dir))
           end,
         },
       },
     },
+    buffers = {
+      mappings = {
+        i = {
+          ["<C-BS>"] = "delete_buffer",
+        }
+      }
+    }
   },
 }
+
+-- Wrap
+require("telescope").setup{
+  defaults = {wrap_results = true}
+}
+-- https://github.com/nvim-telescope/telescope.nvim#previewers
+vim.cmd("autocmd User TelescopePreviewerLoaded setlocal wrap")
 
 -- Dont preview binaries
 -- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#dont-preview-binaries
@@ -99,11 +112,6 @@ require("telescope").setup {
   }
 }
 
-
--- Wrap preview
--- https://github.com/nvim-telescope/telescope.nvim#previewers
-vim.cmd("autocmd User TelescopePreviewerLoaded setlocal wrap")
-
 -- Setup extensions
 require('telescope').setup {
   extensions = {
@@ -117,159 +125,7 @@ require('telescope').setup {
     }
   },
 }
-
 require("telescope").load_extension('fzf')
-
-local wk = require("which-key")
-wk.register({
-  name = "search file",
-  -- find files
-  f = {function() return builtin.find_files({
-      prompt_title = "Find File In Working Directory",
-      results_title = "open ^v(vsplit) ^x(split) ^t(new tab), help ^/",
-      follow = true,
-      hidden = true,
-    }) end, "files in working directory"},
-  F = {function() return builtin.find_files({
-      prompt_title = "Find File In My Space",
-      results_title = "open ^v(vsplit) ^x(split) ^t(new tab), help ^/",
-      search_dirs = {'~/workspace', '~/Desktop', "~/.config", "~/go", "~/Downloads"},
-      follow = true,
-      hidden = true,
-    })end, "files in my space"},
-  r = {function() return builtin.oldfiles({
-      results_title = "open ^v(vsplit) ^x(split) ^t(new tab), help ^/",
-      prompt_title = "Find Recently Opened File",
-    }
-  ) end, "recently opened files"},
-  b = {function() return builtin.buffers(themes.get_ivy{
-      prompt_title = "Find Buffer",
-      results_title = "open ^v(vsplit) ^x(split) ^t(new tab), help ^/",
-      layout_config = {
-        preview_width = 0.75,
-      },
-      sort_lastused = true,
-    }) end, "buffers"},
-  -- find git files
-  g = {function() return builtin.git_files({
-      results_title = "open ^v(vsplit) ^x(split) ^t(new tab), help ^/",
-      prompt_title = "Find Git File",
-    }) end, "git files"},
-  c = {function() return builtin.git_status({
-      results_title = "(un)stage ⇥, open ⏎ ^v(vsplit) ^x(split) ^t(new tab)",
-      prompt_title = "Find Git Changed File",
-    }) end, "changed git files"},
-  -- grep line
-  l = {function() return builtin.live_grep({
-      prompt_title = "Grep Line In Current Buffer",
-      search_dirs = {vim.fn.expand('%'),},
-
-      layout_strategy = "vertical",
-      layout_config = {
-        preview_height = 0.4,
-        width = 140,
-      },
-      wrap_results = false,
-    }) end, "grep line in current buffer"},
-  L = {function() return builtin.live_grep({
-      prompt_title = "Grep Line In Buffers",
-      grep_open_files = true,
-
-      layout_strategy = "vertical",
-      layout_config = {
-        preview_height = 0.4,
-        width = 140,
-      },
-      wrap_results = false,
-    }) end, "grep line in buffers"},
-  [";"] = {function() return builtin.live_grep({
-      prompt_title = "Grep Line In Working Directory",
-
-      layout_strategy = "vertical",
-      layout_config = {
-        preview_height = 0.4,
-        width = 140,
-      },
-      wrap_results = false,
-    }) end, "grep line in working directory"},
-    -- jump
-    j = {function() return   builtin.jumplist({
-        prompt_title = "Location Jumplist",
-        -- trim_text = true,
-        -- name_width = 100,
-        layout_strategy = "vertical",
-        layout_config = {
-          preview_height = 0.4,
-          width = 140,
-        },
-      }) end, "location jumplist"},
-    t = {"<cmd>Telescope current_buffer_tags<cr>", "tags in current buffer"},
-    T = {"<cmd>Telescope tags<cr>", "tags in project"},
-
-}, {prefix = "<leader>f"})
-
-wk.register({
-  l = {function() return builtin.git_bcommits({
-      layout_strategy = "vertical",
-      layout_config = {
-        width = 140,
-      },
-      prompt_title = "Git Commits on Current Buffer",
-      results_title = "checkout ⏎, diff ^v(vsplit) ^x(split) ^t(new tab)",
-      -- TODO: reorder previewers
-      -- preview cmd: git -c delta.paging=never diff <git_ref> <path>
-      -- ref: telescope.nvim/lua/telescope/builtin/__git.lua, search git.bcommits
-      -- previewer = {
-      --   require'telescope.previewers'.git_commit_diff_to_parent.new(),
-      --   require'telescope.previewers'.git_commit_diff_to_head.new(),
-      --   require'telescope.previewers'.git_commit_diff_as_was.new(),
-      --   require'telescope.previewers'.git_commit_message.new(),
-      -- },
-    }) end, "commits on current buffer"},
-  L = {function() return builtin.git_bcommits({
-      layout_strategy = "vertical",
-      layout_config = {
-        width = 140,
-      },
-      prompt_title = "Git Commits on Current Buffer",
-      results_title = "checkout ⏎, diff ^v(vsplit) ^x(split) ^t(new tab)",
-    }) end, "commits"},
-  t = {function() return builtin.git_stash({
-      layout_strategy = "vertical",
-      layout_config = {
-        width = 140,
-      },
-      prompt_title = "Git Stash",
-      results_title = "apply ⏎",
-    }) end, "stashes"},
-  r = {function() return builtin.git_branches({
-      layout_strategy = "vertical",
-      layout_config = {
-        width = 0.9,
-        preview_height = 0.35,
-      },
-      wrap_results = false,
-      prompt_title = "Git Branch",
-      results_title = "checkout ⏎, new ^a, rebase ^t, delete ^d, merge ^y, track ^t",
-    }) end, "branches"},
-}, {prefix = "<leader>g"})
-
-wk.register({
-  name = "coding",
-  s = {function() return builtin.treesitter({
-      prompt_title = "Function Names, Variables and Symbols",
-      results_title = "autocompletion menu ^l",
-    }) end, "symbol in current buffer"},
-  q = {function() return builtin.quickfix({
-      prompt_title = "Quick Fix",
-    }) end, "list items in quickfix"},
-  ["/"] = {function() return builtin.search_history({
-      prompt_title = "Search History",
-    }) end, "list search history"},
-  m = {function() return builtin.filetypes({
-      prompt_title = "Change Filetype",
-    }) end, "change current buffer's filetype"},
-}, {prefix = "<leader>c"})
 
 --- configuration example
 --- https://github.com/nvim-telescope/telescope.nvim/issues/2095#issuecomment-1193385941
