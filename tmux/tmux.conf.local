@@ -343,41 +343,61 @@ set -g mode-keys vi
 set -gu prefix2
 unbind C-a
 unbind C-b
-set -g prefix C-b
-bind C-b send-prefix
+set -g prefix C-s
+bind C-s send-prefix
+
+# pane navigation
+bind -r C-h select-pane -L  # move left
+bind -r C-j select-pane -D  # move down
+bind -r C-k select-pane -U  # move up
+bind -r C-l select-pane -R  # move right
 
 # window navigation
-unbind C-h
-unbind C-l
 bind -r p previous-window # select previous window
 bind -r n next-window     # select next window
-unbind Tab
+bind -r C-p previous-window # select previous window
+bind -r C-n next-window     # select next window
+bind -r b last-window
+bind -r C-b last-window
 bind \; last-window        # move to last active window
 # swap window recursively
 bind -r < { swap-window -t -1; previous-window }
 bind -r > { swap-window -t +1; next-window }
+bind -r W 'choose-tree -Zw; display-message "list all windows"'
+
+# session
+unbind C-c
+bind C-c new-window
+bind C 'new-session; display-message "new session"'
+bind -r S 'choose-tree -Zs; display-message "list all sessions"'
 
 # pane navigation
-bind o last-pane
+bind -r g last-pane
+bind -r C-g last-pane
 # change pane layout recursively
+bind -r C-space 'rotate-window; display-message "rotate windows layout"'
 bind -r Space next-layout
 # swap pane recursively
 bind -r \} swap-pane -D
 bind -r \{ swap-pane -U
 
 # new pane in current path (split window)
-unbind -
-unbind _
-bind | split-window -h -c "#{pane_current_path}"  # split horizontally
-bind _ split-window -v -c "#{pane_current_path}"     # split vertically
+bind v split-window -h -c "#{pane_current_path}"    # split horizontally
+bind C-v split-window -h -c "#{pane_current_path}"  # split horizontally
+bind s split-window -v -c "#{pane_current_path}"    # split vertically
+bind C-s split-window -v -c "#{pane_current_path}"  # split vertically
 # maximize current pane
 unbind +
 bind z run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 # kill pane without confirmation
 bind x kill-pane
+bind -r C-x kill-pane
 
-# list bound keys
-bind ? new-window -n list-keys "tmux list-keys | less"
+# toggle bottom status line
+bind = 'set status; display-message "toggle status line"'
+
+# list bound keys in new window
+bind ? new-window -n list-keys "tmux list-keys | rg prefix | vim -"
 
 # copy mode
 run -b 'tmux bind -t vi-copy H top-line 2> /dev/null || true'
