@@ -40,8 +40,12 @@ call plug#begin(nvim_config_dir . '/plugged')
     Plug 'chentoast/marks.nvim'  " Visualiaze marks
 
     " ----- Edit
-    "  Plug 'terryma/vim-multiple-cursors'  " CTRL-n adds multiple cursors and edit
-    Plug 'mg979/vim-visual-multi', {'branch': 'master'}  " CTRL-n adds multiple cursors and edit
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}  " Multi selection in visual block mode (Ctrl-v)
+                                                         " All operations only work in visual block mode.
+                                                         " Ctrl-n selects word, q/N select next/previous match
+                                                         " q/Q skip current
+                                                         " ]/[ go to next/previous selection
+                                                         " i/a/I/A edit
     Plug 'farmergreg/vim-lastplace'  " Open file at last edit position
     Plug 'tpope/vim-commentary'  " gcc toggles comment
     "  Plug 'numToStr/Comment.nvim'  " leave it as uncomment is supported
@@ -56,6 +60,10 @@ call plug#begin(nvim_config_dir . '/plugged')
                                " ysiw] :  Hello world!   -> [Hello] world!
                                " ds"   :  "Hello world!" -> Hello world!
                                " yss)  :  Hello world    -> (Hello world!)（wrap all line)
+    Plug 'jiangmiao/auto-pairs'  " Auto insert or delete brackets, parens, quotes in pair.
+                                 " M-n jumps to next closed bracket
+                                 " M-e wraps bracket-outside content
+    Plug 'tpope/vim-sleuth'  " Auto detect indent width within file
 
     " ------ Motion
     Plug 'bkad/CamelCaseMotion'  " <leader> + w/b/e/ge select camel case word
@@ -86,8 +94,8 @@ call plug#begin(nvim_config_dir . '/plugged')
     " ----- LSP
 
     " ----- Appearance
-    Plug 'machakann/vim-highlightedyank'
     Plug 'nvim-lualine/lualine.nvim'  " statusline
+    Plug 'folke/todo-comments.nvim'
     Plug 'nvim-tree/nvim-web-devicons'  " icon support for lualine
     Plug 'ryanoasis/vim-devicons'  " icon support for nerdtree
     "  https://github.com/kdheepak/tabline.nvim
@@ -95,6 +103,8 @@ call plug#begin(nvim_config_dir . '/plugged')
     " Notification
     "  Plug 'folke/noice.nvim'  " UI for messages, cmdline and popupmenu. depend on nvim-notify
     "  Plug 'MunifTanjim/nui.nvim'  " better rendering for noice.nvim
+    " https://github.com/folke/zen-mode.nvim
+    Plug 'sainnhe/everforest'  " colorscheme
 
     " ----- Integrations
     Plug 'rcarriga/nvim-notify'  " notification manager
@@ -105,10 +115,16 @@ call plug#begin(nvim_config_dir . '/plugged')
     "  Plug 'nvim-tree/nvim-tree.lua'
     "  Plug 'vim-ctrlspace/vim-ctrlspace'  " manage tabs, buffers, files, workspace, bookmarks
     "  Plug 'ctrlpvim/ctrlp.vim'
-    "  Plug 'jiangmiao/auto-pairs'
     "  Plug 'tpope/vim-unimpaired'
     "  Plug "yazgoo/yank-history"
     "  Plug "tpope/vim-vinegar"
 call plug#end()
 
-" Note: configurations of particular plugins in nvim/plugin/ will be loaded automatically.
+lua << EOF
+-- jiangmiao/auto-pairs
+vim.g.AutoPairsShortcutJump = '<tab>'
+-- clear cursor color defined in [mg979/vim-visual-multi]
+vim.cmd("highlight clear VMCursor")
+EOF
+
+lua require('color')

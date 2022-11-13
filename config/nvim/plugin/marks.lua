@@ -61,5 +61,5 @@ require'marks'.setup {
 }
 
 -- no change color of line number for mark
--- vim.cmd("highlight link MarkSignNumHL LineNr")
+vim.cmd("highlight link MarkSignNumHL LineNr")
 -- vim.cmd("highlight MarkSignNumHL ctermfg=NONE ctermbg=NONE cterm=NONE")
