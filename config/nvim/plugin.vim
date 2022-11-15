@@ -34,9 +34,9 @@ call plug#begin(nvim_config_dir . '/plugged')
     "  Plug 'junegunn/fzf.vim'  " :Fzf<Tab> shows commands
 
     " ----- Navigation
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'mbbill/undotree'
     Plug 'easymotion/vim-easymotion'
-    Plug 'preservim/nerdtree'  " <leader>n toggle file tree
-    Plug 'mbbill/undotree'  " F5 toggles undo tree
     Plug 'chentoast/marks.nvim'  " Visualiaze marks
 
     " ----- Edit
@@ -97,7 +97,6 @@ call plug#begin(nvim_config_dir . '/plugged')
     Plug 'nvim-lualine/lualine.nvim'  " statusline
     Plug 'folke/todo-comments.nvim'
     Plug 'nvim-tree/nvim-web-devicons'  " icon support for lualine
-    Plug 'ryanoasis/vim-devicons'  " icon support for nerdtree
     "  https://github.com/kdheepak/tabline.nvim
     "  https://github.com/akinsho/bufferline.nvim
     " Notification

@@ -23,5 +23,7 @@ local  windows = {
   o = "close other windows",
   N = {"<cmd>enew<cr>", "new buffer in current window"},
   Q = {"<cmd>q!<cr>", "quit window forcely"},
+  e = {"<cmd>NvimTreeToggle<cr>", "open file explorer"},
+  ["<C-e>"] = {"<cmd>NvimTreeToggle<cr>", "which_key_ignore"},
 }
 require("which-key").register(windows, { mode = "n", prefix = "<c-w>", preset = true })

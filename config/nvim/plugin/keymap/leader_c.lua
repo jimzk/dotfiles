@@ -15,5 +15,6 @@ local leader_c = {
   m = {function() builtin.filetypes({
       prompt_title = "Change Filetype",
     }) end, "change current buffer's filetype"},
+  u = {"<cmd>UndotreeToggle<cr>", "show undo history"},
 }
 require("which-key").register(leader_c, {prefix = "<leader>c"})
