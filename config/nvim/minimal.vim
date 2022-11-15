@@ -139,8 +139,8 @@ set whichwrap+=<,>,h,l
 "     查看所有的命令：:command
 
 " leader key
-nnoremap , <Nop>
-let mapleader=","
+nnoremap " " <Nop>
+let mapleader=" "
 
 " Modes
 "   normal_mode = "n",

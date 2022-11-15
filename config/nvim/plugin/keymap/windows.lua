@@ -5,9 +5,6 @@ local  windows = {
   v = "split window vertically",
   n = "new buffer and split",
   N = {"<cmd>enew<cr>", "new buffer"},
-  y = {"<cmd>NvimTreeToggle<cr>", "open file explorer"},
-  ["<C-y>"] = {"<cmd>NvimTreeToggle<cr>", "which_key_ignore"},
-  Y = {"<cmd>NvimTreeFindFile!<cr>", "open file explorer and locate"},
   T = "break window into a new tab",
 
   -- navigation

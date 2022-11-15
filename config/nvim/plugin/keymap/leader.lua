@@ -10,17 +10,18 @@ local leader = {
   b = {"camelCase b", mode = {"n", "v", "o"}},
   e = {"camelCase e", mode = {"n", "v", "o"}},
   ["ge"] = {"camelCase ge", mode = {"n", "v", "o"}},
-  s = {
-    name = "buffer",
-    d = {"<cmd>bd<cr>", "delete current buffer (not close window)"},
+  h = {
+    name = "buffer & tab",
+    h = {"g<tab>", "last tab"},
+    j = {"gT", "previous tab"},
+    k = {"gt", "next tab"},
+    d = {"<cmd>bd<cr>", "delete current buffer (leave window)"},
     n = {"<cmd>edit<cr>", "new buffer"},
     e = {"<cmd>!open %<cr>", "open buffer by default appcalition"},
-  },
-  j = {
-    name = "jump",
-    j = {"g<tab>", "last tab"},
-    p = {"gT", "previous tab"},
-    n = {"gt", "next tab"},
+    q = {"<cmd>q<cr>", "quite"},
+    ["1"] = {"<cmd>q!<cr>", "quite forcely"},
+    w = {"<cmd>w<cr>", "write"},
+    ["<tab>"] = {"<cmd>wq<cr>", "write and quit"},
   },
 }
 require("which-key").register(leader, {prefix = "<leader>"})
