@@ -84,6 +84,42 @@ local vimer = {
   -- cheatsheet only for preview
   ["\\"] = {
     name = "cheatsheet",
+    d = {
+      name = "read documentation",
+      ["0"] = {"CTRL ] go to tag"},
+      ["1"] = {"CTRL-O or CTRL-T go back"},
+      ["2"] = {"CTRL-T go forward"},
+      ["3"] = {"gO shows outline"},
+      ["7"] = {"CTRL-W f edit file under cursor and split"},
+      ["8"] = {"CTRL-W ] go to tag and split window"},
+      ["9"] = {"CTRL-] go to tag"},
+
+      ["a"] = {"CTRL-W } open tag in preview window"},
+      ["b"] = {"CTRL-W P go to preview window"},
+      ["c"] = {"CTRL-W z close preview window"},
+
+      ["A"] = {":h :put documentation for :put"}
+    },
+    c = {
+      name = "useful commands",
+      ["0"] = {"[range]{cmd}[x] basic form"},
+      ["1"] = {":5,10m2 move L#5~10 after L#2"},
+      ["2"] = {":5,10m$ move after file end"},
+      ["3"] = {":5,10t. move after current line"},
+      ["4"] = {":5,10t.+3 move after current L#+3"},
+      ["5"] = {":5,10m'a move after mark a"},
+      ["6"] = {"similar commands: :y :d :t :j :p"},
+      ["7"] = {":put % write content in register % under cursor"},
+      ["8"] = {":put=execute('!ls') write command result under cursor"},
+      ["9"] = {":10r!ls write command result under L#10"},
+      ["!"] = {":5,10norm {cmd} execute command on L#5~10"},
+
+      ["a"] = {":1,10w !sh execute shell code in L#1~10"},
+      ["b"] = {":1,10w !sh execute shell code and replace"},
+      ["c"] = {":w !sudo tee% write file by sudo"},
+      ["d"] = {":1,10!sort sort L#1~10 and replace"},
+      ["e"] = {":1,10!python3 execute python code"}
+    }
   }
 }
 require("which-key").register(vimer, {prefix = [[<leader>\]]})

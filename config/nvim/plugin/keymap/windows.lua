@@ -1,29 +1,48 @@
 local  windows = {
   name = "window",
-  s = "new split window",
-  v = "new split window vertically",
-  w = "switch window",
-  q = "quit window",
+  -- new
+  s = "split window",
+  v = "split window vertically",
+  n = "new buffer and split",
+  N = {"<cmd>enew<cr>", "new buffer"},
+  y = {"<cmd>NvimTreeToggle<cr>", "open file explorer"},
+  ["<C-y>"] = {"<cmd>NvimTreeToggle<cr>", "which_key_ignore"},
+  Y = {"<cmd>NvimTreeFindFile!<cr>", "open file explorer and locate"},
   T = "break window into a new tab",
+
+  -- navigation
+  ["<C-6>"] = "(^) open buffer # and split",
+  w = "next window",
+  p = "last accessed window",
+  h = "(hjkl) go to left window",
+  t = {"top window"},  -- useless, can be removed in the future
+  b = {"bottom window"},  -- useless, can be removed in the future
+  -- preview navigation
+  P = {"go to preview window"},
+  z = {"close preview window"},
+
+  -- close
+  o = "close other windows",
+  q = "quit window",
+  Q = {"<cmd>q!<cr>", "quit window forcely"},
+
+  -- layout
+  r = {"rotate window layout"},  -- useless, can be removed in the future
+  H = "(HJKL) move window to most left",
   x = "swap current with next",
   ["-"] = "decrease height",
   ["+"] = "increase height",
   ["<lt>"] = "decrease width",
   [">"] = "increase width",
-  ["|"] = "max out the width",
-  ["_"] = "max out the height",
-  ["="] = "equally high and wide",
-  h = "go to left window (hjkl)",
-  H = "move window to most left (HJKL)",
-  -- l = "go to right window",
-  -- k = "go to up window",
-  -- j = "go to down window",
-  n = "new buffer in new window",
-  ["^"] = "open alternate buffer (#) in new window",
-  o = "close other windows",
-  N = {"<cmd>enew<cr>", "new buffer in current window"},
-  Q = {"<cmd>q!<cr>", "quit window forcely"},
-  e = {"<cmd>NvimTreeToggle<cr>", "open file explorer"},
-  ["<C-e>"] = {"<cmd>NvimTreeToggle<cr>", "which_key_ignore"},
+  -- maximize adn restore layout
+  ["|"] = "which_key_ignore",
+  ["<C-\\>"] = "max out the width",
+  ["_"] = "which_key_ignore",
+  ["<C-->"] = "max out the height",
+  ["<C-=>"] = "equally high and wide",
+
+  -- coding
+  d = {"definition under cursor and split"},
+  i = {"declaration under cursor and split"},
 }
 require("which-key").register(windows, { mode = "n", prefix = "<c-w>", preset = true })

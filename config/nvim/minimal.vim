@@ -222,6 +222,11 @@ nnoremap <expr> N  'nN'[v:searchforward]
 "  cnoremap t.<tab> tabedit <c-r>=expand("%:p:h")<cr>/
 "  cnoremap e.<tab> e <c-r>=expand("%:p:h")<cr>/
 
+" window layout
+nmap <c-w><c--> <c-w>_  " maximize window height
+nmap <c-w><c-\> <c-w>\|  " maximize window width
+nmap <c-w><c-=> <c-w>=  " euqally size windows
+
 " completion menu
 " https://github.com/mhinz/vim-galore#saner-command-line-history
 cnoremap <c-j> <up>

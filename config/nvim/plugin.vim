@@ -121,7 +121,7 @@ call plug#end()
 
 lua << EOF
 -- jiangmiao/auto-pairs
-vim.g.AutoPairsShortcutJump = '<tab>'
+-- vim.g.AutoPairsShortcutJump = '<tab>'
 -- clear cursor color defined in [mg979/vim-visual-multi]
 vim.cmd("highlight clear VMCursor")
 EOF
