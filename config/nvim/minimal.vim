@@ -79,7 +79,7 @@ set noswapfile
 " => UI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " theme
-colorscheme gruvbox
+"  colorscheme gruvbox
 set background=dark
 
 set cursorline
@@ -150,8 +150,8 @@ let mapleader=" "
 "   term_mode = "t",
 "   command_mode = "c",
 
-imap jk <esc>
-" no copy when paste in visual mode
+" imap jk <esc>
+" not copy when paste in visual mode
 vmap p "_dP
 nnoremap U <c-r>  " redo
 " Use <c-L> to clear the highlighting of :set hlsearch.
@@ -177,8 +177,11 @@ autocmd TabLeave * let g:last_active_tab = tabpagenr()
 
 " move line up and down
 " https://github.com/mhinz/vim-galore#quickly-move-current-line
-nnoremap <silent> [e  :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap <silent> ]e  :<c-u>execute 'move +'. v:count1<cr>
+" FIX: error when target moves execeeds line range of file
+nnoremap <silent> [l  :<c-u>execute "move -1-". v:count1<cr>
+nnoremap <silent> ]l  :<c-u>execute "move +". v:count1<cr>
+vnoremap <silent> [l  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
+vnoremap <silent> ]l  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
 
 " copy and paste
 "set clipboard=unnamed " 使用系统剪切板
@@ -192,8 +195,8 @@ nnoremap Y y$
 
 " quick add empty line (can be used with number)
 " https://github.com/mhinz/vim-galore#quickly-add-empty-lines
-nnoremap <leader>[  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
-nnoremap <leader>]  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+nnoremap s[  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap s]  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
 " scroll
 nnoremap <c-e> 2<c-e>
