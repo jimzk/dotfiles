@@ -10,7 +10,50 @@ set vim-paragraph-motion
 set exchange
 
 source ~/.config/nvim/minimal.vim
-source ~/.config/nvim/plugin/easymotion.vim
-source ~/.config/nvim/plugin/targets.vim
-source ~/.config/nvim/plugin/multiple-cursors.vim
-source ~/.config/nvim/plugin/expand-region.vim
+
+" Easymotion
+" Move to word
+map ,w <Plug>(easymotion-w)
+map ,b <Plug>(easymotion-b)
+map ,e <Plug>(easymotion-e)
+map ,ge <Plug>(easymotion-ge)
+" Move to word in current line
+map ,l <Plug>(easymotion-lineforward)
+map ,h <Plug>(easymotion-linebackward)
+" Move to line
+map ,j <Plug>(easymotion-j)
+map ,k <Plug>(easymotion-k)
+map ,n <Plug>(easymotion-bd-jk)
+nmap ,n <Plug>(easymotion-overwin-line)
+" nmap <Leader>L <Plug>(easymotion-overwin-line)
+" Search (followed by {char})
+map ,f <Plug>(easymotion-f)
+map ,F <Plug>(easymotion-F)
+map ,t <Plug>(easymotion-t)
+map ,T <Plug>(easymotion-T)
+"  map ,/ <Plug>(easymotion-sn)
+" default configs: https://github.com/easymotion/vim-easymotion/blob/master/plugin/EasyMotion.vim
+let g:EasyMotion_space_jump_first = 1
+let g:EasyMotion_startofline = 1 " set 0 if you want to kepp cursor at the same column after line move
+let g:EasyMotion_smartcase = 1 " smart case sensitive (type `l` and match `l`&`L`)
+let g:EasyMotion_use_smartsign_us = 1 " Smartsign (type `3` and match `3`&`#`)
+let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj;'
+
+
+" targets.vim
+let g:targets_aiAI = 'aIAi'
+autocmd User targets#mappings#user call targets#mappings#extend({
+\ 'a': {'argument': [{'o': '[({[]', 'c': '[]})]', 's': ','}]},
+\ 'b': {'pair': [{'o':'(', 'c':')'}, {'o':'[', 'c':']'}, {'o':'{', 'c':'}'}, {'o':'<', 'c':'>'}]},
+\ })
+"  Prefer multiline targets around cursor over distant targets within cursor line:
+"  https://github.com/wellle/targets.vim#gtargets_seekranges
+let g:targets_seekRanges = 'cc cr cb cB lc ac Ac lr lb ar ab lB Ar aB Ab AB rr ll rb al rB Al bb aa bB Aa BB AA'
+
+" multiple-cursor.vim
+let g:multi_cursor_select_all_key = 'g<C-n>'
+
+" expand-region.vim
+map _ <Plug>(expand_region_expand)
+map + <Plug>(expand_region_shrink)
+let g:expand_region_use_select_mode = 0
