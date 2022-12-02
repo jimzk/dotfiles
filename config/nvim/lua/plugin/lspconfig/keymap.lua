@@ -1,11 +1,11 @@
-local wk = require("which-key")
-require("mason").setup()
-require("mason-lspconfig").setup()
 
+local wk = require("which-key")
+local M = {}
 -- LSP keymapping
 -- tweak by lspsaga (https://github.com/glepnir/lspsaga.nvim#configuration)
 -- under lspconfig (https://github.com/neovim/nvim-lspconfig#suggested-configuration)
-wk.register({
+M.setup = function()
+  wk.register({
   ['[x'] = { function() vim.diagnostic.goto_prev { float = false } end, "[C] go previous diagnostic" },
   [']x'] = { function() vim.diagnostic.goto_next { float = false } end, "[C] go next diagnostic" },
   -- FIX: too small height
@@ -13,21 +13,13 @@ wk.register({
   ['[e'] = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[C] go previous diagnostic" },
   [']e'] = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[C] go next diagnostic" },
   ["[E"] = { function()
-    require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
+      require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
   end, "[C] previous error" },
   ["]E"] = { function()
-    require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
+      require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
   end, "[C] next error" },
+  }, { noremap = true, silent = true })
 
-}, { noremap = true, silent = true })
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   wk.register({
     g = {
@@ -98,74 +90,7 @@ local on_attach = function(client, bufnr)
     },
   }, { noremap = true, silent = true, buffer = bufnr })
 
-  vim.keymap.set({"i"}, "<C-s>", function() vim.lsp.buf.signature_help() end)  -- Show signature at insertion (which-key can't set keymap for insert mode)
+  vim.keymap.set({"i", "v"}, "<C-s>", function() vim.lsp.buf.signature_help() end)  -- Show signature at insertion (which-key can't set keymap for insert mode)
 end
 
-vim.diagnostic.config {
-  virtual_text = false, -- no show diagnostics in virtual line
-  signs = false, -- no show diagnostics in sign column
-}
-
--- Setup LSP by languages
--- Avaliable lsp servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
---            Short list: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-local lsp_servers = {
-  sumneko_lua = {      -- Lua
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the global `vim`
-        globals = { 'vim' },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-      completion = {
-        callSnippet = "Replace" -- Complete with arguments
-      },
-    },
-  },
-  rust_analyzer = {},  -- Rust
-  bashls = {},         -- Bash
-  zk = {},             -- Markdown
-  taplo = {},          -- TOML
-  yamlls = {},         -- YAML
-  jsonls = {},         -- JSON
-}
-
-require("mason-lspconfig").setup({
-  ensure_installed = (function() -- Automatically install LSP servers
-    local lsps = {}
-    for k, _ in pairs(lsp_servers) do
-      table.insert(lsps, k)
-    end
-    return lsps
-  end)()
-})
-
--- Detail of the below capabilities: https://github.com/hrsh7th/cmp-nvim-lsp/blob/main/lua/cmp_nvim_lsp/init.lua#L37
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-for k, v in pairs(lsp_servers) do
-  require("lspconfig")[k].setup {
-    handlers = {
-      -- Change floating window size from hover(). See :h lsp-handlers
-      -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'single', width = 50 }),
-      ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'single'}),
-    },
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    },
-    settings = v,
-  }
-end
+return M

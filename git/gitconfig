@@ -3,7 +3,7 @@
     ignorecase = true
     # pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
-	editor = vim
+	editor = nvim
     autocrlf = input
     fileMode = false
     symlinks=true

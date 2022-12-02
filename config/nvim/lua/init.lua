@@ -7,7 +7,9 @@ end
 
 require("plugin")
 require_all("plugin")
-require_all("plugin/language")
+require("plugin.telescope")
+require("plugin.lspconfig")
+require("plugin.development")
 require_all("keymap")
 require("color")
 
