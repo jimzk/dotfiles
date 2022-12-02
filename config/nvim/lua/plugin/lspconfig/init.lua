@@ -19,10 +19,18 @@ vim.diagnostic.config({
   update_in_insert = false,
 })
 
+local lsp_status = require("lsp-status")
+lsp_status.config {
+  diagnostics = false,  -- No show diagnostics
+}
+lsp_status.register_progress()
 local make_config = function()
+    -- Detail of cmp_nvim_lsp capabilities: https://github.com/hrsh7th/cmp-nvim-lsp/blob/main/lua/cmp_nvim_lsp/init.lua#L37
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
+
   return {
-    -- Detail of the below capabilities: https://github.com/hrsh7th/cmp-nvim-lsp/blob/main/lua/cmp_nvim_lsp/init.lua#L37
-    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    capabilities = capabilities,
     flags = {
       debounce_text_changes = 150,
     },
@@ -36,7 +44,10 @@ local make_config = function()
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       require("plugin.lspconfig.keymap").setup()
-      require('nvim-navic').attach(client, bufnr)  -- Winbar for context. Better than lspsaga.
+      -- Code context used by lualine. Better than lspsaga.
+      require('nvim-navic').attach(client, bufnr)
+      -- Lsp status used by lualine
+      lsp_status.on_attach(client)
 
       -- Some configuration examples
       -- https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/

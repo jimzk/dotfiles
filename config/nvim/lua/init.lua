@@ -42,6 +42,7 @@ require("color")
 - https://github.com/ray-x
 - https://github.com/jose-elias-alvarez/null-ls.nvim
 - tpope
+- simrat39/symbols-outline.nvim
 
 Appearance
 -  https://github.com/AckslD/nvim-neoclip.lua

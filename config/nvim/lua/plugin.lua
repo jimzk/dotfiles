@@ -233,6 +233,12 @@ return packer.startup(function(use)
     "nvim-treesitter/nvim-treesitter",  -- Syntax highlight
     run = ":TSUpdate"                   -- :TSInstall <language> to install parser
   }                                     -- :TSUpdate to update parser
+  ----- Status line & Winbar
+  use {
+    "nvim-lualine/lualine.nvim",  -- Statusline and winbar
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
+  use "nvim-lua/lsp-status.nvim"  -- Provide lsp status for lualine
   use {
     "SmiteshP/nvim-navic",  -- Show code context in winbar
     requires = "neovim/nvim-lspconfig",
@@ -313,10 +319,6 @@ return packer.startup(function(use)
     end
   }
   use {
-    "nvim-lualine/lualine.nvim",  -- Status line
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-  }
-  use {
     "folke/zen-mode.nvim",  -- Zen mode
     requires = "folke/twilight.nvim",
     config = function()
@@ -347,7 +349,27 @@ return packer.startup(function(use)
   use "lukas-reineke/indent-blankline.nvim"  -- Indent guide line
   use {
     'akinsho/bufferline.nvim', tag = "v3.*",
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    after = "tokyonight.nvim",
+    config = function ()
+      require("bufferline").setup{
+        options = {
+          mode = "tabs",
+          separator_style = "thick",  -- value: slant, padded_slant, thick, thin
+          indicator = { style = 'none' },
+          show_buffer_close_icons = false,
+          tab_size = 0,  -- adaptive tab size
+        },
+        highlights = {
+          fill = {
+            bg = {  -- Set Normal#bg to fill#bg
+                attribute = "bg",
+                highlight = "Normal"
+            },
+          },
+        }
+    }
+    end
   }
 
   -- MISC
@@ -368,6 +390,7 @@ return packer.startup(function(use)
   --                           -- Problem: can't scroll preview: https://github.com/ray-x/lsp_signature.nvim/issues/228
   --                           -- Can be replaced by native vim.lsp.buf.signature_help
   -- https://git.sr.ht/~whynothugo/lsp_lines.nvim  -- Show diagnostics in individual line. Distracting.
+  -- romgrk/barbar.nvim        -- Tabline. Pretty but not support only show tab, see https://github.com/romgrk/barbar.nvim/issues/108.
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting
   -- davidsierradz/cmp-conventionalcommits   -- Not much userful
