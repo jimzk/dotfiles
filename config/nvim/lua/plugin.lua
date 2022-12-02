@@ -240,6 +240,13 @@ return packer.startup(function(use)
       require("lsp_lines").setup()
     end,
   }
+  use {
+    "SmiteshP/nvim-navic",  -- Show code context in winbar
+    requires = "neovim/nvim-lspconfig",
+    config = function()
+      vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+    end
+}
 
   ----- Auto completion
   use 'hrsh7th/nvim-cmp'      -- Core plugin

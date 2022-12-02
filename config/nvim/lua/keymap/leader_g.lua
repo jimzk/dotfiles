@@ -14,7 +14,10 @@ require("which-key").register({
   d = { "<cmd>Gitsigns diffthis<cr>", "diff" },
   -- fugitive
   B = { "<cmd>Git blame<cr><cmd>echo '[git blame] g? for help'<cr>", "file blame" },
-  g = { "<cmd>Git<cr>", "git status" },
+  g = { function()
+    vim.cmd("Git")
+    vim.keymap.set("n", "q", ":q<cr>", { buffer = true, silent = true })
+  end, "git status and operations" },
   -- telescope
   l = { function() builtin.git_bcommits({
       layout_strategy = "vertical",
@@ -34,15 +37,15 @@ require("which-key").register({
       -- },
     })
   end, "commits on current buffer" },
-  L = { function() builtin.git_bcommits({
+  L = { function() builtin.git_commits({
       layout_strategy = "vertical",
       layout_config = {
         width = 140,
       },
-      prompt_title = "Git Commits on Current Buffer",
+      prompt_title = "Git Commits on Repo",
       results_title = "|checkout: ⏎ |diff: ^v(split) ^s(plit) ^t(ab)",
     })
-  end, "commits" },
+  end, "commits on repo" },
   t = { function() builtin.git_stash({
       layout_strategy = "vertical",
       layout_config = {

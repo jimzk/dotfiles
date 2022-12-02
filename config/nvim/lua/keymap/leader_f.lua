@@ -46,11 +46,11 @@ wk.register({
   }) end, "find project"},
 
   -- find git file
-  g = {function() builtin.git_files({
-    results_title = "open ^v(split) ^s(plit) ^t(ab)",
+  G = {function() builtin.git_files({
+    results_title = "|open ^v(split) ^s(plit) ^t(ab)",
     prompt_title = "Find Git File",
   }) end, "git files"},
-  c = {function() builtin.git_status({
+  g = {function() builtin.git_status({
     results_title = "|(un)stage: ⇥ |open: ^v(split) ^s(plit) ^t(ab)",
     prompt_title = "Find Git Changed File",
   }) end, "changed git files"},

@@ -34,13 +34,11 @@ local make_config = function()
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       require("plugin.lspconfig.keymap").setup()
+      require('nvim-navic').attach(client, bufnr)  -- Winbar for context. Better than lspsaga.
 
-      -- Some configuration example
+      -- Some configuration examples
       -- https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/
       -- -> Show method signature when typing, format before writing, action buble
-
-      -- TODO: https://github.com/SmiteshP/nvim-navic
-      -- https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/init.lua#L57
     end,
   }
 end
