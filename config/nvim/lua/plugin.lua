@@ -234,13 +234,6 @@ return packer.startup(function(use)
     run = ":TSUpdate"                   -- :TSInstall <language> to install parser
   }                                     -- :TSUpdate to update parser
   use {
-    -- https://www.reddit.com/r/neovim/comments/w5h9tl/lsp_linesnvim_v2_is_out/
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",  -- Show diagnostics in individual line
-    config = function()
-      require("lsp_lines").setup()
-    end,
-  }
-  use {
     "SmiteshP/nvim-navic",  -- Show code context in winbar
     requires = "neovim/nvim-lspconfig",
     config = function()
@@ -374,9 +367,10 @@ return packer.startup(function(use)
   -- ray-x/lsp_signature       -- Show signature hint when calling functions
   --                           -- Problem: can't scroll preview: https://github.com/ray-x/lsp_signature.nvim/issues/228
   --                           -- Can be replaced by native vim.lsp.buf.signature_help
+  -- https://git.sr.ht/~whynothugo/lsp_lines.nvim  -- Show diagnostics in individual line. Distracting.
   ----- Abandoned cmp source
-  -- hrsh7th/cmp-nvim-lsp-signature-help     -- distracting
-  -- davidsierradz/cmp-conventionalcommits   -- not much userful
+  -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting
+  -- davidsierradz/cmp-conventionalcommits   -- Not much userful
   if PACKER_BOOTSTRAP then
     require("packer").sync()
   end

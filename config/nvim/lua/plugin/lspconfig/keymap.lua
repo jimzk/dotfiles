@@ -28,10 +28,10 @@ M.setup = function()
       [";"] = { "<cmd>TroubleToggle quickfix<cr>", "[C] go quickfix list" },
       ["'"] = { "<cmd>TroubleToggle loclist<cr>", "[C] go location list" },
 
+      -- x = { function() vim.diagnostic.open_float { height = 10, width = 60 } end, "[C] peek diagnostic in current line" },
       -- FIX: Windows from Lspsaga is too short and always wrapped.
       -- See: https://github.com/glepnir/lspsaga.nvim/issues/594
-      x = { function() vim.diagnostic.open_float { height = 10, width = 60 } end, "[C] peek diagnostic in current line" },
-      -- x = {"<cmd>Lspsaga show_line_diagnostics<CR>", "[C] show current diagnostic"},
+      x = {"<cmd>Lspsaga show_line_diagnostics<CR>", "[C] show current diagnostic"},
       X = { function()
         vim.cmd("normal m'")
         vim.cmd("Trouble document_diagnostics")
@@ -86,7 +86,6 @@ M.setup = function()
           vim.notify("Unsupport range formatting")
         end
       end, "format file (by lsp)", mode = { "n", "v" } },
-      x = { function() require("lsp_lines").toggle() end, "hide diagnostics" },
     },
   }, { noremap = true, silent = true, buffer = bufnr })
 

@@ -1,11 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup()
 
-vim.diagnostic.config {
-  virtual_text = false, -- no show diagnostics in virtual line
-  signs = false, -- no show diagnostics in sign column
-}
-
 local settings = require("plugin.lspconfig.settings")
 require("mason-lspconfig").setup({
   ensure_installed = (function() -- Automatically install LSP servers
@@ -15,6 +10,13 @@ require("mason-lspconfig").setup({
     end
     return servers
   end)()
+})
+
+vim.diagnostic.config({
+  virtual_text = { spacing = 2, prefix = '●' },
+  float = { border = 'single', source = 'if_many' },  -- float window
+  signs = false,
+  update_in_insert = false,
 })
 
 local make_config = function()
@@ -46,12 +48,11 @@ end
 local setup_servers = function()
   for server, _ in pairs(settings) do
     local config = make_config()
-
     -- Set user settings for each server
     if settings[server] then
-        for k, v in pairs(settings[server]) do
-            config[k] = v
-        end
+      for k, v in pairs(settings[server]) do
+          config[k] = v
+      end
     end
     require('lspconfig')[server].setup(config)
   end
