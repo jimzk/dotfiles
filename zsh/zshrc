@@ -37,6 +37,7 @@ setopt PUSHD_SILENT         # do not print the directory stack after pushd or po
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
 plugins=(
+    autoupdate  # https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
     macos
     autojump
     timer

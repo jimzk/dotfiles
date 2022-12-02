@@ -17,8 +17,11 @@ config/iterm2
 config/nnn
 config/clash
 config/dlv
+config/oh-my-zsh
 
 config/nvim/.luarc.json
+
+.luarc.json
 
 # Compiled Python files
 *.pyc

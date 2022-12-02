@@ -40,8 +40,15 @@ prepare() {
     export XDG_CONFIG_HOME=$HOME/.config
     [[ ! -d $XDG_CONFIG_HOME ]] && mkdir -p "$XDG_CONFIG_HOME"
     # soft link oh-my-zsh custom configuration
-    rm -rf $DOTFILES_HOME/config/oh-my-zsh/custom
-    ln -sf $DOTFILES_ZSH_HOME/custom $DOTFILES_HOME/config/oh-my-zsh/custom
+    git clone https://github.com/ohmyzsh/ohmyzsh "$DOTFILES_HOME/config/oh-my-zsh" --depth 1
+    local zsh_custom_plugins="$DOTFILES_HOME/config/oh-my-zsh/custom/plugins"
+    mkdir -p "$zsh_custom_plugins"
+    git clone https://github.com/Aloxaf/fzf-tab "$zsh_custom_plugins/fzf-tab" --depth 1
+    git clone https://github.com/djui/alias-tips "$zsh_custom_plugins/alias-tips" --depth 1
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$zsh_custom_plugins/zsh-autosuggestions" --depth 1
+    git clone https://github.com/zsh-users/zsh-completions "$zsh_custom_plugins/zsh-completions" --depth 1
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$zsh_custom_plugins/zsh-syntax-highlighting" --depth 1
+    git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins "$zsh_custom_plugins/autoupdate" --depth 1
 }
 
 setup_zsh() {
