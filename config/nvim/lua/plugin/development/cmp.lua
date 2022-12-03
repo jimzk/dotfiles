@@ -1,5 +1,6 @@
 vim.cmd("set completeopt=menu,menuone,noselect")
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local function border(hl_name)
   return {
@@ -14,7 +15,7 @@ local function border(hl_name)
   }
 end
 
-local _format = require('lspkind').cmp_format({
+local format = require('lspkind').cmp_format({
   mode = 'symbol_text', -- show symbol annotations and text
   maxwidth = 80, -- prevent the popup from showing more than 80 characters
   ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
@@ -32,50 +33,57 @@ local _format = require('lspkind').cmp_format({
   }),
 })
 
-local _mapping_tab = function(fallback)
+local action_tab = function(fallback)
+  if cmp.visible() and not vim.g.is_cmp_aborted then
+    cmp.select_next_item()
+  elseif luasnip.expand_or_jumpable() then
+    luasnip.expand_or_jump()
+  else
+    fallback()
+  end
+  vim.g.is_cmp_aborted = false
+end
+
+local action_s_tab = function(fallback)
   if cmp.visible() then
-    -- cmp.select_next_item()
-    cmp.confirm({ select = true })
-  elseif require("luasnip").expand_or_jumpable() then
-    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+    cmp.select_prev_item()
+  elseif luasnip.jumpable(-1) then
+    luasnip.jump(-1)
   else
     fallback()
   end
 end
 
-local _mapping_s_tab = function(fallback)
+vim.g.is_cmp_aborted = false
+local action_abort = function(fallback)
   if cmp.visible() then
-    -- cmp.select_prev_item()
+    vim.g.is_cmp_aborted = true
     cmp.abort()
-  elseif require("luasnip").jumpable(-1) then
-    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
   else
-    fallback()
+    vim.g.is_cmp_aborted = false
+    cmp.complete()
   end
 end
 
-local _mapping = {
+local mapping = {
   ["<C-p>"] = cmp.mapping.select_prev_item(),
   ["<C-n>"] = cmp.mapping.select_next_item(),
-  ["<C-k>"] = cmp.mapping.select_prev_item({count = 20}),  -- page up
-  ["<C-j>"] = cmp.mapping.select_next_item({count = 20}),  -- page down
-  ['<M-u>'] = cmp.mapping.scroll_docs(-4),
-  ['<M-d>'] = cmp.mapping.scroll_docs(4),
-  ['<C-d>'] = cmp.mapping.abort(),
-  ['<C-Space>'] = cmp.mapping.confirm({ select = true }),
+  ["<C-k>"] = cmp.mapping.select_prev_item({ count = 20 }), -- page up
+  ["<C-j>"] = cmp.mapping.select_next_item({ count = 20 }), -- page down
+  ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-d>'] = cmp.mapping.scroll_docs(4),
+  ['<C-c>'] = cmp.mapping(action_abort, { "i" }),
   ['<CR>'] = cmp.mapping.confirm({ select = true }),
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
   -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L66
-  ["<Tab>"] = cmp.mapping(_mapping_tab, {"i", "s"}),
-  ["<S-Tab>"] = cmp.mapping(_mapping_s_tab, {"i", "s"}),
+  ["<Tab>"] = cmp.mapping(action_tab, { "i", "s" }),
+  ["<S-Tab>"] = cmp.mapping(action_s_tab, { "i", "s" }),
 }
 
-local _mapping_cmdline = {
-  ['<C-d>'] = { c = _mapping['<C-d>'] },
-  ['<C-Space>'] = { c = _mapping['<C-Space>'] },
-  -- ['<CR>'] = { c = _mapping['<CR>'] },
-  ['<Tab>'] = { c = _mapping_tab },
-  ['<S-Tab>'] = { c = _mapping_s_tab }
+local mapping_cmdline = {
+  ['<C-c>'] = { c = action_abort },
+  ['<Tab>'] = { c = cmp.mapping.confirm({ select = true }) },
+  -- ['<S-Tab>'] = { c = action_s_tab }
 }
 
 -- Configuration for autocompletion plugin cmp
@@ -99,28 +107,30 @@ cmp.setup({
   -- Menu appearance
   -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L51
   formatting = {
-    format = _format
+    format = format
   },
-  mapping = cmp.mapping.preset.insert(_mapping),
+  mapping = cmp.mapping.preset.insert(mapping),
   sources = cmp.config.sources(
-    -- Each outer {..} is a source group, and cmp uses the first group (in order) with avaliable items and hide others.
+  -- Each outer {..} is a source group, and cmp uses the first group (in order) with avaliable items and hide others.
     {
+      { name = "path" },
+      { name = 'calc' },
+    },
+    {
+      { name = 'luasnip', option = { show_autosnippets = false } }, -- disable autosnippets to improve performance
       { name = 'nvim_lsp' },
-      { name = 'luasnip' , option = {show_autosnippets = true}},
     },
     {
       { name = 'buffer' },
-      { name = "path"},
-      { name = 'calc'}
     }
   )
 })
 
 cmp.setup.filetype('gitcommit', {
-  mapping = cmp.mapping.preset.insert(_mapping),
+  mapping = cmp.mapping.preset.insert(mapping),
   sources = cmp.config.sources(
     {
-      { name = 'git' },  -- Trigger: : for commits
+      { name = 'git' }, -- Show commits with trigger :
     },
     {
       { name = 'buffer' },
@@ -130,15 +140,15 @@ cmp.setup.filetype('gitcommit', {
 
 cmp.setup.cmdline({ '/', '?' }, {
   -- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/mapping.lua#L61
-  mapping = cmp.mapping.preset.cmdline(_mapping_cmdline),
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = {
-    { name = 'nvim_lsp_document_symbol' },  -- Trigger: /@
-    { name = 'buffer' }
+    { name = 'nvim_lsp_document_symbol' }, -- Trigger: /@
+    { name = 'buffer', max_item_count = 10 }
   }
 })
 
 cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(_mapping_cmdline),
+  mapping = cmp.mapping.preset.cmdline(mapping_cmdline),
   sources = cmp.config.sources(
     {
       { name = 'path' }

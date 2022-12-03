@@ -17,17 +17,17 @@ require('spectre').setup {
       desc = "goto current file"
     },
     ['exit'] = {
-      map = "q",
+      map = "<C-r>",
       cmd = "<cmd>lua require('spectre').close()<CR>",
       desc = "close",
     },
     ['send_to_qf'] = {
-      map = "<leader>q",
+      map = "f",
       cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
       desc = "send all item to quickfix"
     },
     ['replace_cmd'] = {
-      map = "<C-r>",
+      map = "g",
       cmd = "<cmd>lua require('spectre.actions').replace_cmd()<CR>",
       desc = "input replace vim command"
     },
@@ -77,7 +77,7 @@ require('spectre').setup {
       desc = "toggle search hidden"
     },
     ['resume_last_search'] = {
-      map = "<leader>l",
+      map = "z",
       cmd = "<cmd>lua require('spectre').resume_last_search()<CR>",
       desc = "resume last search before close"
     },

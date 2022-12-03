@@ -43,7 +43,7 @@ local make_config = function()
     on_attach = function(client, bufnr)
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-      require("plugin.lspconfig.keymap").setup()
+      require("plugin.lspconfig.keymap").setup(bufnr)
       -- Code context used by lualine. Better than lspsaga.
       require('nvim-navic').attach(client, bufnr)
       -- Lsp status used by lualine

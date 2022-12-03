@@ -4,27 +4,27 @@
 -- overwin: over windows
 
 -- Move to word
-vim.keymap.set("", "<leader><leader>w", "<Plug>(easymotion-w)")
-vim.keymap.set("", "<leader><leader>b", "<Plug>(easymotion-b)")
-vim.keymap.set("", "<leader><leader>e", "<Plug>(easymotion-e)")
-vim.keymap.set("", "<leader><leader>ge", "<Plug>(easymotion-ge)")
+vim.keymap.set("", ",w", "<Plug>(easymotion-w)")
+vim.keymap.set("", ",b", "<Plug>(easymotion-b)")
+vim.keymap.set("", ",e", "<Plug>(easymotion-e)")
+vim.keymap.set("", ",ge", "<Plug>(easymotion-ge)")
 
 -- Move to word in current line
-vim.keymap.set("", "<leader><leader>l", "<Plug>(easymotion-lineforward)")
-vim.keymap.set("", "<leader><leader>h", "<Plug>(easymotion-linebackward)")
+vim.keymap.set("", ",l", "<Plug>(easymotion-lineforward)")
+vim.keymap.set("", ",h", "<Plug>(easymotion-linebackward)")
 
 -- Move to line
-vim.keymap.set("", "<leader><leader>j", "<Plug>(easymotion-j)")
-vim.keymap.set("", "<leader><leader>k", "<Plug>(easymotion-k)")
-vim.keymap.set("", "<leader><leader>g", "<Plug>(easymotion-bd-jk)")
-vim.keymap.set("n", "<leader><leader>g", "<Plug>(easymotion-overwin-line)")
+vim.keymap.set("", ",j", "<Plug>(easymotion-j)")
+vim.keymap.set("", ",k", "<Plug>(easymotion-k)")
+vim.keymap.set("", ",g", "<Plug>(easymotion-bd-jk)")
+vim.keymap.set("n", ",g", "<Plug>(easymotion-overwin-line)")
 
 
 -- Search (followed by {char})
-vim.keymap.set("", "<leader><leader>f", "<Plug>(easymotion-f)")
-vim.keymap.set("", "<leader><leader>F", "<Plug>(easymotion-F)")
-vim.keymap.set("", "<leader><leader>t", "<Plug>(easymotion-t)")
-vim.keymap.set("", "<leader><leader>T", "<Plug>(easymotion-T)")
+vim.keymap.set("", ",f", "<Plug>(easymotion-f)")
+vim.keymap.set("", ",F", "<Plug>(easymotion-F)")
+vim.keymap.set("", ",t", "<Plug>(easymotion-t)")
+vim.keymap.set("", ",T", "<Plug>(easymotion-T)")
 --  map <leader><leader>/ <Plug>(easymotion-sn)
 
 -- default configs: https://github.com/easymotion/vim-easymotion/blob/master/plugin/EasyMotion.vim

@@ -8,44 +8,124 @@ for i = 0, 26 do
   ignore_char(string.char(97 + i)) -- ignore a-z
 end
 
-require("which-key").register(vim.tbl_extend("force", ignored, {
-  name = "buffer & tab",
+local wk = require("which-key")
+local builtin = require("telescope.builtin")
+local extensions = require("telescope").extensions
 
+local process_yank = function()
+  local pasted = vim.fn.getreg('+') -- I share system register (+) with vim
+  pasted = vim.fn.substitute(pasted, "^ *", "", "")
+  pasted = vim.fn.substitute(pasted, "\n$", "", "")
+  return pasted
+end
+wk.register({
+  ["<leader>p"] = { function()
+    local m = process_yank()
+    vim.cmd("normal! a" .. m)
+  end, "smart paste p" },
+  ["<leader>P"] = { function()
+    local m = process_yank()
+    vim.cmd("normal! i" .. m)
+  end, "smart paste P" },
+}, { mode = { "v", "n" } })
+wk.register(vim.tbl_extend("force", ignored, {
+  name = "edit",
+  ["<cr>"] = {"a<cr><esc>k$", "insert blank line after cursor"},
+  ["<C-cr>"] = {":<c-u>put =repeat(nr2char(10), v:count1)<cr>", "insert new blank lines"},
   -- splitjoin
-  ["-"] = "[C] split line by language",
-  ["="] = "[C] join line by language",
-  -- configured in minimal.vim
-  ["]"] = "add empty line bewlow",
-  ["["] = "add empty line above",
-  -- buffer
-  -- q = "quit",
-  -- w = "write",
-  q = { "<cmd>q<cr>", "quit" },
-  ["<C-q>"] = { "<cmd>:qall<cr>", "quit all" },
-  w = { "<cmd>w<cr>", "write" },
-  d = { "<cmd>t.<cr>", "duplicate current line" },
-  h = { "<C-^>", "go alternative buffer# - <C-^>" },
-  H = { "<C-w>^", "split alternative buffer# " },
-  t = { "<cmd>BufferLinePick<cr>", "pick a tab" },
-  ["<C-t>"] = { "<cmd>tabnew<cr>", "new tab" },
-  i = { "<cmd>tabprev<cr>", "go previous tab - gT" },
-  o = { "<cmd>tabnext<cr>", "go next tab - gt" },
-  I = { "<cmd>tabm -1<cr>", "move tab left" },
-  O = { "<cmd>tabm +1<cr>", "move tab right" },
-  -- Compared with :bdelete, :bwipeout remove buffer from jumplist.
-  -- :Bdelete and :Bwipeout are suppotred by vim.bbye
-  x = { "<cmd>Bwipeout<cr>", "delete buffer with jumplist" },
-  X = { "<cmd>Bwipeout!<cr>", "delete buffer with jumplist forcely" },
-  ["<C-x>"] = { "<cmd>%bd<cr>", "delete all buffers" },
-  l = { "<cmd>ls<cr>", "list buffers - ls" },
-  L = { "<cmd>tabs<cr>", "list tabs - :tabs" },
-  b = { function() require("telescope.builtin").buffers(require("telescope.themes").get_ivy {
-      prompt_title = "Find Buffer",
+  ["]"] = "[C] split line by syntax",
+  ["["] = "[C] join line by syntax",
+  p = { function()
+    local m = process_yank()
+    vim.cmd("normal! o" .. m)
+  end, "smart paste in line down" },
+  P = { function()
+    local m = process_yank()
+    vim.cmd("normal! O" .. m)
+  end, "smart paste in line up" },
+  g = { "<C-^>", "✭ go alternative buffer#" },
+  G = { "<C-w>^", "split alternative buffer# " },
+  d = { function()
+    builtin.buffers(require("telescope.themes").get_ivy {
+      prompt_title = "Buffers List",
       results_title = "|open: ^v(split) ^s(plit) ^t(ab)",
       layout_config = {
         preview_width = 0.75,
       },
       sort_lastused = true,
     })
-  end, "buffers" },
+  end, "go buffers" },
+  f = { function()
+    builtin.current_buffer_fuzzy_find {
+      skip_empty_lines = true,
+    }
+  end, "✭ fuzzy search in curret buffer" }
 }), { prefix = "s" })
+
+wk.register({
+  -- grep
+  l = { function()
+    builtin.live_grep({
+      prompt_title = "Grep In Current Buffer",
+      search_dirs = { vim.fn.expand('%'), },
+    })
+  end, "grep in current buffer" },
+  L = { function() builtin.live_grep({
+      prompt_title = "Grep In Buffers",
+      grep_open_files = true,
+    })
+  end, "grep in buffers" },
+  -- TODO: how to include or exclude file?
+  ["<C-l>"] = { function()
+    extensions.live_grep_args.live_grep_args({
+      prompt_title = "Grep In Working Directory",
+    })
+  end, "grep in working directory" },
+  ["<A-l>"] = { function()
+    vim.ui.input(
+      { prompt = "Enter regex pattern to grep working directory: " },
+      function(input)
+        builtin.grep_string({
+          prompt_title = "Grep " .. input .. " In Working Directory",
+          use_regex = true,
+        })
+      end)
+  end, "regex grep in working directory" },
+
+  -- jumplist
+  j = { function()
+    builtin.jumplist({
+      prompt_title = "Jumplist",
+      -- trim_text = true,
+      -- name_width = 100,
+      layout_strategy = "vertical",
+      layout_config = {
+        preview_height = 0.4,
+        width = 140,
+      }
+    })
+  end, "go jumplist" },
+}, { prefix = "s" })
+
+local get_selected = function()
+  vim.cmd('normal! "vy')
+  return vim.fn.getreg('v')
+end
+wk.register({
+  l = { function()
+    local selected = get_selected()
+    builtin.grep_string({
+      word_match = selected,
+      prompt_title = string.format([[Grep "%s" In Current Buffer]], selected),
+      search_dirs = { vim.fn.expand('%'), },
+    })
+  end, "grep visual word in current buffer" },
+  L = { function()
+    local selected = get_selected()
+    builtin.grep_string({
+      word_match = selected,
+      prompt_title = string.format([[Grep "%s" In Buffers]], selected),
+      grep_open_files = true,
+    })
+  end, "grep visual word in buffers" },
+}, { prefix = "s", mode = "v" })

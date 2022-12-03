@@ -2,7 +2,7 @@ local telescope = require("telescope")
 telescope.setup {
   -- https://github.com/nvim-telescope/telescope.nvim/issues/1351
   defaults = {
-    sorting_strategy = "ascending",  -- cursor starts from top result
+    sorting_strategy = "ascending", -- cursor starts from top result
     layout_strategy = "flex",
     layout_config = {
       prompt_position = "top",
@@ -20,18 +20,22 @@ telescope.setup {
       horizontal = {
         -- height = 0.6,
         -- width = 0.85,
-        preview_cutoff = 60,  -- hide preview when columns < preview_cutoff
+        preview_cutoff = 60, -- hide preview when columns < preview_cutoff
         preview_width = 0.6,
       },
     },
-    scroll_strategy = "limit",
-    winblend = 10,  -- transparent
-    results_title = false,  -- hide results title
-    dynamic_preview_title = true,  -- show file name dynamically in preview title
-    path_display = {
-      truncate = true,  -- truncate long file name
+    cache_picker = {
+      num_pickers = 10,  -- Cache pickers by builtin.pickers
     },
-    file_ignore_patterns = {"node_modules", "/dist"},
+    scroll_strategy = "limit",
+    winblend = 10, -- transparent
+    results_title = false, -- hide results title
+    dynamic_preview_title = true, -- show file name dynamically in preview title
+    path_display = {
+      truncate = true, -- truncate long file name
+    },
+    file_ignore_patterns = { "node_modules", "/dist" },
+    wrap_results = false,
     mappings = {
       -- C-/ toggles keymap cheatsheet
       i = {
@@ -44,7 +48,7 @@ telescope.setup {
         ["<C-l>"] = "cycle_previewers_next",
         ["<down>"] = "move_selection_next",
         ["<up>"] = "move_selection_previous",
-        ["<esc>"] = "close",  -- disable normal mode
+        ["<esc>"] = "close", -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
         ["<C-s>"] = "select_horizontal",
         ["<C-x>"] = false,
@@ -71,33 +75,39 @@ telescope.setup {
               require("telescope.actions").close(prompt_bufnr)
               -- Depending on what you want put `cd`, `lcd`, `tcd`
               vim.cmd(string.format("lcd %s", dir))
-              vim.notify(string.format("cd to %s", dir))
-            end, type = "action"}
-          },
+              Notify(string.format("cd to %s", dir:gsub(vim.fn.getenv("HOME"), "~")))
+            end, type = "action"
+          }
+        },
       },
+      wrap_results = true,
     },
     buffers = {
       mappings = {
         i = {
           ["<C-BS>"] = "delete_buffer",
         }
-      }
-    },
-    live_grep = {
-      layout_strategy = "vertical",
-      layout_config = {
-        preview_height = 0.4,
-        width = 140,
       },
-      wrap_results = false,
+      wrap_results = true,
     },
   },
 }
 
--- Wrap
-telescope.setup {
-  defaults = {wrap_results = true}
+local string_config = {
+  layout_strategy = "horizontal",
+  layout_config = {
+    preview_width = 0.6,
+    width = 160,
+  },
 }
+telescope.setup {
+  pickers = {
+    live_grep = string_config,
+    grep_string = string_config,
+    current_buffer_fuzzy_find = string_config,
+  }
+}
+
 -- https://github.com/nvim-telescope/telescope.nvim#previewers
 vim.cmd("autocmd User TelescopePreviewerLoaded setlocal wrap")
 

@@ -12,8 +12,12 @@ require("plugin.lspconfig")
 require("plugin.development")
 require_all("keymap")
 require("appearance")
+require("editor")
 
 --[[ NOTE
+## Recommended material
+- https://github.com/nanotee/nvim-lua-guide
+
 ## Troubleshotting
 [Inspect]
 - `:lua =obj` prints deatils of lua obj, e.g. `vim` or `vim.o.ruler`.
@@ -29,6 +33,12 @@ require("appearance")
 [Startup time]
 - `nvim --startuptime time.txt` shows startup time
 - `:LuaCacheProfile` shows startup time provided by lewis6991/impatient.nvim
+
+## Where to find plugins
+- https://github.com/rockerBOO/awesome-neovim
+- https://neoland.dev/
+- https://neovimcraft.com/
+
 --]]
 
 --[[
@@ -45,24 +55,26 @@ require("appearance")
  NOTE:: plugin to-try list
 - https://www.reddit.com/r/neovim/comments/z0tep4/whats_the_best_solution_to_searchreplace_text
 - https://www.reddit.com/r/neovim/comments/z0yrku/nvimtreeclimber_structured_editing_movement_and/
-- https://github.com/Shatur/neovim-session-manager
 - https://github.com/ojroques/nvim-lspfuzzy
 - use "vim-ctrlspace/vim-ctrlspace"  -- Manage tabs, buffers, files, workspace, bookmarks
 - use "ctrlpvim/ctrlp.vim"
-- use "tpope/vim-unimpaired"
 - use "yazgoo/yank-history"
 - use "tpope/vim-vinegar"
-- https://github.com/dyng/ctrlsf.vim
 - https://github.com/sindrets/diffview.nvim
 - use "nvim-telescope/telescope-file-browser"
 - use "nvim-telescope/telescope-github.nvim"  -- Manage github
 - use "pwntester/octo.nvim"  -- Manage github
 - https://github.com/ray-x
 - https://github.com/jose-elias-alvarez/null-ls.nvim
+  - https://github.com/lewis6991/gitsigns.nvim#null-ls
 - tpope
+- [x] junegunn
 - simrat39/symbols-outline.nvim
-- https://github.com/preservim/tagbar
 - https://github.com/junegunn/gv.vim
+- https://github.com/dense-analysis/ale
+- skywind3000/asyncrun.vim/blob/master/README-cn.md
+- utilyre/barbecue.nvim
+- weilbith/nvim-code-action-menu
 
 Appearance
 -  https://github.com/AckslD/nvim-neoclip.lua

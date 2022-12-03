@@ -105,7 +105,7 @@ return packer.startup(function(use)
       -- Cursor in selection            -- ]/[ go to next/previous selection
       vim.g.VM_Cursor_hl = 'Cursor'     -- i/a/I/A edit
       -- Selected items in selection
-      vim.g.VM_Extend_hl = 'Visual'
+      vim.g.VM_Extend_hl = 'CurSearch'
       -- Multi insert place atfer selection
       -- vim.g.VM_Insert_hl = 'Cursor'
     end
@@ -115,8 +115,13 @@ return packer.startup(function(use)
     keys = {"gc"}  -- Load plugins when first pressing gc
   }
   use {
-    "tommcdo/vim-exchange",  -- First cx{motion} defines first content, and second cx{motion} performs exchange
-                             -- cxx selects line, X selects visual mode, cxc clears all
+    "tommcdo/vim-exchange", -- Exchange two selections
+    config = function()
+      vim.g.exchange_no_mappings = true
+      vim.keymap.set({ "n", "x" }, "X", "<Plug>(Exchange)", { silent = true, noremap = true, desc = "exchange" })
+      vim.keymap.set("n", "Xc", "<Plug>(ExchangeClear)", { silent = true, noremap = true, desc = "exchange clear" })
+      vim.keymap.set("n", "XX", "<Plug>(ExchangeLine)", { silent = true, noremap = true, desc = "exchange line" })
+    end
   }
   use {
     "AndrewRadev/splitjoin.vim",   -- gS expand (like split) and gJ shrink (like join) line by language grammar.
@@ -125,8 +130,8 @@ return packer.startup(function(use)
     setup = function()
       -- FIX: thie keymap will fallback to origial function
       -- It can't work when setting them in `config` field. Don't know why
-      vim.g.splitjoin_split_mapping = 's-'
-      vim.g.splitjoin_join_mapping = 's='
+      vim.g.splitjoin_split_mapping = 's]'
+      vim.g.splitjoin_join_mapping = 's['
     end,
   }
   use "tpope/vim-surround"  -- Operate on surroundings (parentheses, brackets, quotes, XML tags)
@@ -153,7 +158,7 @@ return packer.startup(function(use)
   }
 
   ------ Editor
-  use "nvim-pack/nvim-spectre"
+  use "nvim-pack/nvim-spectre" -- Search and replace text
   use "tpope/vim-sleuth"  -- Auto detect indent width in file
   use "mbbill/undotree"  -- Undo history
   use {
@@ -170,8 +175,8 @@ return packer.startup(function(use)
     config = function()       -- vim without any argument open session automatically
       -- https://github.com/rmagatti/auto-session#recommended-sessionoptions-config
       -- https://github.com/windwp/nvim-autopairs/issues/173
-      -- Vim is broken by other plugins like autopairs or alpha if storing `localoptions` in session.
-      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+      -- FIX: Vim is broken by other plugins like autopairs or alpha if storing `localoptions` in session.
+      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,resize,winsize,winpos,terminal"
       require("auto-session").setup {
         -- auto_session_enable_last_session = true,  -- load loaded session (other folder) if current dir has session.
         log_level = "error",
@@ -196,6 +201,8 @@ return packer.startup(function(use)
   use "lewis6991/gitsigns.nvim"  -- Git changes visualization. :Gitsigns toggle<Tab> to toggle signs.
                                  -- :Gitsigns diffthis diffs buffers.
                                  -- There are also useful operations for hunk.
+  -- use "junegunn/gv.vim"
+  -- use "sindrets/diffview.nvim"
 
   ------ Development
   use "neovim/nvim-lspconfig"              -- Neovim LSP support
@@ -205,9 +212,6 @@ return packer.startup(function(use)
   use {
     "RRethy/vim-illuminate",              -- Highlight usage of variable under cursor
     config = function()
-      vim.cmd[[hi! IlluminatedWordText gui=underline]]
-      vim.cmd[[hi! IlluminatedWordRead gui=underline]]
-      vim.cmd[[hi! IlluminatedWordWrite gui=underline]]
       vim.cmd[[au ColorScheme * hi! IlluminatedWordText gui=underline]]
       vim.cmd[[au ColorScheme * hi! IlluminatedWordRead gui=underline]]
       vim.cmd[[au ColorScheme * hi! IlluminatedWordWrite gui=underline]]
@@ -235,7 +239,7 @@ return packer.startup(function(use)
     requires = "nvim-treesitter/nvim-treesitter"
   }
   use {
-    "nvim-treesitter/nvim-treesitter-context",      -- Code context in top screen
+    "nvim-treesitter/nvim-treesitter-context",      -- Show function context in first line
     requires = "nvim-treesitter/nvim-treesitter",
     config = function()
       vim.cmd [[au ColorScheme * hi! link TreesitterContext Normal]]
@@ -256,7 +260,7 @@ return packer.startup(function(use)
   }
   use "nvim-lua/lsp-status.nvim"  -- Provide lsp status for lualine
   use {
-    "SmiteshP/nvim-navic",  -- Show code context in winbar
+    "SmiteshP/nvim-navic",  -- Show context in winbar
     requires = "neovim/nvim-lspconfig",
   }
 
@@ -294,6 +298,7 @@ return packer.startup(function(use)
   }
   -- For specific language
   use "folke/neodev.nvim"  --  Full signature help for neovim method
+  use "rust-lang/rust.vim"
   use {
     'saecki/crates.nvim',  -- crates auto completion
     tag = 'v0.3.0',
@@ -328,7 +333,11 @@ return packer.startup(function(use)
   use {
     "rcarriga/nvim-notify",  -- Notification manager
     config = function()
-      vim.notify = require("notify")
+      Notify = require("notify")
+      Notify.setup {
+        timeout = 1000,
+        minimum_width = 40,
+      }
     end
   }
   use {
@@ -354,37 +363,16 @@ return packer.startup(function(use)
   -- Other theme choice: everforest, tokyonight
   use {
     "EdenEast/nightfox.nvim",
+    after = {  -- plugins that setts highlight group
+      "nvim-treesitter-context",
+      "vim-visual-multi",
+      "vim-illuminate",
+    },
     config = function()
       vim.cmd [[colorscheme nightfox]]
     end
   }
-
   use "lukas-reineke/indent-blankline.nvim"  -- Indent guide line
-  use {
-    'akinsho/bufferline.nvim', tag = "v3.*",
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
-    after = "nightfox.nvim",
-    config = function ()
-      require("bufferline").setup{
-        options = {
-          mode = "tabs",
-          separator_style = "thick",  -- value: slant, padded_slant, thick, thin
-          indicator = { style = 'none' },
-          show_buffer_close_icons = false,
-          tab_size = 20,  -- adaptive tab size
-          max_name_length = 30,
-        },
-        highlights = {
-          fill = {
-            bg = {  -- Set Normal#bg to fill#bg
-                attribute = "bg",
-                highlight = "Normal"
-            },
-          },
-        }
-    }
-    end
-  }
 
   -- MISC
   use {
@@ -408,6 +396,9 @@ return packer.startup(function(use)
   -- nvim-treesitter/nvim-treesitter-refactor  -- Variable usage is not accurate. vim-illuminate is better though it always can't find anything in rust.
   -- numToStr/Comment.nvim     -- Uncomment is unsupported (https://github.com/numToStr/Comment.nvim/issues/22)
   -- terryma/vim-expand-region -- +/_ expands/shrinks visual selection. Replace by treesitter-textobjects.
+  -- gen740/SmoothCursor.nvim  -- Fancy indicate cursor line. Distracting.
+  -- edluffy/specs.nvim        -- Amination to show where cursor is. Distracting.
+  -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting

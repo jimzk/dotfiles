@@ -1,4 +1,3 @@
-
 local objects = {
   ["a"] = {
     name = "around",
@@ -8,14 +7,15 @@ local objects = {
     ["("] = [[(...)]],
     ["{"] = [[{...}]],
     ["["] = "[...]",
-    ["t"] = [[tag block (with whitespace)]],
+    ["t"] = [[tag block (with blankline)]],
     ["<lt>"] = [[<...>]],
-    ["b"] = "any bracket",
+    [";"] = [[;...; (also work on , . / )]],
+    ["b"] = "bracket (), [] or <>",
     ["B"] = [[same as a{]],
-    ["w"] = [[word (with whitespace)]],
-    ["W"] = [[WORD (with whitespace)]],
-    ["p"] = [[paragraph (with whitespace)]],
-    ["s"] = [[sentence (with whitespace)]],
+    ["w"] = [[word (with blankline)]],
+    ["W"] = [[WORD (with blankline)]],
+    ["p"] = [[paragraph (with blankline)]],
+    ["s"] = [[sentence (with blankline)]],
     -- target.vim
     ["a"] = [[argument]],
     ["q"] = [['...', "..." or `...`]],
@@ -35,11 +35,8 @@ local objects = {
     -- vim-textobj-line
     ["l"] = [[entire line]],
     -- vim-textobj-indblock
-    ["o"] = [[indent including blank lines]],
-    ["O"] = [[indent (exact) including blank lines]],
-    -- tresitter-textobjects
-    ["f"] = [[method]],
-    ["c"] = [[class]],
+    ["o"] = [[indent including blanklines]],
+    ["O"] = [[indent (exact) including blanklines]],
   },
   ["i"] = {
     name = "inside",
@@ -49,13 +46,14 @@ local objects = {
     ["("] = [[inner (...)]],
     ["{"] = [[inner {...}]],
     ["["] = "inner [...]",
+    [";"] = [[inner ;...; (also work on , . / )]],
     ["<lt>"] = [[inner <...>]],
     ["t"] = [[inner tag block]],
-    ["b"] = "inner any bracket",
+    ["b"] = "inner bracket (), [] or <>",
     ["B"] = [[same as i{]],
     ["w"] = [[inner word]],
     ["W"] = [[inner WORD]],
-    ["p"] = [[inner paragraph]],
+    ["p"] = [[inner paragraph (till blankline)]],
     ["s"] = [[inner sentence]],
     -- target.vim
     ["a"] = [[argument]],
@@ -78,12 +76,9 @@ local objects = {
     -- vim-textobj-indblock
     ["o"] = [[indent]],
     ["O"] = [[indent (exact)]],
-    -- tresitter-textobjects
-    ["f"] = [[inner method]],
-    ["c"] = [[inner class]],
   },
-    -- target.vim
-    ["A"] = {
+  -- target.vim
+  ["A"] = {
     name = "around with trailing spaces",
     ['"'] = [["..."]],
     ["'"] = [['...']],
@@ -92,7 +87,7 @@ local objects = {
     ["{"] = [[{...}]],
     ["["] = "[...]",
     ["<lt>"] = [[<...>]],
-    ["t"] = [[tag block (with whitespace)]],
+    ["t"] = [[tag block (with blank line)]],
     ["b"] = "any bracket",
     ["B"] = [[same as A{]],
 

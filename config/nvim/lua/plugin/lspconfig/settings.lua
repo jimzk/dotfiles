@@ -1,6 +1,6 @@
 -- From: https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/settings.lua
--- Avaliable lsp servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
---            Short list: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+-- Avaliable lsp servers https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+--            Short list https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 local settings = {
   sumneko_lua = { -- Lua
     settings = {

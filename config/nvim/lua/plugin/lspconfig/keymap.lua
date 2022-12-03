@@ -1,24 +1,24 @@
-
 local wk = require("which-key")
 local M = {}
 -- LSP keymapping
 -- tweak by lspsaga (https://github.com/glepnir/lspsaga.nvim#configuration)
 -- under lspconfig (https://github.com/neovim/nvim-lspconfig#suggested-configuration)
-M.setup = function()
+M.setup = function(bufnr)
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
   wk.register({
-  ['[x'] = { function() vim.diagnostic.goto_prev { float = false } end, "[C] go previous diagnostic" },
-  [']x'] = { function() vim.diagnostic.goto_next { float = false } end, "[C] go next diagnostic" },
-  -- FIX: too small height
-  -- https://github.com/glepnir/lspsaga.nvim/issues/594
-  ['[e'] = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[C] go previous diagnostic" },
-  [']e'] = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[C] go next diagnostic" },
-  ["[E"] = { function()
+    ['[X'] = { function() vim.diagnostic.goto_prev { float = true } end, "[C] previous diagnostic (native)" },
+    [']X'] = { function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic (native)" },
+    -- FIX: too small height
+    -- https://github.com/glepnir/lspsaga.nvim/issues/594
+    ['[x'] = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[C] previous diagnostic" },
+    [']x'] = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[C] next diagnostic" },
+    ["[<C-x>"] = { function()
       require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  end, "[C] previous error" },
-  ["]E"] = { function()
+    end, "[C] previous error" },
+    ["]<C-x>"] = { function()
       require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
-  end, "[C] next error" },
-  }, { noremap = true, silent = true })
+    end, "[C] next error" },
+  }, bufopts)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   wk.register({
@@ -28,10 +28,10 @@ M.setup = function()
       [";"] = { "<cmd>TroubleToggle quickfix<cr>", "[C] go quickfix list" },
       ["'"] = { "<cmd>TroubleToggle loclist<cr>", "[C] go location list" },
 
-      -- x = { function() vim.diagnostic.open_float { height = 10, width = 60 } end, "[C] peek diagnostic in current line" },
+      x = { function() vim.diagnostic.open_float { height = 10, width = 60 } end, "[C] peek diagnostic in current line" },
       -- FIX: Windows from Lspsaga is too short and always wrapped.
-      -- See: https://github.com/glepnir/lspsaga.nvim/issues/594
-      x = {"<cmd>Lspsaga show_line_diagnostics<CR>", "[C] show current diagnostic"},
+      --https://github.com/glepnir/lspsaga.nvim/issues/594
+      -- x = { "<cmd>Lspsaga show_line_diagnostics<CR>", "[C] show current diagnostic" },
       X = { function()
         vim.cmd("normal m'")
         vim.cmd("Trouble document_diagnostics")
@@ -49,9 +49,9 @@ M.setup = function()
       -- D = {function() vim.lsp.buf.declaration() end, "[C] declaration"},
       d = { "<cmd>Lspsaga peek_definition<cr>", "[C] peek definition" },
       D = { "<cmd>normal m'<cr><cmd>Trouble lsp_definitions<cr>", "[C] go definition " },
+      ["<C-d>"] = { "<C-w>i", "go definition split" },
 
-      h = { function() vim.lsp.buf.hover() end, "[C] hover" },
-      H = { "<cmd>Lspsaga lsp_finder<cr>", "[C] hover (more)" },
+      h = { "<cmd>Lspsaga lsp_finder<cr>", "[C] hover (lspsaga)" },
       o = { function()
         vim.cmd("LSoutlineToggle")
       end, "[C] symbol outline" },
@@ -83,13 +83,13 @@ M.setup = function()
         else
           -- TODO: range formating.
           -- vim.lsp.buf.range_formatting is deprecated
-          vim.notify("Unsupport range formatting")
+          vim.lsp.buf.range_formatting()
         end
       end, "format file (by lsp)", mode = { "n", "v" } },
     },
-  }, { noremap = true, silent = true, buffer = bufnr })
+  }, bufopts)
 
-  vim.keymap.set({"i", "v"}, "<C-s>", function() vim.lsp.buf.signature_help() end)  -- Show signature at insertion (which-key can't set keymap for insert mode)
+  vim.keymap.set({ "i", "v" }, "<C-s>", function() vim.lsp.buf.signature_help() end, bufopts) -- Show signature at insertion (which-key can't set keymap for insert mode)
 end
 
 return M

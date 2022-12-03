@@ -10,18 +10,18 @@ require("which-key").register({
   },
   c = {
     name = "change",
-    l = "detele currnt char",
+    l = "detele current char",
     x = {
-      name = "exchange text",
+      name = "[M] exchange text",
       x = "exchange line",
       c = "clear exchange",
     },
     s = {
-      name = "replace surrounding",
+      name = "[M] replace surroundings",
       ['"'] = [[cs"' replaces "" with '']],
       ['('] = "cs([ replace () with [] ",
       [')'] = "cs)[ replace () with [] and remove inner spaces",
     },
     S = [[cS"' replaces "" with '' and new line]],
   },
-}, {prefix = "", preset = true})
+}, { prefix = "", preset = true })

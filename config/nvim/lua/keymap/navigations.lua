@@ -1,5 +1,5 @@
 local wk = require("which-key")
-local nav = {
+wk.register({
   ["H"] = "home (top) line of screen",
   ["M"] = "middle line of screen",
   ["L"] = "last line of screen",
@@ -8,39 +8,56 @@ local nav = {
     [")"] = "next unmatched )",
     ["}"] = "next unmatched }",
     s = "next misspelled word",
-    c = "next git change", -- gitsigns
-    t = { function() require("todo-comments").jump_next() end, "next TODO" },
-    l = { "move line up", mode = { "n", "v" } },
-    v = { function()
-      require('illuminate').goto_next_reference()
-    end, "next usage of variable" },
-    ["%"] = "which_key_ignore", -- replaced by ]b
-    -- treesitter-textobjects
-    ["]"] = "next class start",
-    ["["] = "next/current class end",
-    f = "next method start",
-    F = "current method end",
   },
   ["["] = {
     name = "previous object",
     ["("] = "previous unmatched (",
     ["{"] = "previous unmatched {",
     s = "previous misspelled word",
-    c = "previous git change", -- gitsigns
-    t = { function() require("todo-comments").jump_prev() end, "previous TODO" },
-    l = { "move line down", mode = { "n", "v" } },
-    v = { function()
-      require('illuminate').goto_prev_reference()
-    end, "previous usage of variable" },
-    ["%"] = "which_key_ignore", -- replaced by [b
-    -- treesitter-textobjects
-    ["["] = "repvious class start",
-    ["]"] = "previous class end",
-    f = "previous method start",
-    F = "previous method end",
   },
-}
-wk.register(nav, { mode = { "n", "o" }, prefix = "", preset = true })
+}, { mode = { "n", "o" }, prefix = "", preset = true })
+
+wk.register({
+  ["]%"] = "which_key_ignore", -- replaced by [b
+  ["[%"] = "which_key_ignore", -- replaced by [b
+}, { mode = { "n", "o", "v" }, prefix = "", preset = true })
+
+wk.register({
+  ["]"] = {
+    d = { "<cmd>:bnext<cr>", "next buffer" },
+    t = { "<cmd>:tabnext<cr>", "next tab" },
+    T = { "<cmd>:tablast", "last tab" },
+    ["<C-t>"] = { "<cmd>tabm +1<cr>", "move tab right" },
+    i = "peek next match of cursor word", -- builtin
+    I = "peek all next match of cursor word",
+    ["<C-i>"] = "go next match of cursor word",
+    -- configured in minimal.vim
+    e = { "move line up", mode = { "n", "v" } },
+    -- gitsigns
+    c = "next Git change",
+    -- todo-comments
+    D = { function() require("todo-comments").jump_next() end, "next TODO" },
+    v = { function() require('illuminate').goto_next_reference()
+    end, "[C] next usage of variable" },
+  },
+  ["["] = {
+    d = { "<cmd>:bprevious<cr>", "previous buffer" },
+    t = { "<cmd>:tabprev<cr>", "previous tab" },
+    T = { "<cmd>:tabfirst", "first tab" },
+    ["<C-t>"] = { "<cmd>tabm -1<cr>", "move tab left" },
+    i = "peek first match of cursor word", -- builtin
+    I = "peek all match of cursor word",
+    ["<C-i>"] = "go first match of cursor word",
+    -- configured in minimal.vim
+    e = { "move line down", mode = { "n", "v" } },
+    -- gitsigns
+    c = "previous Git change",
+    -- todo-comments
+    D = { function() require("todo-comments").jump_prev() end, "previous TODO" },
+    v = { function() require('illuminate').goto_prev_reference()
+    end, "[C] previous usage of variable" },
+  },
+}, { mode = { "n" }, prefix = "", preset = true })
 
 -- ]% -> ]b, [% -> [b
 wk.register({

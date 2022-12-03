@@ -23,7 +23,6 @@ wk.setup {
   -- add operators that will trigger motion and text object completion
   operators = {
     gc = "comment",  -- vim-commentary
-    cx = "exchange",  -- vim-exchange
     ys = "add surrounding breackets or quotes"
   },
   window = {

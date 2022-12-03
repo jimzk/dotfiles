@@ -17,4 +17,4 @@ fun! CleanExtraSpaces()
 endfun
 
 " auto reload VIMRC if change *.vim in vim
-autocmd BufWritePost *.vim,*.vimrc source $MYVIMRC | redraw | execute "echo 'reload configuration!'"
+" autocmd BufWritePost *.vim,*.vimrc source $MYVIMRC | redraw | execute "echo 'reload configuration!'"

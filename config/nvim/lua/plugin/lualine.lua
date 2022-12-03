@@ -1,47 +1,66 @@
-require('lualine').setup {
+local ll = require("lualine")
+ll.setup {
   options = {
     icons_enabled = true,
     section_separators = '',
     component_separators = { left = '|', right = '|' },
     disabled_filetypes = {
       statusline = {},
-      winbar = { 'help', 'NvimTree' },
+      winbar = { "NvimTree", "gitcommit", "fugitive", "fugitiveblame", "untotree" },
     },
     ignore_focus = {},
     always_divide_middle = true,
-    -- globalstatus = true, -- only one statusline at bottom
     refresh = {
-      statusline = 1000,
+      statusline = 800,
       tabline = 1000,
       winbar = 1000,
-    }
+    },
+    globalstatus = true,
   },
 }
 
-local navic = require("nvim-navic")
-require('lualine').setup {
-  -- tabline = {
-  --   lualine_b = {
-  --     { 'tabs', mode = 2, }
-  --   },
-  -- },
+ll.setup {
+  tabline = {
+    lualine_b = {
+      {
+        'tabs',
+        mode = 2,
+        tabs_color = {
+          active = 'DefinitionSearch',
+          inactive = 'NonText'
+        },
+      }
+    },
+    lualine_y = {
+      'buffers'
+    },
+  },
   sections = {
     lualine_a = { 'mode' },
     lualine_b = {
       {
         'filename',
-        file_status = true, -- display file status (readonly, modified, unmaed, new)
-        newfile_status = true, -- display new file status
-        path = 0, -- just filename
-        shorting_target = 20,
+        newfile_status = true,
       },
+      -- { 'branch' },
       { 'diff' },
       { 'diagnostics' },
     },
     lualine_c = {},
     lualine_x = {
+      -- https://github.com/SmiteshP/nvim-navic#lualine
+      {
+        "require'lsp-status'.status()",
+        separator = '', -- Component separator
+        padding = { left = 0, right = 0 },
+      },
       -- https://github.com/rmagatti/auto-session#statusline
-      -- { require('auto-session-library').current_session_name },
+      {
+        require('auto-session-library').current_session_name,
+        icon = { '', align = 'left' },
+        separator = { left = "", right = "" },
+        padding = { left = 0, right = 1 },
+      },
     },
     lualine_y = {
       -- :h 'statusline' to check vim statusline symbols
@@ -54,52 +73,49 @@ require('lualine').setup {
       { 'filetype', colored = false },
     }
   },
-  inactive_sections = { -- What to show in status line for inactive buffer
-    lualine_a = {},
-    lualine_b = { 'filename' },
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-  },
-  winbar = {
+  inactive_sections = {},
+  extensions = { "nvim-tree", "toggleterm", "quickfix", "fugitive", "symbols-outline", "nvim-dap-ui", "fzf" }
+}
+
+local navic = require("nvim-navic")
+navic.setup({
+  depth_limit = 4
+})
+local winbar = function()
+  return {
     lualine_a = {},
     lualine_b = {},
     lualine_c = {
       {
-        navic.get_location,
+        "filename",
+        path = 1,
+        newfile_status = true,
+        shorting_target = 20,
+        fmt = function(str) return str:gsub("^/", ""):gsub("/", " > ") end,
+        separator = ">",
+        icon = { '  ', align = 'left' },
+        padding = { left = 0, right = 1 },
+      },
+      {
+        navic.get_location, -- SmiteshP/nvim-navic
         cond = navic.is_available,
-        Color = "ModMsg",
       },
     },
-    lualine_x = {
-      -- https://github.com/SmiteshP/nvim-navic#lualine
-      {
-        "require'lsp-status'.status()",
-        separator = '', -- Component separator
-      },
-      {
-        'branch',
-        -- Other choices: #0db9d7, 74
-        -- color = { fg = 117 },
-      },
-    },
+    lualine_x = {},
     lualine_y = {},
-    lualine_z = {}
-  },
-  inactive_winbar = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {},
-  },
-  extensions = { "nvim-tree", "toggleterm", "quickfix", "fugitive", "symbols-outline" }
-}
+    lualine_z = {},
+  }
+end
+ll.setup({
+  winbar = winbar(),
+  inactive_winbar = winbar(),
+})
 
-require("lualine").setup {
+ll.setup {
   options = {
     theme = 'auto',
   }
 }
-
 -- Set same background color with editor zone
 vim.cmd [[au ColorScheme * hi! link lualine_c_inactive Normal]]
 vim.cmd [[au ColorScheme * hi! link lualine_c_normal Normal]]

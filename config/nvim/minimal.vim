@@ -88,8 +88,8 @@ set cursorline
 " only show cursor line in normal mode
 " https://github.com/mhinz/vim-galore#smarter-cursorline
 autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline nocursorcolumn
-set scrolloff=4 " minimal lines above and below the cursor
+autocmd InsertEnter,WinLeave * set nocursorline
+set scrolloff=2 " minimal lines above and below the cursor
 
 " enable the menu after typing <Tab> in command-line mode
 set wildmenu
@@ -153,7 +153,8 @@ let mapleader=" "
 
 " imap jk <esc>
 " not copy when paste in visual mode
-vmap p "_dP
+vnoremap p "_dP
+vnoremap P "_dP
 nnoremap U <c-r>  " redo
 " Use <c-L> to clear the highlighting of :set hlsearch.
 " https://github.com/tpope/vim-sensible/blob/8985da7669bbd73afce85ef0e4a3e1ce2e488595/plugin/sensible.vim#L33
@@ -179,10 +180,10 @@ autocmd TabLeave * let g:last_active_tab = tabpagenr()
 " move line up and down
 " https://github.com/mhinz/vim-galore#quickly-move-current-line
 " FIX: error when target moves execeeds line range of file
-nnoremap <silent> [l  :<c-u>execute "move -1-". v:count1<cr>
-nnoremap <silent> ]l  :<c-u>execute "move +". v:count1<cr>
-vnoremap <silent> [l  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
-vnoremap <silent> ]l  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
+nnoremap <silent> [e  :<c-u>execute "move -1-". v:count1<cr>
+nnoremap <silent> ]e  :<c-u>execute "move +". v:count1<cr>
+vnoremap <silent> [e  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
+vnoremap <silent> ]e  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
 
 " copy and paste
 set clipboard^=unnamed "share yank with system clipboard (*)
@@ -193,11 +194,15 @@ set clipboard^=unnamed "share yank with system clipboard (*)
 " noremap 1p "+p
 " noremap 1P "+P
 nnoremap Y y$
+" nnoremap vv V
+" " I don't know why behaviour of v$ and mapping v$ is different. Add h to make them consistent.
+" nnoremap V v$h
+" xnoremap V $
 
 " quick add empty line (can be used with number)
 " https://github.com/mhinz/vim-galore#quickly-add-empty-lines
-nnoremap s[  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
-nnoremap s]  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+" nnoremap [<cr>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+" nnoremap ]<cr>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
 " scroll
 nnoremap <c-e> 2<c-e>

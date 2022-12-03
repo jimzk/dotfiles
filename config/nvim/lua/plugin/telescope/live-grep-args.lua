@@ -5,18 +5,18 @@ telescope.setup {
     auto_quoting = true,
     -- https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/40
     live_grep_args = {
-      layout_strategy = "vertical",
+      layout_strategy = "horizontal",
       layout_config = {
-        preview_height = 0.4,
-        width = 140
+        preview_width = 0.6,
+        width = 160,
       },
+      wrap_results = false,
       mappings = {
         i = {
           ["<C-r>"] = require("telescope-live-grep-args.actions").quote_prompt(),
           ["<C-g>"] = require("telescope-live-grep-args.actions").quote_prompt( { postfix = " --iglob " } )
         }
       },
-      wrap_results = false,
       results_title = "|search: ^r(by file name) ^g(by regex name)"
     }
   }
