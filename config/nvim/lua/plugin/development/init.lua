@@ -1,3 +1,5 @@
 require("plugin.development.cmp")
 require("plugin.development.treesitter")
+require("plugin.development.treesitter-textobjects")
+require("plugin.development.treesitter-rainbow")
 require("plugin.development.trouble")

@@ -36,7 +36,10 @@ local objects = {
     ["l"] = [[entire line]],
     -- vim-textobj-indblock
     ["o"] = [[indent including blank lines]],
-    ["O"] = [[indent (exact) including blank lines]]
+    ["O"] = [[indent (exact) including blank lines]],
+    -- tresitter-textobjects
+    ["f"] = [[method]],
+    ["c"] = [[class]],
   },
   ["i"] = {
     name = "inside",
@@ -75,6 +78,9 @@ local objects = {
     -- vim-textobj-indblock
     ["o"] = [[indent]],
     ["O"] = [[indent (exact)]],
+    -- tresitter-textobjects
+    ["f"] = [[inner method]],
+    ["c"] = [[inner class]],
   },
     -- target.vim
     ["A"] = {

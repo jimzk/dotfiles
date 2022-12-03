@@ -1,5 +1,3 @@
-
--- Set up nvim-cmp.
 vim.cmd("set completeopt=menu,menuone,noselect")
 local cmp = require("cmp")
 

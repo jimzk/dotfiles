@@ -5,7 +5,7 @@ require('lualine').setup {
     component_separators = { left = '|', right = '|' },
     disabled_filetypes = {
       statusline = {},
-      winbar = { 'help' },
+      winbar = { 'help', 'NvimTree' },
     },
     ignore_focus = {},
     always_divide_middle = true,
@@ -96,7 +96,7 @@ require('lualine').setup {
 
 require("lualine").setup {
   options = {
-    theme = 'jellybeans',
+    theme = 'auto',
   }
 }
 

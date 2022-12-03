@@ -1,4 +1,3 @@
-
 " Reference:
 "   https://github.com/tpope/vim-sensible: a universal set of defaults
 
@@ -58,6 +57,8 @@ set hidden
 " split window
 set splitright " vertical split in right
 set splitbelow " horizontal split in below
+" word definition used by w, * and so on
+set iskeyword=@,48-57,_,192-255,#,-  " add # -
 
 " detech file type
 filetype plugin indent on " :filetype to check if it opens. See :h filetype
@@ -83,10 +84,10 @@ set noswapfile
 set background=dark
 
 set cursorline
-set cursorcolumn
+"set cursorcolumn
 " only show cursor line in normal mode
 " https://github.com/mhinz/vim-galore#smarter-cursorline
-autocmd InsertLeave,WinEnter * set cursorline cursorcolumn
+autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline nocursorcolumn
 set scrolloff=4 " minimal lines above and below the cursor
 
@@ -184,13 +185,13 @@ vnoremap <silent> [l  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
 vnoremap <silent> ]l  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
 
 " copy and paste
-"set clipboard=unnamed " 使用系统剪切板
-noremap 1y "+y
-noremap 1Y "+y$
-noremap 1d "+d
-noremap 1D "+D
-noremap 1p "+p
-noremap 1P "+P
+set clipboard^=unnamed "share yank with system clipboard (*)
+" noremap 1y "+y
+" noremap 1Y "+y$
+" noremap 1d "+d
+" noremap 1D "+D
+" noremap 1p "+p
+" noremap 1P "+P
 nnoremap Y y$
 
 " quick add empty line (can be used with number)

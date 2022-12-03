@@ -4,8 +4,8 @@ local ignore_char = function(c)
   ignored[c] = "which_key_ignore"
 end
 for i = 0, 26 do
-  ignore_char(string.char(65 + i))  -- ignore A-Z
-  ignore_char(string.char(97 + i))  -- ignore a-z
+  ignore_char(string.char(65 + i)) -- ignore A-Z
+  ignore_char(string.char(97 + i)) -- ignore a-z
 end
 
 require("which-key").register(vim.tbl_extend("force", ignored, {
@@ -23,7 +23,7 @@ require("which-key").register(vim.tbl_extend("force", ignored, {
   q = { "<cmd>q<cr>", "quit" },
   ["<C-q>"] = { "<cmd>:qall<cr>", "quit all" },
   w = { "<cmd>w<cr>", "write" },
-  d = {"<cmd>t.<cr>", "duplicate current line"},
+  d = { "<cmd>t.<cr>", "duplicate current line" },
   h = { "<C-^>", "go alternative buffer# - <C-^>" },
   H = { "<C-w>^", "split alternative buffer# " },
   t = { "<cmd>BufferLinePick<cr>", "pick a tab" },

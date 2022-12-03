@@ -11,7 +11,25 @@ require("plugin.telescope")
 require("plugin.lspconfig")
 require("plugin.development")
 require_all("keymap")
-require("color")
+require("appearance")
+
+--[[ NOTE
+## Troubleshotting
+[Inspect]
+- `:lua =obj` prints deatils of lua obj, e.g. `vim` or `vim.o.ruler`.
+  - `:lua print(vim.inspect(obj))` and `:lua vim.pretty_print(obj)` have same effect.
+  - `:set ruler?` shows value of option.
+  - `:echo g:undotree_CursorLin` shows value of global variable.
+- `:verbose map <keymap>` shows details of keymap
+- `:call g:undotree#UndotreeFocus()` calls vim script function.
+[Plugin conflict]
+- `:checkhealth` checks status of plugins and nvim
+- `:scriptnames` shows loading order of configuration files
+- `:h load-plugins` see help about loading order.
+[Startup time]
+- `nvim --startuptime time.txt` shows startup time
+- `:LuaCacheProfile` shows startup time provided by lewis6991/impatient.nvim
+--]]
 
 --[[
  TODO:
@@ -43,6 +61,8 @@ require("color")
 - https://github.com/jose-elias-alvarez/null-ls.nvim
 - tpope
 - simrat39/symbols-outline.nvim
+- https://github.com/preservim/tagbar
+- https://github.com/junegunn/gv.vim
 
 Appearance
 -  https://github.com/AckslD/nvim-neoclip.lua

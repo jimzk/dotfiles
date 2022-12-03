@@ -83,7 +83,7 @@ return packer.startup(function(use)
   use "easymotion/vim-easymotion"
   use "chentoast/marks.nvim"  -- Visualiaze marks
 
-  ------- Motion
+  ------- Jump & text objects
   use "bkad/CamelCaseMotion"  -- <leader> + w/b/e/ge select camel case word
   use "wellle/targets.vim"  -- Select content inside bracket, quote, separator (, . ; etc.), argument and tags
                             -- Work like di' and support i a I a
@@ -95,7 +95,6 @@ return packer.startup(function(use)
   use "kana/vim-textobj-line"      -- al, il select entire line
   use "glts/vim-textobj-indblock"  -- ao, io, aO, iO select indent
   use "dbakker/vim-paragraph-motion"  -- Include blank lines when using { and } to select paragraph
-  use "terryma/vim-expand-region" -- + expands visual selection, _ shrinks it.
 
   ------ Edit
   use {
@@ -112,11 +111,9 @@ return packer.startup(function(use)
     end
   }
   use {
-    "tpope/vim-commentary",  -- gcc toggles comment
+    "tpope/vim-commentary",  -- gcc toggles comment, gcu uncomments.
     keys = {"gc"}  -- Load plugins when first pressing gc
   }
-  -- use "numToStr/Comment.nvim"  -- Leave it as uncomment is unsupported
-                               -- https://github.com/numToStr/Comment.nvim/issues/22
   use {
     "tommcdo/vim-exchange",  -- First cx{motion} defines first content, and second cx{motion} performs exchange
                              -- cxx selects line, X selects visual mode, cxc clears all
@@ -145,7 +142,7 @@ return packer.startup(function(use)
   --      https://github.com/abecodes/tabout.nvim/issues/40
   use {
     'abecodes/tabout.nvim',  -- <tab> jumps out of bracket
-    requires = {"nvim-treesitter/nvim-treesitter"},
+    requires = "nvim-treesitter/nvim-treesitter",
     after = {'nvim-cmp'},
     config = function()
       require('tabout').setup {
@@ -233,6 +230,25 @@ return packer.startup(function(use)
     "nvim-treesitter/nvim-treesitter",  -- Syntax highlight
     run = ":TSUpdate"                   -- :TSInstall <language> to install parser
   }                                     -- :TSUpdate to update parser
+  use {
+    "nvim-treesitter/nvim-treesitter-textobjects",  -- Enhance text object to select/move/swap function, class
+    requires = "nvim-treesitter/nvim-treesitter"
+  }
+  use {
+    "nvim-treesitter/nvim-treesitter-context",      -- Code context in top screen
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      vim.cmd [[au ColorScheme * hi! link TreesitterContext Normal]]
+      vim.cmd [[au ColorScheme * hi! link TreesitterContextButton Normal]]
+      vim.cmd [[au ColorScheme * hi TreesitterContext gui=bold]]
+      vim.cmd [[au ColorScheme * hi TreesitterContextLineNumber gui=bold]]
+    end
+  }
+  use {
+    "p00f/nvim-ts-rainbow", -- Rainbow bracket
+    requires = "nvim-treesitter/nvim-treesitter",
+  }
+
   ----- Status line & Winbar
   use {
     "nvim-lualine/lualine.nvim",  -- Statusline and winbar
@@ -242,10 +258,7 @@ return packer.startup(function(use)
   use {
     "SmiteshP/nvim-navic",  -- Show code context in winbar
     requires = "neovim/nvim-lspconfig",
-    config = function()
-      vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-    end
-}
+  }
 
   ----- Auto completion
   use 'hrsh7th/nvim-cmp'      -- Core plugin
@@ -338,19 +351,19 @@ return packer.startup(function(use)
     end
   }
 
-  -- Other scheme choice: everforest
+  -- Other theme choice: everforest, tokyonight
   use {
-    "folke/tokyonight.nvim",
+    "EdenEast/nightfox.nvim",
     config = function()
-      vim.cmd [[au ColorScheme * hi! Visual gui=reverse]]
-      vim.cmd [[colorscheme tokyonight]]
+      vim.cmd [[colorscheme nightfox]]
     end
   }
+
   use "lukas-reineke/indent-blankline.nvim"  -- Indent guide line
   use {
     'akinsho/bufferline.nvim', tag = "v3.*",
     requires = { 'nvim-tree/nvim-web-devicons', opt = true },
-    after = "tokyonight.nvim",
+    after = "nightfox.nvim",
     config = function ()
       require("bufferline").setup{
         options = {
@@ -358,7 +371,8 @@ return packer.startup(function(use)
           separator_style = "thick",  -- value: slant, padded_slant, thick, thin
           indicator = { style = 'none' },
           show_buffer_close_icons = false,
-          tab_size = 0,  -- adaptive tab size
+          tab_size = 20,  -- adaptive tab size
+          max_name_length = 30,
         },
         highlights = {
           fill = {
@@ -387,10 +401,14 @@ return packer.startup(function(use)
   -- hrsh7th/cmp-nvim-lua      -- Neovim Lua API. Not much useful.
   -- farmergreg/vim-lastplace  -- Use session manager to remember cursur position
   -- ray-x/lsp_signature       -- Show signature hint when calling functions
-  --                           -- Problem: can't scroll preview: https://github.com/ray-x/lsp_signature.nvim/issues/228
-  --                           -- Can be replaced by native vim.lsp.buf.signature_help
+                               -- Problem: can't scroll preview: https://github.com/ray-x/lsp_signature.nvim/issues/228
+                               -- Can be replaced by native vim.lsp.buf.signature_help
   -- https://git.sr.ht/~whynothugo/lsp_lines.nvim  -- Show diagnostics in individual line. Distracting.
   -- romgrk/barbar.nvim        -- Tabline. Pretty but not support only show tab, see https://github.com/romgrk/barbar.nvim/issues/108.
+  -- nvim-treesitter/nvim-treesitter-refactor  -- Variable usage is not accurate. vim-illuminate is better though it always can't find anything in rust.
+  -- numToStr/Comment.nvim     -- Uncomment is unsupported (https://github.com/numToStr/Comment.nvim/issues/22)
+  -- terryma/vim-expand-region -- +/_ expands/shrinks visual selection. Replace by treesitter-textobjects.
+  --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting
   -- davidsierradz/cmp-conventionalcommits   -- Not much userful
