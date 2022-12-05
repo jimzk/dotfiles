@@ -96,8 +96,9 @@
   ;; {:<layer name> {:from <froms>}}
   :simlayers {
     ;; most frequently used modes
-    :space-mode {:key :spacebar}
-    :mouse-mode {:key :a}
+    ; :app-mode {:key :spacebar :condi :!terminal}
+    :app-mode {:key :spacebar}
+    :mouse-mode {:key :z}
     :window-management-mode {:key :w}
     :terminal-mode {:key :j}
 
@@ -206,7 +207,7 @@
         [:!QWERf :play_or_pause]
       ]
     }
-    {:des "mouse move (a)"
+    {:des "mouse move"
       :rules [:mouse-mode
         ;; mouse move
         [:k {:mkey {:y -1600 :speed 1.20}}]
@@ -302,7 +303,7 @@
         ;; [:!Cup_arrow [:yabai "window --resize bottom:0:-50"]]
         ;; [:!Cdown_arrow [:yabai "window --resize bottom:0:+50"]]
 
-        ;; Duplicated keys from space-mode
+        ;; Duplicated keys from app-mode
         ;; show active windows (supported by HammerSpoon)
         [:tab :!CTSslash]
         ;; move window to space but no focus
@@ -317,8 +318,8 @@
         [:return_or_enter [:hs "showSpaceWindowInfo()"]]  ;; supported by HammerSpoon
       ]
     }
-    {:des "space"
-      :rules [:space-mode
+    {:des "invoke app"
+      :rules [:app-mode
         ;; previous / next tabs
         [:i :!CSopen_bracket :iTerm]
         [:o :!CSclose_bracket :iTerm]
@@ -358,7 +359,7 @@
         ;; move window to recent display and focus
         [:backslash [:!CTSf]]  ;; supported by HammerSpoon
         ;; show window and sapce information from yabai
-        [:return_or_enter [:hs "showSpaceWindowInfo()"]]  ;; supported by HammerSpoon
+        [:slash [:hs "showSpaceWindowInfo()"]]  ;; supported by HammerSpoon
         ;; space layout
         ;; [:open_bracket {:shell "/usr/local/bin/yabai -m space --layout float; /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; /usr/local/bin/hs -c \"hs.alert(\\\"to FLOATING Space\\\")\""}]
         ;; [:close_bracket {:shell "/usr/local/bin/yabai -m space --layout bsp; /usr/local/bin/hs -c \"hs.alert(\\\"to BSP Space\\\")\""}]
@@ -366,45 +367,49 @@
         ;; [:backslash {:shell "/usr/local/bin/yabai -m window --toggle float; if [[ $(/usr/local/bin/yabai -m query --windows --window | /usr/local/bin/jq '.floating') == '1' ]]; then msg='FLOATING Window'; else msg='BSP Window'; fi; if [[ \"$msg\" == 'FLOATING Window' ]]; then /usr/local/bin/yabai -m window --grid 2:4:1:0:2:2; fi; /usr/local/bin/hs -c \"hs.alert(\\\"To $msg\\\")\""}]
 
         [:1 :launchpad]  ;; Expose
-        [:2 [:!!5]]  ;; add Things3 task
         [:3 :!OSv]  ; show clipboard (supported by Alfred)
         [:4 :!CTS4]  ;; Look word up in Eudic dictionary
-        [:5 :!Ch :Youdao]
-        [:5 [:open "/Applications/网易有道词典.app"]]
-        [:8 :!!f11] ;; Show Desktop
-        [:9 :!!f2] ;; Application Windows
+        [:2 :!!f11] ;; Show Desktop
+        [:8 :!!f2] ;; Application Windows
+        [:9 :!Ch :Youdao]
+        [:9 [:open "/Applications/网易有道词典.app"]]
+        [:0 [:!!5]]  ;; add Things3 task
 
         ;; open application
-        [:q :!Ch :Things3]
-        [:q [:open "/Applications/Things3.app"]]
-        [:w :!Ch :browser]
-        [:w [:open "/Applications/Google Chrome.app"]]
-        [:e :!Ch :VSCode]
-        [:e [:open "/Applications/Visual Studio Code.app"]]
+        [:f :!Ch :browser]
+        [:f [:open "/Applications/Google Chrome.app"]]
+        [:g :!Ch :VSCode]
+        [:g [:open "/Applications/Visual Studio Code.app"]]
+        ; [:f [:!TOf12]] ;; iTerm2
+        [:l :!Ch :iTerm]
+        [:l [:open "/Applications/iTerm.app"]] ;; iTerm2
+
         [:r :!Ch :Obsidian]
         [:r [:open "/Applications/Obsidian.app"]]
-        [:t :!Ch :Telegram]
-        [:t [:safeOpen "ru.keepcoder.Telegram"]]
-        [:p :!Ch :PDFExpert]
-        [:p [:safeOpen "com.readdle.PDFExpert-Mac"]]
-
-        [:f :!CTOSspacebar]  ;; Alfred
-        [:g :!Ch :Finder]
-        [:g [:open "/System/Library/CoreServices/Finder.app"]]
-        [:h :!Ch :Raindrop]
-        [:h [:safeOpen "io.raindrop.macapp"]]
-        [:k :!Ch :IDEA]
-        [:k [:safeOpen "com.jetbrains.intellij.ce"]]
-        [:l :!Ch :GoLand]
-        [:l [:safeOpen "com.jetbrains.goland"]]
-
-        [:z :!Ch :WeChat]
-        [:z [:safeOpen "com.tencent.xinWeChat"]]
-        [:x :!Ch :Discord]
-        [:x [:safeOpen "com.hnc.Discord"]]
-        [:c [:!TOf12]] ;; iTerm2
+        [:c :!Ch :Finder]
+        [:c [:open "/System/Library/CoreServices/Finder.app"]]
+        [:e :!Ch :WeChat]
+        [:e [:safeOpen "com.tencent.xinWeChat"]]
+        [:z :!Ch :Discord]
+        [:z [:safeOpen "com.hnc.Discord"]]
         [:v :!Ch :Music]
         [:v [:open "/System/Applications/Music.app/"]]
+
+        [:y :!Ch :Things3]
+        [:y [:open "/Applications/Things3.app"]]
+        [:t :!Ch :Telegram]
+        [:t [:safeOpen "ru.keecoder.Telegram"]]
+        [:q :!Ch :PDFExpert]
+        [:q [:safeOpen "com.readdle.PDFExpert-Mac"]]
+
+        [:return_or_enter :!CTOSspacebar]  ;; Alfred
+        [:q :!Ch :Raindrop]
+        [:q [:safeOpen "io.raindrop.macapp"]]
+        [:m :!Ch :IDEA]
+        [:m [:safeOpen "com.jetbrains.intellij.ce"]]
+        [:comma :!Ch :GoLand]
+        [:comma [:safeOpen "com.jetbrains.goland"]]
+
         [:b :!Ch :Bitwarden]
         [:b [:open "/Applications/Bitwarden.app"]]
         [:n :!Ch :Notes]
