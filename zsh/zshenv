@@ -44,10 +44,8 @@ FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:b
 --bind='ctrl-j:page-down' \
 --bind='ctrl-k:page-up' \
 --bind='ctrl-space:toggle' \
---bind='alt-j:preview-down' \
---bind='alt-k:preview-up' \
---bind='alt-d:preview-half-page-down' \
---bind='alt-u:preview-half-page-up' \
+--bind='ctrl-d:preview-half-page-down' \
+--bind='ctrl-u:preview-half-page-up' \
 --bind 'ctrl-\:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

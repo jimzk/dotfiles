@@ -6,7 +6,7 @@
 [interactive]
     diffFilter = delta --color-only --features=interactive
 [delta]
-    features = line-numbers decorations
+    features = line-numbers decorations hunk
     side-by-side = false
     # delta --show-syntax-themes to see all available themes
     syntax-theme = ansi
@@ -14,9 +14,8 @@
     minus-style = syntax "#8c0002"
 [delta "decorations"]
     commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
-    hunk-header-decoration-style = cyan box ul
+    file-style = bold yellow
+    file-decoration-style = box
 [delta "line-numbers"]
     line-numbers = true
     # 256 ANSI color
@@ -26,3 +25,6 @@
     line-numbers-minus-style = 160 # 124
     line-numbers-plus-style = 34 # 28
     line-numbers-zero-style = 241
+[delta "hunk"]
+    hunk-header-style = syntax
+    hunk-header-decoration-style = cyan

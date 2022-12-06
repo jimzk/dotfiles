@@ -111,7 +111,7 @@ _fzf_git_file_widget() {
         echo $files |
         fzf --nth 2.. --preview "$PREVIEW_DIFF" \
             --height=90% --preview-window down,84%,wrap \
-            --header='^a add | ^l unstaged vs. staged (default) | ^h unstaged vs. HEAD | ^s staged vs. HEAD' \
+            --header='^a add | ^l unstaged changes (default) | ^s staged changes | ^h changes vs. HEAD' \
             --bind "ctrl-a:execute(git add {-1} > /dev/null)+reload(eval $COMMAND)" \
             --bind "ctrl-l:preview($PREVIEW_DIFF)" \
             --bind "ctrl-h:preview($PREVIEW_DIFF_HEAD)" \
