@@ -298,7 +298,17 @@ return packer.startup(function(use)
   }
   -- For specific language
   use "folke/neodev.nvim"  --  Full signature help for neovim method
-  use "rust-lang/rust.vim"
+  use {
+    "rust-lang/rust.vim",  --Rrust command integration
+    requires = "mattn/webapi-vim",
+  }
+  use {
+    "simrat39/rust-tools.nvim",  -- Rust development improvement
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "mfussenegger/nvim-dap",  -- For debuging
+    }
+  }
   use {
     'saecki/crates.nvim',  -- crates auto completion
     tag = 'v0.3.0',

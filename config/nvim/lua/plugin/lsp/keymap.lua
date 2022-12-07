@@ -45,17 +45,18 @@ M.setup = function(bufnr)
       end, "[C] list all diagnostics in workspace" },
       -- ['<space> = {function() vim.diagnostic.setloclist() end, "show diagnostics in location list"},
 
-      -- d = {function() vim.lsp.buf.definition() end, "[C] peek definition"},
+      -- D = {function() vim.lsp.buf.definition() end, "[C] peek definition"},
       -- D = {function() vim.lsp.buf.declaration() end, "[C] declaration"},
+      -- TODO: after gd, enable number
       d = { "<cmd>Lspsaga peek_definition<cr>", "[C] peek definition" },
-      D = { "<cmd>normal m'<cr><cmd>Trouble lsp_definitions<cr>", "[C] go definition " },
-      ["<C-d>"] = { "<C-w>i", "go definition split" },
+      D = { "<cmd>normal m'<cr><cmd>Trouble lsp_definitions<cr>", "[C] go definition" },
 
-      h = { "<cmd>Lspsaga lsp_finder<cr>", "[C] hover (lspsaga)" },
+      h = { vim.lsp.buf.hover, "[C] hover" },
+      H = { "<cmd>Lspsaga lsp_finder<cr>", "[C] detailed hover (lspsaga)" },
+      ["<C-h>"] = { "<cmd>Lspsaga hover_doc<CR>", "[C] hover (lspsaga)" },  -- Not much useful
       o = { function()
         vim.cmd("LSoutlineToggle")
       end, "[C] symbol outline" },
-      j = { "<cmd>Lspsaga hover_doc<CR>", "[C] peek doc" },
       -- k = {function() vim.lsp.buf.implementation() end, "[C] go implementation"},
       k = { "<cmd>normal m'<cr><cmd>Trouble lsp_implementations<cr>", "[C] go implementation" },
       s = { function() vim.lsp.buf.signature_help() end, "[C] signature help (<C-s>)" },
@@ -77,19 +78,13 @@ M.setup = function(bufnr)
       -- a = {function() vim.lsp.buf.code_action() end, "code action"},
       a = { "<cmd>Lspsaga code_action<CR>", "code action" },
       f = { function()
-        local mode = vim.api.nvim_get_mode()["mode"]
-        if mode == "n" then
-          vim.lsp.buf.format { async = true }
-        else
-          -- TODO: range formating.
-          -- vim.lsp.buf.range_formatting is deprecated
-          vim.lsp.buf.range_formatting()
-        end
+        vim.lsp.buf.format { async = false }
+        vim.cmd [[w]] -- Save after format
       end, "format file (by lsp)", mode = { "n", "v" } },
     },
   }, bufopts)
-
-  vim.keymap.set({ "i", "v" }, "<C-s>", function() vim.lsp.buf.signature_help() end, bufopts) -- Show signature at insertion (which-key can't set keymap for insert mode)
+  vim.keymap.set({ "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,
+    vim.tbl_extend("force", bufopts, { desc = "[C] peek signature" }))
 end
 
 return M

@@ -8,7 +8,7 @@ end
 require("plugin")
 require_all("plugin")
 require("plugin.telescope")
-require("plugin.lspconfig")
+require("plugin.lsp")
 require("plugin.development")
 require_all("keymap")
 require("appearance")
@@ -80,7 +80,6 @@ Appearance
 -  https://github.com/AckslD/nvim-neoclip.lua
 
 Development
-- https://github.com/simrat39/rust-tools.nvim/
 - https://github.com/ray-x/navigator.lua
 - https://github.com/kevinhwang91/nvim-bqf
 
