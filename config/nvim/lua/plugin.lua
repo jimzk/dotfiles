@@ -252,6 +252,10 @@ return packer.startup(function(use)
     "p00f/nvim-ts-rainbow", -- Rainbow bracket
     requires = "nvim-treesitter/nvim-treesitter",
   }
+  use {
+    'ldelossa/litee-calltree.nvim',  -- Incoming/outcoming calls tree
+    requires = 'ldelossa/litee.nvim',
+  }
 
   ----- Status line & Winbar
   use {

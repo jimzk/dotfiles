@@ -64,6 +64,14 @@ M.setup = function(bufnr)
       b = { "<cmd>normal m'<cr><cmd>Trouble lsp_type_definitions<cr>", "[C] go type definition" },
       -- r = {function() vim.lsp.buf.references() end, "[C] reference list"},
       r = { "<cmd>normal m'<cr><cmd>Trouble lsp_references<cr>", "[C] go reference" },
+      ["["] = { function()
+        vim.lsp.buf.incoming_calls()
+        vim.cmd [[LTOpenToCalltree]]
+      end, "[C] incoming call tree" },
+      ["]"] = { function()
+        vim.lsp.buf.outgoing_calls()
+        vim.cmd [[LTOpenToCalltree]]
+      end, "[C] outgoing call tree" },
     },
 
     ['<space>c'] = {
@@ -85,6 +93,13 @@ M.setup = function(bufnr)
   }, bufopts)
   vim.keymap.set({ "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,
     vim.tbl_extend("force", bufopts, { desc = "[C] peek signature" }))
+  vim.keymap.set("n", "g\\", function()
+    if vim.bo.filetype == "calltree" then
+      vim.cmd [[q]]
+    else
+      vim.cmd [[LTOpenToCalltree]]
+    end
+  end, { desc = "[C] toggle call tree" })
 end
 
 return M
