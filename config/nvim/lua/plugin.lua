@@ -369,14 +369,32 @@ return packer.startup(function(use)
       }
     end
   }
-
-  -- Other theme choice: everforest, tokyonight
   use {
-    "EdenEast/nightfox.nvim",
+    "karb94/neoscroll.nvim",  -- smooth scroll
+    config = function()
+      require('neoscroll').setup()
+      local t = {}
+      t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '200'}}
+      t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '200'}}
+      t['<C-b>'] = {'scroll', {'-vim.api.nvim_win_get_height(0)', 'true', '300'}}
+      t['<C-f>'] = {'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300'}}
+      t['<C-y>'] = {'scroll', {'-0.03', 'false', '10'}}
+      t['<C-e>'] = {'scroll', { '0.03', 'false', '10'}}
+      t['zt']    = {'zt', {'200'}}
+      t['zz']    = {'zz', {'200'}}
+      t['zb']    = {'zb', {'200'}}
+      require('neoscroll.config').set_mappings(t)
+    end
+  }
+  use "petertriho/nvim-scrollbar"  -- Scrollbar
+  use "kevinhwang91/nvim-hlslens"  -- Glance search info in virtual text. Integrated with nvim-scrollbar and vim-visual-multi.
+  use {
+    "EdenEast/nightfox.nvim",  -- Themes. Other choices: everforest, tokyonight
     after = {  -- plugins that setts highlight group
       "nvim-treesitter-context",
       "vim-visual-multi",
       "vim-illuminate",
+      "nvim-scrollbar",
     },
     config = function()
       vim.cmd [[colorscheme nightfox]]
