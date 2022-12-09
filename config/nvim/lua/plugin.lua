@@ -80,7 +80,6 @@ return packer.startup(function(use)
     },
     -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },  -- Load plugin when first invoking these commands
   }
-  use "easymotion/vim-easymotion"
   use "chentoast/marks.nvim"  -- Visualiaze marks
 
   ------- Jump & text objects
@@ -266,6 +265,15 @@ return packer.startup(function(use)
   use {
     "SmiteshP/nvim-navic",  -- Show context in winbar
     requires = "neovim/nvim-lspconfig",
+  }
+  use {
+    "phaazon/hop.nvim",
+    tag = 'v2.*.*',
+    config = function()
+      require("hop").setup {
+        keys = 'etovxqpdygfblzhckisuranm123'
+      }
+    end
   }
 
   ----- Auto completion
