@@ -293,19 +293,15 @@ return packer.startup(function(use)
       require("cmp_git").setup()
     end
   }
-  use { "L3MON4D3/LuaSnip", tag = "v1.*.*",
-    after = "nvim-cmp",
-  }
   use {
     'saadparwaiz1/cmp_luasnip',  -- Support LuaSnip in nvim-cmp
     after = "LuaSnip",
   }
   use {
-    'rafamadriz/friendly-snippets',  -- Collections of snippets
-    event = "InsertEnter",  -- Load plugin when first detecting event
+    "L3MON4D3/LuaSnip", tag = "v1.*.*",
     config = function()
-      -- https://github.com/L3MON4D3/LuaSnip#add-snippets
-      require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./lua/snippets/vscode" } })
+      require("snippets.lua")
     end
   }
   -- For specific language
@@ -324,6 +320,7 @@ return packer.startup(function(use)
   use {
     'saecki/crates.nvim',  -- crates auto completion
     tag = 'v0.3.0',
+    ft = {'toml'},
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('crates').setup()
