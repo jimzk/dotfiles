@@ -4,6 +4,8 @@ cheatsheets
 git/gitconfig.local
 zsh/zshrc.local
 zsh/zshenv.local
+
+hammerspoon/Spoons/EmmyLua.spoon/annotations
 config/github-copilot
 config/neofetch
 config/gh/hosts.yml

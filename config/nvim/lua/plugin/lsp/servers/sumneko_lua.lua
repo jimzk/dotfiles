@@ -1,4 +1,10 @@
 local M = {}
+local get_library = function()
+  local library = vim.api.nvim_get_runtime_file("", true)
+  table.insert(library, vim.fn.expand('~/.hammerspoon/Spoons/EmmyLua.spoon/annotations/'))
+  -- table.insert(library, "/Applications/Hammerspoon.app/Contents/Resources/extensions/hs")
+  return library
+end
 local sumneko_lua = {
   -- https://github.com/sumneko/lua-language-server/blob/master/locale/en-us/setting.lua
   settings = {
@@ -12,11 +18,7 @@ local sumneko_lua = {
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
-        library = vim.tbl_extend("force",
-          vim.api.nvim_get_runtime_file("", true), {
-          ['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
-        })
-        ,
+        library = get_library(),
         checkThirdParty = false
       },
       -- Do not send telemetry data containing a randomized but unique identifier
