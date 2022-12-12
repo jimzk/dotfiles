@@ -1,4 +1,6 @@
-local windows = {
+local wk = require("which-key")
+local opt = { mode = "n", prefix = "<c-w>", preset = true }
+wk.register({
   name = "window",
   -- new
   s = "split window",
@@ -33,13 +35,20 @@ local windows = {
   ["+"] = "increase height",
   ["<lt>"] = "decrease width",
   [">"] = "increase width",
-  -- maximize adn restore layout
-  ["<C-=>"] = "max out width",
-  ["<C-->"] = "max out height",
-  ["<C-\\>"] = "equally size",
 
   -- coding (not much useful)
   -- d = {"go definition under cursor and split"},
   -- i = {"go declaration under cursor and split"},
-}
-require("which-key").register(windows, { mode = "n", prefix = "<c-w>", preset = true })
+}, opt)
+
+vim.cmd [[
+nnoremap <silent> <c-w><c--> <c-w>_
+nnoremap <silent> <c-w><c-\> <c-w>\|
+nnoremap <silent> <c-w><c-=> <c-w>=
+]]
+wk.register({
+  -- maximize and restore layout
+  ["<C-=>"] = "equally size",
+  ["<C-->"] = "max out height",
+  ["<C-\\>"] = "max out width",
+})

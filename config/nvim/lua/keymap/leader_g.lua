@@ -3,13 +3,13 @@ local builtin = require("telescope.builtin")
 require("which-key").register({
   name = "git",
   -- gitsigns
-  a = { "<cmd>Gitsigns stage_hunk<cr>", "add (stage) current change", mode = { "n", "v" } },
-  A = { "<cmd>Gitsigns stage_buffer<cr>", "add (stage) current buffer" },
-  x = { "<cmd>Gitsigns undo_stage_hunk<cr>", "unstage current change" },
+  -- a = { "<cmd>Gitsigns stage_hunk<cr>", "add (stage) current change", mode = { "n", "v" } },
+  -- A = { "<cmd>Gitsigns stage_buffer<cr>", "add (stage) current buffer" },
+  -- x = { "<cmd>Gitsigns undo_stage_hunk<cr>", "unstage current change" },
   U = { "<cmd>Gitsigns reset_buffer<cr>", "revert buffer" },
   u = { "<cmd>Gitsigns reset_hunk<cr>", "revert current change", mode = { "n", "v" } },
-  c = { "<cmd>Gitsigns preview_hunk<cr>", "preview current change" },
-  C = { "<cmd>Gitsigns setqflist<cr>", "preview all changes in quickfix" },
+  -- c = { "<cmd>Gitsigns preview_hunk<cr>", "preview current change" },
+  q = { "<cmd>Gitsigns setqflist<cr>", "preview all changes in quickfix" },
   h = { function()
     vim.cmd [[Gitsigns toggle_deleted]]
     vim.cmd [[Gitsigns toggle_word_diff]]
@@ -66,7 +66,7 @@ require("which-key").register({
       prompt_title = "Git Stash",
       results_title = "apply ⏎",
     })
-  end, "stashes" },
+  end, "list stashes" },
   r = { function() builtin.git_branches({
       layout_strategy = "vertical",
       layout_config = {

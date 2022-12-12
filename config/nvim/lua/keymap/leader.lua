@@ -1,20 +1,121 @@
+local builtin = require("telescope.builtin")
 local wk = require("which-key")
-
+local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
-  w = { "camelCase w", mode = { "n", "v", "o" } },
-  b = { "camelCase b", mode = { "n", "v", "o" } },
-  e = { "camelCase e", mode = { "n", "v", "o" } },
-  ["ge"] = { "camelCase ge", mode = { "n", "v", "o" } },
-  ["<leader>"] = { "<cmd>Telescope resume<cr>", "Last telescope history" },
-  ["<C-space>"] = { "<cmd>Telescope pickers<cr>", "All telescope history" },
-  ["["] = "add blank line up",
-  ["]"] = "add blank line down",
+  ["`"] = { "<cmd>:qa<cr>", "quit all" },
+  q = { "<cmd>:q<cr>", "quit" },
+  ["<C-q>"] = { "<cmd>:q!<cr>", "quit forcely" },
+  w = { "<cmd>:w<cr>", "write" },
+  W = { function()
+    vim.cmd [[wa]]
+    Notify("Write all!")
+  end, "write all" },
+  n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
+  N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
+  ["<cr>"] = { "<cmd>Gitsigns preview_hunk<cr>", "[G] preview current change" },
+  ["<tab>"] = { "<cmd>Telescope resume<cr>", "last telescope history" },
+  ["<S-tab>"] = { "<cmd>Telescope pickers<cr>", "All telescope history" },
+  a = { function()
+    vim.cmd [[Gitsigns stage_hunk]]
+    vim.cmd [[w]]
+  end, "[G] stage current hunk", mode = { "n", "v" } },
+  A = { function()
+    vim.cmd [[Gitsigns stage_buffer]]
+    vim.cmd [[w]]
+  end, "[G] stage buffer" },
+  ["<C-a>"] = { "<cmd>Gitsigns undo_stage_hunk<cr>", "[G] undo staged hunk" },
+  b = { function()
+    builtin.buffers(require("telescope.themes").get_ivy {
+      prompt_title = "Buffers List",
+      results_title = "|open: ^v(split) ^s(plit) ^t(ab)",
+      layout_config = {
+        preview_width = 0.75,
+      },
+      sort_lastused = true,
+    })
+  end, "go buffers" },
+  -- Compared with :bdelete, :bwipeout remove buffer from jumplist.
+  -- :Bdelete and :Bwipeout are suppotred by moll/vim.bbye
+  ["-"] = { "<cmd>Bdelete<cr>", "delete buffer" },
+  ["_"] = { "<cmd>Bwipeout<cr><cmd>bnext<cr><C-^>", "delete buffer with jumplist" },
+  ["<C-_>"] = { function()
+    vim.cmd [[%bd]]
+    vim.cmd [[e#]]
+    vim.cmd [[bnext]]
+    vim.cmd [[bd]]
+    Notify("Delete all other buffers!")
+  end, "delete others buffers" },
+  ["\\"] = { function()
+    vim.cmd [[PackerClean]]
+    vim.cmd [[PackerInstall]]
+    vim.cmd [[PackerCompile]]
+    Notify("Complete PackerInstall and PackerCompile", "info",
+      { title = "Source plugins" })
+  end, "install plugin (Packer)" },
   d = { [[V"vY'>"vp]], "duplicate line" },
-  l = { "<cmd>noh<cr>", "clear search highlight" },
-  a = { "<cmd>Gitsigns stage_hunk<cr>", "add (stage) current change", mode = { "n", "v" } },
-  A = { "<cmd>Gitsigns stage_buffer<cr>", "add (stage) current buffer" },
-}, { prefix = "<leader>" })
+  r = { function()
+    require('spectre').open_file_search()
+  end, "search and repalce (spectre)" },
+}, opt)
 
 wk.register({
-  d = { [["vY'>"vp]], "duplicate lines" },
-}, { prefix = "<leader>", mode = "v" })
+  d = { [["vY'>"vp]], "duplicate lines", mode = "v" },
+  r = { function()
+    vim.cmd('noau normal! "vy"')
+    local content = vim.fn.getreg('v')
+    local path = vim.fn.fnameescape(vim.fn.expand('%:p:.'))
+    require("spectre").open {
+      search_text = content,
+      path = path,
+    }
+  end, "search and replace (spectre)", mode = "v" },
+}, opt)
+
+vim.keymap.set("n", "<leader><leader>", "/", { desc = "search /" })
+
+-- https://github.com/mhinz/vim-galore#quickly-move-current-line
+--  FIX: error when target moves execeeds line range of file
+vim.cmd [[
+nnoremap <silent> <leader>[  :<c-u>execute "move -1-". v:count1<cr>
+nnoremap <silent> <leader>]  :<c-u>execute "move +". v:count1<cr>
+vnoremap <silent> <leader>[  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
+vnoremap <silent> <leader>]  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
+]]
+
+wk.register({
+  ["]"] = { "move line up", mode = { "n", "v" } },
+  ["["] = { "move line down", mode = { "n", "v" } },
+}, opt)
+
+local process_yank = function()
+  local yanked = vim.fn.getreg('+') -- I share system register (+) with vim
+  yanked = vim.fn.substitute(yanked, "^ *", "", "")
+  yanked = vim.fn.substitute(yanked, "\n$", "", "")
+  vim.fn.setreg("+", yanked)
+end
+wk.register({
+  p = { function()
+    process_yank()
+    vim.cmd [[normal o]]
+    vim.cmd [[normal p]]
+    vim.cmd "normal `[v`]" -- Select pasted text
+    vim.lsp.buf.format { async = false }
+    vim.cmd [[exe "normal! \<esc>"]]
+  end, "p line-down and format" },
+  P = { function()
+    process_yank()
+    vim.cmd [[normal O]]
+    vim.cmd [[normal p]]
+    vim.cmd "normal `[v`]" -- Select pasted text
+    vim.lsp.buf.format { async = false }
+    vim.cmd [[exe "normal! \<esc>"]]
+  end, "p line-up and format" },
+  ["<S-cr>"] = { ":<c-u>put =repeat(nr2char(10), v:count1)<cr>", "insert new blank lines (support count)" },
+  ["<BS>"] = { "blank current line", mode = { "n", "v" } },
+}, opt)
+
+-- FIX: can not preserve every lines
+vim.cmd [[
+nnoremap <silent> <leader><BS> :<c-u>execute "normal ". v:count1 . "S"<cr>
+vnoremap <silent> <leader><BS> :normal S<cr>
+]]

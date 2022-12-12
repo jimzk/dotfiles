@@ -1,4 +1,3 @@
-
 -- marks.nvim
 require("which-key").register({
   d = {

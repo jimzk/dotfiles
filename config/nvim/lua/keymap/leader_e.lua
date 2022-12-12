@@ -6,8 +6,6 @@ require("which-key").register({
       prompt_title = "Search History",
     }
   end, "list search history" },
-  n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
-  N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
   i = { function()
     local home = vim.fn.getenv("HOME")
     local filename = vim.fn.expand("%:p:t")
@@ -36,11 +34,11 @@ ignorecase : %s]],
       vim.o.ignorecase)
     Notify(msg)
   end, "show buffer info" },
-  t = { function()
+  m = { function()
     builtin.filetypes {
-      prompt_title = "Change Filetype",
+      prompt_title = "Set Filetype",
     }
-  end, "change filetype" },
+  end, "set filetype" },
   ["<tab>"] = { function()
     vim.ui.input(
       { prompt = "Enter indent width: " },
@@ -50,13 +48,13 @@ ignorecase : %s]],
         end
         vim.bo.tabstop = tonumber(input)
         vim.bo.shiftwidth = tonumber(input)
-        Notify("change indent width to " .. input)
+        Notify("set indent width to " .. input)
       end
     )
-  end, "change indent width" },
+  end, "set indent width" },
   u = { "<cmd>UndotreeToggle<cr>", "show undo history (undotree)" },
   o = {
-    name = "path and system application",
+    name = "path and application",
     o = { function()
       local path = vim.fn.expand("%:p")
       vim.cmd("silent !open " .. path)
@@ -97,4 +95,4 @@ ignorecase : %s]],
     end, "[G] delete file" },
   },
   -- TODO: add cmd to search bookmark/mark
-}, { mode = "n", prefix = "<leader>n", preset = true })
+}, { mode = "n", prefix = "<leader>e", preset = true })

@@ -83,7 +83,12 @@ return packer.startup(function(use)
   use "chentoast/marks.nvim"  -- Visualiaze marks
 
   ------- Jump & text objects
-  use "bkad/CamelCaseMotion"  -- <leader> + w/b/e/ge select camel case word
+  use {
+    "bkad/CamelCaseMotion",  -- , + w/b/e/ge select camel case word
+    config = function()
+      vim.g.camelcasemotion_key = ','
+    end
+  }
   use "wellle/targets.vim"  -- Select content inside bracket, quote, separator (, . ; etc.), argument and tags
                             -- Work like di' and support i a I a
                             -- Most frequently used: ib(bracket), iq(quote), ia(argument)

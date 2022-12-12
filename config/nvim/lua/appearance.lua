@@ -1,6 +1,8 @@
 -- Make visual highlight more clear
-vim.cmd [[au ColorScheme * hi! link Visual Search]]
--- vim.cmd [[au ColorScheme * hi! Visual gui=reverse]]
+-- vim.cmd [[au ColorScheme * hi! link Visual Search]]
+-- vim.cmd [[au ColorScheme * hi! Visual guifg=reverse]]
+vim.cmd [[au ColorScheme * hi! Visual guibg=#404e62]]
+
 vim.o.termguicolors = true
 vim.o.cursorline = true
 vim.o.cursorcolumn = false
@@ -14,4 +16,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     }
   end,
 })
-

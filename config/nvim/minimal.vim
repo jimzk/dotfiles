@@ -153,14 +153,14 @@ let mapleader=" "
 
 " imap jk <esc>
 " not copy when paste in visual mode
-vnoremap p "_dP
-vnoremap P "_dP
+" vnoremap p "_dP
+" vnoremap P "_dP
 nnoremap U <c-r>  " redo
-" Use <c-L> to clear the highlighting of :set hlsearch.
-" https://github.com/tpope/vim-sensible/blob/8985da7669bbd73afce85ef0e4a3e1ce2e488595/plugin/sensible.vim#L33
-if maparg('<c-l>', 'n') ==# ''
-    nnoremap <silent> <c-L> :nohlsearch<c-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><c-L>
-endif
+" " Use <c-L> to clear the highlighting of :set hlsearch.
+" " https://github.com/tpope/vim-sensible/blob/8985da7669bbd73afce85ef0e4a3e1ce2e488595/plugin/sensible.vim#L33
+" if maparg('<c-l>', 'n') ==# ''
+"     nnoremap <silent> <c-L> :nohlsearch<c-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><c-L>
+" endif
 " :W write with root permission
 command! W w !sudo tee % > /dev/null
 " buffer switch
@@ -173,17 +173,9 @@ command! W w !sudo tee % > /dev/null
 
 " switch between the active and last active tab "
 " The first tab is always 1 "
-let g:last_active_tab = 1
-nnoremap <silent> g<tab> :execute "tabnext ".g:last_active_tab<cr>
-autocmd TabLeave * let g:last_active_tab = tabpagenr()
-
-" move line up and down
-" https://github.com/mhinz/vim-galore#quickly-move-current-line
-" FIX: error when target moves execeeds line range of file
-nnoremap <silent> [e  :<c-u>execute "move -1-". v:count1<cr>
-nnoremap <silent> ]e  :<c-u>execute "move +". v:count1<cr>
-vnoremap <silent> [e  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
-vnoremap <silent> ]e  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
+" let g:last_active_tab = 1
+" nnoremap <silent> g<tab> :execute "tabnext ".g:last_active_tab<cr>
+" autocmd TabLeave * let g:last_active_tab = tabpagenr()
 
 " copy and paste
 set clipboard^=unnamed "share yank with system clipboard (*)
@@ -205,11 +197,11 @@ nnoremap Y y$
 " nnoremap ]<cr>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
 " scroll
-nnoremap <c-e> 2<c-e>
-nnoremap <c-y> 2<c-y>
+" nnoremap <c-e> 2<c-e>
+" nnoremap <c-y> 2<c-y>
 " scroll in edit mode
-inoremap <c-e> <c-x><c-e>
-inoremap <c-e> <c-x><c-y>
+" inoremap <c-e> <c-x><c-e><c-e>
+" inoremap <c-y> <c-x><c-y><c-y>
 
 " move to change location
 nnoremap <silent> g; g;zz
@@ -230,11 +222,6 @@ nnoremap <expr> N  'nN'[v:searchforward]
 "  cnoremap $. <c-r>=expand('%:p:h')<cr>/
 "  cnoremap t.<tab> tabedit <c-r>=expand("%:p:h")<cr>/
 "  cnoremap e.<tab> e <c-r>=expand("%:p:h")<cr>/
-
-" window layout
-nmap <c-w><c--> <c-w>_  " maximize window height
-nmap <c-w><c-\> <c-w>\|  " maximize window width
-nmap <c-w><c-=> <c-w>=  " euqally size windows
 
 " completion menu
 " https://github.com/mhinz/vim-galore#saner-command-line-history

@@ -34,10 +34,13 @@ require("editor")
 - `nvim --startuptime time.txt` shows startup time
 - `:LuaCacheProfile` shows startup time provided by lewis6991/impatient.nvim
 
-## Where to find plugins
+## Source
+[Find plugins]
 - https://github.com/rockerBOO/awesome-neovim
 - https://neoland.dev/
 - https://neovimcraft.com/
+[Config inspiration]
+- https://github.com/mhinz/vim-galore
 
 --]]
 

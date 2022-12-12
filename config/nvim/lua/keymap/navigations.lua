@@ -31,8 +31,6 @@ wk.register({
     i = "peek next match of cursor word", -- builtin
     I = "peek all next match of cursor word",
     ["<C-i>"] = "go next match of cursor word",
-    -- configured in minimal.vim
-    e = { "move line up", mode = { "n", "v" } },
     -- gitsigns
     c = "next Git change",
     -- todo-comments
@@ -48,8 +46,6 @@ wk.register({
     i = "peek first match of cursor word", -- builtin
     I = "peek all match of cursor word",
     ["<C-i>"] = "go first match of cursor word",
-    -- configured in minimal.vim
-    e = { "move line down", mode = { "n", "v" } },
     -- gitsigns
     c = "previous Git change",
     -- todo-comments
