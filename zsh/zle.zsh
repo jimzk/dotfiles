@@ -226,8 +226,8 @@ _fzf_cht_widget() {
 
 _fzf_file_widget() {
     local files=$(
-        fd --color=always --hidden --follow --exclude .git --maxdepth=3 . |
-        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 2 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window right,75%,wrap |
+        fd --color=always --hidden --follow --exclude .git --maxdepth=10 . |
+        fzf --preview '([[ -d {} ]] && echo "[DIRECTORY]" && tree -CNFl -L 5 {} | head -200) || (echo "[FILE]" && bat --style=plain --color=always {})' --preview-window right,75%,wrap,hidden |
         __join_lines)
     # files=$(__trim_string $files)
     __redraw $files
