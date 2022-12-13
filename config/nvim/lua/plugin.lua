@@ -197,6 +197,7 @@ return packer.startup(function(use)
         }
     end
   }
+  use "andymass/vim-matchup"  -- Enhance matchit (%)
 
   ------ Git
   use "tpope/vim-fugitive"  -- Integrate git commands
@@ -408,7 +409,6 @@ return packer.startup(function(use)
   }
 
   ----- Abandoned plugins
-  -- andymass/vim-matchup      -- Extend % to syntax controll follow (like if else). Neovim has already support it
   -- jiangmiao/auto-pairs      -- Replace with nvim-autopairs
   -- folke/noice.nvim          -- UI for messages, cmdline and popupmenu. depend on nvim-notify. To noisy.
   -- hrsh7th/cmp-nvim-lua      -- Neovim Lua API. Not much useful.

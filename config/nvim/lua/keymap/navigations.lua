@@ -18,8 +18,10 @@ wk.register({
 }, { mode = { "n", "o" }, prefix = "", preset = true })
 
 wk.register({
-  ["]%"] = "which_key_ignore", -- replaced by [b
-  ["[%"] = "which_key_ignore", -- replaced by [b
+  ["]%"] = "go to close item (matchup)",
+  ["[%"] = "go to open item (matchup)",
+  ["]b"] = { "<Plug>(matchup-]%)", "same as ]%" },
+  ["[b"] = { "<Plug>(matchup-[%)", "same as [%" },
 }, { mode = { "n", "o", "v" }, prefix = "", preset = true })
 
 wk.register({
@@ -54,23 +56,3 @@ wk.register({
     end, "[C] previous usage of variable" },
   },
 }, { mode = { "n" }, prefix = "", preset = true })
-
--- ]% -> ]b, [% -> [b
-wk.register({
-  ["[b"] = { "<Plug>(MatchitNormalMultiBackward)", "previous unmatched ( { [ or group", mode = "n" },
-}, { preset = true })
-wk.register({
-  ["[b"] = { "<Plug>(MatchitVisualMultiBackward)", "previous unmatched ( { [ or group", mode = "v" },
-}, { preset = true })
-wk.register({
-  ["[b"] = { "<Plug>(MatchitOperationMultiBackward)", "previous unmatched ( { [ or group", mode = "o" },
-}, { preset = true })
-wk.register({
-  ["]b"] = { "<Plug>(MatchitNormalMultiForward)", "next unmatched ) } ] or group", mode = "n" },
-}, { preset = true })
-wk.register({
-  ["]b"] = { "<Plug>(MatchitVisualMultiForward)", "next unmatched ) } ] or group", mode = "v" },
-}, { preset = true })
-wk.register({
-  ["]b"] = { "<Plug>(MatchitOperationMultiForward)", "next unmatched ) } ] or group", mode = "o" },
-}, { preset = true })

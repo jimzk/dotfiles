@@ -24,5 +24,7 @@ local z = {
   g = "add word to spell list",
   w = "mark word as misspelling",
   ["="] = "spelling suggestions",
+  -- matchup
+  ["%"] = "go inner nearest open item (matchup)",
 }
 require("which-key").register(z, { mode = "n", prefix = "z", preset = true })
