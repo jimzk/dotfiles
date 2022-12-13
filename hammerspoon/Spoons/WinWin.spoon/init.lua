@@ -106,15 +106,15 @@ function obj:moveToScreen(direction)
     if cwin then
         local cscreen = cwin:screen()
         if direction == "up" then
-            cwin:moveOneScreenNorth(true, true)
+            cwin:moveOneScreenNorth(false, true)
         elseif direction == "down" then
-            cwin:moveOneScreenSouth(true, true)
+            cwin:moveOneScreenSouth(false, true)
         elseif direction == "left" then
-            cwin:moveOneScreenWest(true, true)
+            cwin:moveOneScreenWest(false, true)
         elseif direction == "right" then
-            cwin:moveOneScreenEast(true, true)
+            cwin:moveOneScreenEast(false, true)
         elseif direction == "next" then
-            cwin:moveToScreen(cscreen:next(), true, true)
+            cwin:moveToScreen(cscreen:next(), false, true)
         end
     else
         hs.alert.show("No focused window!")
@@ -138,6 +138,11 @@ function obj:centerCursor()
         -- Center the cursor on the screen
         hs.mouse.setAbsolutePosition({x=cres.x+cres.w/2, y=cres.y+cres.h/2})
     end
+end
+
+function obj:toggleFullScreen()
+    local cwin = hs.window.focusedWindow()
+    cwin:toggleFullScreen()
 end
 
 return obj

@@ -77,7 +77,9 @@ function obj:toggleCheatsheet(iterList, force)
             elseif type(i) == "string" then
                 -- It appears to be active_list
                 for _, m in pairs(v.keys) do
-                    table.insert(keys_pool, m.msg)
+                    if not string.find(m.msg, "cheatsheet_ignore") then
+                        table.insert(keys_pool, m.msg)
+                    end
                 end
             end
         end
