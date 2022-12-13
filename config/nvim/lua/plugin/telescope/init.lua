@@ -3,7 +3,7 @@ telescope.setup {
   -- https://github.com/nvim-telescope/telescope.nvim/issues/1351
   defaults = {
     sorting_strategy = "ascending", -- cursor starts from top result
-    layout_strategy = "flex",
+    layout_strategy = "vertical",
     layout_config = {
       prompt_position = "top",
       anchor = "S",
@@ -93,23 +93,8 @@ telescope.setup {
   },
 }
 
-local string_config = {
-  layout_strategy = "horizontal",
-  layout_config = {
-    preview_width = 0.6,
-    width = 160,
-  },
-}
-telescope.setup {
-  pickers = {
-    live_grep = string_config,
-    grep_string = string_config,
-    current_buffer_fuzzy_find = string_config,
-  }
-}
-
 -- https://github.com/nvim-telescope/telescope.nvim#previewers
-vim.cmd("autocmd User TelescopePreviewerLoaded setlocal wrap")
+vim.cmd [[autocmd User TelescopePreviewerLoaded setlocal wrap]]
 
 -- Dont preview binaries
 -- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#dont-preview-binaries

@@ -6,8 +6,8 @@ require("which-key").register({
   -- a = { "<cmd>Gitsigns stage_hunk<cr>", "add (stage) current change", mode = { "n", "v" } },
   -- A = { "<cmd>Gitsigns stage_buffer<cr>", "add (stage) current buffer" },
   -- x = { "<cmd>Gitsigns undo_stage_hunk<cr>", "unstage current change" },
-  U = { "<cmd>Gitsigns reset_buffer<cr>", "revert buffer" },
-  u = { "<cmd>Gitsigns reset_hunk<cr>", "revert current change", mode = { "n", "v" } },
+  -- U = { "<cmd>Gitsigns reset_buffer<cr>", "revert buffer" },
+  -- u = { "<cmd>Gitsigns reset_hunk<cr>", "revert current change", mode = { "n", "v" } },
   -- c = { "<cmd>Gitsigns preview_hunk<cr>", "preview current change" },
   q = { "<cmd>Gitsigns setqflist<cr>", "preview all changes in quickfix" },
   h = { function()
@@ -80,6 +80,4 @@ require("which-key").register({
   end, "branches" },
 }, { prefix = "<leader>g" })
 
-require("which-key").register({
-  ["ih"] = { "<cmd>Gitsigns select_hunk<cr>", "select git change", mode = { "o", "v" } },
-}, { prefix = "" })
+vim.keymap.set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')

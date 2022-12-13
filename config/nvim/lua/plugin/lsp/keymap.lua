@@ -85,10 +85,6 @@ M.setup = function(bufnr)
       r = { "<cmd>Lspsaga rename<CR>", "rename" },
       -- a = {function() vim.lsp.buf.code_action() end, "code action"},
       a = { "<cmd>Lspsaga code_action<CR>", "code action" },
-      f = { function()
-        vim.lsp.buf.format { async = false }
-        vim.cmd [[w]] -- Save after format
-      end, "format file (by lsp)", mode = { "n", "v" } },
     },
   }, bufopts)
   vim.keymap.set({ "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,

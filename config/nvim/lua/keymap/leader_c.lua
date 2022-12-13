@@ -10,7 +10,6 @@ local leader_c = {
   w = { "<cmd>Telescope loclist<cr>", "location list (telescope)" },
   s = { "<cmd>CmpStatus<cr>", "cmp (completion) status" },
   r = { "<cmd>Telescope registers<cr>", "paste from register" },
-  F = { "gg=G``", "format file (by treesitter)" }, -- lsp.lua set another format way by lsp
   t = { "<cmd>TroubleToggle telescope<cr>", "toggle telescope items (trouble)" },
   -- treesitter-textobject
   p = { "swap current para with next" },

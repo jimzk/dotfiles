@@ -98,7 +98,7 @@ return packer.startup(function(use)
   use "kana/vim-textobj-entire"    -- ae, ie select entire content
   use "kana/vim-textobj-line"      -- al, il select entire line
   use "glts/vim-textobj-indblock"  -- ao, io, aO, iO select indent
-  use "dbakker/vim-paragraph-motion"  -- Include blank lines when using { and } to select paragraph
+  use "dbakker/vim-paragraph-motion"  -- Include blanklines when using { and } to select paragraph
 
   ------ Edit
   use {
@@ -383,23 +383,6 @@ return packer.startup(function(use)
       }
     end
   }
-  use {
-    "karb94/neoscroll.nvim",  -- smooth scroll
-    config = function()
-      require('neoscroll').setup()
-      local t = {}
-      t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '200'}}
-      t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '200'}}
-      t['<C-b>'] = {'scroll', {'-vim.api.nvim_win_get_height(0)', 'true', '300'}}
-      t['<C-f>'] = {'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '300'}}
-      t['<C-y>'] = {'scroll', {'-0.03', 'false', '10'}}
-      t['<C-e>'] = {'scroll', { '0.03', 'false', '10'}}
-      t['zt']    = {'zt', {'200'}}
-      t['zz']    = {'zz', {'200'}}
-      t['zb']    = {'zb', {'200'}}
-      require('neoscroll.config').set_mappings(t)
-    end
-  }
   use "petertriho/nvim-scrollbar"  -- Scrollbar
   use "kevinhwang91/nvim-hlslens"  -- Glance search info in virtual text. Integrated with nvim-scrollbar and vim-visual-multi.
   use {
@@ -441,6 +424,7 @@ return packer.startup(function(use)
   -- gen740/SmoothCursor.nvim  -- Fancy indicate cursor line. Distracting.
   -- edluffy/specs.nvim        -- Amination to show where cursor is. Distracting.
   -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
+  -- "karb94/neoscroll.nvim",  -- Smooth scroll for <C-d>, zz and so on. Performance issue.
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting

@@ -5,11 +5,6 @@ telescope.setup {
     auto_quoting = true,
     -- https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/40
     live_grep_args = {
-      layout_strategy = "horizontal",
-      layout_config = {
-        preview_width = 0.6,
-        width = 160,
-      },
       wrap_results = false,
       mappings = {
         i = {

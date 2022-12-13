@@ -3,6 +3,7 @@ local wk = require("which-key")
 local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
   ["`"] = { "<cmd>:qa<cr>", "quit all" },
+  ["~"] = { "<cmd>:qa!<cr>", "quit all forcely" },
   q = { "<cmd>:q<cr>", "quit" },
   ["<C-q>"] = { "<cmd>:q!<cr>", "quit forcely" },
   w = { "<cmd>:w<cr>", "write" },
@@ -24,25 +25,27 @@ wk.register({
     vim.cmd [[w]]
   end, "[G] stage buffer" },
   ["<C-a>"] = { "<cmd>Gitsigns undo_stage_hunk<cr>", "[G] undo staged hunk" },
+  u = { "<cmd>Gitsigns reset_hunk<cr>", "[G] revert current change" },
+  U = { "<cmd>Gitsigns reset_buffer<cr>", "[G] revert buffer" },
   b = { function()
     builtin.buffers(require("telescope.themes").get_ivy {
       prompt_title = "Buffers List",
       results_title = "|open: ^v(split) ^s(plit) ^t(ab)",
-      layout_config = {
-        preview_width = 0.75,
-      },
       sort_lastused = true,
     })
   end, "go buffers" },
+  l = { function()
+    vim.lsp.buf.format { async = false }
+    vim.cmd [[w]] -- Save after format
+  end, "format file (by lsp)", mode = { "n", "v" } },
   -- Compared with :bdelete, :bwipeout remove buffer from jumplist.
   -- :Bdelete and :Bwipeout are suppotred by moll/vim.bbye
   ["-"] = { "<cmd>Bdelete<cr>", "delete buffer" },
   ["_"] = { "<cmd>Bwipeout<cr><cmd>bnext<cr><C-^>", "delete buffer with jumplist" },
-  ["<C-_>"] = { function()
-    vim.cmd [[%bd]]
-    vim.cmd [[e#]]
-    vim.cmd [[bnext]]
-    vim.cmd [[bd]]
+  ["<M-->"] = { function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd [[%bd | e# | bnext | bd]]
+    vim.api.nvim_win_set_cursor(0, pos)
     Notify("Delete all other buffers!")
   end, "delete others buffers" },
   ["\\"] = { function()
@@ -110,7 +113,6 @@ wk.register({
     vim.lsp.buf.format { async = false }
     vim.cmd [[exe "normal! \<esc>"]]
   end, "p line-up and format" },
-  ["<S-cr>"] = { ":<c-u>put =repeat(nr2char(10), v:count1)<cr>", "insert new blank lines (support count)" },
   ["<BS>"] = { "blank current line", mode = { "n", "v" } },
 }, opt)
 

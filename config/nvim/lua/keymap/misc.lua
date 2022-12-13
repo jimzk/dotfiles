@@ -23,7 +23,13 @@ wk.register({
   ["<C-g>"] = { "<C-w>p", "✭ go last accessed window" },
   ["<C-z>"] = { "<cmd>normal u<cr>", "undo", mode = { "i" } },
   ["<C-cr>"] = { ":noh<cr>", "clear search highlight" },
-  ["<S-cr>"] = { "a<cr><esc>k$", "insert blank lines after cursor (support count)" },
+}, opt)
+
+wk.register({
+  ["<S-cr>"] = { "<esc>o", "insert newline", mode = "i" }
+}, opt)
+wk.register({
+  ["<S-cr>"] = { '<cmd>call append(line("."),   repeat([""], v:count1))<cr>', "insert newline", mode = "n" }
 }, opt)
 
 wk.register({

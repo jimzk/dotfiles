@@ -8,7 +8,9 @@ wk.register({
   n = "new buffer and split",
   N = { "<cmd>enew<cr>", "new buffer" },
   T = { function()
+    local pos = vim.api.nvim_win_get_cursor(0)
     vim.cmd [[tabnew %]]
+    vim.api.nvim_win_set_cursor(0, pos)
   end, "break window into new tab" },
   f = "split file under cursor (see gf)",
 
@@ -51,4 +53,4 @@ wk.register({
   ["<C-=>"] = "equally size",
   ["<C-->"] = "max out height",
   ["<C-\\>"] = "max out width",
-})
+}, opt)

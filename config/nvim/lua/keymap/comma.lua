@@ -5,10 +5,6 @@ wk.register({
   b = { "camelCase b", mode = { "n", "v", "o" } },
   e = { "camelCase e", mode = { "n", "v", "o" } },
   ["ge"] = { "camelCase ge", mode = { "n", "v", "o" } },
-  ["<cr>"] = { function()
-    vim.lsp.buf.format { async = false }
-    vim.cmd [[w]] -- Save after format
-  end, "format file (by lsp)", mode = { "n", "v" } },
 }, opt)
 
 -- Hop
@@ -39,7 +35,7 @@ end
 local builtin = require("telescope.builtin")
 local extensions = require("telescope").extensions
 wk.register({
-  f = { function()
+  s = { function()
     builtin.current_buffer_fuzzy_find {
       skip_empty_lines = true,
     }

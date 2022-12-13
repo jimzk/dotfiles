@@ -28,15 +28,15 @@ local objects = {
       ["B"] = [[same as a{]],
     },
     -- vim-indent-object
-    ["i"] = [[content in same indent but no line ↓]],
-    ["I"] = [[content in same indent]],
+    ["i"] = [[indent content without line ↓]],
+    ["I"] = [[indent content]],
     -- vim-textobj-entire
     ["e"] = [[entire content]],
     -- vim-textobj-line
     ["l"] = [[entire line]],
     -- vim-textobj-indblock
-    ["o"] = [[indent including blanklines]],
-    ["O"] = [[indent (exact) including blanklines]],
+    ["o"] = [[indent with blanklines]],
+    ["O"] = [[indent (exact) with blanklines]],
   },
   ["i"] = {
     name = "inside",
@@ -67,10 +67,10 @@ local objects = {
       ["B"] = [[same as i{]],
     },
     -- vim-indent-object
-    ["i"] = [[inner content in same indent]],
+    ["i"] = [[inner indent content]],
     ["I"] = [[same as i]],
     -- vim-textobj-entire
-    ["e"] = [[entire content without surrounding blank lines]],
+    ["e"] = [[entire content without surrounding blanklines]],
     -- vim-textobj-line
     ["l"] = [[entire line without indent]],
     -- vim-textobj-indblock
@@ -87,7 +87,7 @@ local objects = {
     ["{"] = [[{...}]],
     ["["] = "[...]",
     ["<lt>"] = [[<...>]],
-    ["t"] = [[tag block (with blank line)]],
+    ["t"] = [[tag block (with blankline)]],
     ["b"] = "any bracket",
     ["B"] = [[same as A{]],
 
