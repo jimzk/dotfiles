@@ -13,12 +13,12 @@ require("which-key").register({
   h = { function()
     vim.cmd [[Gitsigns toggle_deleted]]
     vim.cmd [[Gitsigns toggle_word_diff]]
-    Notify [[Toggle highlight on Git deletion and diffs]]
+    vim.notify [[Toggle highlight on Git deletion and diffs]]
   end, "toggle highlight of changes" },
   b = { "<cmd>lua require('gitsigns').blame_line{full=true}<cr>", "line blame" },
   ["<C-b>"] = { function()
     vim.cmd [[Gitsigns toggle_current_line_blame]]
-    Notify [[Toggle inline Git blame]]
+    vim.notify [[Toggle inline Git blame]]
   end, "toggle line blame" },
   -- fugitive
   d = { function()
@@ -27,7 +27,7 @@ require("which-key").register({
   end, "current file diff" },
   B = { function()
     vim.cmd [[Git blame]]
-    Notify("g? for help")
+    vim.notify("g? for help")
   end, "file blame" },
   g = { "<cmd>Git<cr>", "git status and operations" },
   -- telescope

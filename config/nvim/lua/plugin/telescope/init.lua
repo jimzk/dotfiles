@@ -75,7 +75,7 @@ telescope.setup {
               require("telescope.actions").close(prompt_bufnr)
               -- Depending on what you want put `cd`, `lcd`, `tcd`
               vim.cmd(string.format("lcd %s", dir))
-              Notify(string.format("cd to %s", dir:gsub(vim.fn.getenv("HOME"), "~")))
+              vim.notify(string.format("cd to %s", dir:gsub(vim.fn.getenv("HOME"), "~")))
             end, type = "action"
           }
         },

@@ -3,10 +3,10 @@ local toggle = function(opt)
     local opts = vim.o
     if opts[opt] then
       opts[opt] = false
-      Notify("Disable " .. opt)
+      vim.notify("Disable " .. opt)
     else
       opts[opt] = true
-      Notify("Enable " .. opt)
+      vim.notify("Enable " .. opt)
     end
   end
   return { f, "toggle " .. opt }
@@ -26,7 +26,7 @@ require("which-key").register({
   P = { function()
     local path = vim.fn.stdpath("data") .. "/telescope-projects.txt"
     vim.cmd("!rm " .. path)
-    Notify("Clean telescope-projects cache")
+    vim.notify("Clean telescope-projects cache")
   end, "clean telescope.project cache" },
   m = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
   M = { "<cmd>DeleteSession<cr>", "delete session" },
@@ -50,7 +50,7 @@ require("which-key").register({
         end
         vim.bo.tabstop = tonumber(input)
         vim.bo.shiftwidth = tonumber(input)
-        Notify("set indent width to " .. input)
+        vim.notify("Set indent width to " .. input)
       end
     )
   end, "set indent width" },

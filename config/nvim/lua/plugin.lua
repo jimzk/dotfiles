@@ -345,9 +345,9 @@ return packer.startup(function(use)
   use {
     "rcarriga/nvim-notify",  -- Notification manager
     config = function()
-      Notify = require("notify")
-      Notify.setup {
-        timeout = 1000,
+      vim.notify = require("notify")
+      vim.notify.setup {
+        timeout = 1500,
         minimum_width = 40,
       }
     end

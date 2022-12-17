@@ -9,7 +9,7 @@ wk.register({
   w = { "<cmd>w<cr>", "write" },
   W = { function()
     vim.cmd [[wa]]
-    Notify("Write all!")
+    vim.notify("Write all!")
   end, "write all" },
   n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
   N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
@@ -48,14 +48,13 @@ wk.register({
     local pos = vim.api.nvim_win_get_cursor(0)
     vim.cmd [[%bd | e# | bnext | bd]]
     vim.api.nvim_win_set_cursor(0, pos)
-    Notify("Delete all other buffers!")
+    vim.notify("Delete all other buffers!")
   end, "delete others buffers" },
   ["\\"] = { function()
     vim.cmd [[PackerClean]]
     vim.cmd [[PackerInstall]]
     vim.cmd [[PackerCompile]]
-    Notify("Complete PackerInstall and PackerCompile", "info",
-      { title = "Source plugins" })
+    require("notify")("Complete PackerInstall and PackerCompile", "info", { title = "Source plugins" })
   end, "install plugin (Packer)" },
   d = { [[V"vY'>"vp]], "duplicate line" },
   r = { function()

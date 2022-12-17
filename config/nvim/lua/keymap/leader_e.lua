@@ -32,7 +32,7 @@ ignorecase : %s]],
       vim.o.hlsearch,
       vim.o.incsearch,
       vim.o.ignorecase)
-    Notify(msg)
+    vim.notify(msg)
   end, "show buffer info" },
   m = { function()
     builtin.filetypes {
@@ -53,11 +53,11 @@ ignorecase : %s]],
     f = { function()
       local path = vim.fn.expand("%:p:h")
       vim.cmd("silent cd " .. path)
-      Notify("cd to " .. path:gsub(vim.fn.getenv("home"), "~"))
+      vim.notify("cd to " .. path:gsub(vim.fn.getenv("home"), "~"))
     end, "cd to file location" },
     r = { function()
       vim.cmd("Gcd")
-      Notify("cd to repoitory root " .. vim.fn.getcwd():gsub(vim.fn.getenv("home"), "~"))
+      vim.notify("cd to repoitory root " .. vim.fn.getcwd():gsub(vim.fn.getenv("home"), "~"))
     end, "cd to repository root" },
   },
   z = { "<cmd>ZenMode<cr>", "zen mode" },
