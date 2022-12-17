@@ -12,6 +12,7 @@ local toggle = function(opt)
   return { f, "toggle " .. opt }
 end
 
+local opt = { mode = "n", prefix = "<leader>o", noremap = true, silent = true }
 local builtin = require("telescope.builtin")
 require("which-key").register({
   name = "options",
@@ -40,4 +41,17 @@ require("which-key").register({
   h = { function() builtin.help_tags {} end, "show help keywords" },
   a = { function() builtin.autocommands {} end, "autocommands" },
   k = { "<cmd>Telescope keymaps<cr>", "list all keymaps" },
-}, { prefix = "<leader>o" })
+  ["<tab>"] = { function()
+    vim.ui.input(
+      { prompt = "Enter indent width: " },
+      function(input)
+        if not input then
+          return
+        end
+        vim.bo.tabstop = tonumber(input)
+        vim.bo.shiftwidth = tonumber(input)
+        Notify("set indent width to " .. input)
+      end
+    )
+  end, "set indent width" },
+}, opt)

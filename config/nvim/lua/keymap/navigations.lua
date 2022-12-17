@@ -26,9 +26,9 @@ wk.register({
 
 wk.register({
   ["]"] = {
-    d = { "<cmd>:bnext<cr>", "next buffer" },
-    t = { "<cmd>:tabnext<cr>", "next tab" },
-    T = { "<cmd>:tablast", "last tab" },
+    d = { "<cmd>bnext<cr>", "next buffer" },
+    t = { "<cmd>tabnext<cr>", "next tab" },
+    T = { "<cmd>tablast", "last tab" },
     ["<C-t>"] = { "<cmd>tabm +1<cr>", "move tab right" },
     i = "peek next match of cursor word", -- builtin
     I = "peek all next match of cursor word",
@@ -41,9 +41,9 @@ wk.register({
     end, "[C] next usage of variable" },
   },
   ["["] = {
-    d = { "<cmd>:bprevious<cr>", "previous buffer" },
-    t = { "<cmd>:tabprev<cr>", "previous tab" },
-    T = { "<cmd>:tabfirst", "first tab" },
+    d = { "<cmd>bprevious<cr>", "previous buffer" },
+    t = { "<cmd>tabprev<cr>", "previous tab" },
+    T = { "<cmd>tabfirst<cr>", "first tab" },
     ["<C-t>"] = { "<cmd>tabm -1<cr>", "move tab left" },
     i = "peek first match of cursor word", -- builtin
     I = "peek all match of cursor word",

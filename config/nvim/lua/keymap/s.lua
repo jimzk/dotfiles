@@ -14,4 +14,7 @@ wk.register(vim.tbl_extend("force", ignored, {
   -- splitjoin
   ["]"] = "[C] split line by syntax",
   ["["] = "[C] join line by syntax",
+  -- treesitter-textobject
+  p = { "swap current para with next" },
+  P = { "swap current para with prev" },
 }), { prefix = "s" })

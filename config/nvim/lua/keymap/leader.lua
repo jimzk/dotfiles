@@ -2,11 +2,11 @@ local builtin = require("telescope.builtin")
 local wk = require("which-key")
 local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
-  ["`"] = { "<cmd>:qa<cr>", "quit all" },
-  ["~"] = { "<cmd>:qa!<cr>", "quit all forcely" },
-  q = { "<cmd>:q<cr>", "quit" },
-  ["<C-q>"] = { "<cmd>:q!<cr>", "quit forcely" },
-  w = { "<cmd>:w<cr>", "write" },
+  ["`"] = { "<cmd>qa<cr>", "quit all" },
+  ["~"] = { "<cmd>qa!<cr>", "quit all forcely" },
+  q = { "<cmd>q<cr>", "quit" },
+  ["<C-q>"] = { "<cmd>q!<cr>", "quit forcely" },
+  w = { "<cmd>w<cr>", "write" },
   W = { function()
     vim.cmd [[wa]]
     Notify("Write all!")
@@ -41,7 +41,9 @@ wk.register({
   -- Compared with :bdelete, :bwipeout remove buffer from jumplist.
   -- :Bdelete and :Bwipeout are suppotred by moll/vim.bbye
   ["-"] = { "<cmd>Bdelete<cr>", "delete buffer" },
-  ["_"] = { "<cmd>Bwipeout<cr><cmd>bnext<cr><C-^>", "delete buffer with jumplist" },
+  ["_"] = { function()
+    vim.cmd [[Bwipeout]]
+  end, "delete buffer with jumplist" },
   ["<M-->"] = { function()
     local pos = vim.api.nvim_win_get_cursor(0)
     vim.cmd [[%bd | e# | bnext | bd]]
@@ -74,7 +76,13 @@ wk.register({
   end, "search and replace (spectre)", mode = "v" },
 }, opt)
 
-vim.keymap.set("n", "<leader><leader>", "/", { desc = "search /" })
+-- Hop
+wk.register({
+  k = { "<cmd>HopChar1CurrentLine<cr>", "[M] hop char in line" },
+  ["<space>"] = { "<cmd>HopLineStart<cr>", "[M] hop to line" },
+  s = { "<cmd>HopChar1AC<cr>", "[M] hop to next char" },
+  S = { "<cmd>HopChar1BC<cr>", "[M] hop to prev char" },
+}, vim.tbl_extend("force", opt, { mode = { "x", "n", "o" } }))
 
 -- https://github.com/mhinz/vim-galore#quickly-move-current-line
 --  FIX: error when target moves execeeds line range of file

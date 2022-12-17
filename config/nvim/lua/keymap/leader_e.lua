@@ -39,19 +39,6 @@ ignorecase : %s]],
       prompt_title = "Set Filetype",
     }
   end, "set filetype" },
-  ["<tab>"] = { function()
-    vim.ui.input(
-      { prompt = "Enter indent width: " },
-      function(input)
-        if not input then
-          return
-        end
-        vim.bo.tabstop = tonumber(input)
-        vim.bo.shiftwidth = tonumber(input)
-        Notify("set indent width to " .. input)
-      end
-    )
-  end, "set indent width" },
   u = { "<cmd>UndotreeToggle<cr>", "show undo history (undotree)" },
   o = {
     name = "path and application",
@@ -94,5 +81,4 @@ ignorecase : %s]],
       vim.cmd(":GDelete")
     end, "[G] delete file" },
   },
-  -- TODO: add cmd to search bookmark/mark
 }, { mode = "n", prefix = "<leader>e", preset = true })

@@ -1,23 +1,11 @@
 local wk = require("which-key")
 local opt = { mode = "n", prefix = ",", noremap = true, silent = true }
 wk.register({
-  w = { "camelCase w", mode = { "n", "v", "o" } },
-  b = { "camelCase b", mode = { "n", "v", "o" } },
-  e = { "camelCase e", mode = { "n", "v", "o" } },
-  ["ge"] = { "camelCase ge", mode = { "n", "v", "o" } },
-}, opt)
-
--- Hop
-wk.register({
-  [","] = { "<cmd>HopWordAC<cr>", "[M] hop to next word" },
-  ["."] = { "<cmd>HopWordBC<cr>", "[M] hop to prev word" },
-  f = { "<cmd>HopChar1AC<cr>", "[M] hop to next char" },
-  F = { "<cmd>HopChar1BC<cr>", "[M] hop to prev char" },
-  l = { "<cmd>HopLineStart<cr>", "[M] hop to line" },
-  ["<C-,>"] = { "<cmd>HopWordMW<cr>", "[M] hop to word cross window" },
-  ["<C-f>"] = { "<cmd>HopChar1MW<cr>", "[M] hop to char cross window" },
-  ["<C-l>"] = { "<cmd>HopLineStartMW<cr>", "[M] hop to char cross window" },
-}, opt)
+  w = "camelCase w",
+  b = "camelCase b",
+  e = "camelCase e",
+  ["ge"] = "camelCase ge",
+}, vim.tbl_extend("force", opt, { mode = { "x", "n", "o" } }))
 
 -- ,d black hole, d_ to first
 for _, key in pairs({ "d", "c", "D", "C" }) do
@@ -35,7 +23,7 @@ end
 local builtin = require("telescope.builtin")
 local extensions = require("telescope").extensions
 wk.register({
-  s = { function()
+  [","] = { function()
     builtin.current_buffer_fuzzy_find {
       skip_empty_lines = true,
     }
@@ -103,5 +91,5 @@ wk.register({
       prompt_title = string.format([[Grep "%s" In Buffers]], selected),
       grep_open_files = true,
     })
-  end, "grep visual word in buffers", mode ="v" },
+  end, "grep visual word in buffers", mode = "v" },
 }, opt)
