@@ -147,19 +147,6 @@ return packer.startup(function(use)
                            -- yss)  :  Hello world    -> (Hello world!)（wrap all line)
   use "windwp/nvim-autopairs"  -- Auto insert/delete bracket or quotes in pair
                                -- <M-e>: wrap next content (fast wrap)
-  -- FIX: https://github.com/abecodes/tabout.nvim/issues/39
-  --      https://github.com/abecodes/tabout.nvim/issues/40
-  use {
-    'abecodes/tabout.nvim',  -- <tab> jumps out of bracket
-    requires = "nvim-treesitter/nvim-treesitter",
-    after = {'nvim-cmp'},
-    config = function()
-      require('tabout').setup {
-        ignore_beginning = false,
-        act_as_tab = true,
-      }
-    end
-  }
 
   ------ Editor
   use "nvim-pack/nvim-spectre" -- Search and replace text
@@ -424,7 +411,8 @@ return packer.startup(function(use)
   -- gen740/SmoothCursor.nvim  -- Fancy indicate cursor line. Distracting.
   -- edluffy/specs.nvim        -- Amination to show where cursor is. Distracting.
   -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
-  -- "karb94/neoscroll.nvim",  -- Smooth scroll for <C-d>, zz and so on. Performance issue.
+  -- "karb94/neoscroll.nvim"   -- Smooth scroll for <C-d>, zz and so on. Performance issue.
+  -- "abecodes/tabout.nvim"    -- Can't jump out from customized bracket (e.g. >) and from cross line. Write my own tabout logic to replace
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting
