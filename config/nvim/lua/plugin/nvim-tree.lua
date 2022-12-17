@@ -62,7 +62,7 @@ local mappings = {
   ["toggle_mark"] = "<M-m>",
   ["toggle_git_ignored"] = "<M-g>",
   ["toggle_dotfiles"] = "<M-d>",
-  ["toggle_custom"] = "<M-u>",
+  ["toggle_custom"] = "<M-c>",
   ["refresh"] = "<M-r>",
 }
 

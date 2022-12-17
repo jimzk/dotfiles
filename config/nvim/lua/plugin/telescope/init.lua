@@ -25,7 +25,7 @@ telescope.setup {
       },
     },
     cache_picker = {
-      num_pickers = 10,  -- Cache pickers by builtin.pickers
+      num_pickers = 10, -- Cache pickers by builtin.pickers
     },
     scroll_strategy = "limit",
     winblend = 10, -- transparent
@@ -46,19 +46,19 @@ telescope.setup {
         ["<C-j>"] = "results_scrolling_down",
         ["<C-h>"] = "cycle_previewers_prev",
         ["<C-l>"] = "cycle_previewers_next",
-        ["<down>"] = "move_selection_next",
-        ["<up>"] = "move_selection_previous",
+        ["<down>"] = false,
+        ["<up>"] = false,
         ["<esc>"] = "close", -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
         ["<C-s>"] = "select_horizontal",
         ["<C-x>"] = false,
-        ["<M-u>"] = "preview_scrolling_up",
-        ["<M-d>"] = "preview_scrolling_down",
-        ["<C-u>"] = false,
-        ["<C-d>"] = false,
+        ["<C-u>"] = "preview_scrolling_up",
+        ["<C-d>"] = "preview_scrolling_down",
+        ["<PageUp>"] = false,
+        ["<Pagedown>"] = false,
         -- Open results in trouble
         -- https://github.com/folke/trouble.nvim#telescope
-        ["<C-space>"] = require("trouble.providers.telescope").open_with_trouble,
+        ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble,
       },
     },
   },
@@ -90,6 +90,14 @@ telescope.setup {
       },
       wrap_results = true,
     },
+    git_branches = {
+      mappings = {
+        i = {
+          ["<C-BS>"] = "git_delete_branch",
+          ["<C-d>"] = "preview_scrolling_down",
+        }
+      }
+    },
   },
 }
 
@@ -106,7 +114,7 @@ local new_maker = function(filepath, bufnr, opts)
     command = "file",
     args = { "--mime-type", "-b", filepath },
     on_exit = function(j)
-      local mime_type = vim.split(j:result()[1], "/")[1]
+      local mime_type = vim.split(j:result()[1], "/", {})[1]
       if mime_type == "text" then
         previewers.buffer_previewer_maker(filepath, bufnr, opts)
       else
