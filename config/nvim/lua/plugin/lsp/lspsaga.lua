@@ -1,7 +1,8 @@
 require("lspsaga").init_lsp_saga {
   max_preview_lines = 30,
   code_action_lightbulb = {
-    sign = false, -- not show lightbulb sign in most left column
+    sign = true,
+    virtual_text = false,
   },
   finder_action_keys = {
     open = { 'o', '<CR>' },
@@ -27,4 +28,6 @@ require("lspsaga").init_lsp_saga {
     jump_key = 'o',
     auto_refresh = true,
   },
+  rename_action_quit = '<Esc>',
+  rename_in_select = false,
 }

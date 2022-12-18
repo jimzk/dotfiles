@@ -6,18 +6,8 @@ local M = {}
 M.setup = function(bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
   wk.register({
-    ['[X'] = { function() vim.diagnostic.goto_prev { float = true } end, "[C] previous diagnostic (native)" },
-    [']X'] = { function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic (native)" },
-    -- FIX: too small height
-    -- https://github.com/glepnir/lspsaga.nvim/issues/594
-    ['[x'] = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[C] previous diagnostic" },
-    [']x'] = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[C] next diagnostic" },
-    ["[<C-x>"] = { function()
-      require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
-    end, "[C] previous error" },
-    ["]<C-x>"] = { function()
-      require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
-    end, "[C] next error" },
+    ['[x'] = { function() vim.diagnostic.goto_prev { float = true } end, "[C] previous diagnostic" },
+    [']x'] = { function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic" },
   }, bufopts)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -33,13 +23,10 @@ M.setup = function(bufnr)
       --https://github.com/glepnir/lspsaga.nvim/issues/594
       -- x = { "<cmd>Lspsaga show_line_diagnostics<CR>", "[C] show current diagnostic" },
       X = { function()
-        vim.cmd("normal m'")
         vim.cmd("Trouble document_diagnostics")
         vim.keymap.set("n", "gX", ":TroubleClose<cr>", { buffer = true, silent = true })
       end, "[C] list all diagnostics in buffer" },
-      -- X = {"<cmd>normal m'<cr><cmd>Trouble workspace_diagnostics<cr>", "[C] show all diagnostics in workspace"},
       ["<C-x>"] = { function()
-        vim.cmd("normal m'")
         vim.cmd("Trouble workspace_diagnostics")
         vim.keymap.set("n", "g<C-x>", ":TroubleClose<cr>", { buffer = true, silent = true })
       end, "[C] list all diagnostics in workspace" },
@@ -52,18 +39,11 @@ M.setup = function(bufnr)
       D = { "<cmd>normal m'<cr><cmd>Trouble lsp_definitions<cr>", "[C] go definition" },
 
       h = { vim.lsp.buf.hover, "[C] hover" },
-      H = { "<cmd>Lspsaga lsp_finder<cr>", "[C] detailed hover (lspsaga)" },
-      ["<C-h>"] = { "<cmd>Lspsaga hover_doc<CR>", "[C] hover (lspsaga)" },  -- Not much useful
-      o = { function()
-        vim.cmd("LSoutlineToggle")
-      end, "[C] symbol outline" },
-      -- k = {function() vim.lsp.buf.implementation() end, "[C] go implementation"},
+      o = { "<cmd>LSoutlineToggle<cr>", "[C] symbol outline" },
       k = { "<cmd>normal m'<cr><cmd>Trouble lsp_implementations<cr>", "[C] go implementation" },
-      s = { function() vim.lsp.buf.signature_help() end, "[C] signature help (<C-s>)" },
-      -- b = {function() vim.lsp.buf.type_definition() end, "[C] go type definition"},
       b = { "<cmd>normal m'<cr><cmd>Trouble lsp_type_definitions<cr>", "[C] go type definition" },
-      -- r = {function() vim.lsp.buf.references() end, "[C] reference list"},
-      r = { "<cmd>normal m'<cr><cmd>Trouble lsp_references<cr>", "[C] go reference" },
+      r = { "<cmd>Lspsaga lsp_finder<cr>", "[C] peek reference (lspsaga)" },
+      R = { "<cmd>normal m'<cr><cmd>Trouble lsp_references<cr>", "[C] go reference" },
       ["["] = { function()
         vim.lsp.buf.incoming_calls()
         vim.cmd [[LTOpenToCalltree]]
@@ -81,13 +61,15 @@ M.setup = function(bufnr)
         r = { function() vim.lsp.buf.remove_workspace_folder() end, "remove workspace folder" },
         l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "list workspace folder" },
       },
-      -- r = {function() vim.lsp.buf.rename() end, "rename"},
       r = { "<cmd>Lspsaga rename<CR>", "rename" },
-      -- a = {function() vim.lsp.buf.code_action() end, "code action"},
-      a = { "<cmd>Lspsaga code_action<CR>", "code action" },
     },
   }, bufopts)
-  vim.keymap.set({ "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,
+
+  vim.keymap.set({ "n", "i", "v" }, "<M-cr>", function()
+    vim.cmd [[Lspsaga code_action]]
+  end, { desc = "code action" })
+
+  vim.keymap.set({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,
     vim.tbl_extend("force", bufopts, { desc = "[C] peek signature" }))
   vim.keymap.set("n", "g\\", function()
     if vim.bo.filetype == "calltree" then

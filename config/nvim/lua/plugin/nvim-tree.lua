@@ -1,6 +1,7 @@
 -- disable vim's builtin plugin for file explorer
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- NOTE: rust-tools open_external_docs can't work if netrw is disabled
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- default mapping: :h nvim-tree-default-mappings
 local mappings = {
