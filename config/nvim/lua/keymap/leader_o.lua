@@ -54,4 +54,10 @@ require("which-key").register({
       end
     )
   end, "set indent width" },
+  ["\\"] = { function()
+    vim.cmd [[PackerClean]]
+    vim.cmd [[PackerInstall]]
+    vim.cmd [[PackerCompile]]
+    require("notify")("Complete PackerInstall and PackerCompile", "info", { title = "Source plugins" })
+  end, "install plugin (Packer)" },
 }, opt)

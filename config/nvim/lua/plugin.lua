@@ -160,7 +160,7 @@ return packer.startup(function(use)
     end
   }
   use {"akinsho/toggleterm.nvim", tag = '*',}  -- Toggle terminal
-  use "moll/vim-bbye"  -- Delete buffer without messing up layout (:bdelete enhancement)
+  use "romgrk/barbar.nvim"  -- Tabline
   use {
     'rmagatti/auto-session',  -- Auto store session under vim.fn.stdpath('data').."/sessions/"
     config = function()       -- vim without any argument open session automatically
@@ -411,8 +411,8 @@ return packer.startup(function(use)
   -- gen740/SmoothCursor.nvim  -- Fancy indicate cursor line. Distracting.
   -- edluffy/specs.nvim        -- Amination to show where cursor is. Distracting.
   -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
-  -- "karb94/neoscroll.nvim"   -- Smooth scroll for <C-d>, zz and so on. Performance issue.
-  -- "abecodes/tabout.nvim"    -- Can't jump out from customized bracket (e.g. >) and from cross line. Write my own tabout logic to replace
+  -- karb94/neoscroll.nvim   -- Smooth scroll for <C-d>, zz and so on. Performance issue.
+  -- moll/vim-bbye           -- Delete buffer without messing up layout (:bdelete enhancement). barbar.nvim has integrated it.
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting

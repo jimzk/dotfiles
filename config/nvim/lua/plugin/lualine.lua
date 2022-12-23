@@ -20,21 +20,21 @@ ll.setup {
 }
 
 ll.setup {
-  tabline = {
-    lualine_b = {
-      {
-        'tabs',
-        mode = 2,
-        tabs_color = {
-          active = 'DefinitionSearch',
-          inactive = 'NonText'
-        },
-      }
-    },
-    lualine_y = {
-      'buffers'
-    },
-  },
+  -- tabline = {
+  --   lualine_b = {
+  --     {
+  --       'tabs',
+  --       mode = 2,
+  --       tabs_color = {
+  --         active = 'DefinitionSearch',
+  --         inactive = 'NonText'
+  --       },
+  --     }
+  --   },
+  --   lualine_y = {
+  --     'buffers'
+  --   },
+  -- },
   sections = {
     lualine_a = { 'mode' },
     lualine_b = {

@@ -3,9 +3,9 @@ local wk = require("which-key")
 local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
   ["`"] = { "<cmd>qa<cr>", "quit all" },
-  ["~"] = { "<cmd>qa!<cr>", "quit all forcely" },
-  q = { "<cmd>q<cr>", "quit" },
-  ["<C-q>"] = { "<cmd>q!<cr>", "quit forcely" },
+  ["<BS>"] = { "<cmd>q<cr>", "quite" },
+  q = { "<cmd>BufferClose<cr>", "quit" },
+  ["<C-q>"] = { "<cmd>BufferClose!<cr>", "quit forcely" },
   w = { "<cmd>w<cr>", "write" },
   W = { function()
     vim.cmd [[wa]]
@@ -38,24 +38,9 @@ wk.register({
     vim.lsp.buf.format { async = false }
     vim.cmd [[w]] -- Save after format
   end, "format file (by lsp)", mode = { "n", "v" } },
-  -- Compared with :bdelete, :bwipeout remove buffer from jumplist.
-  -- :Bdelete and :Bwipeout are suppotred by moll/vim.bbye
-  ["-"] = { "<cmd>Bdelete<cr>", "delete buffer" },
-  ["_"] = { function()
-    vim.cmd [[Bwipeout]]
-  end, "delete buffer with jumplist" },
-  ["<M-->"] = { function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd [[%bd | e# | bnext | bd]]
-    vim.api.nvim_win_set_cursor(0, pos)
-    vim.notify("Delete all other buffers!")
-  end, "delete others buffers" },
-  ["\\"] = { function()
-    vim.cmd [[PackerClean]]
-    vim.cmd [[PackerInstall]]
-    vim.cmd [[PackerCompile]]
-    require("notify")("Complete PackerInstall and PackerCompile", "info", { title = "Source plugins" })
-  end, "install plugin (Packer)" },
+  ["-"] = { "<cmd>BufferClose<cr>", "delete buffer" },
+  ["_"] = { "<cmd>BufferWipeout<cr>", "delete buffer with jumplist" },
+  ["<M-->"] = { "<cmd>BufferCloseAllButCurrentOrPinned<cr>", "delete other buffers" },
   d = { [[V"vY'>"vp]], "duplicate line" },
   r = { function()
     require('spectre').open_file_search()
@@ -120,11 +105,4 @@ wk.register({
     vim.lsp.buf.format { async = false }
     vim.cmd [[exe "normal! \<esc>"]]
   end, "p line-up and format" },
-  ["<BS>"] = { "blank current line", mode = { "n", "v" } },
 }, opt)
-
--- FIX: can not preserve every lines
-vim.cmd [[
-nnoremap <silent> <leader><BS> :<c-u>execute "normal ". v:count1 . "S"<cr>
-vnoremap <silent> <leader><BS> :normal S<cr>
-]]

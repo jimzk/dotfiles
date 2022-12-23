@@ -23,6 +23,15 @@ wk.register({
   ["<C-g>"] = { "<C-w>p", "✭ go last accessed window" },
   ["<C-z>"] = { "<cmd>normal u<cr>", "undo", mode = { "i" } },
   ["<C-cr>"] = { ":noh<cr>", "clear search highlight" },
+  -- tab
+  ["<A-'>"] = { "<cmd>BufferScrollRight<cr>", "tab scroll right" },
+  ["<A-;>"] = { "<cmd>BufferScrollLeft<cr>", "tab scroll left" },
+  ["<A-.>"] = { "<cmd>BufferNext<cr>", "next tab" },
+  ["<A-,>"] = { "<cmd>BufferPrev<cr>", "prev tab" },
+  ["<A-/>"] = { "<cmd>BufferPick<cr>", "pick tab" },
+  ["<A->>"] = { "<cmd>BufferMoveNext<cr>", "move tab right" },
+  ["<A-<>"] = { "<cmd>BufferMovePrevious<cr>", "move tab left" },
+  ["<A-p>"] = { "<cmd>BufferPin<cr>", "pin tab" },
 }, opt)
 
 wk.register({
