@@ -3,69 +3,93 @@
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
 
+local api = require("nvim-tree.api")
+local notify_opts = { title = "Nvim Tree" }
 -- default mapping: :h nvim-tree-default-mappings
 local mappings = {
   -- help
-  ["toggle_help"] = { "g?", "\\" },
-  ["toggle_file_info"] = "i",
-  ["run_file_command"] = "<C-r>",
+  ["?"] = "toggle_help",
+  ["i"] = "toggle_file_info",
+  ["\\"] = "run_file_command",
 
   -- open file
-  ["edit"] = { "<Cr>", "<2-LeftMouse>" },
-  ["edit_in_place"] = "e",
-  ["edit_no_picker"] = "E",
-  ["vsplit"] = "v",
-  ["split"] = "s",
-  ["tabnew"] = "t",
-  ["preview"] = "o",
+  ["<2-LeftMouse>"] = "edit",
+  ["<Cr>"] = "edit",
+  -- ["e"] = "edit_in_place",
+  -- ["E"] = "edit_no_picker",
+  ["v"] = "vsplit",
+  ["s"] = "split",
+  -- ["t"] = "tabnew",
+  ["o"] = "preview",
 
   -- navigation in file
-  ["prev_sibling"] = "u",
-  ["next_sibling"] = "d",
-  ["first_sibling"] = "K",
-  ["last_sibling"] = "J",
-  ["parent_node"] = "_",
+  ["K"] = "prev_sibling",
+  ["J"] = "next_sibling",
+  ["H"] = "first_sibling",
+  ["L"] = "last_sibling",
+  ["_"] = "parent_node",
 
-  ["prev_diag_item"] = "[x", -- diagnostic item
-  ["next_diag_item"] = "]x",
-  ["prev_git_item"] = "h",
-  ["next_git_item"] = "l",
-  ["collapse_all"] = "H",
-  ["expand_all"] = "L",
+  ["[x"] = "prev_diag_item", -- diagnostic item
+  ["]x"] = "next_diag_item",
+  ["[g"] = "prev_git_item",
+  ["]g"] = "next_git_item",
+  ["zM"] = "collapse_all",
+  ["zR"] = "expand_all",
 
   -- navigation in dir
-  ["cd"] = { "<C-o>", "<2-RightMouse>" },
-  ["close_node"] = "-",
-  ["dir_up"] = "<C-i>",
-  ["close"] = "q",
+  ["cd"] = { "l", "<2-RightMouse>" },
+  ["-"] = "close_node",
+  ["h"] = "dir_up",
+  ["q"] = "close",
 
   -- search
-  ["live_filter"] = "f",
-  ["clear_live_filter"] = "F",
-  ["search_node"] = "<C-f>",
+  ["f"] = "live_filter",
+  ["F"] = "clear_live_filter",
+  ["<C-f>"] = "search_node",
 
   -- file operations
-  ["create"] = "n",
+  ["<C-n>"] = "create",
   -- ["remove" ] = "<BS>",
-  ["trash"] = "<BS>",
-  ["cut"] = "x",
-  ["copy"] = "y",
-  ["paste"] = "p",
-  ["rename"] = "r",
-  ["full_rename"] = "R",
-  ["copy_name"] = "a",
-  ["copy_path"] = "A",
-  ["copy_absolute_path"] = "<C-a>",
-  ["system_open"] = "<C-e>",
-  ["bulk_move"] = "m",
+  ["<BS>"] = "trash",
+  ["<C-x>"] = "cut",
+  ["<C-c>"] = "copy",
+  ["<C-v>"] = "paste",
+  ["<C-r>"] = "rename_basename",
+  ["<C-s-r>"] = "rename",
+  ["<C-a-r>"] = "full_rename",
+  ["<C-y>"] = "copy_name",
+  ["<C-s-y>"] = "copy_path",
+  ["<C-a-y>"] = "copy_absolute_path",
+  ["<C-e>"] = "system_open",
+  ["<C-m>"] = "bulk_move",
 
   -- settings
-  ["toggle_mark"] = "<M-m>",
-  ["toggle_git_ignored"] = "<M-g>",
-  ["toggle_dotfiles"] = "<M-d>",
-  ["toggle_custom"] = "<M-c>",
-  ["refresh"] = "<M-r>",
+  ["m"] = "toggle_mark",
+  ["<M-g>"] = "toggle_git_ignored",
+  ["<M-d>"] = "toggle_dotfiles",
+  ["<M-c>"] = "toggle_custom",
+  ["<M-r>"] = "refresh",
+
+  ["g"] = { function()
+    local ok, file_path = pcall(vim.api.nvim_buf_get_name, vim.g.last_accessed_buf)
+    if ok then
+      api.tree.find_file(file_path)
+    else
+      vim.notify("Can't focus file", vim.log.levels.ERROR, notify_opts)
+    end
+  end, "focus on file" }
 }
+
+local list = {}
+for key, value in pairs(mappings) do
+  if type(value) == "string" then
+    table.insert(list, { key = key, action = value })
+  elseif type(value) == "table" then
+    table.insert(list, { key = key, action = value[2], action_cb = value[1] })
+  else
+    vim.notify("Unrecognized type", vim.log.levels.ERROR, notify_opts)
+  end
+end
 
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
@@ -80,13 +104,7 @@ require("nvim-tree").setup({
     side = "left",
     mappings = {
       custom_only = true,
-      list = (function()
-        local list = {}
-        for action, key in pairs(mappings) do
-          table.insert(list, { key = key, action = action })
-        end
-        return list
-      end)(),
+      list = list,
     },
     float = {
       enable = false,
@@ -107,7 +125,7 @@ require("nvim-tree").setup({
     dotfiles = false, -- show hidden files
   },
   update_focused_file = {
-    enable = true, -- update item of focused file immediately in nvim-tree
+    enable = false, -- update for focused file immediately in nvim-tree
   },
   notify = {
     threshold = vim.log.levels.WARN,
@@ -120,3 +138,5 @@ require("nvim-tree").setup({
 
 vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")
 vim.cmd("autocmd ColorScheme * hi NvimTreeSymlink guifg=gray")
+local Event = api.events.Event
+api.events.subscribe(Event.TreeOpen, function() vim.g.nvim_tree_exists = true end)

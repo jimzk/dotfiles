@@ -110,7 +110,7 @@
         ; map caps_lock to control
         [:##caps_lock {:key :left_control} nil {:alone :escape}]
         ; super key
-        [:##right_shift {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_shift}]
+        [:##tab {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :tab}]
         ; simultaneously =⌫ to delete backward
         ;; [[:equal_sign :delete_or_backspace] :delete_forward]
       ]
@@ -122,43 +122,43 @@
         [:!QWERs [:hs "ResizeWindow('[0, 50, 100, 100]')"]]
         [:!QWERd [:hs "ResizeWindow('[50, 0, 100, 100]')"]]
         [:!QWERw [:hs "ResizeWindow('[0, 0, 100, 50]')"]]
-        ;; command: 2/3
-        [:!QWERCa [:hs "ResizeWindow('[0, 0, 66, 100]')"]]
-        [:!QWERCs [:hs "ResizeWindow('[0, 34, 100, 100]')"]]
-        [:!QWERCd [:hs "ResizeWindow('[34, 0, 100, 100]')"]]
-        [:!QWERCw [:hs "ResizeWindow('[0, 0, 100, 66]')"]]
-        ;; option: 1/3
-        [:!QWEROa [:hs "ResizeWindow('[0, 0, 34, 100]')"]]
-        [:!QWEROs [:hs "ResizeWindow('[0, 66, 100, 100]')"]]
-        [:!QWEROd [:hs "ResizeWindow('[66, 0, 100, 100]')"]]
-        [:!QWEROw [:hs "ResizeWindow('[0, 0, 100, 34]')"]]
+        ;; command 1/2 fill
+        [:!QWERCa [:hs "ResizeWindow('[0, 0, 50, 100]', '[50, 0, 100, 100]')"]]
+        [:!QWERCs [:hs "ResizeWindow('[0, 50, 100, 100]', '[0, 0, 100, 50]')"]]
+        [:!QWERCd [:hs "ResizeWindow('[50, 0, 100, 100]', '[0, 0, 50, 100]')"]]
+        [:!QWERCw [:hs "ResizeWindow('[0, 0, 100, 50]', '[0, 50, 100, 100]')"]]
+        ;; option 2/3
+        [:!QWEROa [:hs "ResizeWindow('[0, 0, 66, 100]')"]]
+        [:!QWEROs [:hs "ResizeWindow('[0, 34, 100, 100]')"]]
+        [:!QWEROd [:hs "ResizeWindow('[34, 0, 100, 100]')"]]
+        [:!QWEROw [:hs "ResizeWindow('[0, 0, 100, 66]')"]]
+        ;; command + option 2/3 fill
+        [:!QWERCOa [:hs "ResizeWindow('[0, 0, 66, 100]', '[66, 0, 100, 100]')"]]
+        [:!QWERCOs [:hs "ResizeWindow('[0, 34, 100, 100]', '[0, 0, 100, 34]')"]]
+        [:!QWERCOd [:hs "ResizeWindow('[34, 0, 100, 100]', '[0, 0, 34, 100]')"]]
+        [:!QWERCOw [:hs "ResizeWindow('[0, 0, 100, 66]', '[0, 66, 100, 100]')"]]
+        ;; ctrl 1/3
+        [:!QWERTa [:hs "ResizeWindow('[0, 0, 34, 100]')"]]
+        [:!QWERTs [:hs "ResizeWindow('[0, 66, 100, 100]')"]]
+        [:!QWERTd [:hs "ResizeWindow('[66, 0, 100, 100]')"]]
+        [:!QWERTw [:hs "ResizeWindow('[0, 0, 100, 34]')"]]
+        ;; command + ctrl 1/3 fill
+        [:!QWERCTa [:hs "ResizeWindow('[0, 0, 34, 100]', '[34, 0, 100, 100]')"]]
+        [:!QWERCTs [:hs "ResizeWindow('[0, 66, 100, 100]', '[0, 0, 100, 66]')"]]
+        [:!QWERCTd [:hs "ResizeWindow('[66, 0, 100, 100]', '[0, 0, 66, 100]')"]]
+        [:!QWERCTw [:hs "ResizeWindow('[0, 0, 100, 34]', '[0, 34, 100, 100]')"]]
         ; 1/4 cornor
         [:!QWERy [:hs "ResizeWindow('[0, 0, 50, 50]')"]]
         [:!QWERu [:hs "ResizeWindow('[0, 50, 50, 100]')"]]
         [:!QWERi [:hs "ResizeWindow('[50, 0, 100, 50]')"]]
         [:!QWERo [:hs "ResizeWindow('[50, 50, 100, 100]')"]]
-        ;; ctrl: 1/2 fill
-        [:!QWERTa [:hs "ResizeWindow('[0, 0, 50, 100]', '[50, 0, 100, 100]')"]]
-        [:!QWERTs [:hs "ResizeWindow('[0, 50, 100, 100]', '[0, 0, 100, 50]')"]]
-        [:!QWERTd [:hs "ResizeWindow('[50, 0, 100, 100]', '[0, 0, 50, 100]')"]]
-        [:!QWERTw [:hs "ResizeWindow('[0, 0, 100, 50]', '[0, 50, 100, 100]')"]]
-        ;; ctrl + command: 2/3 fill
-        [:!QWERTCa [:hs "ResizeWindow('[0, 0, 66, 100]', '[66, 0, 100, 100]')"]]
-        [:!QWERTCs [:hs "ResizeWindow('[0, 34, 100, 100]', '[0, 0, 100, 34]')"]]
-        [:!QWERTCd [:hs "ResizeWindow('[34, 0, 100, 100]', '[0, 0, 34, 100]')"]]
-        [:!QWERTCw [:hs "ResizeWindow('[0, 0, 100, 66]', '[0, 66, 100, 100]')"]]
-        ;; ctrl + option: 1/3 fill
-        [:!QWERTOa [:hs "ResizeWindow('[0, 0, 34, 100]', '[34, 0, 100, 100]')"]]
-        [:!QWERTOs [:hs "ResizeWindow('[0, 66, 100, 100]', '[0, 0, 100, 66]')"]]
-        [:!QWERTOd [:hs "ResizeWindow('[66, 0, 100, 100]', '[0, 0, 66, 100]')"]]
-        [:!QWERTOw [:hs "ResizeWindow('[0, 0, 100, 34]', '[0, 34, 100, 100]')"]]
         ; center
         [:!QWERf [:hs "w:toggleFullScreen()"]]
         [:!QWERg [:hs "w:moveAndResize('fullscreen')"]]
-        [:!QWERv [:hs "ResizeWindow('[10, 0, 90, 100]')"]]
-        [:!QWERc [:hs "ResizeWindow('[20, 0, 80, 100]')"]]
+        [:!QWERc [:hs "ResizeWindow('[10, 0, 90, 100]')"]]
+        [:!QWERv [:hs "ResizeWindow('[20, 0, 80, 100]')"]]
         ;; resize
-        [:!QWERx [:hs "EnterWin()"]]
+        [:!QWERr [:hs "EnterWin()"]]
 
         ;; desktop navigation
         [:!QWERq :!CTOf7] ;; Previous Space
@@ -171,14 +171,14 @@
         [:!QWERCSq [:hs "MoveFocusedWindowToSpace('prev', false)"]]
         [:!QWERCSe [:hs "MoveFocusedWindowToSpace('next', false)"]]
         ;; move window to recent display and focus
-        [:!QWERtab [:hs "w:moveToScreen('next')"]]
-        [:!QWERreturn_or_enter [:hs "ShowFocusedWindowInfo()"]]
+        [:!QWERdelete_or_backspace [:hs "w:moveToScreen('next')"]]
+        [:!QWERbackslash [:hs "ShowFocusedWindowInfo()"]]
 
         ;; system applicaton management
         ; [:!QWERspacebar [:hs "RightClickFocusedWindow()"]]  ;; right click menu on focused window
         ; [:!QWERr [:!Tf2 :down_arrow :right_arrow :right_arrow]]  ;; focus on menu bar
         ; [:!QWERreturn_or_enter :!!f4] ;; Notification Center
-        [:!QWERslash :!!f4] ;; Notification Center
+        ; [:!QWERslash :!!f4] ;; Notification Center
         [:!QWERgrave_accent_and_tilde :!Tf3]  ;; focus on docker
         [:!QWERCgrave_accent_and_tilde :!CTSf2]  ;; hide/show Dock
 

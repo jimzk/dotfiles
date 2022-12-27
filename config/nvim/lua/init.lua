@@ -1,18 +1,20 @@
 -- require_all loads all lua files under folder
 local require_all = function(folder)
-  for _, file in ipairs(vim.fn.readdir(vim.fn.stdpath('config')..'/lua/' .. folder, [[v:val =~ '\.lua$']])) do
+  for _, file in ipairs(vim.fn.readdir(vim.fn.stdpath('config') .. '/lua/' .. folder, [[v:val =~ '\.lua$']])) do
     require(folder .. "." .. file:gsub('%.lua$', ''))
   end
 end
 
+require("utils")
+require("editor")
+require("appearance")
 require("plugin")
 require_all("plugin")
 require("plugin.telescope")
 require("plugin.lsp")
 require("plugin.development")
 require_all("keymap")
-require("appearance")
-require("editor")
+
 
 --[[ NOTE
 ## Recommended material

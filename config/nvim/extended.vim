@@ -7,14 +7,14 @@ fun! SetupCommandAlias(from, to)
 endfun
 
 " delete trailling blank lines when saving.
-autocmd BufWritePre * :call CleanExtraSpaces()
-fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-endfun
+" autocmd BufWritePre * :call CleanExtraSpaces()
+" fun! CleanExtraSpaces()
+"     let save_cursor = getpos(".")
+"     let old_query = getreg('/')
+"     silent! %s/\s\+$//e
+"     call setpos('.', save_cursor)
+"     call setreg('/', old_query)
+" endfun
 
 " auto reload VIMRC if change *.vim in vim
 " autocmd BufWritePost *.vim,*.vimrc source $MYVIMRC | redraw | execute "echo 'reload configuration!'"

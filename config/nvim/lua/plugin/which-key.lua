@@ -1,17 +1,16 @@
 local wk = require("which-key")
-
 wk.setup {
   plugins = {
-    marks = true, -- shows a list of your marks on ' and `
+    marks = false, -- shows a list of your marks on ' and `
     registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
     spelling = {
-      enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
       suggestions = 20, -- how many suggestions should be shown in the list?
     },
     -- disable most presets and set my customized keymap
     -- https://github.com/folke/which-key.nvim/blob/main/lua/which-key/plugins/presets/init.lua
     presets = {
-      operators = true,
+      operators = false,
       motions = false,
       text_objects = false,
       windows = false,
@@ -22,8 +21,12 @@ wk.setup {
   },
   -- add operators that will trigger motion and text object completion
   operators = {
-    gc = "comment",  -- vim-commentary
-    ys = "add surrounding breackets or quotes"
+    gc = "comment", -- vim-commentary
+    ys = "add surrounding breackets or quotes",
+    d = "delete",
+    c = "change",
+    v = "visual",
+    y = "yank",
   },
   window = {
     border = "single", -- none, single, double, shadow

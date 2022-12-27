@@ -44,10 +44,8 @@ packer.init({
   },
 })
 
--- Install your plugins here
-return packer.startup(function(use)
+local plugins = function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
-
   ------ Cheatsheet
   use "folke/which-key.nvim"  -- Display popup of keymap hint (together with keybinding)
                               -- :checkhealth which_key checks conflicting keymaps.
@@ -56,6 +54,7 @@ return packer.startup(function(use)
   ------ Fuzzy search
   use {
     "nvim-telescope/telescope.nvim",  -- Fuzzy search
+    tag = '0.1.0',
     requires = "nvim-lua/plenary.nvim"
   }
   use {
@@ -68,8 +67,7 @@ return packer.startup(function(use)
   }
   use "nvim-telescope/telescope-project.nvim"         -- Quick access projects
   use "nvim-telescope/telescope-live-grep-args.nvim"  -- Grep with regex file name
-  -- TODO: project.nvim is not much useful???
-  use "ahmedkhalf/project.nvim"                       -- Recent project
+  use "ThePrimeagen/harpoon" -- Mark and find files
 
   ------ Navigation
   use {
@@ -83,22 +81,12 @@ return packer.startup(function(use)
   use "chentoast/marks.nvim"  -- Visualiaze marks
 
   ------- Jump & text objects
-  use {
-    "bkad/CamelCaseMotion",  -- , + w/b/e/ge select camel case word
-    config = function()
-      vim.g.camelcasemotion_key = ','
-    end
-  }
-  use "wellle/targets.vim"  -- Select content inside bracket, quote, separator (, . ; etc.), argument and tags
-                            -- Work like di' and support i a I a
-                            -- Most frequently used: ib(bracket), iq(quote), ia(argument)
-                            -- inx/ilx select next/last objects, x can be any char
-  use "michaeljsmith/vim-indent-object"  -- ai, ii, aI, iI select content in the same indent
+  use "bkad/CamelCaseMotion" -- Camel case text object
+  use 'echasnovski/mini.nvim' -- Use: mini.ai, mini.indentscope
   use "kana/vim-textobj-user"      -- Dependency of vim-textobj-*
   use "kana/vim-textobj-entire"    -- ae, ie select entire content
   use "kana/vim-textobj-line"      -- al, il select entire line
   use "glts/vim-textobj-indblock"  -- ao, io, aO, iO select indent
-  use "dbakker/vim-paragraph-motion"  -- Include blanklines when using { and } to select paragraph
 
   ------ Edit
   use {
@@ -134,17 +122,11 @@ return packer.startup(function(use)
     setup = function()
       -- FIX: thie keymap will fallback to origial function
       -- It can't work when setting them in `config` field. Don't know why
-      vim.g.splitjoin_split_mapping = 's]'
-      vim.g.splitjoin_join_mapping = 's['
+      vim.g.splitjoin_split_mapping = ',f'
+      vim.g.splitjoin_join_mapping = ',F'
     end,
   }
-  use "tpope/vim-surround"  -- Operate on surroundings (parentheses, brackets, quotes, XML tags)
-                           -- cs"'  :  "Hello world!-- -> 'Hello world!'
-                           -- cs]}  :  [Hello] world! -> {Hello} world!
-                           -- cs]{  :  [Hello] world! -> { Hello } world!
-                           -- ysiw] :  Hello world!   -> [Hello] world!
-                           -- ds--   :  "Hello world!-- -> Hello world!
-                           -- yss)  :  Hello world    -> (Hello world!)（wrap all line)
+  use "tpope/vim-surround" -- Operate on surroundings
   use "windwp/nvim-autopairs"  -- Auto insert/delete bracket or quotes in pair
                                -- <M-e>: wrap next content (fast wrap)
 
@@ -152,39 +134,26 @@ return packer.startup(function(use)
   use "nvim-pack/nvim-spectre" -- Search and replace text
   use "tpope/vim-sleuth"  -- Auto detect indent width in file
   use "mbbill/undotree"  -- Undo history
-  use {
-    'goolord/alpha-nvim',
-    requires = { 'kyazdani42/nvim-web-devicons' },
-    config = function ()
-        require'alpha'.setup(require'alpha.themes.startify'.config)
-    end
-  }
   use {"akinsho/toggleterm.nvim", tag = '*',}  -- Toggle terminal
   use "romgrk/barbar.nvim"  -- Tabline
+  use "mhinz/vim-startify"    -- Startup page
+  use "andymass/vim-matchup"  -- Enhance matchit (%)
   use {
-    'rmagatti/auto-session',  -- Auto store session under vim.fn.stdpath('data').."/sessions/"
-    config = function()       -- vim without any argument open session automatically
-      -- https://github.com/rmagatti/auto-session#recommended-sessionoptions-config
-      -- https://github.com/windwp/nvim-autopairs/issues/173
-      -- FIX: Vim is broken by other plugins like autopairs or alpha if storing `localoptions` in session.
-      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,resize,winsize,winpos,terminal"
-      require("auto-session").setup {
-        -- auto_session_enable_last_session = true,  -- load loaded session (other folder) if current dir has session.
-        log_level = "error",
-        auto_session_suppress_dirs = { "~/", "~/workspace", "~/Downloads", "/"},
+    "max397574/better-escape.nvim", -- Better pressing jk or jj to escape from insert mode to normal mode
+    config = function()
+      require("better_escape").setup {
+        mapping = { "jk" }
+      }
+    end,
+  }
+  use {
+    "Pocco81/auto-save.nvim", -- Save file automatically
+    config = function()
+      require("auto-save").setup {
+        trigger_events = { "InsertLeave" }, -- Event TextChanged breaks up autopair <CR>
       }
     end
   }
-  use {
-    'rmagatti/session-lens',   -- Search session from auto-session
-    requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
-    config = function()
-      require('session-lens').setup {
-          results_title = "|delete: ^d",
-        }
-    end
-  }
-  use "andymass/vim-matchup"  -- Enhance matchit (%)
 
   ------ Git
   use "tpope/vim-fugitive"  -- Integrate git commands
@@ -194,7 +163,10 @@ return packer.startup(function(use)
                                  -- :Gitsigns diffthis diffs buffers.
                                  -- There are also useful operations for hunk.
   -- use "junegunn/gv.vim"
-  -- use "sindrets/diffview.nvim"
+  use {
+    "sindrets/diffview.nvim",  -- Git diff enhancement
+    requires = 'nvim-lua/plenary.nvim'
+  }
 
   ------ Development
   use "neovim/nvim-lspconfig"              -- Neovim LSP support
@@ -240,6 +212,7 @@ return packer.startup(function(use)
       vim.cmd [[au ColorScheme * hi TreesitterContextLineNumber gui=bold]]
     end
   }
+  use "nvim-treesitter/playground"
   use {
     "p00f/nvim-ts-rainbow", -- Rainbow bracket
     requires = "nvim-treesitter/nvim-treesitter",
@@ -259,15 +232,7 @@ return packer.startup(function(use)
     "SmiteshP/nvim-navic",  -- Show context in winbar
     requires = "neovim/nvim-lspconfig",
   }
-  use {
-    "phaazon/hop.nvim",
-    tag = 'v2.*.*',
-    config = function()
-      require("hop").setup {
-        keys = 'etovxqpdygfblzhckisuranm123'
-      }
-    end
-  }
+  use "justinmk/vim-sneak"  -- Extend f/F/t/T
 
   ----- Auto completion
   use 'hrsh7th/nvim-cmp'      -- Core plugin
@@ -297,6 +262,7 @@ return packer.startup(function(use)
       require("snippets.lua")
     end
   }
+  use "ray-x/lsp_signature.nvim" -- SHow method signature when typing
   -- For specific language
   use "folke/neodev.nvim"  --  Full signature help for neovim method
   use {
@@ -374,7 +340,7 @@ return packer.startup(function(use)
   use "petertriho/nvim-scrollbar"  -- Scrollbar
   use "kevinhwang91/nvim-hlslens"  -- Glance search info in virtual text. Integrated with nvim-scrollbar and vim-visual-multi.
   use {
-    "EdenEast/nightfox.nvim",  -- Themes. Other choices: everforest, tokyonight
+    "EdenEast/nightfox.nvim",  -- ColorScheme. Alternative choices: everforest, tokyonight
     after = {  -- plugins that setts highlight group
       "nvim-treesitter-context",
       "vim-visual-multi",
@@ -382,7 +348,7 @@ return packer.startup(function(use)
       "nvim-scrollbar",
     },
     config = function()
-      vim.cmd [[colorscheme nightfox]]
+      vim.cmd [[colorscheme nordfox]]
     end
   }
   use "lukas-reineke/indent-blankline.nvim"  -- Indent guide line
@@ -400,9 +366,6 @@ return packer.startup(function(use)
   -- folke/noice.nvim          -- UI for messages, cmdline and popupmenu. depend on nvim-notify. To noisy.
   -- hrsh7th/cmp-nvim-lua      -- Neovim Lua API. Not much useful.
   -- farmergreg/vim-lastplace  -- Use session manager to remember cursur position
-  -- ray-x/lsp_signature       -- Show signature hint when calling functions
-                               -- Problem: can't scroll preview: https://github.com/ray-x/lsp_signature.nvim/issues/228
-                               -- Can be replaced by native vim.lsp.buf.signature_help
   -- https://git.sr.ht/~whynothugo/lsp_lines.nvim  -- Show diagnostics in individual line. Distracting.
   -- romgrk/barbar.nvim        -- Tabline. Pretty but not support only show tab, see https://github.com/romgrk/barbar.nvim/issues/108.
   -- nvim-treesitter/nvim-treesitter-refactor  -- Variable usage is not accurate. vim-illuminate is better though it always can't find anything in rust.
@@ -413,6 +376,13 @@ return packer.startup(function(use)
   -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
   -- karb94/neoscroll.nvim   -- Smooth scroll for <C-d>, zz and so on. Performance issue.
   -- moll/vim-bbye           -- Delete buffer without messing up layout (:bdelete enhancement). barbar.nvim has integrated it.
+  -- wellle/targets.vim      -- Replaced by mini.nvim#mini.ai. The latter does not support A/I but I don't need them
+  -- michaeljsmith/vim-indent-object  -- ai, ii, aI, iI select indent content. Replaced by mini.nvim#mini.indentscope.
+  -- goolord/alpha-nvim      -- Start-up page. Use vim-startify instead.
+  -- rmagatti/auto-session   -- Auto save session. Use vim-startify instead.
+  -- rmagatti/session-lens   -- List avaliable sessions by telescope. Use vim-startify instead.
+  -- ahmedkhalf/project.nvim -- List recent projects. It tries to detect change cwd, which brings unexpected affects for plugins like vim-startify.
+  -- phaazon/hop.nvim        -- Easymotion-like plugin. I use it rarely.
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting
@@ -420,4 +390,16 @@ return packer.startup(function(use)
   if PACKER_BOOTSTRAP then
     require("packer").sync()
   end
-end)
+end
+
+return packer.startup {
+  plugins,
+  config = {
+    display = {
+      open_fn = function()
+        -- using floating window
+        return require("packer.util").float({ border = "single" })
+      end,
+    },
+  }
+}

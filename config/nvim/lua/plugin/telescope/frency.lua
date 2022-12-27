@@ -3,7 +3,7 @@ local telescope = require("telescope")
 telescope.setup {
   extensions = {
     frecency = {
-      show_scores = true,
+      show_scores = false,
       show_unindexed = true,
       ignore_patterns = {
         "*.git/*",
@@ -12,6 +12,7 @@ telescope.setup {
       },
       disable_devicons = false,
       workspaces = {
+        ["dot"] = vim.fs.normalize("~/.dotfiles"),
         ["conf"] = vim.fs.normalize("~/.config"),
         ["work"] = vim.fs.normalize("~/workspace"),
         ["desk"] = vim.fs.normalize("~/Desktop"),

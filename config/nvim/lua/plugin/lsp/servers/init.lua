@@ -40,10 +40,6 @@ local create_default_config = function()
       -- Code context used by lualine. Better than lspsaga.
       require('nvim-navic').attach(client, bufnr)
       require("plugin.lsp.keymap").setup(bufnr)
-
-      -- Some configuration examples
-      -- https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/
-      -- -> Show method signature when typing, format before writing, action buble
     end,
   }
 end

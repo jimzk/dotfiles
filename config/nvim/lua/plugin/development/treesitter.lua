@@ -11,10 +11,10 @@ require("nvim-treesitter.configs").setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<CR>',
-      node_incremental = '<CR>',
-      node_decremental = '<BS>',
-      scope_incremental = '<TAB>'
+      init_selection = false,
+      node_incremental = '<C-CR>',
+      node_decremental = '<C-BS>',
+      scope_incremental = false, -- '<TAB>'
     }
   },
   -- visual regision and press = to format (gg=G`` can format all file)
@@ -22,6 +22,12 @@ require("nvim-treesitter.configs").setup {
   --   enable = true
   -- },
 }
+
+-- Set init_selection by manual for position mark
+vim.keymap.set('n', '<C-CR>', function()
+  vim.cmd [[normal! mv]] -- init range selection
+  require('nvim-treesitter.incremental_selection').init_selection()
+end, { silent = true })
 
 -- Fold by treesitter
 vim.wo.foldmethod = 'expr'

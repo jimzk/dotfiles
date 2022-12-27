@@ -4,7 +4,6 @@ wk.register({
   name = "go",
   ["%"] = { "cycle forward ) } ] or group", mode = { "n", "v", "o" } },
   a = "print ascii of cursor char",
-  f = "open file under cursor",
   i = "✭ insert in last insertion (mark ^)",
   I = "✭ insert in current line start (0)",
   ["_"] = "✭ last non-blank char",
@@ -49,10 +48,3 @@ wk.register({
   ["<C-t>"] = { "<cmd>TodoTelescope<cr>", "[C] search TODOs" },
 }, opt)
 
-vim.g.last_active_tab = 1
-vim.cmd [[autocmd TabLeave * let g:last_active_tab = tabpagenr()]]
-wk.register({
-  ["<tab>"] = { ':execute "tabnext ".g:last_active_tab<cr>', "✭ go last accessed tab" },
-  ["<space>"] = { "<C-^>", "✭ alternative buffer" },
-  ["<C-space>"] = { "<cmd>vsplit #<cr>", "✭ split alternative buffer" },
-}, opt)

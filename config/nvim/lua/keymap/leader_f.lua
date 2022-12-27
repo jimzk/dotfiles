@@ -1,8 +1,6 @@
 local builtin = require("telescope.builtin")
 local extensions = require("telescope").extensions
-local themes = require("telescope.themes")
 local wk = require("which-key")
-
 wk.register({
   name = "fuzzy search",
   -- find file
@@ -25,40 +23,29 @@ wk.register({
   end, "files in my space" },
   o = { function()
     extensions.frecency.frecency({ -- repalce oldfiles with frecency
-      results_title = "|open: ^v(split) ^s(plit) ^t(ab) |search tag: :plug:",
-      prompt_title = "Find Recently Opened File",
-      previewer = false,
+      results_title = "|open: ^v(split) ^s(plit) ^t(ab)",
+      prompt_title = "Find Recently Opened File in CWD",
+      workspace = "CWD",
     })
   end, "recent files" },
-  -- find project
-  p = { function()
-    extensions.projects.projects(themes.get_dropdown {
-      layout_strategy = "horizontal",
-      layout_config = {
-        width = { 0.95, max = 100 },
-      },
-      -- FIX: <c-b> not working
-      -- https://github.com/ahmedkhalf/project.nvim/issues/74
-      results_title = "|file: ^r(recent) <cr>(find) ^s(search) ^b(browse) |remove: ^d |change PWD: ^w",
-      prompt_title = "Recent Projects",
+  O = { function()
+    extensions.frecency.frecency({ -- repalce oldfiles with frecency
+      results_title = "|open: ^v(split) ^s(plit) ^t(ab) |tags: :work: :dot:",
+      prompt_title = "Find Recently Opened File",
     })
-  end, "recent projects" },
-  s = { "<cmd>SearchSession<cr>", "recent projects (auto-session)" },
-  P = { function()
-    extensions.project.project(themes.get_dropdown {
-      results_title = "|file: ^r(recent) <cr>(find) ^s(search) ^b(browse) |rename: ^v |change PWD: ^l",
-      layout_strategy = "horizontal",
-      layout_config = {
-        width = { 0.95, max = 100 },
-      },
-      prompt_title = "All Projects",
+  end, "recent files (all)" },
+  b = { function()
+    builtin.buffers(require("telescope.themes").get_ivy {
+      prompt_title = "Buffers List",
+      results_title = "|open: ^v(split) ^s(plit) ^t(ab) |delete ^<BS>",
+      sort_lastused = true,
     })
-  end, "open project" },
-
+  end, "go buffers" },
   -- find git file
   G = { function() builtin.git_files({
       results_title = "|open ^v(split) ^s(plit) ^t(ab)",
       prompt_title = "Find Git File",
+      show_untracked = true,
     })
   end, "git files" },
   g = { function() builtin.git_status({
@@ -66,6 +53,6 @@ wk.register({
       prompt_title = "Find Git Changed File",
     })
   end, "changed git files" },
-  t = { "<cmd>Telescope current_buffer_tags<cr>", "tags in current buffer" },
-  T = { "<cmd>Telescope tags<cr>", "tags in project" },
+  -- t = { "<cmd>Telescope current_buffer_tags<cr>", "tags in current buffer" },
+  -- T = { "<cmd>Telescope tags<cr>", "tags in repository" },
 }, { prefix = "<leader>f" })

@@ -8,49 +8,53 @@ wk.register({
     [")"] = "next unmatched )",
     ["}"] = "next unmatched }",
     s = "next misspelled word",
+    ["`"] = "next mark",
   },
   ["["] = {
-    name = "previous object",
-    ["("] = "previous unmatched (",
-    ["{"] = "previous unmatched {",
-    s = "previous misspelled word",
+    name = "prev object",
+    ["("] = "prev unmatched (",
+    ["{"] = "prev unmatched {",
+    s = "prev misspelled word",
+    ["`"] = "prev mark",
   },
 }, { mode = { "n", "o" }, prefix = "", preset = true })
 
+local mini_ai = require("mini.ai")
+local mini_indent = require("mini.indentscope")
 wk.register({
-  ["]%"] = "go to close item (matchup)",
-  ["[%"] = "go to open item (matchup)",
-  ["]b"] = { "<Plug>(matchup-]%)", "same as ]%" },
-  ["[b"] = { "<Plug>(matchup-[%)", "same as [%" },
+  ["]"] = {
+    i = { function() mini_indent.move_cursor("bottom", false, {}) end, "indent content bottom" },
+    ["a"] = { function()
+      mini_ai.move_cursor("left", "i", "a", { search_method = "next" })
+    end, "next parameter" },
+  },
+  ["["] = {
+    i = { function() mini_indent.move_cursor("top", false, {}) end, "indent content top" },
+    ["a"] = { function()
+      mini_ai.move_cursor("left", "i", "a", { search_method = "prev" })
+    end, "prev parameter" },
+  },
 }, { mode = { "n", "o", "v" }, prefix = "", preset = true })
 
 wk.register({
   ["]"] = {
-    t = { "<cmd>BufferNext<cr>", "next tab" },
-    T = { "<cmd>BufferLast<cr>", "last tab" },
-    ["<C-t>"] = { "<cmd>BufferMoveNext<cr>", "move tab right" },
-    i = "peek next match of cursor word", -- builtin
-    I = "peek all next match of cursor word",
+    I = "peek all next match of cursor word", -- builtin
     ["<C-i>"] = "go next match of cursor word",
     -- gitsigns
-    c = "next Git change",
+    ["<cr>"] = "next Git change",
     -- todo-comments
-    D = { function() require("todo-comments").jump_next() end, "next TODO" },
+    t = { function() require("todo-comments").jump_next() end, "next TODO" },
     v = { function() require('illuminate').goto_next_reference()
-    end, "[C] next usage of variable" },
+    end, "[C] next variable usage" },
   },
   ["["] = {
-    t = { "<cmd>BufferPrevious<cr>", "next tab" },
-    T = { "<cmd>BufferFirst<cr>", "first tab" },
-    ["<C-t>"] = { "<cmd>BufferMovePrevious<cr>", "move tab left" },
-    i = "peek first match of cursor word", -- builtin
-    I = "peek all match of cursor word",
+    I = "peek all match of cursor word", -- builtin
     ["<C-i>"] = "go first match of cursor word",
     -- gitsigns
-    c = "previous Git change",
+    ["<cr>"] = "prev Git change",
     -- todo-comments
-    D = { function() require("todo-comments").jump_prev() end, "previous TODO" },
+    t = { function() require("todo-comments").jump_prev() end, "prev TODO" },
     v = { function() require('illuminate').goto_prev_reference()
-    end, "[C] previous usage of variable" },
+    end, "[C] prev variable usage" },
   },
 }, { mode = { "n" }, prefix = "", preset = true })

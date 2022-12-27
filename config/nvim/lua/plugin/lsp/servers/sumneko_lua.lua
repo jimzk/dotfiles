@@ -7,6 +7,7 @@ local get_library = function()
 end
 local sumneko_lua = {
   -- https://github.com/sumneko/lua-language-server/blob/master/locale/en-us/setting.lua
+  -- https://github.com/sumneko/lua-language-server/wiki/Settings
   settings = {
     Lua = {
       runtime = {
@@ -26,7 +27,7 @@ local sumneko_lua = {
         enable = false
       },
       completion = {
-        callSnippet = "Replace" -- Complete with arguments
+        callSnippet = "Disable", -- Do not complete with arguments. Consistent with ray-x/lsp_signature.nvim
       }
     }
   }

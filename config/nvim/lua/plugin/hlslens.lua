@@ -6,21 +6,22 @@ require("scrollbar.handlers.search").setup({
   override_lens = function() end
 })
 
+-- Start hlslens for * n N
 -- https://github.com/kevinhwang91/nvim-hlslens#minimal-configuration
-local kopts = { noremap = true, silent = true }
-vim.keymap.set("n", "*", [[*<cmd>lua require('hlslens').start()<cr>]], kopts)
-vim.keymap.set('n', 'n', function() -- make n alwasy match forward
+-- Set global n/N function to integrat with vim-sneak.
+_G.Enhanced_n = function() -- make n alwasy match forward
   local c = vim.v.searchforward == 0 and 'N' or 'n'
-  local cmd = string.format([[execute('normal! ' . v:count1 . '%s')]], c)
-  vim.cmd(cmd)
+  -- Keep jumplist unchanged
+  local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], c)
+  vim.cmd("silent! " .. cmd) -- Do not show error
   require("hlslens").start()
-end, kopts)
-vim.keymap.set('n', 'N', function()
+end
+_G.Enhanced_N = function()
   local c = vim.v.searchforward == 0 and 'n' or 'N'
-  local cmd = string.format([[execute('normal! ' . v:count1 . '%s')]], c)
-  vim.cmd(cmd)
+  local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], c)
+  vim.cmd("silent! " .. cmd)
   require("hlslens").start()
-end, kopts)
+end
 
 -- https://github.com/kevinhwang91/nvim-hlslens#vim-visual-multi
 vim.cmd([[

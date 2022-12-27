@@ -5,7 +5,7 @@ ll.setup {
     section_separators = '',
     component_separators = { left = '|', right = '|' },
     disabled_filetypes = {
-      statusline = {},
+      statusline = { "TelescopePrompt" },
       winbar = { "NvimTree", "gitcommit", "fugitive", "fugitiveblame", "untotree" },
     },
     ignore_focus = {},
@@ -56,7 +56,9 @@ ll.setup {
       },
       -- https://github.com/rmagatti/auto-session#statusline
       {
-        require('auto-session-library').current_session_name,
+        function() -- show session name
+          return vim.fn.fnamemodify(vim.v.this_session, ':t')
+        end,
         icon = { '', align = 'left' },
         separator = { left = "", right = "" },
         padding = { left = 0, right = 1 },
@@ -65,7 +67,7 @@ ll.setup {
     lualine_y = {
       -- :h 'statusline' to check vim statusline symbols
       -- another example: "Ln %l/%L, Col %c"
-      function() return [[%l:%c %p%%]] end,
+      function() return [[%l:%c %L]] end,
     },
     lualine_z = {
       function() return " " .. vim.o.shiftwidth end,
@@ -74,7 +76,8 @@ ll.setup {
     }
   },
   inactive_sections = {},
-  extensions = { "nvim-tree", "toggleterm", "quickfix", "fugitive", "symbols-outline", "nvim-dap-ui", "fzf" }
+  -- keep: quickfix, fugitive
+  extensions = { "nvim-tree", "toggleterm", "symbols-outline", "nvim-dap-ui", "fzf" }
 }
 
 local navic = require("nvim-navic")

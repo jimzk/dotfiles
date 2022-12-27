@@ -22,7 +22,7 @@ require('gitsigns').setup {
   current_line_blame_opts      = {
     virt_text = true,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 1000,
+    delay = 10,
     ignore_whitespace = false,
   },
   current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
@@ -53,14 +53,14 @@ require('gitsigns').setup {
     end
 
     -- Navigation
-    map('n', ']c', function()
-      if vim.wo.diff then return ']c' end
+    map({ 'n', "v" }, ')', function()
+      if vim.wo.diff then return ')' end
       vim.schedule(function() gs.next_hunk() end)
       return '<Ignore>'
     end, { expr = true })
 
-    map('n', '[c', function()
-      if vim.wo.diff then return '[c' end
+    map({ 'n', "v" }, '(', function()
+      if vim.wo.diff then return '(' end
       vim.schedule(function() gs.prev_hunk() end)
       return '<Ignore>'
     end, { expr = true })

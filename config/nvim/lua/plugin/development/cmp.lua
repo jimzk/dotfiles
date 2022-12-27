@@ -1,6 +1,6 @@
-vim.cmd("set completeopt=menu,menuone,noselect")
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+vim.o.completeopt = "menu,menuone,noselect"
 
 local function border(hl_name)
   return {
@@ -15,9 +15,15 @@ local function border(hl_name)
   }
 end
 
-local format = require('lspkind').cmp_format({
+-- Insert `(` after select function or method item
+-- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#add-parentheses-after-selecting-function-or-method-item
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+local lspkind = require('lspkind')
+local format = lspkind.cmp_format({
   mode = 'symbol_text', -- show symbol annotations and text
-  maxwidth = 80, -- prevent the popup from showing more than 80 characters
+  maxwidth = 40, -- prevent the popup from showing more than 80 characters
   ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations
   menu = ({
@@ -34,71 +40,77 @@ local format = require('lspkind').cmp_format({
 })
 
 local action_tab = function(fallback)
-  if cmp.visible() and not vim.g.is_cmp_aborted then
-    cmp.select_next_item()
+  if cmp.visible() then
+    cmp.confirm({ select = true })
   elseif luasnip.expand_or_jumpable() then
     luasnip.expand_or_jump()
   else
     fallback()
   end
-  vim.g.is_cmp_aborted = false
-end
-
-local action_s_tab = function(fallback)
-  if cmp.visible() then
-    cmp.select_prev_item()
-  elseif luasnip.jumpable(-1) then
-    luasnip.jump(-1)
-  else
-    fallback()
-  end
-end
-
-vim.g.is_cmp_aborted = false
-local action_abort = function(fallback)
-  if cmp.visible() then
-    vim.g.is_cmp_aborted = true
-    cmp.abort()
-  else
-    vim.g.is_cmp_aborted = false
-    cmp.complete()
-  end
 end
 
 local mapping = {
-  ["<C-p>"] = cmp.mapping.select_prev_item(),
-  ["<C-n>"] = cmp.mapping.select_next_item(),
+  ["<C-p>"] = cmp.mapping(
+    function(_) if cmp.visible() then cmp.select_prev_item() else cmp.complete() end end
+    , { "i", "s" }),
+  ["<C-n>"] = cmp.mapping(
+    function(_) if cmp.visible() then cmp.select_next_item() else cmp.complete() end end
+    , { "i", "s" }),
   ["<C-k>"] = cmp.mapping.select_prev_item({ count = 20 }), -- page up
   ["<C-j>"] = cmp.mapping.select_next_item({ count = 20 }), -- page down
-  ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-  ['<C-d>'] = cmp.mapping.scroll_docs(4),
-  ['<C-c>'] = cmp.mapping(action_abort, { "i" }),
+  ['<C-h>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-l>'] = cmp.mapping.scroll_docs(4),
+  ['<C-c>'] = cmp.mapping.abort(),
   ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  ['<C-CR>'] = cmp.mapping.close(),
+
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
   -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L66
   ["<Tab>"] = cmp.mapping(action_tab, { "i", "s" }),
-  ["<S-Tab>"] = cmp.mapping(action_s_tab, { "i", "s" }),
 }
 
+local sources = { "luasnip", "nvim_lsp", "buffer" }
+set("i", "<C-S-n>", function()
+  local index = 1
+  for i, source in ipairs(sources) do
+    if source == vim.g.selected_cmp_source then
+      index = i + 1
+      break
+    end
+  end
+  if index > #sources then
+    index = 1
+  end
+  vim.g.selected_cmp_source = sources[index]
+  cmp.close()
+  cmp.complete({ config = { sources = { { name = vim.g.selected_cmp_source } } } })
+end)
+
+-- vim.api.nvim_buf_get_text()
 local mapping_cmdline = {
-  ['<C-c>'] = { c = action_abort },
+  ["<C-p>"] = { c = function(_) if cmp.visible() then cmp.select_prev_item() else cmp.complete() end end },
+  ["<C-n>"] = { c = function(_) if cmp.visible() then cmp.select_next_item() else cmp.complete() end end },
+  ['<C-c>'] = { c = cmp.mapping.abort() },
   ['<Tab>'] = { c = cmp.mapping.confirm({ select = true }) },
-  -- ['<S-Tab>'] = { c = action_s_tab }
+  -- ['<Cr>'] = { c = cmp.mapping.confirm({ select = true }) },
 }
 
 -- Configuration for autocompletion plugin cmp
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      luasnip.lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
   -- Window appearance
   -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L34
+  -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
   window = {
     completion = {
       border = border "CmpBorder",
       winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
+      -- col_offset = -5,
+      -- side_padding = 0,
     },
     documentation = {
       border = border "CmpDocBorder",
@@ -113,15 +125,32 @@ cmp.setup({
   sources = cmp.config.sources(
   -- Each outer {..} is a source group, and cmp uses the first group (in order) with avaliable items and hide others.
     {
+      {
+        name = 'luasnip',
+        option = { show_autosnippets = false }, -- disable autosnippets to improve performance
+        priority = 100,
+      },
+      {
+        name = 'nvim_lsp',
+        entry_filter = function(entry, _)
+          local word = entry:get_word()
+          local ignored_words = {
+            "Workspace loading:" -- lua
+          }
+          for _, value in ipairs(ignored_words) do
+            if word:find(value) then return false end
+          end
+          return true
+        end
+      },
+      priority = 50,
+    },
+    {
+      { name = 'buffer', keyword_length = 3 },
+    },
+    {
       { name = "path" },
       { name = 'calc' },
-    },
-    {
-      { name = 'luasnip', option = { show_autosnippets = false } }, -- disable autosnippets to improve performance
-      { name = 'nvim_lsp' },
-    },
-    {
-      { name = 'buffer' },
     }
   )
 })
@@ -157,4 +186,14 @@ cmp.setup.cmdline(':', {
       { name = 'cmdline' }
     }
   )
+})
+
+require("lsp_signature").setup({
+  max_height = 30,
+  bind = true,
+  handler_opts = {
+    border = "rounded"
+  },
+  hi_parameter = "Cursor",
+  floating_window_above_cur_line = false,
 })

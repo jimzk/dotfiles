@@ -27,7 +27,7 @@ telescope.setup {
     cache_picker = {
       num_pickers = 10, -- Cache pickers by builtin.pickers
     },
-    scroll_strategy = "limit",
+    scroll_strategy = "cycle",
     winblend = 10, -- transparent
     results_title = false, -- hide results title
     dynamic_preview_title = true, -- show file name dynamically in preview title
@@ -42,23 +42,24 @@ telescope.setup {
         -- TODO: https://github.com/nvim-telescope/telescope.nvim/issues/2237
         -- NOTE: "toggle_selection" will be parsed to require("telescope.actions").toggle_selection
         -- parsing rule: https://github.com/nvim-telescope/telescope.nvim/issues/2237
-        ["<C-k>"] = "results_scrolling_up",
-        ["<C-j>"] = "results_scrolling_down",
-        ["<C-h>"] = "cycle_previewers_prev",
-        ["<C-l>"] = "cycle_previewers_next",
-        ["<down>"] = false,
-        ["<up>"] = false,
+        ["<C-h>"] = "results_scrolling_up",
+        ["<C-l>"] = "results_scrolling_down",
+        ["<right>"] = "cycle_previewers_prev",
+        ["<left>"] = "cycle_previewers_next",
+        ["<down>"] = "move_selection_next",
+        ["<up>"] = "move_selection_previous",
         ["<esc>"] = "close", -- disable normal mode
+        ["<C-q>"] = "close", -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
         ["<C-s>"] = "select_horizontal",
         ["<C-x>"] = false,
-        ["<C-u>"] = "preview_scrolling_up",
-        ["<C-d>"] = "preview_scrolling_down",
+        ["<C-k>"] = "preview_scrolling_up",
+        ["<C-j>"] = "preview_scrolling_down",
         ["<PageUp>"] = false,
         ["<Pagedown>"] = false,
         -- Open results in trouble
         -- https://github.com/folke/trouble.nvim#telescope
-        ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble,
+        ["<C-cr>"] = require("trouble.providers.telescope").open_with_trouble,
       },
     },
   },
@@ -98,7 +99,7 @@ telescope.setup {
         }
       }
     },
-  },
+  }
 }
 
 -- https://github.com/nvim-telescope/telescope.nvim#previewers
@@ -136,4 +137,4 @@ require("plugin.telescope.fzf")
 require("plugin.telescope.frency")
 require("plugin.telescope.live-grep-args")
 require("plugin.telescope.project")
-require("plugin.telescope.projects")
+require("plugin.telescope.pickers")
