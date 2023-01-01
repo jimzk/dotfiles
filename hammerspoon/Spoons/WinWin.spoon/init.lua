@@ -4,7 +4,7 @@
 ---
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/WinWin.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/WinWin.spoon.zip)
 
-local obj={}
+local obj = {}
 obj.__index = obj
 
 -- Windows manipulation history. Only the last operation is stored.
@@ -13,7 +13,7 @@ obj.history = {}
 --- WinWin.gridparts
 --- Variable
 --- An integer specifying how many gridparts the screen should be divided into. Defaults to 30.
-obj.gridparts = 30
+obj.gridparts = 40
 
 --- WinWin:stepMove(direction)
 --- Method
@@ -26,8 +26,8 @@ function obj:stepMove(direction)
     if cwin then
         local cscreen = cwin:screen()
         local cres = cscreen:fullFrame()
-        local stepw = cres.w/obj.gridparts
-        local steph = cres.h/obj.gridparts
+        local stepw = cres.w / obj.gridparts
+        local steph = cres.h / obj.gridparts
         local x = 0
         local y = 0
         if direction == "left" then
@@ -39,7 +39,7 @@ function obj:stepMove(direction)
         elseif direction == "down" then
             y = steph
         end
-        cwin:move({x, y}, true)
+        cwin:move({ x, y }, true)
     else
         hs.alert.show("No focused window!")
     end
@@ -56,21 +56,55 @@ function obj:stepResize(direction)
     if cwin then
         local cscreen = cwin:screen()
         local cres = cscreen:fullFrame()
-        local stepw = cres.w/obj.gridparts
-        local steph = cres.h/obj.gridparts
+        local stepw = cres.w / obj.gridparts
+        local steph = cres.h / obj.gridparts
         local wsize = cwin:size()
         if direction == "left" then
-            cwin:setSize({w=wsize.w-stepw, h=wsize.h})
+            cwin:setSize({ w = wsize.w - stepw, h = wsize.h })
         elseif direction == "right" then
-            cwin:setSize({w=wsize.w+stepw, h=wsize.h})
+            cwin:setSize({ w = wsize.w + stepw, h = wsize.h })
         elseif direction == "up" then
-            cwin:setSize({w=wsize.w, h=wsize.h-steph})
+            cwin:setSize({ w = wsize.w, h = wsize.h - steph })
         elseif direction == "down" then
-            cwin:setSize({w=wsize.w, h=wsize.h+steph})
+            cwin:setSize({ w = wsize.w, h = wsize.h + steph })
         end
     else
         hs.alert.show("No focused window!")
     end
+end
+
+local constrain = function(value, minimum, maximum)
+    if value < minimum then return minimum end
+    if value > maximum then return maximum end
+    return value
+end
+
+function obj:resize(stepUp, stepDown, stepLeft, stepRight)
+    local cwin = hs.window.focusedWindow()
+    if not cwin then
+        return
+    end
+    local sf = cwin:screen():frame()
+    if math.abs(stepLeft) < 1 then stepLeft = stepLeft * sf.w end
+    if math.abs(stepRight) < 1 then stepRight = stepRight * sf.w end
+    if math.abs(stepUp) < 1 then stepUp = stepUp * sf.h end
+    if math.abs(stepDown) < 1 then stepDown = stepDown * sf.h end
+
+    local wf = cwin:frame()
+    local left = wf.x - stepLeft
+    local right = wf.x + wf.w + stepRight
+    left = constrain(left, sf.x, wf.x + wf.w)
+    right = constrain(right, math.min(wf.x, left), sf.x + sf.w)
+    local up = wf.y - stepUp
+    local down = wf.y + wf.h + stepDown
+    up = constrain(up, sf.y, wf.y + wf.h)
+    down = constrain(down, math.min(wf.y, up), sf.y + sf.h)
+
+    local x = left
+    local y = up
+    local w = right - left
+    local h = down - up
+    cwin:setFrameInScreenBounds({ x, y, w, h })
 end
 
 function obj:moveAndResize(option)
@@ -78,17 +112,19 @@ function obj:moveAndResize(option)
     if cwin then
         local cscreen = cwin:screen()
         local cres = cscreen:fullFrame()
-        local stepw = cres.w/obj.gridparts
-        local steph = cres.h/obj.gridparts
+        local stepw = cres.w / obj.gridparts
+        local steph = cres.h / obj.gridparts
         local wf = cwin:frame()
         if option == "fullscreen" then
-            cwin:setFrame({x=cres.x, y=cres.y, w=cres.w, h=cres.h})
+            cwin:setFrame({ x = cres.x, y = cres.y, w = cres.w, h = cres.h })
         elseif option == "center" then
             cwin:centerOnScreen()
         elseif option == "expand" then
-            cwin:setFrameInScreenBounds({x=wf.x-stepw, y=wf.y-steph, w=wf.w+(stepw*2), h=wf.h+(steph*2)})
+            cwin:setFrameInScreenBounds({ x = wf.x - stepw, y = wf.y - steph, w = wf.w + (stepw * 2), h = wf.h +
+                (steph * 2) })
         elseif option == "shrink" then
-            cwin:setFrameInScreenBounds({x=wf.x+stepw, y=wf.y+steph, w=wf.w-(stepw*2), h=wf.h-(steph*2)})
+            cwin:setFrameInScreenBounds({ x = wf.x + stepw, y = wf.y + steph, w = wf.w - (stepw * 2), h = wf.h -
+                (steph * 2) })
         end
     else
         hs.alert.show("No focused window!")
@@ -125,7 +161,6 @@ end
 --- Method
 --- Center the cursor on the focused window.
 ---
-
 function obj:centerCursor()
     local cwin = hs.window.focusedWindow()
     local wf = cwin:frame()
@@ -133,10 +168,10 @@ function obj:centerCursor()
     local cres = cscreen:fullFrame()
     if cwin then
         -- Center the cursor on the focused window
-        hs.mouse.setAbsolutePosition({x=wf.x+wf.w/2, y=wf.y+wf.h/2})
+        hs.mouse.setAbsolutePosition({ x = wf.x + wf.w / 2, y = wf.y + wf.h / 2 })
     else
         -- Center the cursor on the screen
-        hs.mouse.setAbsolutePosition({x=cres.x+cres.w/2, y=cres.y+cres.h/2})
+        hs.mouse.setAbsolutePosition({ x = cres.x + cres.w / 2, y = cres.y + cres.h / 2 })
     end
 end
 
