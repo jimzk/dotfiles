@@ -20,8 +20,10 @@ wk.register({
   ["<C-S-k>"] = { "<C-w>K", "move win up" },
   ["<C-S-l>"] = { "<C-w>L", "move win right" },
   ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
-  ["<C-g>"] = { "<C-^>", "✭ alternative buffer" },
-  ["<C-S-g>"] = { "<cmd>vsplit #<cr>", "✭ split alternative buffer" },
+  -- ["<C-6>"] = { "<C-^>", "✭ alternative buffer" },
+  -- ["<C-^>"] = { "<cmd>vsplit #<cr>", "✭ alternative buffer" },
+  ["-"] = { "<C-^>", "✭ alternative buffer" },
+  ["_"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
   -- ["<C-z>"] = { "<cmd>normal u<cr>", "undo", mode = { "i" } },
   -- window size
   ["<C-M-k>"] = { "<c-w>+", "increase win height" },
@@ -33,7 +35,7 @@ wk.register({
   ["<C-[>"] = { "<cmd>BufferPrev<cr>", "prev tab" },
   ["<C-}>"] = { "<cmd>BufferMoveNext<cr>", "move tab right" },
   ["<C-{>"] = { "<cmd>BufferMovePrevious<cr>", "move tab left" },
-  ["<C-p>"] = { "<cmd>BufferPin<cr>", "pin tab" },
+  ["<M-p>"] = { "<cmd>BufferPin<cr>", "pin tab" },
   ["<C-M-]>"] = { "<cmd>BufferScrollRight<cr>", "tab scroll right" },
   ["<C-M-[>"] = { "<cmd>BufferScrollLeft<cr>", "tab scroll left" },
   -- delete buffer
@@ -42,24 +44,26 @@ wk.register({
   ["<S-BS>"] = { "<cmd>BufferCloseAllButCurrentOrPinned<cr>", "delete other buffers" },
   -- quit
   q = { function()
-    local file_path = vim.fn.expand("%:p")
+    -- Experimental
+    -- local file_path = vim.fn.expand("%:p")
     -- Not quite unsaved file
-    if vim.fn.filereadable(file_path) == 0 then
-      vim.notify("File is not saved", vim.log.levels.ERROR, { title = "Error" })
-      return
-    end
-    if #vim.api.nvim_list_wins() ~= 1 then
-      vim.cmd [[silent! w]]
-      vim.cmd [[q]]
-    else
-      vim.ui.select({ "Yes", "No" }, {
-        prompt = 'Only ONE window. Confirm to quit?',
-      }, function(yn)
-        if yn == "Yes" then
-          vim.cmd [[q]]
-        end
-      end)
-    end
+    -- if vim.fn.filereadable(file_path) == 0 then
+    --   vim.notify("File is not saved", vim.log.levels.ERROR, { title = "Error" })
+    --   return
+    -- end
+    -- TODO: enhance
+    vim.cmd [[q]]
+    -- if #vim.api.nvim_list_wins() ~= 1 then
+    --   vim.cmd [[q]]
+    -- else
+    --   vim.ui.select({ "Yes", "No" }, {
+    --     prompt = 'Only ONE window. Confirm to quit?',
+    --   }, function(yn)
+    --     if yn == "Yes" then
+    --       vim.cmd [[q]]
+    --     end
+    --   end)
+    -- end
   end, "which_key_ignore" },
   ["<C-q>"] = { ":qa<cr>", "which_key_ignore" },
   ["<M-q>"] = { "q", "remapped q" },
@@ -110,4 +114,3 @@ set("i", "<C-j>", "<Down>")
 set("i", "<C-k>", "<Up>")
 
 set("c", "<C-space>", "<cr>", { noremap = true, silent = true })
-set('x', '/', '<Esc>/\\%V', { noremap = true }) -- search in visual scope

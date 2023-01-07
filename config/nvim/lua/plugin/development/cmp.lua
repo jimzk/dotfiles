@@ -40,10 +40,22 @@ local format = lspkind.cmp_format({
 })
 
 local action_tab = function(fallback)
+  if luasnip.expand_or_jump() then
+    local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local next_char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
+    if next_char == " " then luasnip.expand_or_jump() end
+  else
+    fallback()
+  end
+end
+
+local sources = { "luasnip", "nvim_lsp", "buffer" }
+local cycle_source = function(fallback)
   if cmp.visible() then
-    cmp.confirm({ select = true })
-  elseif luasnip.expand_or_jumpable() then
-    luasnip.expand_or_jump()
+    local i = vim.g.cmp_source_index or 1
+    i = i < #sources and i + 1 or 1
+    vim.g.cmp_source_index = i
+    cmp.complete({ config = { sources = { { name = sources[i] } } } })
   else
     fallback()
   end
@@ -56,35 +68,19 @@ local mapping = {
   ["<C-n>"] = cmp.mapping(
     function(_) if cmp.visible() then cmp.select_next_item() else cmp.complete() end end
     , { "i", "s" }),
-  ["<C-k>"] = cmp.mapping.select_prev_item({ count = 20 }), -- page up
-  ["<C-j>"] = cmp.mapping.select_next_item({ count = 20 }), -- page down
-  ['<C-h>'] = cmp.mapping.scroll_docs(-4),
-  ['<C-l>'] = cmp.mapping.scroll_docs(4),
+  ["<C-M-p>"] = cmp.mapping.select_prev_item({ count = 20 }), -- page up
+  ["<C-M-n>"] = cmp.mapping.select_next_item({ count = 20 }), -- page down
+  ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-j>'] = cmp.mapping.scroll_docs(4),
   ['<C-c>'] = cmp.mapping.abort(),
   ['<CR>'] = cmp.mapping.confirm({ select = true }),
   ['<C-CR>'] = cmp.mapping.close(),
+  ["<C-l>"] = cmp.mapping(cycle_source, { "i" }),
 
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
   -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L66
   ["<Tab>"] = cmp.mapping(action_tab, { "i", "s" }),
 }
-
-local sources = { "luasnip", "nvim_lsp", "buffer" }
-set("i", "<C-S-n>", function()
-  local index = 1
-  for i, source in ipairs(sources) do
-    if source == vim.g.selected_cmp_source then
-      index = i + 1
-      break
-    end
-  end
-  if index > #sources then
-    index = 1
-  end
-  vim.g.selected_cmp_source = sources[index]
-  cmp.close()
-  cmp.complete({ config = { sources = { { name = vim.g.selected_cmp_source } } } })
-end)
 
 -- vim.api.nvim_buf_get_text()
 local mapping_cmdline = {
@@ -133,6 +129,11 @@ cmp.setup({
       {
         name = 'nvim_lsp',
         entry_filter = function(entry, _)
+          -- Kind index
+          -- https://github.com/onsails/lspkind.nvim/blob/master/lua/lspkind/init.lua#L63
+          if entry:get_kind() == 1 then -- if kind is text
+            return false
+          end
           local word = entry:get_word()
           local ignored_words = {
             "Workspace loading:" -- lua
@@ -141,9 +142,9 @@ cmp.setup({
             if word:find(value) then return false end
           end
           return true
-        end
+        end,
+        proptity = 50
       },
-      priority = 50,
     },
     {
       { name = 'buffer', keyword_length = 3 },

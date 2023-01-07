@@ -34,6 +34,10 @@ require("which-key").register({
     vim.cmd [[Gitsigns toggle_deleted]]
     vim.cmd [[Gitsigns toggle_word_diff]]
   end, "toggle git change highlight" },
+  ["<C-b>"] = { function()
+    vim.cmd [[Gitsigns toggle_current_line_blame]]
+    vim.notify [[Toggle inline Git blame]]
+  end, "toggle line blame" },
   m = { function()
     builtin.filetypes {
       prompt_title = "Set Filetype",
@@ -41,14 +45,16 @@ require("which-key").register({
   end, "set filetype" },
   ["<C-m>"] = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
   e = { "<cmd>h autocmd-events<cr>", "list autocmd event" },
-  o = { function() builtin.vim_options {} end, "list vim options" },
-  l = { function() builtin.highlights {} end, "list highlights" },
-  c = { function() builtin.colorscheme({
-      enable_preview = true,
-      preview = false,
-    })
-  end, "avaliable colorschemes" },
-  h = { function() builtin.help_tags {} end, "list help keywords" },
+  o = { function() builtin.vim_options {} end, "set vim option" },
+  -- l = { function() builtin.highlights {} end, "list highlights" },
+  l = { require("fzf-lua").highlights, "list highlights" },
+  -- c = { function() builtin.colorscheme({
+  --     enable_preview = true,
+  --     preview = false,
+  --   })
+  -- end, "avaliable colorschemes" },
+  c = { require("fzf-lua").colorschemes, "avaliable colorschemes" },
+  -- h = { function() builtin.help_tags {} end, "list help keywords" },
   a = { function() builtin.autocommands {} end, "list autocommands" },
   k = { "<cmd>Telescope keymaps<cr>", "list all keymaps" },
   ["<tab>"] = { function()

@@ -51,8 +51,17 @@ wk.register({
   g = { function() builtin.git_status({
       results_title = "|(un)stage: ⇥ |open: ^v(split) ^s(plit) ^t(ab)",
       prompt_title = "Find Git Changed File",
+      git_icons = {
+        added = "A",
+        changed = "M",
+        copied = ">",
+        deleted = "D",
+        renamed = "➡",
+        unmerged = "‡",
+        untracked = "?",
+      }
     })
   end, "changed git files" },
-  -- t = { "<cmd>Telescope current_buffer_tags<cr>", "tags in current buffer" },
-  -- T = { "<cmd>Telescope tags<cr>", "tags in repository" },
+  t = { "<cmd>Telescope current_buffer_tags<cr>", "tags in current buffer" },
+  T = { "<cmd>Telescope tags<cr>", "tags in repository" },
 }, { prefix = "<leader>f" })

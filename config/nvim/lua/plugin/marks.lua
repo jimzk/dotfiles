@@ -18,13 +18,13 @@ require("marks").setup {
   default_mappings = true,
   -- NOTE: If float buffer of lsp.hover() has marks then it shows signcolumn and can't have enought width
   -- Makr . must be hidden as it always shows in float buffer of lsp.
-  builtin_marks = { "<", ">", ".", "'", '"' },
+  builtin_marks = { "<", ">", ".", "`", '"' },
   -- I don't know what it is. I think it may afffect jumplist
   cyclic = false,
   force_write_shada = false,
   refresh_interval = 250,
   sign_priority = { lower = 10, upper = 15, builtin = 8, bookmark = 20 },
-  excluded_filetypes = { "sagarename", "notify", "NvimTree", "TelescopePrompt", "fzf", "harpoon" },
+  excluded_filetypes = Utils.non_code_filetypes,
   mappings = {
     toggle = false,
     -- FIX: need  :q to quite preview window
@@ -58,3 +58,12 @@ require("marks").setup {
 
 -- color definied by marks.nvm
 vim.cmd("autocmd ColorScheme * highlight link MarkSignNumHL LineNr")
+
+set("n", "tm", function() -- Trouble version :MarksListBuf
+  require 'marks'.mark_state:buffer_to_list()
+  require("trouble").open('loclist')
+end, { desc = "list LOCAL marks in current buffer" })
+set("n", "tM", function() -- Trouble version MarksListGlobal
+  require 'marks'.mark_state:global_to_list()
+  require("trouble").open('loclist')
+end, { desc = "list LOCAL marks in current buffer" })

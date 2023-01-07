@@ -23,11 +23,11 @@ local keymaps = {
   },
   diff1 = {
     -- Mappings in single window diff layouts
-    { "n", "?", actions.help({ "view", "diff1" }), { desc = false } },
+    { "n", "?", actions.help({ "view", "diff1" }), { desc = "diffview_ignore" } },
   },
   diff2 = {
     -- Mappings in 2-way diff layouts
-    { "n", "?", actions.help({ "view", "diff2" }), { desc = false } },
+    { "n", "?", actions.help({ "view", "diff2" }), { desc = "diffview_ignore" } },
   },
   diff3 = {
     -- Mappings in 3-way diff layouts
@@ -35,7 +35,7 @@ local keymaps = {
       { desc = "Obtain diff hunk from OURS version" } },
     { { "n", "x" }, "3do", actions.diffget("theirs"),
       { desc = "Obtain diff hunk from THEIRS version" } },
-    { "n", "?", actions.help({ "view", "diff3" }), { desc = false } },
+    { "n", "?", actions.help({ "view", "diff3" }), { desc = "diffview_ignore" } },
   },
   diff4 = {
     -- Mappings in 4-way diff layouts
@@ -45,18 +45,18 @@ local keymaps = {
       { desc = "Obtain diff hunk from OURS version" } },
     { { "n", "x" }, "3do", actions.diffget("theirs"),
       { desc = "Obtain diff hunk from THEIRS version" } },
-    { "n", "?", actions.help({ "view", "diff4" }), { desc = false } },
+    { "n", "?", actions.help({ "view", "diff4" }), { desc = "diffview_ignore" } },
   },
   file_panel = {
-    { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = false } },
+    { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = "diffview_ignore" } },
     { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
     { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 
     -- { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
-    { "n", "j", actions.next_entry, { desc = false } },
-    { "n", "<down>", actions.next_entry, { desc = false } },
-    { "n", "k", actions.prev_entry, { desc = false } },
-    { "n", "<up>", actions.prev_entry, { desc = false } },
+    { "n", "j", actions.next_entry, { desc = "diffview_ignore" } },
+    { "n", "<down>", actions.next_entry, { desc = "diffview_ignore" } },
+    { "n", "k", actions.prev_entry, { desc = "diffview_ignore" } },
+    { "n", "<up>", actions.prev_entry, { desc = "diffview_ignore" } },
     { "n", "J", function()
       actions.next_entry()
       local line = vim.api.nvim_get_current_line()
@@ -73,7 +73,7 @@ local keymaps = {
     end, { desc = "Go previous file and open diff" } },
 
     { "n", "o", actions.select_entry, { desc = "Open diff" } },
-    { "n", "<2-LeftMouse>", actions.select_entry, { desc = false } },
+    { "n", "<2-LeftMouse>", actions.select_entry, { desc = "diffview_ignore" } },
     { "n", "O", actions.focus_entry, { desc = "Open diff and jump" } },
     { "n", "<cr>", actions.focus_entry, { desc = "Open diff and jump" } },
 
@@ -107,15 +107,15 @@ local keymaps = {
     { "n", "?", actions.help("file_panel"), { desc = "Open the help panel" } },
   },
   file_history_panel = {
-    { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = false } },
+    { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = "diffview_ignore" } },
     { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
     { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 
     -- { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
-    { "n", "j", actions.next_entry, { desc = false } },
-    { "n", "<down>", actions.next_entry, { desc = false } },
-    { "n", "k", actions.prev_entry, { desc = false } },
-    { "n", "<up>", actions.prev_entry, { desc = false } },
+    { "n", "j", actions.next_entry, { desc = "diffview_ignore" } },
+    { "n", "<down>", actions.next_entry, { desc = "diffview_ignore" } },
+    { "n", "k", actions.prev_entry, { desc = "diffview_ignore" } },
+    { "n", "<up>", actions.prev_entry, { desc = "diffview_ignore" } },
     { "n", "J", function()
       actions.next_entry()
       local line = vim.api.nvim_get_current_line()
@@ -132,7 +132,7 @@ local keymaps = {
     end, { desc = "Go previous file and open diff" } },
 
     { "n", "o", actions.select_entry, { desc = "Open diff" } },
-    { "n", "<2-LeftMouse>", actions.select_entry, { desc = false } },
+    { "n", "<2-LeftMouse>", actions.select_entry, { desc = "diffview_ignore" } },
     { "n", "<cr>", actions.focus_entry, { desc = "Open diff and jump" } },
     { "n", "<C-cr>", actions.open_in_diffview, { desc = "Open file in new diffview" } },
 
@@ -156,7 +156,7 @@ local keymaps = {
     { "n", "<esc>", actions.close, { desc = "Close panel" } },
     { "n", "q", actions.close, { desc = "Close panel" } },
     { "n", "!", actions.close, { desc = "Close panel" } },
-    { "n", "?", actions.help("option_panel"), { desc = false } },
+    { "n", "?", actions.help("option_panel"), { desc = "diffview_ignore" } },
   },
   help_panel = {
     { "n", "q", actions.close, { desc = "Close help menu" } },
@@ -166,15 +166,15 @@ local keymaps = {
 }
 
 local presets = {
-  { "n", "<C-o>", "", { desc = false } },
-  { "n", "<C-i>", "", { desc = false } },
-  { "n", "<C-[>", "", { desc = false } },
-  { "n", "<C-]>", "", { desc = false } },
-  { "n", "<C-g>", "", { desc = false } },
-  { "n", "<C-S-g>", "", { desc = false } },
-  { "n", "<leader>gd", "", { desc = false } },
-  { "n", "<leader>gD", "", { desc = false } },
-  { "n", "<leader>gh", "", { desc = false } },
+  { "n", "<C-o>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<C-i>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<C-[>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<C-]>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<C-g>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<C-S-g>", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<leader>gd", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<leader>gD", "<Nop>", { desc = "diffview_ignore" } },
+  { "n", "<leader>gh", "<Nop>", { desc = "diffview_ignore" } },
 }
 for _, v in pairs(keymaps) do
   if type(v) == "table" then
@@ -190,6 +190,9 @@ require("diffview").setup {
     view_leave = function(_)
       vim.cmd [[DiffviewClose]]
     end,
+    diff_buf_read = function()
+      vim.wo.signcolumn = "no"
+    end
   },
   keymaps = keymaps,
 }

@@ -20,7 +20,8 @@ local mappings = {
   ["v"] = "vsplit",
   ["s"] = "split",
   -- ["t"] = "tabnew",
-  ["o"] = "preview",
+  ["l"] = "preview",
+  ["h"] = "close_node",
 
   -- navigation in file
   ["K"] = "prev_sibling",
@@ -37,9 +38,10 @@ local mappings = {
   ["zR"] = "expand_all",
 
   -- navigation in dir
-  ["cd"] = { "l", "<2-RightMouse>" },
-  ["-"] = "close_node",
-  ["h"] = "dir_up",
+  -- TODO: expand / collapse current folder
+  ["<2-RightMouse>"] = "cd",
+  ["="] = "cd",
+  ["-"] = "dir_up",
   ["q"] = "close",
 
   -- search
@@ -93,7 +95,7 @@ end
 
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
-  -- open_on_setup = true,         -- open nvim-tree when starting vim with directory
+  open_on_setup = true, -- open nvim-tree when starting vim with directory
   -- open_on_setup_file = true,    -- open nvim-tree when starting vim with file
   sync_root_with_cwd = true, -- sync nvim-tree when changing buffer's cwd
   respect_buf_cwd = true, -- change nvim-tree cwd to buffer's cwd
@@ -125,7 +127,8 @@ require("nvim-tree").setup({
     dotfiles = false, -- show hidden files
   },
   update_focused_file = {
-    enable = false, -- update for focused file immediately in nvim-tree
+    enable = true, -- focus item after opening a buffer
+    ignore_list = {}
   },
   notify = {
     threshold = vim.log.levels.WARN,
@@ -134,6 +137,7 @@ require("nvim-tree").setup({
     cmd = "trash",
     require_confirm = false,
   },
+  hijack_cursor = true, -- Fix cursor in nvim-tree
 })
 
 vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")

@@ -36,16 +36,17 @@ fi
 export EDITOR
 
 # fzf
-FZF_BASE_OPTS="--no-sort --exact --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
---bind='tab:down' \
---bind='btab:up' \
+FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
 --bind='ctrl-n:down' \
 --bind='ctrl-p:up' \
---bind='ctrl-j:page-down' \
---bind='ctrl-k:page-up' \
+--bind='ctrl-alt-n:page-down' \
+--bind='ctrl-alt-p:page-up' \
+--bind='alt-a:toggle-all' \
+--bind='alt-n:toggle+down' \
+--bind='alt-p:toggle+up' \
 --bind='ctrl-space:toggle' \
---bind='ctrl-d:preview-half-page-down' \
---bind='ctrl-u:preview-half-page-up' \
+--bind='ctrl-j:preview-half-page-down' \
+--bind='ctrl-k:preview-half-page-up' \
 --bind 'ctrl-\:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

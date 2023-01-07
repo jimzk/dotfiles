@@ -1,4 +1,6 @@
 local telescope = require("telescope")
+local actions = require("telescope.actions")
+local builtin = require("telescope.builtin")
 telescope.setup {
   -- https://github.com/nvim-telescope/telescope.nvim/issues/1351
   defaults = {
@@ -13,9 +15,9 @@ telescope.setup {
       },
       vertical = {
         mirror = true,
-        -- height = 0.9,
+        height = 0.65,
         -- width = {0.9, max = 160},  -- set width 0.9 when min < buffer column < max
-        preview_height = 0.5,
+        preview_height = 0.4,
       },
       horizontal = {
         -- height = 0.6,
@@ -44,10 +46,6 @@ telescope.setup {
         -- parsing rule: https://github.com/nvim-telescope/telescope.nvim/issues/2237
         ["<C-h>"] = "results_scrolling_up",
         ["<C-l>"] = "results_scrolling_down",
-        ["<right>"] = "cycle_previewers_prev",
-        ["<left>"] = "cycle_previewers_next",
-        ["<down>"] = "move_selection_next",
-        ["<up>"] = "move_selection_previous",
         ["<esc>"] = "close", -- disable normal mode
         ["<C-q>"] = "close", -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
@@ -57,6 +55,8 @@ telescope.setup {
         ["<C-j>"] = "preview_scrolling_down",
         ["<PageUp>"] = false,
         ["<Pagedown>"] = false,
+        ["<C-u>"] = false,
+        ["<C-d>"] = false,
         -- Open results in trouble
         -- https://github.com/folke/trouble.nvim#telescope
         ["<C-cr>"] = require("trouble.providers.telescope").open_with_trouble,
@@ -99,8 +99,101 @@ telescope.setup {
         }
       }
     },
+    -- Uncompleted. I give up telescope
+    live_grep = {
+      mappings = {
+        i = {
+          ["<C-y>"] = {
+            action = actions.move_selection_next,
+            opts = { nowait = true, silent = true }
+          },
+          ["<tab>"] = {
+            function(prompt_bufnr)
+    actions.select_default:replace(function()
+      local current_picker = action_state.get_current_picker(prompt_bufnr)
+      local selections = current_picker:get_multi_selection()
+      -- if no multi-selection, leverage current selection
+      if vim.tbl_isempty(selections) then
+        table.insert(selections, action_state.get_selected_entry())
+      end
+      local paths = vim.tbl_map(function(e)
+        return e.path
+      end, selections)
+      actions.close(prompt_bufnr)
+      builtin.live_grep({
+        search_dirs = paths,
+      })
+    end)
+    -- true: attach default mappings; false: don't attach default mappings
+    return true
+  end,
+
+          }<>
+          ["<C-d>"] = {
+            function(prompt_bufnr)
+              local action_state = require "telescope.actions.state"
+              local picker = action_state.get_current_picker(prompt_bufnr) -- picker state
+              local entry = action_state.get_selected_entry()
+              local line = action_state.get_current_line()
+
+
+              local insert_glob = function(files, file)
+                if not file then return end
+                if file:sub(1, 1) == '!' then
+                  table.insert(files.exclude, file:sub(2, -1))
+                else
+                  table.insert(files.include, file)
+                end
+              end
+              local glob_pattern = picker.glob_pattern
+              local files = {
+                include = {},
+                exclude = {},
+              }
+              if type(glob_pattern) == "table" then
+                for _, pattern in ipairs(glob_pattern) do insert_glob(files, pattern) end
+              else
+                insert_glob(files, glob_pattern)
+              end
+              local result_title = ""
+              if #files.include ~= 0 then
+                local msg = ""
+                for _, include_file in ipairs(files.include) do
+                  if msg ~= "" then msg = msg .. ", " end
+                  msg = msg .. include_file
+                end
+                result_title = result_title .. "include: " .. msg
+              end
+              if #files.exclude ~= 0 then
+                local msg = ""
+                for _, exclude_file in ipairs(files.include) do
+                  if msg ~= "" then msg = msg .. ", " end
+                  msg = msg .. exclude_file
+                end
+                if result_title ~= "" then
+                  result_title = result_title .. " | "
+                end
+                result_title = result_title .. "exclude: " .. msg
+              end
+            end,
+            type = "action"
+          },
+          ["<Tab>"] = {
+            function(prompt_bufnr)
+              local action_state = require "telescope.actions.state"
+              local current_picker = action_state.get_current_picker(prompt_bufnr) -- picker state
+              local query = action_state.get_current_line()
+            end,
+            type = "action"
+          },
+        }
+      }
+    }
   }
 }
+
+-- TODO: picker
+-- https://github.com/nvim-telescope/telescope.nvim/issues/1701
 
 -- https://github.com/nvim-telescope/telescope.nvim#previewers
 vim.cmd [[autocmd User TelescopePreviewerLoaded setlocal wrap]]
@@ -135,6 +228,6 @@ telescope.setup {
 
 require("plugin.telescope.fzf")
 require("plugin.telescope.frency")
-require("plugin.telescope.live-grep-args")
 require("plugin.telescope.project")
 require("plugin.telescope.pickers")
+require("plugin.telescope.search")

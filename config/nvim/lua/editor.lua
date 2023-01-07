@@ -17,10 +17,12 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     -- end
   end
 })
+
 vim.api.nvim_create_autocmd('BufLeave', {
   pattern = "*",
   callback = function()
-    vim.cmd [[delm v]] -- Not preserve visual start point
+    -- No preserve visual start point
+    vim.api.nvim_buf_del_mark(0, "v")
     vim.g.last_accessed_buf = vim.api.nvim_get_current_buf()
   end
 })
@@ -31,21 +33,25 @@ vim.api.nvim_create_autocmd('BufLeave', {
 vim.cmd [[au ColorScheme * hi! link Visual @text.warning]]
 
 -------------------------------
---------- Mapping ----------
-local opts = { noremap = true }
+--------- Mapping -------------
+local wk = require("which-key")
+local set = function(mode, lhs, rhs, opts)
+  wk.register({
+    [lhs] = { rhs, opts.desc or "which_key_ignore" }
+  }, vim.tbl_extend("force", { mode = mode }, opts))
+end
 
+local opts = { noremap = true }
 vim.g.mapleader = " "
 set("n", "<Space>", "<Nop>", opts)
-
 set("n", "U", "<C-r>", opts)
-set("n", "Y", "y$", opts)
 
 -- Move to wrapped line
-set("n", "j", "gj", opts)
-set("n", "k", "gk", opts)
-set("n", "0", "g0", opts)
-set("n", "$", "g$", opts)
-set("n", "^", "g^", opts)
+-- set("n", "j", "gj", opts)
+-- set("n", "k", "gk", opts)
+-- set("n", "0", "g0", opts)
+-- set("n", "$", "g$", opts)
+-- set("n", "^", "g^", opts)
 -- Allow arrow key in insert mode ([,]) and normal mode (<,>) and hl in normal mode wrap move
 vim.opt.whichwrap:append("[,],<,>,h,l")
 
@@ -56,6 +62,10 @@ set("n", ">", ">>", opts)
 set("x", ">", ">gv", opts)
 set("x", "<", "<gv", opts)
 
+-- Not yank for c/C
+set({ "n", "v" }, "c", '"_c', opts)
+set({ "n", "v" }, "C", '"_C', opts)
+
 -- Native * starting from normal mode deteches word boundary.
 -- For example, * under foo can't match foo_bar.
 -- I don't like this. Reverse * with g*
@@ -65,18 +75,23 @@ set("n", "g*", [[mv"vyiw/\V\<<C-R>=escape(@v,'/\')<CR>\><CR>g`v<cmd>delm v<cr>]]
 -- See: https://github.com/neovim/neovim/pull/18538/files
 set("v", "*", [["vymv/\V<C-R>=escape(@v,'/\')<CR><CR>g`v<cmd>delm v<cr>]], opts)
 set("v", "g*", [["vymv/\V\<<C-R>=escape(@v,'/\')<CR>\><CR>g`v<cmd>delm v<cr>]], opts)
+-- search in visual scope
+set('x', '/', '<Esc>/\\%V', { noremap = true })
 
 -- Get back to original poistion from visual mode
 set('n', 'v', 'mvv', opts)
 set('n', 'V', 'mvV', opts)
 set('n', '<C-V>', 'mv<C-V>', opts)
-set('n', 'gv', 'mvgv', opts)  -- FIX: break location remember for treesitter incremental_selection
+-- Use ` to compatible with treesitter incremental_selection which marks v continusouly
+set('n', 'gv', 'm`gv', opts)
 -- In visual mode, <Esc> jumps back, <Cr> stays
 -- set('x', '<Esc>', "<Esc>`y", opts)
 set("x", "<Cr>", "<Esc>", opts) -- vmap <Cr> in sneak.lua
 
--- Easy jump to mark
-set("n", "<Tab>", "``")
+-- Prevent cursor jump at yank in visual mode
+set("n", "y", "mvy", opts)
+set("v", "y", "mxyg`x<cmd>delm x<cr>", opts)
+set("n", "Y", "mxy$g`x<cmd>delm x<cr>", opts)
 
 -- Cmdline
 set({ "c", "i" }, "<C-E>", "<End>", opts)
@@ -96,17 +111,30 @@ local co = function()
   local reg = "v"
   local pos = vim.api.nvim_buf_get_mark(0, reg)
   if pos[1] ~= 0 then
-    vim.notify("jump to visual")
-    vim.api.nvim_win_set_cursor(0, pos)
-    vim.api.nvim_buf_set_mark(0, reg, 0, 0, {})
+    local line_count = vim.api.nvim_buf_line_count(0)
+    if pos[1] <= line_count then
+      vim.notify("jump to visual")
+      vim.api.nvim_win_set_cursor(0, pos)
+      vim.api.nvim_buf_del_mark(0, reg)
+    end
     return
   end
   vim.cmd [[exec "normal! \<C-o>"]]
 end
 set("n", "<C-o>", co, opts)
 set("n", "<C-i>", "<C-i>", opts)
-set("n", "-", co, opts)
-set("n", "=", "<C-i>", opts)
+
+
+-- Update jumplist for [cound]j/k
+for i = 1, 99, 1 do
+  i = tostring(i)
+  wk.register({ [i] = "which_key_ignore" })
+  local cmds = { "k", "j" }
+  for _, cmd in ipairs(cmds) do
+    cmd = i .. cmd
+    set("n", cmd, "m`" .. cmd, opts)
+  end
+end
 
 local visual_p = function()
   vim.cmd [[normal! "vy]]
@@ -144,6 +172,10 @@ set("x", "P", visual_p, opts)
 --     end, { buffer = true, silent = true })
 --   end
 -- })
+-- Ref: Ignored types
+-- filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+-- buftype = { "nofile", "terminal", "help" },
+
 
 -- Jump to last visited place when entering a bufer
 -- https://this-week-in-neovim.org/2023/Jan/02#tips
@@ -153,6 +185,8 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     local lcount = vim.api.nvim_buf_line_count(0)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
+      -- set mark ` to last visited place as well
+      vim.api.nvim_buf_set_mark(0, "`", mark[1], mark[2], {})
     end
   end,
 })

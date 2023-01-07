@@ -70,3 +70,5 @@ require('gitsigns').setup {
 vim.cmd [[au ColorScheme * highlight GitSignsAdd gui=reverse cterm=reverse]]
 vim.cmd [[au ColorScheme * highlight GitSignsChange gui=reverse cterm=reverse]]
 vim.cmd [[au ColorScheme * highlight GitSignsDelete gui=reverse cterm=reverse]]
+
+set({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Git change" })

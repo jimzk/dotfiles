@@ -14,9 +14,10 @@ wk.register({
     vim.cmd [[wa]]
     vim.notify("Write all!")
   end, "write all" },
-  n = { function()
-    vim.cmd(vim.g.nvim_tree_exists and "NvimTreeToggle" or "NvimTreeFindFile")
-  end, "open nvim-tree" },
+  -- n = { function()
+  --   vim.cmd(vim.g.nvim_tree_exists and "NvimTreeToggle" or "NvimTreeToggle")
+  -- end, "open nvim-tree" },
+  n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
   N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
   ["<space>"] = { "<cmd>Gitsigns preview_hunk<cr>", "[G] preview current change" },
   ["<tab>"] = { "<cmd>Telescope resume<cr>", "last telescope history" },
@@ -41,12 +42,6 @@ wk.register({
   r = { function()
     require('spectre').open_file_search()
   end, "search and repalce (spectre)" },
-  -- h = { "<cmd>lua harpoon_marks()<cr>", "go marked file (harpoon)" },
-  h = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", "go marked file (harpoon)" },
-  H = { function()
-    require("harpoon.mark").add_file()
-    vim.notify("File marked!", vim.log.levels.INFO, { title = "Harpoon" })
-  end, "mark file (harpoon)" },
 }, opt)
 
 wk.register({

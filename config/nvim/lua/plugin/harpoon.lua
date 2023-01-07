@@ -4,9 +4,13 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = { "harpoon" },
   callback = function()
     local opts = { noremap = true, buffer = true, silent = true }
-    vim.keymap.set("n", "o", ui.select_menu_item, opts)
+    vim.keymap.set("n", "l", ui.select_menu_item, opts)
     vim.keymap.set("n", "<BS>", "dd", opts)
     vim.keymap.set("n", "<Tab>", harpoon_marks, opts)
+    for i = 1, 9, 1 do
+      local number = tostring(i)
+      vim.keymap.set("n", number, "<cmd>" .. number .. "<cr><cmd>lua require('harpoon.ui').select_menu_item()<cr>", opts)
+    end
   end
 })
 require("telescope").load_extension('harpoon')
@@ -30,3 +34,9 @@ _G.harpoon_marks = function()
     end
   })
 end
+
+-- set("n", "<C-g>", require('harpoon.ui').toggle_quick_menu, { desc = "go marked file (harpoon)" })
+-- set("n", "<C-S-g>", function()
+--   require("harpoon.mark").add_file()
+--   vim.notify("File marked!", vim.log.levels.INFO, { title = "Harpoon" })
+-- end, { desc = "mark file (harpoon)" })

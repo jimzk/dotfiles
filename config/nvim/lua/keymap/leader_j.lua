@@ -25,15 +25,19 @@ wk.register({
   -- search & grep
   J = { function()
     builtin.live_grep({
-      prompt_title = "Search In Current Buffer",
-      search_dirs = { vim.fn.expand('%'), },
+      prompt_title = "[Regex] Search Current Buffer",
+      search_dirs = { vim.fn.expand('%:p'), },
     })
-  end, "search in current buffer (support visual)" },
+  end, "REGEX search current buffer (support visual)" },
   j = { function()
-    extensions.live_grep_args.live_grep_args({
-      prompt_title = "Search In CWD",
+    builtin.live_grep({
+      prompt_title = "[Regex] Search in CWD",
+      search_dirs = { vim.fn.getcwd() },
+      -- glob_pattern = {
+      --   [[*.lua]]
+      -- },
     })
-  end, "search in cwd" },
+  end, "REGEX search in CWD" },
   ["<C-j>"] = { function()
     vim.ui.input(
       { prompt = "Enter regex pattern to search working directory: " },
@@ -87,10 +91,10 @@ wk.register({
 }, opt)
 
 wk.register({
-  t = { "<cmd>Telescope marks<cr>", "telescope marks" },
-  m = { "<cmd>MarksListBuf<cr>", "list LOCAL marks in current buffer" },
-  M = { "<cmd>MarksListGlobal<cr>", "list GLOBAL marks in all buffers" },
-  d = { "<cmd>h '[<cr>", "meaning of special mark" },
+  -- t = { "<cmd>Telescope marks<cr>", "telescope marks" },
+  -- m = { "<cmd>MarksListBuf<cr>", "list LOCAL marks in current buffer" },
+  -- M = { "<cmd>MarksListGlobal<cr>", "list GLOBAL marks in all buffers" },
+  -- d = { "<cmd>h '[<cr>", "meaning of special mark" },
   D = { -- marks.nvim
     name = "marks.nvim commands",
     ["0"] = { "m, set random mark" },

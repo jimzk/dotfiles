@@ -11,9 +11,7 @@
 -- To use CSIu mapping:
 -- 1. Map two keys individually
 local opts = { noremap = true }
-vim.keymap.set("n", "<C-m>", "", opts) -- Need to map <Cr> as well
-set("n", "<CR>", function()
-  pcall(vim.cmd, [[exe "normal! \<C-]>"]])
-end, { desc = "Go to tag / definition" })
+vim.keymap.set("n", "<C-m>", "<Nop>", opts) -- Need to map <Cr> as well
+set("n", "<CR>", "<C-]>", opts)
 
 -- 2. Enbable CSIu in your terminal or GUI. Most of them support CSIu, like iTerm2 and neovide.

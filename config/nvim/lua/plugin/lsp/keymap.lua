@@ -44,14 +44,8 @@ M.setup = function(bufnr)
       b = { "<cmd>normal m'<cr><cmd>Trouble lsp_type_definitions<cr>", "[C] go type definition" },
       r = { "<cmd>Lspsaga lsp_finder<cr>", "[C] peek reference (lspsaga)" },
       R = { "<cmd>normal m'<cr><cmd>Trouble lsp_references<cr>", "[C] go reference" },
-      ["["] = { function()
-        vim.lsp.buf.incoming_calls()
-        vim.cmd [[LTOpenToCalltree]]
-      end, "[C] incoming call tree" },
-      ["]"] = { function()
-        vim.lsp.buf.outgoing_calls()
-        vim.cmd [[LTOpenToCalltree]]
-      end, "[C] outgoing call tree" },
+      ["["] = { vim.lsp.buf.incoming_calls, "[C] incoming call tree" },
+      ["]"] = { vim.lsp.buf.outgoing_calls, "[C] outgoing call tree" },
     },
 
     ['<space>c'] = {
@@ -61,9 +55,11 @@ M.setup = function(bufnr)
         r = { function() vim.lsp.buf.remove_workspace_folder() end, "remove workspace folder" },
         l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "list workspace folder" },
       },
-      r = { "<cmd>Lspsaga rename<CR>", "rename" },
+      -- r = { "<cmd>Lspsaga rename<CR>", "rename" },
+      r = { vim.lsp.buf.rename, "rename" },
     },
-    ["<M-cr>"] = { "<cmd>Lspsaga code_action<cr>", "code action" },
+    ["<M-S-cr>"] = { "<cmd>Lspsaga code_action<cr>", "code action" },
+    ["<M-cr>"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action" },
   }, bufopts)
 
   vim.keymap.set({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help,

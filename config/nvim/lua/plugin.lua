@@ -66,7 +66,11 @@ local plugins = function(use)
     requires = {"kkharji/sqlite.lua"},
   }
   use "nvim-telescope/telescope-project.nvim"         -- Quick access projects
-  use "nvim-telescope/telescope-live-grep-args.nvim"  -- Grep with regex file name
+  -- Among fuzzy search plugins Telescope.
+  -- fzf.vim is hard to extend.
+  -- Telescope's seach and git is not perfect and need time to configure
+  -- Finally I choose fzf-lua.
+  use "ibhagwan/fzf-lua"
   use "ThePrimeagen/harpoon" -- Mark and find files
 
   ------ Navigation
@@ -90,16 +94,15 @@ local plugins = function(use)
 
   ------ Edit
   use {
-    "mg979/vim-visual-multi",           -- Multi selection in visual block mode (ctrl-v)
-    setup = function()                  -- All operations only work in visual block mode.
-      -- Help: :h vm-highlight          -- Ctrl-n selects word, q/N select next/previous match
-      vim.g.VM_Mono_hl = 'Cursor'       -- q/Q skip current
-      -- Cursor in selection            -- ]/[ go to next/previous selection
-      vim.g.VM_Cursor_hl = 'Cursor'     -- i/a/I/A edit
-      -- Selected items in selection
-      vim.g.VM_Extend_hl = 'CurSearch'
-      -- Multi insert place atfer selection
-      -- vim.g.VM_Insert_hl = 'Cursor'
+    "mg979/vim-visual-multi",  -- Multi selection in visual block mode (ctrl-v)
+    config = function()        -- All operations only work in visual block mode.
+      -- Help: :h vm-highlight
+      vim.g.VM_Mono_hl = 'Cursor' -- All cursors
+      vim.g.VM_Cursor_hl = 'Cursor' -- Cursor in selection
+      vim.g.VM_Extend_hl = 'Visual' -- Selected items in selection
+      -- vim.g.VM_Insert_hl = 'IncSearch' -- Multi insert place atfer selection
+      set("n", "<M-j>", "<Plug>(VM-Add-Cursor-Down)")
+      set("n", "<M-k>", "<Plug>(VM-Add-Cursor-Up)")
     end
   }
   use {
@@ -120,10 +123,10 @@ local plugins = function(use)
                                    -- Only work in normal mode
     -- TODO: to remove? no much useful as it always fail to work
     setup = function()
-      -- FIX: thie keymap will fallback to origial function
-      -- It can't work when setting them in `config` field. Don't know why
-      vim.g.splitjoin_split_mapping = ',f'
-      vim.g.splitjoin_join_mapping = ',F'
+      vim.g.splitjoin_join_mapping = 'J'
+      -- I don't want K fall back
+      vim.g.splitjoin_split_mapping = ''
+      set("n", "K", "<cmd>SplitjoinSplit<cr>")
     end,
   }
   use "tpope/vim-surround" -- Operate on surroundings
@@ -154,11 +157,12 @@ local plugins = function(use)
       }
     end
   }
+  -- TODO: https://github.com/smjonas/inc-rename.nvim
+  use 'stevearc/dressing.nvim'
 
   ------ Git
   use "tpope/vim-fugitive"  -- Integrate git commands
-                            -- :Git opens summary window, and g? shows help.
-                            -- :Gsplit HEAD~3:% load current file of HEAD~3
+  use "tpope/vim-rhubarb"   -- Support :Browse of fugitive
   use "lewis6991/gitsigns.nvim"  -- Git changes visualization. :Gitsigns toggle<Tab> to toggle signs.
                                  -- :Gitsigns diffthis diffs buffers.
                                  -- There are also useful operations for hunk.
@@ -216,10 +220,6 @@ local plugins = function(use)
   use {
     "p00f/nvim-ts-rainbow", -- Rainbow bracket
     requires = "nvim-treesitter/nvim-treesitter",
-  }
-  use {
-    'ldelossa/litee-calltree.nvim',  -- Incoming/outcoming calls tree
-    requires = 'ldelossa/litee.nvim',
   }
 
   ----- Status line & Winbar
@@ -360,6 +360,9 @@ local plugins = function(use)
       require('impatient').enable_profile()  -- Enable :LuaCacheProfile
     end
   }
+  -- TODO:
+  -- https://github.com/nathom/filetype.nvim
+  -- https://github.com/hkupty/iron.nvim
 
   ----- Abandoned plugins
   -- jiangmiao/auto-pairs      -- Replace with nvim-autopairs
