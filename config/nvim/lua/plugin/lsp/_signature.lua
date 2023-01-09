@@ -1,4 +1,3 @@
-
 -- From: https://github.com/seblj/dotfiles/blob/master/nvim/lua/config/lspconfig/signature.lua
 local M = {}
 local augroup = vim.api.nvim_create_augroup

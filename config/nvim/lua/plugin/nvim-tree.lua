@@ -38,7 +38,6 @@ local mappings = {
   ["zR"] = "expand_all",
 
   -- navigation in dir
-  -- TODO: expand / collapse current folder
   ["<2-RightMouse>"] = "cd",
   ["="] = "cd",
   ["-"] = "dir_up",
@@ -95,7 +94,7 @@ end
 
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
-  open_on_setup = true, -- open nvim-tree when starting vim with directory
+  open_on_setup = false, -- open nvim-tree when starting vim with directory
   -- open_on_setup_file = true,    -- open nvim-tree when starting vim with file
   sync_root_with_cwd = true, -- sync nvim-tree when changing buffer's cwd
   respect_buf_cwd = true, -- change nvim-tree cwd to buffer's cwd
@@ -138,9 +137,13 @@ require("nvim-tree").setup({
     require_confirm = false,
   },
   hijack_cursor = true, -- Fix cursor in nvim-tree
+  tab = {
+    sync = { -- sync nvim-tree cross table
+      open = true,
+      close = true,
+    }
+  }
 })
 
 vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")
 vim.cmd("autocmd ColorScheme * hi NvimTreeSymlink guifg=gray")
-local Event = api.events.Event
-api.events.subscribe(Event.TreeOpen, function() vim.g.nvim_tree_exists = true end)

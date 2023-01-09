@@ -8,7 +8,7 @@ telescope.setup {
     layout_strategy = "vertical",
     layout_config = {
       prompt_position = "top",
-      anchor = "S",
+      -- anchor = "S",
       flex = {
         -- use vertical layout when buffer column < filp_columns
         flip_columns = 160,
@@ -44,19 +44,21 @@ telescope.setup {
         -- TODO: https://github.com/nvim-telescope/telescope.nvim/issues/2237
         -- NOTE: "toggle_selection" will be parsed to require("telescope.actions").toggle_selection
         -- parsing rule: https://github.com/nvim-telescope/telescope.nvim/issues/2237
-        ["<C-h>"] = "results_scrolling_up",
-        ["<C-l>"] = "results_scrolling_down",
-        ["<esc>"] = "close", -- disable normal mode
-        ["<C-q>"] = "close", -- disable normal mode
+        ["<C-h>"] = actions.results_scrolling_up,
+        ["<C-l>"] = actions.results_scrolling_down,
+        ["<esc>"] = actions.close, -- disable normal mode
+        ["<C-q>"] = actions.close, -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
-        ["<C-s>"] = "select_horizontal",
+        ["<C-s>"] = actions.select_horizontal,
         ["<C-x>"] = false,
-        ["<C-k>"] = "preview_scrolling_up",
-        ["<C-j>"] = "preview_scrolling_down",
+        ["<C-k>"] = actions.preview_scrolling_up,
+        ["<C-j>"] = actions.preview_scrolling_down,
         ["<PageUp>"] = false,
         ["<Pagedown>"] = false,
         ["<C-u>"] = false,
         ["<C-d>"] = false,
+        ["<C-n>"] = actions.move_selection_next,
+        ["<C-p>"] = actions.move_selection_previous,
         -- Open results in trouble
         -- https://github.com/folke/trouble.nvim#telescope
         ["<C-cr>"] = require("trouble.providers.telescope").open_with_trouble,
@@ -103,10 +105,10 @@ telescope.setup {
     live_grep = {
       mappings = {
         i = {
-          ["<C-y>"] = {
-            action = actions.move_selection_next,
-            opts = { nowait = true, silent = true }
-          },
+          -- ["<C-y>"] = {
+          --   action = actions.move_selection_next,
+          --   opts = { nowait = true, silent = true }
+          -- },
           ["<tab>"] = {
             function(prompt_bufnr)
     actions.select_default:replace(function()

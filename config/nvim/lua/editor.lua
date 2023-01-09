@@ -1,3 +1,4 @@
+vim.o.splitkeep = 'screen' -- Make screen the same when spliiting
 vim.o.jumpoptions = 'stack' -- Make jumplist behave like web browser back / forward
 vim.o.incsearch = false
 -- Don't add 'resize', it will disorder restored session.
@@ -62,21 +63,9 @@ set("n", ">", ">>", opts)
 set("x", ">", ">gv", opts)
 set("x", "<", "<gv", opts)
 
--- Not yank for c/C
+-- No yank for c/C
 set({ "n", "v" }, "c", '"_c', opts)
 set({ "n", "v" }, "C", '"_C', opts)
-
--- Native * starting from normal mode deteches word boundary.
--- For example, * under foo can't match foo_bar.
--- I don't like this. Reverse * with g*
-set("n", "*", [[mv"vyiw/\V<C-R>=escape(@v,'/\')<CR><CR>g`v<cmd>delm v<cr>]], opts) -- g`` to stay at current selection
-set("n", "g*", [[mv"vyiw/\V\<<C-R>=escape(@v,'/\')<CR>\><CR>g`v<cmd>delm v<cr>]], opts)
--- Native * yank selection and can't escape /. Fix it.
--- See: https://github.com/neovim/neovim/pull/18538/files
-set("v", "*", [["vymv/\V<C-R>=escape(@v,'/\')<CR><CR>g`v<cmd>delm v<cr>]], opts)
-set("v", "g*", [["vymv/\V\<<C-R>=escape(@v,'/\')<CR>\><CR>g`v<cmd>delm v<cr>]], opts)
--- search in visual scope
-set('x', '/', '<Esc>/\\%V', { noremap = true })
 
 -- Get back to original poistion from visual mode
 set('n', 'v', 'mvv', opts)
@@ -84,14 +73,12 @@ set('n', 'V', 'mvV', opts)
 set('n', '<C-V>', 'mv<C-V>', opts)
 -- Use ` to compatible with treesitter incremental_selection which marks v continusouly
 set('n', 'gv', 'm`gv', opts)
--- In visual mode, <Esc> jumps back, <Cr> stays
--- set('x', '<Esc>', "<Esc>`y", opts)
-set("x", "<Cr>", "<Esc>", opts) -- vmap <Cr> in sneak.lua
 
 -- Prevent cursor jump at yank in visual mode
-set("n", "y", "mvy", opts)
-set("v", "y", "mxyg`x<cmd>delm x<cr>", opts)
-set("n", "Y", "mxy$g`x<cmd>delm x<cr>", opts)
+-- Replace by yanky
+-- set("n", "y", "mvy", opts)
+-- set("v", "y", "mxyg`x<cmd>delm x<cr>", opts)
+-- set("n", "Y", "mxy$g`x<cmd>delm x<cr>", opts)
 
 -- Cmdline
 set({ "c", "i" }, "<C-E>", "<End>", opts)
@@ -113,7 +100,6 @@ local co = function()
   if pos[1] ~= 0 then
     local line_count = vim.api.nvim_buf_line_count(0)
     if pos[1] <= line_count then
-      vim.notify("jump to visual")
       vim.api.nvim_win_set_cursor(0, pos)
       vim.api.nvim_buf_del_mark(0, reg)
     end
@@ -123,7 +109,6 @@ local co = function()
 end
 set("n", "<C-o>", co, opts)
 set("n", "<C-i>", "<C-i>", opts)
-
 
 -- Update jumplist for [cound]j/k
 for i = 1, 99, 1 do
@@ -136,26 +121,27 @@ for i = 1, 99, 1 do
   end
 end
 
-local visual_p = function()
-  vim.cmd [[normal! "vy]]
-  local start_row = vim.fn.line("'<")
-  local start_col = vim.fn.col("'<")
-  local end_row = vim.fn.line("'>")
-  -- Handle v$ or V
-  local selected_end_line = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
-  local end_col = math.min(vim.fn.col("'>"), #selected_end_line)
-  -- Remove ending \n
-  local pasted = vim.fn.getreg("+")
-      :gsub("\n$", "") -- remove line break
-  -- split by "\n"
-  local replacement = {}
-  for str in string.gmatch(pasted, "([^\n]+)") do
-    table.insert(replacement, str)
-  end
-  vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, replacement)
-end
-set("x", "p", visual_p, opts)
-set("x", "P", visual_p, opts)
+-- local visual_p = function()
+--   vim.cmd [[normal! "vy]]
+--   local start_row = vim.fn.line("'<")
+--   local start_col = vim.fn.col("'<")
+--   local end_row = vim.fn.line("'>")
+--   -- Handle v$ or V
+--   local selected_end_line = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
+--   local end_col = math.min(vim.fn.col("'>"), #selected_end_line)
+--   -- Remove ending \n
+--   local pasted = vim.fn.getreg("+")
+--       :gsub("\n$", "") -- remove line break
+--   -- split by "\n"
+--   local replacement = {}
+--   for str in string.gmatch(pasted, "([^\n]+)") do
+--     table.insert(replacement, str)
+--   end
+--   vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, replacement)
+-- end
+-- Replace by yanky.nvim
+-- set("x", "p", visual_p, opts)
+-- set("x", "P", visual_p, opts)
 
 -- https://vi.stackexchange.com/questions/4493/what-is-the-order-of-winenter-bufenter-bufread-syntax-filetype-events
 -- Example: vim.cmd [[autocmd BufEnter * lua vim.notify('foo bar')]]
@@ -175,7 +161,6 @@ set("x", "P", visual_p, opts)
 -- Ref: Ignored types
 -- filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
 -- buftype = { "nofile", "terminal", "help" },
-
 
 -- Jump to last visited place when entering a bufer
 -- https://this-week-in-neovim.org/2023/Jan/02#tips

@@ -55,7 +55,7 @@ if spoon.WinWin then
       :bind('shift', '/', 'cheatsheet_ignore', function() spoon.ModalMgr:toggleCheatsheet() end)
       :bind('', 'tab', 'Send Window to Next Display', function() w:moveToScreen("next") end)
       :bind('', 'E', 'Move Window to Next Desktop', function() MoveFocusedWindowToSpace('next', true) end)
-      :bind('', 'Tab', 'Move Window to Prev Desktop', function() MoveFocusedWindowToSpace('prev', true) end)
+      :bind('', 'Q', 'Move Window to Prev Desktop', function() MoveFocusedWindowToSpace('prev', true) end)
 
   cmodal
       :bind('', 'F', 'Fullscreen', function() w:toggleFullScreen() end)

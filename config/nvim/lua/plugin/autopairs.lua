@@ -38,7 +38,6 @@ npairs.add_rules({
       :with_pair(cond.not_after_regex("[%w]"))-- don't add pair if the next alphanumeric char
       :with_pair(cond.not_before_text(" ")) -- don't add pair if prev char is whitespace
   ,
-  Rule("{", "},", "lua")
 })
 
 -- npairs.get_rule("[")

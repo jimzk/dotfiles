@@ -2,7 +2,8 @@ vim.g.fzf_command_prefix = "Fzf"
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { "fzf" },
   callback = function()
-    -- local opts = { noremap = true, buffer = true }
+    local opts = { noremap = true, buffer = true }
+    set('t', '<Esc>', [[<cmd>q<cr>]], opts)
   end
 })
 
@@ -11,9 +12,9 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- https://github.com/ibhagwan/fzf-lua#default-options
 local actions = require("fzf-lua.actions")
-fzf = require("fzf-lua")
+local fzf = require("fzf-lua")
 local utils = require("fzf-lua.utils")
-require("fzf-lua").setup {
+fzf.setup {
   winopts = {
     height  = 0.7,
     width   = 0.9,
@@ -61,7 +62,6 @@ require("fzf-lua").setup {
   -- },
 }
 
-
 -- Global actions
 fzf.setup {
   actions = {
@@ -99,6 +99,12 @@ local create_keymap_header = function(keymaps)
   return header .. [["]]
 end
 
+local get_query = function(opts)
+  local query = opts.__resume_data.last_query
+  query = query and query:gsub(" ", "\\ ") or " "
+  return query
+end
+
 -- Providers setup
 -- TODO: register help? https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/config.lua#L1024
 fzf.files_or_git_files = function(...)
@@ -109,6 +115,89 @@ fzf.files_or_git_files = function(...)
     fzf.files(...)
   end
 end
+
+local default_file_view = {
+  previewer = false,
+  winopts   = {
+    width = 100,
+  },
+  fzf_opts  = {
+    ["--exact"] = "",
+  },
+}
+
+-- Cycle among oldfiles, git files and files
+set("n", "-", function() fzf.oldfiles { cwd_only = true } end, { desc = "find file in buffers" })
+local cycle_key = "-"
+fzf.setup {
+  git = {
+    files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+      actions = {
+        [cycle_key] = function(_, opts)
+          fzf.files {
+            prompt = "AllFiles❯ ",
+            cwd = '~',
+            -- no hidden file, exclude some directories
+            fd_opts = "--color=never --type f --follow -E .git -E Library -E Pictures -E 'go'",
+            fzf_opts = {
+              ["--query"] = get_query(opts)
+            }
+          }
+        end,
+      }
+    })
+  },
+  files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+    actions = {
+      [cycle_key] = function(_, opts)
+        fzf.oldfiles {
+          cwd_only = true,
+          fzf_opts = {
+            ["--query"] = get_query(opts)
+          }
+        }
+      end,
+    }
+  }),
+  oldfiles = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+    prompt   = "Oldfiles❯ ",
+    fzf_opts = {
+      ["--header"] = create_keymap_header({
+        { cycle_key, "GitFiles" }
+      }),
+    },
+    actions  = {
+      -- Switch between current cwd and global
+      ["ctrl-o"] = function(_, opts)
+        fzf.oldfiles {
+          cwd_only = not opts.cwd_only,
+          prompt = opts.prompt == "Oldfiles❯ " and "Oldfiles(All)❯ " or "Oldfiles❯ "
+        }
+      end,
+      [cycle_key] = function(_, opts)
+        fzf.files_or_git_files {
+          fzf_opts = {
+            ["--query"] = get_query(opts)
+          }
+        }
+      end
+    }
+  }),
+  buffers = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+    -- fzf_opts = { ["--header"] = [["custom header"]]  },
+    actions = {
+      ["ctrl-d"] = { actions.buf_del, actions.resume }, -- not quite
+      [cycle_key] = function(_, opts)
+        fzf.files_or_git_files {
+          fzf_opts = {
+            ["--query"] = get_query(opts)
+          }
+        }
+      end,
+    },
+  }),
+}
+
 fzf.setup {
   git = {
     -- TODO: open item by :Browse
@@ -147,75 +236,6 @@ fzf.setup {
         end
       },
     },
-    -- Switch among buffers, git files and home files
-    files = {
-      actions = {
-        ["="] = function() end, -- close
-        ["tab"] = function(_, opts)
-          fzf.files {
-            prompt = "AllFiles❯ ",
-            cwd = '~',
-            -- no hidden file, exclude some directories
-            fd_opts = "--color=never --type f --follow -E .git -E Library -E Pictures -E 'go'",
-            fzf_opts = vim.tbl_extend("force", opts.fzf_opts, {
-              ["--query"] = opts.__resume_data.last_query,
-            })
-          }
-        end,
-      }
-    }
-  },
-  -- TODO: cycle oldfile->gitfile->file
-  files = {
-    actions = {
-      ["="] = function() end, -- close
-      ["tab"] = function(_, opts)
-        fzf.oldfiles {
-          cwd_only = true,
-          fzf_oapts = {
-            ["--query"] = opts.__resume_data.last_query,
-          }
-        }
-      end,
-    }
-  },
-  buffers = {
-    -- fzf_opts = { ["--header"] = [["custom header"]]  },
-    actions = {
-      ["-"] = function() end, -- close
-      ["ctrl-d"] = { actions.buf_del, actions.resume }, -- not quite
-      ["tab"] = function(_, opts)
-        fzf.files_or_git_files {
-          fzf_opts = vim.tbl_extend("force", opts.fzf_opts, {
-            ["--query"] = opts.__resume_data.last_query,
-          })
-        }
-      end,
-    },
-  },
-  oldfiles = {
-    prompt = "Oldfiles❯ ",
-    fzf_opts = {
-      ["--header"] = create_keymap_header({
-        { "tab", "GitFiles" }
-      })
-    },
-    actions = {
-      -- Switch between current cwd and global
-      ["ctrl-o"] = function(_, opts)
-        fzf.oldfiles {
-          cwd_only = not opts.cwd_only,
-          prompt = opts.prompt == "Oldfiles❯ " and "Oldfiles(All)❯ " or "Oldfiles❯ "
-        }
-      end,
-      ["tab"] = function(_, opts)
-        fzf.files_or_git_files {
-          fzf_opts = vim.tbl_extend("force", opts.fzf_opts, {
-            ["--query"] = opts.__resume_data.last_query,
-          })
-        }
-      end
-    }
   },
   grep = {
     -- !Example to use glob: foo -- *.txt (only include txt)
@@ -223,7 +243,7 @@ fzf.setup {
     rg_glob = true,
     actions = {
       -- ["btab"] = { actions.grep_lgrep }, -- toogle between grep and live_grep
-      ["tab"] = function(_, opts)
+      ["ctrl-f"] = function(_, opts)
         -- relative path
         local path = vim.api.nvim_buf_get_name(0):gsub(vim.fn.getcwd(0) .. '/', '')
         local pattern = (' -g ' .. path)
@@ -244,10 +264,12 @@ fzf.setup {
           prompt = opts.prompt,
         }
         -- live_grep_resume can't restore prompt and rg_opts
-        _G._live_grep_opts.rg_opts = opts.rg_opts
-        _G._live_grep_opts.prompt = opts.prompt
+        _G._live_grep_opts = {
+          rg_opts = opts.rg_opts,
+          prompt = opts.prompt
+        }
       end,
-      ["ctrl-f"] = function() end,
+      -- ["ctrl-f"] = function() end,
     },
   },
 }
@@ -258,15 +280,12 @@ _G._live_grep_opts = {}
 set("n", "<C-f>", function() fzf.live_grep_resume(_G._live_grep_opts) end, { desc = "search" })
 set("v", "<C-f>", fzf.grep_visual, { desc = "search visual selection" })
 
-set("n", "<C-g>", function() fzf.oldfiles { cwd_only = true } end, { desc = "find file in buffers" })
--- set("n", "+", fzf.git_files, { desc = "find files in repo" })
-
 local wk = require("which-key")
 wk.register({
   name = "Git",
   ["<cr>"] = { "<cmd>GBrowse<cr>", "open file in github" },
+  t = { fzf.buffers, "list buffers" },
   g = { fzf.git_status, "git status" },
-  o = { fzf.buffers, "list buffers" },
   l = { fzf.git_bcommits, "file commits" },
   L = { fzf.git_commits, "repo commits" },
   s = { fzf.git_stash, "file commits" },

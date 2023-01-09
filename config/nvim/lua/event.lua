@@ -4,13 +4,9 @@ vim.api.nvim_create_autocmd('TermOpen', {
   pattern = "term://*",
   callback = function()
     local opts = { buffer = true }
-    set('t', '<esc>', [[<cmd>q<cr>]], opts)
-    set('n', '<esc>', [[<cmd>q<cr>]], opts)
     set('t', '<M-right>', [[<M-f>]], opts)
     set('t', '<M-left>', [[<M-b>]], opts)
-    set("t", "<Esc>", "<cmd>q<cr>", opts)
-    set('t', '<C-i>', [[<C-\><C-n>]], opts)
-    set('t', '<Tab>', [[<Tab>]], opts)
+    set('t', '<Esc>', [[<C-\><C-n>]], opts)
   end,
 })
 

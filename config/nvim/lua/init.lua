@@ -1,10 +1,11 @@
 require("utils")
+require("plugin")
 require("editor")
 require("appearance")
 require("plugin.init")
-require("plugin")
 require("keymap")
 require("event")
+require("visual")
 require("neovide")
 
 --[[ NOTE

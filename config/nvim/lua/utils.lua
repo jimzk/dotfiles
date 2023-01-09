@@ -24,6 +24,7 @@ M.non_code_filetypes = {
   "DressingInput",
   "sagacodeaction",
   "DiffviewFiles",
+  "startify",
   ""
 }
 

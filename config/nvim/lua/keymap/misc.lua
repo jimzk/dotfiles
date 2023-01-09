@@ -22,8 +22,8 @@ wk.register({
   ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- ["<C-6>"] = { "<C-^>", "✭ alternative buffer" },
   -- ["<C-^>"] = { "<cmd>vsplit #<cr>", "✭ alternative buffer" },
-  ["-"] = { "<C-^>", "✭ alternative buffer" },
-  ["_"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
+  ["="] = { "<C-^>", "✭ alternative buffer" },
+  ["+"] = { "<cmd>vsplit #<cr>", "✭ split alternative buffer" },
   -- ["<C-z>"] = { "<cmd>normal u<cr>", "undo", mode = { "i" } },
   -- window size
   ["<C-M-k>"] = { "<c-w>+", "increase win height" },
@@ -31,17 +31,21 @@ wk.register({
   ["<C-M-h>"] = { "<c-w><", "decrease win width" },
   ["<C-M-l>"] = { "<c-w>>", "increase win width" },
   -- tab
-  ["<C-]>"] = { "<cmd>BufferNext<cr>", "next tab" },
-  ["<C-[>"] = { "<cmd>BufferPrev<cr>", "prev tab" },
-  ["<C-}>"] = { "<cmd>BufferMoveNext<cr>", "move tab right" },
-  ["<C-{>"] = { "<cmd>BufferMovePrevious<cr>", "move tab left" },
-  ["<M-p>"] = { "<cmd>BufferPin<cr>", "pin tab" },
-  ["<C-M-]>"] = { "<cmd>BufferScrollRight<cr>", "tab scroll right" },
-  ["<C-M-[>"] = { "<cmd>BufferScrollLeft<cr>", "tab scroll left" },
+  -- ["<C-]>"] = { "<cmd>BufferNext<cr>", "next tab" },
+  -- ["<C-[>"] = { "<cmd>BufferPrev<cr>", "prev tab" },
+  ["<C-]>"] = { "<cmd>tabnext<cr>", "next tab" },
+  ["<C-[>"] = { "<cmd>tabprev<cr>", "prev tab" },
+  -- ["<C-}>"] = { "<cmd>BufferMoveNext<cr>", "move tab right" },
+  -- ["<C-{>"] = { "<cmd>BufferMovePrevious<cr>", "move tab left" },
+  -- No need!
+  -- ["<M-p>"] = { "<cmd>BufferPin<cr>", "pin tab" },
+  -- ["<C-M-]>"] = { "<cmd>BufferScrollRight<cr>", "tab scroll right" },
+  -- ["<C-M-[>"] = { "<cmd>BufferScrollLeft<cr>", "tab scroll left" },
   -- delete buffer
-  ["<BS>"] = { "<cmd>BufferWipeout<cr>", "delete buffer with jumplist" },
-  ["<C-BS>"] = { "<cmd>BufferClose<cr>", "delete buffer" },
-  ["<S-BS>"] = { "<cmd>BufferCloseAllButCurrentOrPinned<cr>", "delete other buffers" },
+  -- ["<BS>"] = { "<cmd>BufferWipeout<cr>", "delete buffer with jumplist" },
+  ["<BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
+  -- ["<C-BS>"] = { "<cmd>BufferClose<cr>", "delete buffer" },
+  -- ["<S-BS>"] = { "<cmd>BufferCloseAllButVisible<cr>", "delete invisible buffers" },
   -- quit
   q = { function()
     -- Experimental
@@ -65,7 +69,7 @@ wk.register({
     --   end)
     -- end
   end, "which_key_ignore" },
-  ["<C-q>"] = { ":qa<cr>", "which_key_ignore" },
+  ["<C-q>"] = { ":qa!<cr>", "which_key_ignore" },
   ["<M-q>"] = { "q", "remapped q" },
 }, opt)
 

@@ -35,5 +35,13 @@ require('mini.indentscope').setup {
   },
 }
 
+-- Disable for certain types
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = Utils.non_code_filetypes,
+  callback = function()
+    vim.b.miniindentscope_disable = true
+  end
+})
+
 -- I try to hook function to jump back after surrounding but failed. Give up to use it.
 -- require('mini.surround').setup { }

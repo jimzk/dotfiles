@@ -274,3 +274,20 @@ __redraw() {
 __join_lines() {
     tr '\n' ' ' | sed -e 's/ *$//'
 }
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line -w
+  else
+    zle push-input -w
+    zle clear-screen -w
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+# https://stackoverflow.com/questions/12382499/looking-for-altleftarrowkey-solution-in-zsh
+# Alt + left / right move word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word

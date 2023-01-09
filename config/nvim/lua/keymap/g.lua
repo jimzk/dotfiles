@@ -39,12 +39,9 @@ wk.register({
   t = { function()
     local d = vim.fn.expand("%:p")
     vim.cmd("TodoTrouble cwd=" .. d)
-    vim.keymap.set("n", "gt", ":TroubleClose<cr>", { buffer = true, silent = true })
   end, "[C] TODOs" },
   T = { function()
     vim.cmd("TodoTrouble")
-    vim.keymap.set("n", "gT", ":TroubleClose<cr>", { buffer = true, silent = true })
   end, "[C] TODOs in workspace" },
   ["<C-t>"] = { "<cmd>TodoTelescope<cr>", "[C] search TODOs" },
 }, opt)
-

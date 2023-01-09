@@ -35,9 +35,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
       higroup = 'Visual',
       timeout = 200
     }
-    -- TODO: https://www.reddit.com/r/neovim/comments/wg4i1a/keep_cursor_position_on_yank/
-    if vim.v.event.operator == "y" then
-      vim.cmd "normal g`]"
-    end
   end,
 })

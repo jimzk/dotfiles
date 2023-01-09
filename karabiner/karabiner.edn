@@ -171,8 +171,8 @@
         [:!QWERCSq [:hs "MoveFocusedWindowToSpace('prev', false)"]]
         [:!QWERCSe [:hs "MoveFocusedWindowToSpace('next', false)"]]
         ;; move window to recent display and focus
-        [:!QWERdelete_or_backspace [:hs "w:moveToScreen('next')"]]
-        [:!QWERbackslash [:hs "ShowFocusedWindowInfo()"]]
+        [:!QWERtab [:hs "w:moveToScreen('next')"]]
+        [:!QWERslash [:hs "ShowFocusedWindowInfo()"]]
 
         ;; system applicaton management
         ; [:!QWERspacebar [:hs "RightClickFocusedWindow()"]]  ;; right click menu on focused window
@@ -271,7 +271,8 @@
         [:g :!Ch :VSCode]
         [:g [:open "/Applications/Visual Studio Code.app"]]
         ; [:f [:!TOf12]] ;; iTerm2
-        [:l :!Ch :iTerm]
+        ; I remap cmd-H so need anothr way to hide it
+        [:l [:hs "hs.window.focusedWindow():application():hide()"] :iTerm]
         [:l [:open "/Applications/iTerm.app"]] ;; iTerm2
 
         [:r :!Ch :Obsidian]

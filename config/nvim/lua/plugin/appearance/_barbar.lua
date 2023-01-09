@@ -1,9 +1,10 @@
+-- I don't use barbar.nvim anymore. Just keep it
 require 'bufferline'.setup {
   -- Enable/disable animations
-  animation = true,
+  animation = false,
 
   -- Enable/disable auto-hiding the tab bar when there is a single buffer
-  auto_hide = false,
+  auto_hide = true,
 
   -- Enable/disable current/total tabpages indicator (top right corner)
   tabpages = true,
@@ -32,7 +33,7 @@ require 'bufferline'.setup {
     'sh',
   },
 
-  hide = {},
+  hide = { inactive = true }, -- hide invisible buffer, more clean!
 
   -- Disable highlighting alternate buffers
   highlight_alternate = false,

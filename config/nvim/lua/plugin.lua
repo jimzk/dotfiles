@@ -119,9 +119,8 @@ local plugins = function(use)
     end
   }
   use {
-    "AndrewRadev/splitjoin.vim",   -- gS expand (like split) and gJ shrink (like join) line by language grammar.
+    "AndrewRadev/splitjoin.vim",   -- gS expand (split) and gJ shrink (join) line by language grammar.
                                    -- Only work in normal mode
-    -- TODO: to remove? no much useful as it always fail to work
     setup = function()
       vim.g.splitjoin_join_mapping = 'J'
       -- I don't want K fall back
@@ -138,17 +137,9 @@ local plugins = function(use)
   use "tpope/vim-sleuth"  -- Auto detect indent width in file
   use "mbbill/undotree"  -- Undo history
   use {"akinsho/toggleterm.nvim", tag = '*',}  -- Toggle terminal
-  use "romgrk/barbar.nvim"  -- Tabline
+  use "moll/vim-bbye"
   use "mhinz/vim-startify"    -- Startup page
   use "andymass/vim-matchup"  -- Enhance matchit (%)
-  use {
-    "max397574/better-escape.nvim", -- Better pressing jk or jj to escape from insert mode to normal mode
-    config = function()
-      require("better_escape").setup {
-        mapping = { "jk" }
-      }
-    end,
-  }
   use {
     "Pocco81/auto-save.nvim", -- Save file automatically
     config = function()
@@ -158,7 +149,8 @@ local plugins = function(use)
     end
   }
   -- TODO: https://github.com/smjonas/inc-rename.nvim
-  use 'stevearc/dressing.nvim'
+  use 'stevearc/dressing.nvim'  -- Beautify vim.ui.select and vim.ui.input
+  use "gbprod/yanky.nvim"  -- Enhance y and p
 
   ------ Git
   use "tpope/vim-fugitive"  -- Integrate git commands
@@ -232,7 +224,7 @@ local plugins = function(use)
     "SmiteshP/nvim-navic",  -- Show context in winbar
     requires = "neovim/nvim-lspconfig",
   }
-  use "justinmk/vim-sneak"  -- Extend f/F/t/T
+  use "ggandor/leap.nvim"
 
   ----- Auto completion
   use 'hrsh7th/nvim-cmp'      -- Core plugin
@@ -355,6 +347,16 @@ local plugins = function(use)
 
   -- MISC
   use {
+    'phaazon/mind.nvim',
+    branch = 'v2.2',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require 'mind'.setup()
+      set("n", "<leader>m", "<cmd>MindOpenMain<cr>")
+      vim.cmd[[autocmd FileType mind map <buffer> ? :h mind-config-keymaps<cr>]]
+    end
+  }
+  use {
     "lewis6991/impatient.nvim",  -- Improve startup time
     config = function ()
       require('impatient').enable_profile()  -- Enable :LuaCacheProfile
@@ -385,7 +387,8 @@ local plugins = function(use)
   -- rmagatti/auto-session   -- Auto save session. Use vim-startify instead.
   -- rmagatti/session-lens   -- List avaliable sessions by telescope. Use vim-startify instead.
   -- ahmedkhalf/project.nvim -- List recent projects. It tries to detect change cwd, which brings unexpected affects for plugins like vim-startify.
-  -- phaazon/hop.nvim        -- Easymotion-like plugin. I use it rarely.
+  -- phaazon/hop.nvim        -- Easymotion-like plugin. Bug "col value outside range" not fixed.
+  -- justinmk/vim-sneak      -- I love it, but leap.nvim is a better solution.
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting

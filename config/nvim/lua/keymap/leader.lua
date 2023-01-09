@@ -1,22 +1,11 @@
 local wk = require("which-key")
 local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
-  -- ["`"] = { "<cmd>qa<cr>", "quit all" },
-  -- ["~"] = { "<cmd>qa!<cr>", "quit all forcely" },
-  -- ["q"] = { "<cmd>q<cr>", "quite" },
-  -- ["Q"] = { "<cmd>q!<cr>", "quite forcely" },
-  -- ["<BS>"] = { "<cmd>BufferClose!<cr>", "delete buffer forcely" },
-  -- ["<BS>"] = { "<cmd>BufferWipeout<cr>", "delete buffer with jumplist" },
-  -- ["<M-BS>"] = { "<cmd>BufferClose<cr>", "delete buffer" },
-  -- ["<S-BS>"] = { "<cmd>BufferCloseAllButCurrentOrPinned<cr>", "delete other buffers" },
   w = { "<cmd>w<cr>", "write" },
   W = { function()
     vim.cmd [[wa]]
     vim.notify("Write all!")
   end, "write all" },
-  -- n = { function()
-  --   vim.cmd(vim.g.nvim_tree_exists and "NvimTreeToggle" or "NvimTreeToggle")
-  -- end, "open nvim-tree" },
   n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
   N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
   ["<space>"] = { "<cmd>Gitsigns preview_hunk<cr>", "[G] preview current change" },
