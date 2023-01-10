@@ -1,3 +1,4 @@
+vim.o.wrap = false
 vim.o.signcolumn = 'yes'
 vim.o.termguicolors = true
 
@@ -19,6 +20,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     end
   end
 })
+
 vim.api.nvim_create_autocmd("WinLeave", {
   pattern = "*",
   callback = function()
@@ -26,14 +28,4 @@ vim.api.nvim_create_autocmd("WinLeave", {
       vim.wo.relativenumber = false
     end
   end
-})
-
--- highlight when yanking
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank {
-      higroup = 'Visual',
-      timeout = 200
-    }
-  end,
 })

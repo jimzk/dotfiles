@@ -46,25 +46,20 @@ M.get_non_code_filetypes = function(added_filetypes, removed_filetypes)
   return filetypes
 end
 
-M.is_in_table = function(tbl, val)
-  if tbl == nil then return false end
-  for _, value in pairs(tbl) do
-    if val == value then return true end
-  end
-  return false
-end
-
 _G.copy = function(...)
-  local msg = ""
+  local msg = "empty params"
+  local params = {}
   if next({ ... }) then
     -- get the count of the params
     for i = 1, select('#', ...) do
       -- select the param
       local param = select(i, ...)
-      msg = msg .. vim.inspect(param) .. "\n"
+      table.insert(params, vim.inspect(param))
     end
   else
-    msg = "empty params"
+  end
+  if #params > 0 then
+    msg = table.concat(params, "\n")
   end
   vim.fn.setreg("+", msg)
 end

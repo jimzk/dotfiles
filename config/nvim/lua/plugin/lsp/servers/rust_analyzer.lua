@@ -31,7 +31,12 @@ local post_setup = function(bufnr)
   vim.keymap.set("v", "gh", rt.hover_range.hover_range, bufopts)
   wk.register({
     ["J"] = { rt.join_lines.join_lines, "[R] join lines" },
-    ["gh"] = { rt.hover_actions.hover_actions, "[R] hover" },
+    ["gh"] = { function()
+      local winid = require('ufo').peekFoldedLinesUnderCursor()
+      if not winid then
+        rt.hover_actions.hover_actions()
+      end
+    end, "[R] hover or peek fold" },
     ["gC"] = { rt.external_docs.open_external_docs, "[R] open external doc" },
     ["<leader>c"] = {
       k = { rt.runnables.runnables, "[R] check code if runnable", mode = { "n", "v" } },

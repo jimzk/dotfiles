@@ -4,7 +4,7 @@ local wk = require("which-key")
 wk.register({
   name = "fuzzy search",
   -- find file
-  f = { function()
+  ["<C-f>"] = { function()
     builtin.find_files({
       prompt_title = "Find File In Working Directory",
       results_title = "|open: ^v(split) ^s(plit) ^t(ab)",

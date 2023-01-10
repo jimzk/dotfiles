@@ -30,6 +30,10 @@ vim.keymap.set('n', '<C-CR>', function()
 end, { silent = true })
 
 -- Fold by treesitter
-vim.wo.foldmethod = 'expr'
-vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.wo.foldenable = false -- No fold by default
+-- vim.wo.foldmethod = 'expr'
+-- vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+-- vim.wo.foldenable = false -- No fold by default
+
+-- vim.o.foldcolumn = '1'
+-- vim.o.foldlevel = 99
+-- vim.o.foldlevelstart = 99

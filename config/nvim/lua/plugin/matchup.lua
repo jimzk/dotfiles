@@ -10,13 +10,13 @@ require("which-key").register({
   ["[%"] = { "<Plug>(matchup-[%)", "prev syntax opening bracket" },
   ["];"] = { "<Plug>(matchup-]%)", "alias ]%" },
   ["[;"] = { "<Plug>(matchup-[%)", "alias [%" },
-  ["]b"] = { "<Plug>(matchup-]%)", "alias ]%" },
-  ["[b"] = { "<Plug>(matchup-[%)", "alias [%" },
+  -- ["]b"] = { "<Plug>(matchup-]%)", "alias ]%" },
+  -- ["[b"] = { "<Plug>(matchup-[%)", "alias [%" },
 
   -- yib use mode o, vib use mode x
   -- yib jumps to original place. dib may be accepted. need to handle
-  ["ib"] = { "<Plug>(matchup-i%)", "syntax bracket", mode = { "o", "x" } },
-  ["ab"] = { "<Plug>(matchup-a%)", "syntax bracket", mode = { "o", "x" } },
+  ["i;"] = { "<Plug>(matchup-i%)", "syntax bracket", mode = { "o", "x" } },
+  ["a;"] = { "<Plug>(matchup-a%)", "syntax bracket", mode = { "o", "x" } },
 
   ["<C-;>"] = { "<Plug>(matchup-z%)", "go inside next bracket" },
 }, { mode = { "n", "o", "x" }, noremap = true })

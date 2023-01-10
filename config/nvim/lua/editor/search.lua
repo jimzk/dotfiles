@@ -6,10 +6,10 @@
 local ns = vim.api.nvim_create_namespace('toggle_hlsearch')
 local function toggle_hlsearch(char)
   if vim.fn.mode() == 'n' then
-    local keys = { '<CR>', 'n', 'N', '*', '#', '?', '/' }
-    local new_hlsearch = vim.tbl_contains(keys, vim.fn.keytrans(char))
-    if vim.opt.hlsearch:get() ~= new_hlsearch then
-      vim.opt.hlsearch = new_hlsearch
+    local keys = { '<CR>', '<Esc>', 'j', 'k' }
+    local should_noh = vim.tbl_contains(keys, vim.fn.keytrans(char))
+    if vim.o.hlsearch and should_noh then
+      vim.cmd [[noh]]
     end
   end
 end
@@ -21,19 +21,18 @@ vim.on_key(toggle_hlsearch, ns)
 --   set("n", "*", [["vyiw/\V<C-R>=escape(@v,'/\')<CR><CR>N]], opts)
 local asterisk = function(yank_keys, transfer_pattern)
   return function()
-    local view = vim.fn.winsaveview()
     vim.cmd('normal! "v' .. yank_keys)
+    local view = vim.fn.winsaveview()
     local pattern = vim.fn.getreg("v")
-        :gsub("/", [[\/]]) -- escape /
+        :gsub("\n", [[\n]])
+        :gsub("\\", [[\\]])
+        :gsub("/", [[\/]]) -- escape
     vim.fn.setreg("v", "") -- clear register
     if transfer_pattern then
       pattern = transfer_pattern(pattern)
     end
     vim.cmd("keepjumps /" .. pattern)
-    -- let cursor stay at original match
-    -- I don't know why here should be n. Magic!
-    vim.cmd [[keepjumps normal! n]]
-    vim.fn.winrestview(view) -- restore win layout
+    vim.fn.winrestview(view)
   end
 end
 local opts = { noremap = true }

@@ -11,5 +11,6 @@ local leader_c = {
   i = { "<cmd>CmpStatus<cr>", "cmp (completion) status" },
   r = { "<cmd>Telescope registers<cr>", "paste from register" },
   t = { "<cmd>TroubleToggle telescope<cr>", "toggle telescope items (trouble)" },
+  n = { "<cmd>Neogen<cr>", "add class / function comment" },
 }
 require("which-key").register(leader_c, { prefix = "<leader>c" })

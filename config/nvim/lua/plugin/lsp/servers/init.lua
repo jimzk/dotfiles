@@ -3,7 +3,6 @@
 --            Short list https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 local M = {}
 
-local lsp_status = require("lsp-status")
 M.setup = function()
   vim.diagnostic.config({
     virtual_text = { spacing = 2, prefix = '●' },
@@ -11,18 +10,17 @@ M.setup = function()
     signs = false,
     update_in_insert = false,
   })
-
-  lsp_status.config {
-    diagnostics = false, -- No show diagnostics
-  }
-  lsp_status.register_progress()
 end
 
 local create_default_config = function()
   -- Detail of cmp_nvim_lsp capabilities: https://github.com/hrsh7th/cmp-nvim-lsp/blob/main/lua/cmp_nvim_lsp/init.lua#L37
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
-
+  capabilities = capabilities or {}
+  -- Fold provider used by ufo (https://github.com/kevinhwang91/nvim-ufo#minimal-configuration)
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+  }
   return {
     capabilities = capabilities,
     flags = {
@@ -35,6 +33,9 @@ local create_default_config = function()
       ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'single' }),
     },
     on_attach = function(client, bufnr)
+      -- Disable highlight from lsp
+      -- https://www.reddit.com/r/neovim/comments/109vgtl/how_to_disable_highlight_from_lsp/
+      client.server_capabilities.semanticTokensProvider = nil
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       -- Code context used by lualine. Better than lspsaga.
@@ -57,8 +58,8 @@ local servers_list = {
 local configs = {}
 for _, server in pairs(servers_list) do
   local config = create_default_config()
-  local status, p = pcall(require, 'plugin.lsp.servers.' .. server)
-  if status and p.create_config then
+  local ok, p = pcall(require, 'plugin.lsp.servers.' .. server)
+  if ok and p.create_config then
     config = p.create_config(config)
   end
   configs[server] = config

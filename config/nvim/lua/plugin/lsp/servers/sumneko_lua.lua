@@ -28,6 +28,9 @@ local sumneko_lua = {
       },
       completion = {
         callSnippet = "Disable", -- Do not complete with arguments. Consistent with ray-x/lsp_signature.nvim
+      },
+      semantic = {
+        enable = false, -- Disable highlight as it conflict with treesitter
       }
     }
   }

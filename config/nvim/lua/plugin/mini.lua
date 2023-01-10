@@ -21,17 +21,22 @@ require("mini.ai").setup {
   custom_textobjects = {
     -- let b includes <..>
     -- b = { { '%b()', '%b[]', '%b{}', '%b<>' }, '^.().*().$' },
+    b = { { '%b()' }, '^.().*().$' },
     B = { { '%b{}' }, '^.().*().$' },
+    k = { { '%b<>' }, '^.().*().$' },
+    r = { { '%b[]' }, '^.().*().$' },
     ["?"] = false, -- Disable prompt ask motion
   },
-  search_method = 'cover',
+  search_method = 'cover_or_next',
 }
 
 -- mini.indentscope aminates a *blue guide line* to indicate indent scope.
 -- ii and ai select what the line indicates.
 require('mini.indentscope').setup {
   draw = {
-    delay = 50,
+    delay = 1,
+    -- Disable slow animation
+    animation = function(_, _) return 0 end,
   },
 }
 

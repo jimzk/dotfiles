@@ -91,6 +91,7 @@ local plugins = function(use)
   use "kana/vim-textobj-entire"    -- ae, ie select entire content
   use "kana/vim-textobj-line"      -- al, il select entire line
   use "glts/vim-textobj-indblock"  -- ao, io, aO, iO select indent
+  use "ggandor/leap.nvim" -- Jump to anywhere
 
   ------ Edit
   use {
@@ -123,12 +124,12 @@ local plugins = function(use)
                                    -- Only work in normal mode
     setup = function()
       vim.g.splitjoin_join_mapping = 'J'
-      -- I don't want K fall back
+      -- I don't want K fallback
       vim.g.splitjoin_split_mapping = ''
       set("n", "K", "<cmd>SplitjoinSplit<cr>")
     end,
   }
-  use "tpope/vim-surround" -- Operate on surroundings
+  use "kylechui/nvim-surround" -- surrounding operations. More customizable than vim-surround and mini.surround
   use "windwp/nvim-autopairs"  -- Auto insert/delete bracket or quotes in pair
                                -- <M-e>: wrap next content (fast wrap)
 
@@ -137,7 +138,7 @@ local plugins = function(use)
   use "tpope/vim-sleuth"  -- Auto detect indent width in file
   use "mbbill/undotree"  -- Undo history
   use {"akinsho/toggleterm.nvim", tag = '*',}  -- Toggle terminal
-  use "moll/vim-bbye"
+  use "moll/vim-bbye" -- Delete buffer without messing up layout (:bdelete enhancement).
   use "mhinz/vim-startify"    -- Startup page
   use "andymass/vim-matchup"  -- Enhance matchit (%)
   use {
@@ -151,6 +152,10 @@ local plugins = function(use)
   -- TODO: https://github.com/smjonas/inc-rename.nvim
   use 'stevearc/dressing.nvim'  -- Beautify vim.ui.select and vim.ui.input
   use "gbprod/yanky.nvim"  -- Enhance y and p
+  use {
+    'kevinhwang91/nvim-ufo', -- Fold
+    requires = 'kevinhwang91/promise-async',
+  }
 
   ------ Git
   use "tpope/vim-fugitive"  -- Integrate git commands
@@ -209,22 +214,36 @@ local plugins = function(use)
     end
   }
   use "nvim-treesitter/playground"
-  use {
-    "p00f/nvim-ts-rainbow", -- Rainbow bracket
-    requires = "nvim-treesitter/nvim-treesitter",
-  }
 
   ----- Status line & Winbar
   use {
     "nvim-lualine/lualine.nvim",  -- Statusline and winbar
     requires = { 'nvim-tree/nvim-web-devicons', opt = true }
   }
-  use "nvim-lua/lsp-status.nvim"  -- Provide lsp status for lualine
   use {
-    "SmiteshP/nvim-navic",  -- Show context in winbar
-    requires = "neovim/nvim-lspconfig",
+    "utilyre/barbecue.nvim", -- VSCode like winbar
+    requires = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+    },
+    after = "nvim-web-devicons",
+    config = function()
+      require("barbecue").setup()
+    end,
   }
-  use "ggandor/leap.nvim"
+  use {
+    'j-hui/fidget.nvim',  -- Show lsp status at right bottom
+    config = function()
+      require"fidget".setup{}
+    end
+  }
+  use {
+    "danymat/neogen", -- Generate class/function comment
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require('neogen').setup {}
+    end,
+  }
 
   ----- Auto completion
   use 'hrsh7th/nvim-cmp'      -- Core plugin
@@ -301,6 +320,10 @@ local plugins = function(use)
   ------ Appearance
   use "nvim-tree/nvim-web-devicons"  -- Icon used by several plugins
   use {
+    "p00f/nvim-ts-rainbow", -- Rainbow bracket
+    requires = "nvim-treesitter/nvim-treesitter",
+  }
+  use {
     "rcarriga/nvim-notify",  -- Notification manager
     config = function()
       vim.notify = require("notify")
@@ -319,7 +342,7 @@ local plugins = function(use)
       }
       require("zen-mode").setup {
         backdrop = 0.15,
-        width = 140,
+        width = 160,
         plugins = {
           options = {
             ruler = true,
@@ -380,7 +403,6 @@ local plugins = function(use)
   -- edluffy/specs.nvim        -- Amination to show where cursor is. Distracting.
   -- akinsho/bufferline.nvim   -- Style is not my type. Old config: https://github.com/fjchen7/dotfiles/blob/da25997575234eb211e8773051b4db67f88c85c1/config/nvim/lua/plugin.lua#L363.
   -- karb94/neoscroll.nvim   -- Smooth scroll for <C-d>, zz and so on. Performance issue.
-  -- moll/vim-bbye           -- Delete buffer without messing up layout (:bdelete enhancement). barbar.nvim has integrated it.
   -- wellle/targets.vim      -- Replaced by mini.nvim#mini.ai. The latter does not support A/I but I don't need them
   -- michaeljsmith/vim-indent-object  -- ai, ii, aI, iI select indent content. Replaced by mini.nvim#mini.indentscope.
   -- goolord/alpha-nvim      -- Start-up page. Use vim-startify instead.
@@ -389,6 +411,7 @@ local plugins = function(use)
   -- ahmedkhalf/project.nvim -- List recent projects. It tries to detect change cwd, which brings unexpected affects for plugins like vim-startify.
   -- phaazon/hop.nvim        -- Easymotion-like plugin. Bug "col value outside range" not fixed.
   -- justinmk/vim-sneak      -- I love it, but leap.nvim is a better solution.
+  -- nvim-lua/lsp-status.nvim  -- Replaced by j-hui/fidget
   --
   ----- Abandoned cmp source
   -- hrsh7th/cmp-nvim-lsp-signature-help     -- Distracting

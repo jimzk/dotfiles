@@ -6,8 +6,8 @@ wk.register({
     vim.cmd [[wa]]
     vim.notify("Write all!")
   end, "write all" },
-  n = { "<cmd>NvimTreeToggle<cr>", "open nvim-tree" },
-  N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
+  -- n = { "<cmd>NvimTreeOpen<cr>", "open nvim-tree" },
+  -- N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
   ["<space>"] = { "<cmd>Gitsigns preview_hunk<cr>", "[G] preview current change" },
   ["<tab>"] = { "<cmd>Telescope resume<cr>", "last telescope history" },
   ["<S-tab>"] = { "<cmd>Telescope pickers<cr>", "All telescope history" },
@@ -59,28 +59,3 @@ wk.register({
   ["]"] = { "move line up", mode = { "n", "v" } },
   ["["] = { "move line down", mode = { "n", "v" } },
 }, opt)
-
--- local process_yank = function()
---   local yanked = vim.fn.getreg('+') -- I share system register (+) with vim
---   yanked = vim.fn.substitute(yanked, "^ *", "", "")
---   yanked = vim.fn.substitute(yanked, "\n$", "", "")
---   vim.fn.setreg("+", yanked)
--- end
--- wk.register({
---   p = { function()
---     process_yank()
---     vim.cmd [[normal o]]
---     vim.cmd [[normal p]]
---     vim.cmd "normal `[v`]" -- Select pasted text
---     vim.lsp.buf.format { async = false }
---     vim.cmd [[exe "normal! \<esc>"]]
---   end, "p line-down and format" },
---   P = { function()
---     process_yank()
---     vim.cmd [[normal O]]
---     vim.cmd [[normal p]]
---     vim.cmd "normal `[v`]" -- Select pasted text
---     vim.lsp.buf.format { async = false }
---     vim.cmd [[exe "normal! \<esc>"]]
---   end, "p line-up and format" },
--- }, opt)

@@ -18,8 +18,8 @@ fzf.setup {
   winopts = {
     height  = 0.7,
     width   = 0.9,
-    row     = 1,
-    col     = 0.50,
+    row     = 0.6,
+    col     = 0.5,
     -- border  = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
     -- border  = { 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e' },
     -- border  = { '│', 'y', '│', 'a', '│', 'c', '│', 'e' },
@@ -51,15 +51,9 @@ fzf.setup {
       ["<C-k>"] = "preview-page-up",
     }
   },
-  -- fzf_opts = {
-  --   ["--query"] = "hello"
-  --   -- ["--ansi"] = "",
-  --   -- ["--border"] = "none",
-  --   -- ["--header"] = "'cwd: \27[0;31m~/.dotfiles\27[0m'",
-  --   -- ["--height"] = "50%",
-  --   -- ["--info"] = "inline",
-  --   -- ["--layout"] = "reverse"
-  -- },
+  fzf_opts = {
+    ["--exact"] = "",
+  },
 }
 
 -- Global actions
@@ -127,11 +121,12 @@ local default_file_view = {
 }
 
 -- Cycle among oldfiles, git files and files
-set("n", "-", function() fzf.oldfiles { cwd_only = true } end, { desc = "find file in buffers" })
-local cycle_key = "-"
+set("n", "<leader>ff", function() fzf.oldfiles { cwd_only = true } end, { desc = "find file in buffers" })
+local cycle_key = "tab"
 fzf.setup {
   git = {
     files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+      git_icons = false,
       actions = {
         [cycle_key] = function(_, opts)
           fzf.files {
@@ -272,6 +267,15 @@ fzf.setup {
       -- ["ctrl-f"] = function() end,
     },
   },
+  highlights = {
+    actions = {
+      ["enter"] = function(selected, _)
+        selected = selected[1]
+        vim.fn.setreg("+", selected)
+        vim.notify("Copy highlight " .. selected, vim.log.levels.INFO, { title = "FZF" })
+      end,
+    }
+  }
 }
 
 _G._live_grep_opts = {}

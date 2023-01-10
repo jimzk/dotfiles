@@ -39,5 +39,18 @@ set("n", "[p", "<Plug>(YankyPutIndentBeforeLinewise)")
 set({ "n", "x" }, "y", "<Plug>(YankyYank)")
 set({ "n", "x" }, "Y", "<Plug>(YankyYank)$")
 
+set("n", "<c-}>", "<Plug>(YankyCycleForward)")
+set("n", "<c-{>", "<Plug>(YankyCycleBackward)")
+
 require("telescope").load_extension("yank_history")
 set("n", "<leader>ep", require("telescope").extensions.yank_history.yank_history, { desc = "yank history" })
+
+-- Highlight when yanking
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank {
+      higroup = 'Visual',
+      timeout = 200
+    }
+  end,
+})

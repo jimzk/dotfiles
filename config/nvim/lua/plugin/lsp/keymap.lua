@@ -37,10 +37,14 @@ M.setup = function(bufnr)
       -- TODO: after gd, enable number
       d = { "<cmd>Lspsaga peek_definition<cr>", "[C] peek definition" },
       D = { "<cmd>normal m'<cr><cmd>Trouble lsp_definitions<cr>", "[C] go definition" },
-
-      h = { vim.lsp.buf.hover, "[C] hover" },
+      h = { function()
+        local winid = require('ufo').peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end, "[C] hover or peek fold" },
       O = { "<cmd>Lspsaga outline<cr>", "[C] symbol outline" },
-      k = { "<cmd>normal m'<cr><cmd>Trouble lsp_implementations<cr>", "[C] go implementation" },
+      I = { "<cmd>normal m'<cr><cmd>Trouble lsp_implementations<cr>", "[C] go implementation" },
       b = { "<cmd>normal m'<cr><cmd>Trouble lsp_type_definitions<cr>", "[C] go type definition" },
       r = { "<cmd>Lspsaga lsp_finder<cr>", "[C] peek reference (lspsaga)" },
       R = { "<cmd>normal m'<cr><cmd>Trouble lsp_references<cr>", "[C] go reference" },
@@ -48,7 +52,7 @@ M.setup = function(bufnr)
       ["]"] = { vim.lsp.buf.outgoing_calls, "[C] outgoing call tree" },
     },
 
-    ['<space>c'] = {
+    ['<space>e'] = {
       w = {
         name = "lsp workspace",
         a = { function() vim.lsp.buf.add_workspace_folder() end, "add workspace folder" },

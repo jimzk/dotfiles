@@ -56,7 +56,7 @@ wk.register({
     --   return
     -- end
     -- TODO: enhance
-    vim.cmd [[q]]
+    vim.cmd [[x]]
     -- if #vim.api.nvim_list_wins() ~= 1 then
     --   vim.cmd [[q]]
     -- else
@@ -69,8 +69,8 @@ wk.register({
     --   end)
     -- end
   end, "which_key_ignore" },
-  ["<C-q>"] = { ":qa!<cr>", "which_key_ignore" },
-  ["<M-q>"] = { "q", "remapped q" },
+  ["<C-q>"] = { "<cmd>xa<cr>", "which_key_ignore" }, -- Quite vim
+  -- ["<M-q>"] = { "q", "remapped q" },
 }, opt)
 
 wk.register({
@@ -108,8 +108,8 @@ wk.register({
   ["<S-down>"] = { "<Plug>(VM-Select-Cursor-Down)", "visual down" },
   ["<S-left>"] = "visual left",
   ["<S-right>"] = "visual right",
-  ["<C-up>"] = "multi select up",
-  ["<C-down>"] = "multi select down",
+  ["<M-k>"] = "multi select up",
+  ["<M-j>"] = "multi select down",
 }, opt)
 
 set("i", "<C-h>", "<Left>")

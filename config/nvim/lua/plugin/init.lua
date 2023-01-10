@@ -1,14 +1,5 @@
 local require = function(filename)
-  local module_name = "plugin." .. filename
-  local ok, modula = pcall(require, module_name)
-  if ok then
-    return modula
-  else
-    vim.notify("Can't load module " .. module_name,
-      vim.log.levels.ERROR,
-      { title = "Configuration", }
-    )
-  end
+  require("plugin." .. filename)
 end
 
 require("which-key")
@@ -26,7 +17,8 @@ require("spectre")
 require("startify")
 require("toggleterm")
 require("undotree")
-require("yanky")
+require("nvim-surround")
+require("ufo")
 
 require("telescope")
 require("lsp")

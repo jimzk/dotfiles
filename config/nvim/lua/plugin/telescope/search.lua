@@ -4,7 +4,7 @@ local telescope_state = require('telescope.state')
 local last_search = nil
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/2024
-function search_with_cache()
+local function search_with_cache()
   if last_search == nil then
     telescope.live_grep({
       grep_open_files = true,
@@ -22,4 +22,4 @@ function search_with_cache()
   end
 end
 
-vim.keymap.set('n', '<leader>fm', search_with_cache)
+-- vim.keymap.set('n', '<leader>fm', search_with_cache)

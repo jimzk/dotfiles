@@ -121,47 +121,6 @@ for i = 1, 99, 1 do
   end
 end
 
--- local visual_p = function()
---   vim.cmd [[normal! "vy]]
---   local start_row = vim.fn.line("'<")
---   local start_col = vim.fn.col("'<")
---   local end_row = vim.fn.line("'>")
---   -- Handle v$ or V
---   local selected_end_line = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, true)[1]
---   local end_col = math.min(vim.fn.col("'>"), #selected_end_line)
---   -- Remove ending \n
---   local pasted = vim.fn.getreg("+")
---       :gsub("\n$", "") -- remove line break
---   -- split by "\n"
---   local replacement = {}
---   for str in string.gmatch(pasted, "([^\n]+)") do
---     table.insert(replacement, str)
---   end
---   vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, replacement)
--- end
--- Replace by yanky.nvim
--- set("x", "p", visual_p, opts)
--- set("x", "P", visual_p, opts)
-
--- https://vi.stackexchange.com/questions/4493/what-is-the-order-of-winenter-bufenter-bufread-syntax-filetype-events
--- Example: vim.cmd [[autocmd BufEnter * lua vim.notify('foo bar')]]
--- Easy quit
--- vim.api.nvim_create_autocmd('FileType', {
---   pattern = { "help", "git", "gitcommit", "quickfix", "fugitive", "fugitiveblame", "symbols-outline", "nvim-dap-ui",
---     "lspsagaoutline", "qf", "spectre_panel", "Trouble", "calltree", 'checkhealth' },
---   callback = function()
---     set("n", "q", function()
---       vim.cmd [[q]]
---       if vim.bo.filetype == "NvimTree" then -- not jump back to nvim-tree
---         vim.cmd [[wincmd p]]
---       end
---     end, { buffer = true, silent = true })
---   end
--- })
--- Ref: Ignored types
--- filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
--- buftype = { "nofile", "terminal", "help" },
-
 -- Jump to last visited place when entering a bufer
 -- https://this-week-in-neovim.org/2023/Jan/02#tips
 vim.api.nvim_create_autocmd('BufReadPost', {

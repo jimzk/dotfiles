@@ -46,7 +46,7 @@ local mappings = {
   -- search
   ["f"] = "live_filter",
   ["F"] = "clear_live_filter",
-  ["<C-f>"] = "search_node",
+  ["<M-f>"] = "search_node",
 
   -- file operations
   ["<C-n>"] = "create",
@@ -126,7 +126,7 @@ require("nvim-tree").setup({
     dotfiles = false, -- show hidden files
   },
   update_focused_file = {
-    enable = true, -- focus item after opening a buffer
+    enable = false, -- focus item after opening a buffer
     ignore_list = {}
   },
   notify = {
@@ -145,5 +145,22 @@ require("nvim-tree").setup({
   }
 })
 
-vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")
+-- vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")
 vim.cmd("autocmd ColorScheme * hi NvimTreeSymlink guifg=gray")
+set("n", "<leader>n", function()
+  if vim.bo.filetype == "NvimTree" then
+    vim.cmd [[wincmd p]]
+  end
+  vim.cmd [[NvimTreeFindFile]]
+end)
+
+set("n", "<leader>N", "<cmd>NvimTreeToggle<cr>")
+
+-- set("n", "<M-esc>", function()
+--   if vim.bo.filetype == "NvimTree" then
+--     vim.cmd [[wincmd p]]
+--   end
+--   vim.cmd [[NvimTreeFindFile]]
+-- end)
+
+-- set("n", "<M-1>", "<cmd>NvimTreeToggle<cr>")
