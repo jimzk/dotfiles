@@ -11,13 +11,15 @@ npairs.setup({
   --   java = false, -- don't check treesitter on java
   -- },
   -- https://github.com/windwp/nvim-autopairs#FastWrap
-  -- See https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#LL18C8-L18C8
   fast_wrap = {
     map = '<M-e>',
     chars = { '{', '[', '(', '<', '"', "'" },
     pattern = [=[[%'%"%)%>%]%)%}%,]]=],
     end_key = 'p',
   },
+  -- Do not pair when next char is matched
+  -- https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#L10
+  ignored_next_char = [=[[%w%%%'%[%"%.%(%{%<]]=],
   -- Do not enable autopair in "..." or '...'
   enable_bracket_in_quote = false,
   -- Type closing bracket do not add char but move to right
@@ -28,16 +30,19 @@ npairs.setup({
 local ts_conds = require('nvim-autopairs.ts-conds')
 local cond = require('nvim-autopairs.conds')
 
--- Add <>. Ref https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua
+-- Add <>
+-- Ref: https://github.com/windwp/nvim-autopairs/issues/301#issuecomment-1382215955
+-- Implementation: https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua
+local basic = require('nvim-autopairs.rules.basic')
+local utils = require('nvim-autopairs.utils')
+utils.is_close_bracket = (function(func)
+  return function(char) return func(char) or char == ">" end
+end)(utils.is_close_bracket)
+local bracket = basic.bracket_creator(npairs.config)
+
 npairs.add_rules({
-  Rule("<", ">")
-      :use_undo(true)
-      :with_move(cond.is_bracket_line_move())
-      -- move right if repeating >, ref: https://github.com/windwp/nvim-autopairs/issues/227
-      :with_move(function(opts) return opts.char == ">" end)
-      :with_pair(cond.not_after_regex("[%w]"))-- don't add pair if the next alphanumeric char
-      :with_pair(cond.not_before_text(" ")) -- don't add pair if prev char is whitespace
-  ,
+  bracket("<", ">")
+      :with_pair(cond.not_before_text(" "))
 })
 
 -- npairs.get_rule("[")
@@ -66,16 +71,14 @@ local function not_in_comments()
     end)
 end
 
--- Do not autopair in comment, e.g. -- line comment for lua
+-- Do not autopair in comment, e.g. -- line comment in lua
 -- Remember, do not add a new rule if it exists.
 local start_pairs = { "{", '(', '[', "<", "'", '"', "`" }
 for _, start_pair in ipairs(start_pairs) do
   local rules = npairs.get_rule(start_pair)
-  if rules.with_move ~= nil then
-    -- " and ' have multiple rules
-    -- See https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#L33
-    rules = { rules }
-  end
+  -- " and ' have multiple rules
+  -- See https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#L33
+  rules = rules.with_move and { rules } or rules
   for _, rule in ipairs(rules) do
     -- :with_pair(ts_conds.is_not_ts_node(nodes)) can't work, it still autopair at the end of comment
     rule:with_pair(not_in_comments())

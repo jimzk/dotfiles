@@ -23,10 +23,10 @@ require("nvim-treesitter.configs").setup {
     swap = {
       enable = true,
       swap_next = {
-        [",a"] = { query = "@parameter.inner", desc = "swap with next parameter" },
+        ["]e"] = { query = "@parameter.inner", desc = "exchange with next parameter" },
       },
       swap_previous = {
-        [",A"] = { "@parameter.inner", desc = "swap with prev parameter" }
+        ["[e"] = { "@parameter.inner", desc = "exchange with prev parameter" }
       },
     },
     move = {

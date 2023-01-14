@@ -61,7 +61,7 @@ telescope.setup {
         ["<C-p>"] = actions.move_selection_previous,
         -- Open results in trouble
         -- https://github.com/folke/trouble.nvim#telescope
-        ["<C-cr>"] = require("trouble.providers.telescope").open_with_trouble,
+        -- ["<C-cr>"] = require("trouble.providers.telescope").open_with_trouble,
       },
     },
   },
@@ -109,28 +109,6 @@ telescope.setup {
           --   action = actions.move_selection_next,
           --   opts = { nowait = true, silent = true }
           -- },
-          ["<tab>"] = {
-            function(prompt_bufnr)
-    actions.select_default:replace(function()
-      local current_picker = action_state.get_current_picker(prompt_bufnr)
-      local selections = current_picker:get_multi_selection()
-      -- if no multi-selection, leverage current selection
-      if vim.tbl_isempty(selections) then
-        table.insert(selections, action_state.get_selected_entry())
-      end
-      local paths = vim.tbl_map(function(e)
-        return e.path
-      end, selections)
-      actions.close(prompt_bufnr)
-      builtin.live_grep({
-        search_dirs = paths,
-      })
-    end)
-    -- true: attach default mappings; false: don't attach default mappings
-    return true
-  end,
-
-          }<>
           ["<C-d>"] = {
             function(prompt_bufnr)
               local action_state = require "telescope.actions.state"
@@ -177,14 +155,6 @@ telescope.setup {
                 end
                 result_title = result_title .. "exclude: " .. msg
               end
-            end,
-            type = "action"
-          },
-          ["<Tab>"] = {
-            function(prompt_bufnr)
-              local action_state = require "telescope.actions.state"
-              local current_picker = action_state.get_current_picker(prompt_bufnr) -- picker state
-              local query = action_state.get_current_line()
             end,
             type = "action"
           },

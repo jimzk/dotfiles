@@ -55,15 +55,15 @@ require('gitsigns').setup {
     -- Navigation
     map({ 'n', "v" }, ')', function()
       if vim.wo.diff then return ')' end
-      vim.schedule(function() gs.next_hunk() end)
+      gs.next_hunk()
       return '<Ignore>'
-    end, { expr = true })
+    end, { expr = true, desc = "next git change" })
 
     map({ 'n', "v" }, '(', function()
       if vim.wo.diff then return '(' end
-      vim.schedule(function() gs.prev_hunk() end)
+      gs.prev_hunk()
       return '<Ignore>'
-    end, { expr = true })
+    end, { expr = true, desc = "prev git change" })
   end
 }
 

@@ -1,5 +1,6 @@
 local trouble = require("trouble")
 trouble.setup {
+  group = true,
   position = "bottom",
   height = 15,
   padding = false,
@@ -7,7 +8,7 @@ trouble.setup {
   -- https://github.com/folke/trouble.nvim/issues/143#issuecomment-1281771551 is a workaround
   -- https://github.com/folke/trouble.nvim/issues/235
   auto_jump = { "lsp_definitions", "lsp_type_definitions", "lsp_implementations" },
-  auto_preview = false,
+  auto_preview = true,
   -- actions list: https://github.com/folke/trouble.nvim/blob/main/lua/trouble/init.lua#L157
   action_keys = {
     open_split = "s",
@@ -24,10 +25,20 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     local trouble_opt = { skip_groups = true, jump = false }
     local opts = { noremap = true, buffer = true, silent = true }
-    set("n", "J", function() trouble.next(trouble_opt) end, opts)
-    set("n", "K", function() trouble.previous(trouble_opt) end, opts)
+    set("n", "j", function() trouble.next(trouble_opt) end, opts)
+    set("n", "k", function() trouble.previous(trouble_opt) end, opts)
+    set("n", "J", "j", opts)
+    set("n", "K", "k", opts)
     -- set("n", "H", function() trouble.first(trouble_opt); end, opts)
     -- set("n", "L", function() trouble.last(trouble_opt); end, opts)
+    set("n", "<C-g>", "<cmd>q<cr><cmd>copen<cr>",
+      vim.tbl_extend("force", opts, { desc = "convert to quickfix" }))
+    set("n", "q", function()
+      trouble.action("close")
+      if vim.bo.filetype == "NvimTree" then -- not jump back to nvim-tree
+        vim.cmd [[wincmd p]]
+      end
+    end, opts)
   end
 })
 

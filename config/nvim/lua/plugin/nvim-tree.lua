@@ -20,14 +20,17 @@ local mappings = {
   ["v"] = "vsplit",
   ["s"] = "split",
   -- ["t"] = "tabnew",
-  ["l"] = "preview",
-  ["h"] = "close_node",
+  ["o"] = "preview",
+  ["O"] = "close_node",
 
   -- navigation in file
   ["K"] = "prev_sibling",
   ["J"] = "next_sibling",
   ["H"] = "first_sibling",
   ["L"] = "last_sibling",
+  -- Disable
+  ["h"] = { function() end, "" },
+  ["l"] = { function() end, "" },
   ["_"] = "parent_node",
 
   ["[x"] = "prev_diag_item", -- diagnostic item
@@ -78,7 +81,7 @@ local mappings = {
     else
       vim.notify("Can't focus file", vim.log.levels.ERROR, notify_opts)
     end
-  end, "focus on file" }
+  end, "focus on file" },
 }
 
 local list = {}
@@ -147,14 +150,10 @@ require("nvim-tree").setup({
 
 -- vim.cmd("autocmd ColorScheme * hi NvimTreeOpenedFile gui=underline")
 vim.cmd("autocmd ColorScheme * hi NvimTreeSymlink guifg=gray")
-set("n", "<leader>n", function()
-  if vim.bo.filetype == "NvimTree" then
-    vim.cmd [[wincmd p]]
-  end
-  vim.cmd [[NvimTreeFindFile]]
-end)
 
-set("n", "<leader>N", "<cmd>NvimTreeToggle<cr>")
+-- local view = require("nvim-tree.view")
+set("n", "<leader>n", "<cmd>NvimTreeOpen<cr>", { desc = "toggle nvim-tree and focus" })
+set("n", "<leader>N", "<cmd>NvimTreeFindFile<cr>", { desc = "toggle nvim-tree" })
 
 -- set("n", "<M-esc>", function()
 --   if vim.bo.filetype == "NvimTree" then

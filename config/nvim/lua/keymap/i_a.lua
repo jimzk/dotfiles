@@ -72,5 +72,5 @@ wk.register({
   ["<M-b>"] = { "<Plug>CamelCaseMotion_b", "camelCase b" },
   ["<M-e>"] = { "<Plug>CamelCaseMotion_e", "camelCase e" },
   ["<M-g>e"] = { "<Plug>CamelCaseMotion_ge", "camelCase ge" },
-  ["i<M-w>"] = { "<Plug>CamelCaseMotion_iw", "camelCase iw", mode = { "o", "x" } },
+  ["i8"] = { "<Plug>CamelCaseMotion_iw", "camelCase iw", mode = { "o", "x" } },
 }, { mode = { "n", "v", "o" }, silent = true })

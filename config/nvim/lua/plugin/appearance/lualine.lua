@@ -69,31 +69,43 @@ ll.setup {
         padding = { left = 0, right = 1 },
         separator = "|",
       },
-      {
-        'branch',
-        padding = { left = 1, right = 2 },
-      }
     },
   },
 
   sections = {
     lualine_a = { 'mode' },
     lualine_b = {
+      -- { -- Show pwd
+      --   -- TODO: show from git repo
+      --   function()
+      --     return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+      --   end,
+      --   icon = { '', align = 'left' },
+      --   padding = { left = 1, right = 0 },
+      -- },
+      -- {
+      --   'filename',
+      --   newfile_status = true,
+      --   path = 3,
+      --   shorting_target = 100,
+      -- },
       {
-        'filename',
-        newfile_status = true,
+        "branch",
+        padding = { left = 1, right = 1 },
       },
-      -- { 'branch' },
-      { 'diff' },
+      {
+        'diff',
+        padding = { left = 0, right = 1 },
+      },
       { 'diagnostics' },
     },
     lualine_c = {},
     lualine_x = {
-      { -- Show pwd
-        function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") end,
-        icon = { '', align = 'left' },
-        padding = { left = 0, right = 1 },
-      },
+      -- { -- Show pwd
+      --   function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") end,
+      --   icon = { '', align = 'left' },
+      --   padding = { left = 1, right = 0 },
+      -- },
       { -- List active lsp
         function()
           local clients = {}
@@ -103,7 +115,7 @@ ll.setup {
           return table.concat(clients, " ")
         end,
         icon = { '', align = 'left' },
-        padding = { left = 0, right = 1 },
+        padding = { left = 1, right = 1 },
       },
     },
     lualine_y = {

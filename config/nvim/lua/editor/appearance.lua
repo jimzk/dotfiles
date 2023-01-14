@@ -10,7 +10,7 @@ autocmd InsertEnter,WinLeave * set nocursorline
 ]]
 
 vim.o.relativenumber = true
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "WinEnter" }, {
   pattern = "*",
   callback = function()
     local height = vim.api.nvim_win_get_height(0)

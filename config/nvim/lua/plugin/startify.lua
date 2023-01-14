@@ -1,3 +1,4 @@
+vim.g.startify_disable_at_vimenter = 1
 vim.g.startify_session_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/")
 vim.g.startify_update_oldfiles = 1
 vim.g.startify_bookmarks = {}

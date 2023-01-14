@@ -40,9 +40,9 @@ local format = lspkind.cmp_format({
 })
 
 local action_tab = function(fallback)
-  if cmp.visible() then
-    cmp.confirm({ select = true })
-  elseif luasnip.expand_or_jump() then
+  -- if cmp.visible() then
+  --   cmp.confirm({ select = true })
+  if luasnip.expand_or_jump() then
     local _, col = unpack(vim.api.nvim_win_get_cursor(0))
     local next_char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
     if next_char == " " then luasnip.expand_or_jump() end
@@ -75,7 +75,7 @@ local mapping = {
   ['<C-k>'] = cmp.mapping.scroll_docs(-4),
   ['<C-j>'] = cmp.mapping.scroll_docs(4),
   ['<C-c>'] = cmp.mapping.abort(),
-  ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  ['<CR>'] = cmp.mapping.confirm({ select = true }),
   -- ['<C-CR>'] = cmp.mapping.close(),
   ["<C-l>"] = cmp.mapping(cycle_source, { "i" }),
 

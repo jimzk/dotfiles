@@ -14,4 +14,5 @@ for _, server in pairs(servers_list) do
 end
 servers.post_setup()
 
-require("plugin.lsp.lspsaga")
+require("plugin.lsp.goto-preview")
+require("plugin.lsp.aerial")

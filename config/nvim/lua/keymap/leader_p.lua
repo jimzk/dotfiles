@@ -1,35 +1,51 @@
 local wk = require("which-key")
+local resession = require('resession')
 local extensions = require("telescope").extensions
 local opt = { mode = "n", prefix = "<leader>p", preset = true }
 wk.register({
   name = "project",
-  s = { "<cmd>SSave!<cr>", "save session" },
-  q = { "<cmd>SClose<cr>", "close session" },
-  d = { function()
-    local session_name = vim.fn.fnamemodify(vim.v.this_session, ':t')
-    if session_name == "" then
-      vim.notify("No in any session!", vim.log.levels.ERROR)
-      return
-    end
-    vim.cmd("silent SDelete! " .. session_name)
-    vim.v.this_session = ""
-    vim.notify("Session [" .. session_name .. "] is deleted")
-  end, "delete current session" },
-  p = { "<cmd>Startify<cr>", "list session" },
-  r = { function()
+  -- s = { "<cmd>SSave!<cr>", "save session" },
+  s = { resession.save, "save session" },
+  S = { function()
     vim.ui.input(
-      { prompt = "Rename current session to: " },
-      function(input)
-        if not input then
+      { prompt = "New session name: " },
+      function(name)
+        if name == "" then
+          vim.notify("Empty session name!", vim.log.levels.ERROR, { title = "resession" })
           return
         end
-        local old_session_name = vim.fn.fnamemodify(vim.v.this_session, ':t')
-        local new_session_name = input
-        local session_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/")
-        vim.cmd("silent !mv " .. session_dir .. old_session_name .. " " .. session_dir .. new_session_name)
-        vim.cmd("SLoad " .. new_session_name)
+        resession.save(name, { notify = true })
       end)
-  end, "rename session" },
+  end, "save session with name" },
+  q = { "<cmd>SClose<cr>", "close session" },
+  -- d = { function()
+  --   local session_name = vim.fn.fnamemodify(vim.v.this_session, ':t')
+  --   if session_name == "" then
+  --     vim.notify("No in any session!", vim.log.levels.ERROR)
+  --     return
+  --   end
+  --   vim.cmd("silent SDelete! " .. session_name)
+  --   vim.v.this_session = ""
+  --   vim.notify("Session [" .. session_name .. "] is deleted")
+  -- end, "delete current session" },
+  d = { resession.delete, "delete session" },
+  -- p = { "<cmd>Startify<cr>", "list session" },
+  -- p = { "<cmd>Startify<cr>", "list session" },
+  p = { resession.load, "list session" },
+  -- r = { function()
+  --   vim.ui.input(
+  --     { prompt = "Rename current session to: " },
+  --     function(input)
+  --       if not input then
+  --         return
+  --       end
+  --       local old_session_name = vim.fn.fnamemodify(vim.v.this_session, ':t')
+  --       local new_session_name = input
+  --       local session_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/")
+  --       vim.cmd("silent !mv " .. session_dir .. old_session_name .. " " .. session_dir .. new_session_name)
+  --       vim.cmd("SLoad " .. new_session_name)
+  --     end)
+  -- end, "rename session" },
   -- find project
   g = { function()
     -- https://github.com/nvim-telescope/telescope-project.nvim

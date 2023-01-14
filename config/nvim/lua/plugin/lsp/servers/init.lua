@@ -35,7 +35,7 @@ local create_default_config = function()
     on_attach = function(client, bufnr)
       -- Disable highlight from lsp
       -- https://www.reddit.com/r/neovim/comments/109vgtl/how_to_disable_highlight_from_lsp/
-      client.server_capabilities.semanticTokensProvider = nil
+      -- client.server_capabilities.semanticTokensProvider = nil
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       -- Code context used by lualine. Better than lspsaga.

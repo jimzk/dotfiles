@@ -11,6 +11,8 @@ set('n', 'zR', ufo.openAllFolds)
 set('n', 'zM', ufo.closeAllFolds)
 set('n', 'zr', ufo.openFoldsExceptKinds)
 set('n', 'zm', ufo.closeFoldsWith)
+set({ 'n', "v", "o" }, ']z', ufo.goNextClosedFold, { desc = "next fold" })
+set({ 'n', "v", "o" }, '[z', ufo.goPreviousClosedFold, { desc = "prev fold" })
 
 -- https://github.com/kevinhwang91/nvim-ufo#customize-fold-text
 local handler = function(virtText, lnum, endLnum, width, truncate)

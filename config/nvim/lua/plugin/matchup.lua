@@ -1,5 +1,5 @@
 vim.g.matchup_mappings_enabled = 0
-vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+-- vim.g.matchup_matchparen_offscreen = { method = 'popup' }
 vim.g.matchup_matchparen_enabled = 1
 
 require("which-key").register({

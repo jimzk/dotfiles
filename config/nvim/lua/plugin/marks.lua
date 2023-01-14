@@ -18,7 +18,7 @@ require("marks").setup {
   default_mappings = true,
   -- NOTE: If float buffer of lsp.hover() has marks then it shows signcolumn and can't have enought width
   -- Makr . must be hidden as it always shows in float buffer of lsp.
-  builtin_marks = {  "`" },
+  builtin_marks = { "`" },
   signs = true,
   -- I don't know what it is. I think it may afffect jumplist
   cyclic = false,

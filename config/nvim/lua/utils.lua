@@ -22,6 +22,7 @@ M.non_code_filetypes = {
   "toggleterm",
   "sagarename",
   "DressingInput",
+  "DressingSelect",
   "sagacodeaction",
   "DiffviewFiles",
   "startify",
@@ -44,6 +45,21 @@ M.get_non_code_filetypes = function(added_filetypes, removed_filetypes)
     table.remove(filetypes, filetype)
   end
   return filetypes
+end
+
+-- https://github.com/stevearc/resession.nvim/blob/master/lua/resession/init.lua#L531
+_G.filter_buf = function(bufnr)
+  local buftype = vim.bo[bufnr].buftype
+  if buftype == "help" then
+    return true
+  end
+  if buftype ~= "" and buftype ~= "acwrite" then
+    return false
+  end
+  if vim.api.nvim_buf_get_name(bufnr) == "" then
+    return false
+  end
+  return vim.bo[bufnr].buflisted
 end
 
 _G.copy = function(...)

@@ -1,28 +1,19 @@
 local wk = require("which-key")
 local opt = { mode = "n", prefix = "<leader>", noremap = true, silent = true }
 wk.register({
-  w = { "<cmd>w<cr>", "write" },
-  W = { function()
-    vim.cmd [[wa]]
-    vim.notify("Write all!")
-  end, "write all" },
-  -- n = { "<cmd>NvimTreeOpen<cr>", "open nvim-tree" },
-  -- N = { "<cmd>NvimTreeFindFile!<cr>", "open nvim-tree and focus" },
+  -- w = { "<cmd>w<cr>", "write" },
+  -- W = { function()
+  --   vim.cmd [[wa]]
+  --   vim.notify("Write all!")
+  -- end, "write all" },
   ["<space>"] = { "<cmd>Gitsigns preview_hunk<cr>", "[G] preview current change" },
   ["<tab>"] = { "<cmd>Telescope resume<cr>", "last telescope history" },
   ["<S-tab>"] = { "<cmd>Telescope pickers<cr>", "All telescope history" },
-  a = { function()
-    vim.cmd [[Gitsigns stage_hunk]]
-    vim.cmd [[w]]
-  end, "[G] stage current hunk", mode = { "n", "v" } },
-  A = { function()
-    vim.cmd [[Gitsigns stage_buffer]]
-    vim.cmd [[w]]
-  end, "[G] stage buffer" },
+  a = { "<cmd>Gitsigns stage_hunk<cr>", "[G] stage current hunk" },
+  A = { "<cmd>Gitsigns stage_buffer<cr>", "[G] stage buffer" },
   ["<C-a>"] = { "<cmd>Gitsigns undo_stage_hunk<cr>", "[G] undo staged hunk" },
   u = { "<cmd>Gitsigns reset_hunk<cr>", "[G] revert current change" },
   U = { "<cmd>Gitsigns reset_buffer<cr>", "[G] revert buffer" },
-  L = { "<cmd>FormatModifications<cr>", "format change only" },
   l = { function()
     vim.lsp.buf.format { async = false }
     vim.cmd [[silent w]] -- Save after format
@@ -46,16 +37,7 @@ wk.register({
   end, "search and replace (spectre)", mode = "v" },
 }, opt)
 
--- https://github.com/mhinz/vim-galore#quickly-move-current-line
---  FIX: error when target moves execeeds line range of file
-vim.cmd [[
-nnoremap <silent> <leader>[  :<c-u>execute "move -1-". v:count1<cr>
-nnoremap <silent> <leader>]  :<c-u>execute "move +". v:count1<cr>
-vnoremap <silent> <leader>[  :<c-u>execute "'<,'>move '<-1-". v:count1<cr>gv=gv
-vnoremap <silent> <leader>]  :<c-u>execute "'<,'>move '>+". v:count1<cr>gv=gv
-]]
-
 wk.register({
-  ["]"] = { "move line up", mode = { "n", "v" } },
-  ["["] = { "move line down", mode = { "n", "v" } },
-}, opt)
+  ["<M-u>"] = { "<cmd>Gitsigns reset_hunk<cr>", "[G] revert current change" },
+  ["<M-S-u>"] = { "<cmd>Gitsigns reset_buffer<cr>", "[G] revert buffer" },
+}, { mode = "n" })

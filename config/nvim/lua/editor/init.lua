@@ -3,6 +3,7 @@ require("editor.event")
 require("editor.search")
 require("editor.yank")
 require("editor.appearance")
+require("editor.qf")
 
 vim.cmd [[
 cnoreab vm verb map

@@ -25,6 +25,9 @@ vim.cmd([[
   augroup end
 ]])
 
+-- Fix "too many files" when using :PackerUpdate and :PackerSync
+vim.fn.system("ulimit -S -n 200048")
+
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -104,6 +107,7 @@ local plugins = function(use)
       -- vim.g.VM_Insert_hl = 'IncSearch' -- Multi insert place atfer selection
       set("n", "<M-j>", "<Plug>(VM-Add-Cursor-Down)")
       set("n", "<M-k>", "<Plug>(VM-Add-Cursor-Up)")
+      vim.g.VM_leader = ",,"
     end
   }
   use {
@@ -137,9 +141,10 @@ local plugins = function(use)
   use "nvim-pack/nvim-spectre" -- Search and replace text
   use "tpope/vim-sleuth"  -- Auto detect indent width in file
   use "mbbill/undotree"  -- Undo history
-  use {"akinsho/toggleterm.nvim", tag = '*',}  -- Toggle terminal
+  use { "akinsho/toggleterm.nvim", tag = '*', } -- Toggle terminal
   use "moll/vim-bbye" -- Delete buffer without messing up layout (:bdelete enhancement).
-  use "mhinz/vim-startify"    -- Startup page
+  -- use "mhinz/vim-startify"    -- Startup page
+  use "stevearc/resession.nvim"
   use "andymass/vim-matchup"  -- Enhance matchit (%)
   use {
     "Pocco81/auto-save.nvim", -- Save file automatically
@@ -173,7 +178,9 @@ local plugins = function(use)
   use "neovim/nvim-lspconfig"              -- Neovim LSP support
   use "williamboman/mason.nvim"            -- Manage LSP servers, DAP servers, linters, and formatters
   use "williamboman/mason-lspconfig.nvim"  -- Automatically install LSP servers
+  use "stevearc/aerial.nvim"               -- More clean and effective than lsp and symbols-outline
   use "glepnir/lspsaga.nvim"               -- Beautify lsp popup (hover, reference, definition and etc.)
+  use  'rmagatti/goto-preview'             -- Preview lsp definition, reference, implements etc.
   use {
     "RRethy/vim-illuminate",              -- Highlight usage of variable under cursor
     config = function()
@@ -186,6 +193,7 @@ local plugins = function(use)
     "folke/trouble.nvim",  -- Show lsp reference/implements/definition and diagnostics in location list and
     requires = "kyazdani42/nvim-web-devicons",
   }
+  use 'kevinhwang91/nvim-bqf' -- Better quick fix
   use {
     "folke/todo-comments.nvim",  -- highlight TODO,NOTE,FIX
     requires = "nvim-lua/plenary.nvim",
@@ -228,7 +236,9 @@ local plugins = function(use)
     },
     after = "nvim-web-devicons",
     config = function()
-      require("barbecue").setup()
+      require("barbecue").setup {
+        include_buftypes = { "", "acwrite", "help", "quickfix", "notwrite" }
+      }
     end,
   }
   use {
@@ -274,8 +284,15 @@ local plugins = function(use)
     end
   }
   use "ray-x/lsp_signature.nvim" -- SHow method signature when typing
-  -- For specific language
-  use "folke/neodev.nvim"  --  Full signature help for neovim method
+  -- Neovim
+  use "folke/neodev.nvim" --  Full signature help for neovim method
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require('colorizer').setup()
+    end
+  }
+  -- Rust
   use {
     "rust-lang/rust.vim",  --Rrust command integration
     requires = "mattn/webapi-vim",
@@ -308,6 +325,7 @@ local plugins = function(use)
       })
     end,
   }
+  -- Other languages
   use {
     "iamcco/markdown-preview.nvim",  -- :MarkdownPreviewToggle toggles preview
     run = "cd app && npm install",

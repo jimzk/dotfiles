@@ -4,6 +4,7 @@ vim.o.incsearch = false
 -- Don't add 'resize', it will disorder restored session.
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winpos,winsize,terminal"
 vim.o.clipboard = "unnamed"
+vim.o.shortmess = "filnxtToOFI"
 
 -------------------------------
 -- local filetypes = { "Trouble", "quifkfix", "help" }

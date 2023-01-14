@@ -43,5 +43,10 @@ local border_match = function(pattern) return [[\<]] .. pattern .. [[\>]] end
 set("n", "g*", asterisk('yiw', border_match), opts)
 set("v", "g*", asterisk('y', border_match), opts)
 
+require("which-key").register({
+  ["*"] = { "which_key_ignore" },
+  ["g*"] = { "which_key_ignore" }
+}, { mode = { "n", "v" } })
+
 -- Support search in visual range
 set('x', '/', '<Esc>/\\%V', opts)
