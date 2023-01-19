@@ -27,6 +27,9 @@ export TMUX_CONF=$HOME/.tmux.conf
 export WORKSPACE=$HOME/workspace
 export BLOG_HOME=$WORKSPACE/blog
 
+# https://github.com/ohmyzsh/ohmyzsh/issues/8743
+export WORDCHARS=$'!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~'
+
 # editor
 if [[ -n $(command -v code) ]]; then
     EDITOR='code'
@@ -45,8 +48,10 @@ FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --an
 --bind='alt-n:toggle+down' \
 --bind='alt-p:toggle+up' \
 --bind='ctrl-space:toggle' \
---bind='ctrl-j:preview-half-page-down' \
---bind='ctrl-k:preview-half-page-up' \
+--bind='ctrl-f:preview-page-down' \
+--bind='ctrl-b:preview-page-up' \
+--bind='shift-up:preview-page-up' \
+--bind='shift-down:preview-page-down' \
 --bind 'ctrl-\:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

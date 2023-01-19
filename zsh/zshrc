@@ -4,8 +4,6 @@ set -o noclobber
 unsetopt BEEP             # turn off bell/beep
 typeset -U PATH           # prevent duplicate path
 setopt EXTENDED_GLOB      # extended globbing
-# https://github.com/ohmyzsh/ohmyzsh/issues/8743
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  # remove '/'
 DISABLE_AUTO_UPDATE="true" # disable zsh auto update
 # skip the verification of insecure directories
 # if it doesn't work, try compaudit | xargs chmod g-w,o-w
