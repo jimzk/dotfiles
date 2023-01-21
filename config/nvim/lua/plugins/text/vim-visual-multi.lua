@@ -12,7 +12,7 @@ return {
     -- Help: :h vm-highlight
     vim.g.VM_Mono_hl = "Cursor" -- All cursors
     vim.g.VM_Cursor_hl = "Cursor" -- Cursor in selection
-    vim.g.VM_Extend_hl = "Visual" -- Selected items in selection
+    vim.g.VM_Extend_hl = "CurSearch" -- Selected items in selection
     -- vim.g.VM_Insert_hl = 'IncSearch' -- Multi insert place atfer selection
     vim.g.VM_leader = ",,"
   end,

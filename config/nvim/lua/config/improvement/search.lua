@@ -30,6 +30,7 @@ local asterisk = function(yank_keys, transfer_pattern)
     end
     vim.cmd("keepjumps /" .. pattern)
     vim.fn.winrestview(view)
+    require("hlslens").start()
   end
 end
 

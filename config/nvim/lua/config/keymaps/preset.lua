@@ -16,14 +16,27 @@ map("n", "<CR>", [[<cmd>silent! exec "normal \<C-]>"<cr>]])
 map({ "n", "o", "v" }, "<Esc>", "<Esc>")
 
 -- Clear search with <esc>
-map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", "Escape and clear hlsearch")
+map({ "n" }, "<esc>", "<cmd>noh<cr><esc>", "escape and clear hlsearch")
+
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
-map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })
-map({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", nil, { expr = true })
+-- map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })
+-- map({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", nil, { expr = true })
+local nN = function(forward)
+  local direction = forward and { "n", "N" } or { "N", "n" }
+  local c = direction[vim.v.searchforward]
+  -- Keep jumplist unchanged
+  local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], c)
+  vim.cmd(cmd)
+  require("hlslens").start()
+end
+-- stylua: ignore
+map({ "n", "x", "o" }, "n", function() nN(true) end)
+-- stylua: ignore
+map({ "n", "x", "o" }, "N", function() nN(false) end)
 
 -- better up/down
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
+-- map("n", "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
+-- map("n", "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
 
 -- map("n", "<", "<<")
 -- map("n", ">", ">>")

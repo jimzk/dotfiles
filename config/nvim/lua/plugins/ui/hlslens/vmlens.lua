@@ -1,5 +1,5 @@
 local M = {}
-local hlslens = require('hlslens')
+local hlslens = require("hlslens")
 local lensBak
 
 local overrideLens = function(render, posList, nearest, idx, relIdx)
@@ -8,18 +8,18 @@ local overrideLens = function(render, posList, nearest, idx, relIdx)
 
   local text, chunks
   if nearest then
-    text = ('[%d/%d]'):format(idx, #posList)
-    chunks = { { ' ', 'Ignore' }, { text, 'VM_Extend' } }
+    text = ("[%d/%d]"):format(idx, #posList)
+    chunks = { { " ", "Ignore" }, { text, "VM_Extend" } }
   else
-    text = ('[%d]'):format(idx)
-    chunks = { { ' ', 'Ignore' }, { text, 'HlSearchLens' } }
+    text = ("[%d]"):format(idx)
+    chunks = { { " ", "Ignore" }, { text, "HlSearchLens" } }
   end
   render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
 end
 
+local config = require("hlslens.config")
 function M.start()
   if hlslens then
-    config = require('hlslens.config')
     lensBak = config.override_lens
     config.override_lens = overrideLens
     hlslens.start()
