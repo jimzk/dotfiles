@@ -4,7 +4,7 @@ local M = {
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
-  event = "VeryLazy",
+  event = "CursorHold", -- BufReadPre, VimEnter
   keys = {
     { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
     { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },

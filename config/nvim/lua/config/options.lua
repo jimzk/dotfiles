@@ -15,7 +15,7 @@ opt.cursorline = true -- Enable highlighting of the current line
 
 opt.hlsearch = true -- Highlight search text
 opt.incsearch = false -- Not jump to the first match immediately
-opt.wrap = false -- Disable line wrap
+opt.wrap = true -- Line wrap
 opt.scrolloff = 4 -- Lines of context
 opt.sidescrolloff = 8 -- Columns of context
 opt.pumblend = 10 -- Popup blend
@@ -45,7 +45,7 @@ opt.list = true -- Show some invisible characters (tabs...
 opt.mouse = "a" -- enable mouse mode
 opt.jumpoptions = "stack" -- Make jumplist behave like web browser back / forward
 opt.sessionoptions =
-  { "buffers", "curdir", "folds", "help", "tabpages", "winpos", "winsize", "terminal", "localoptions" }
+  { "blank", "buffers", "curdir", "folds", "help", "tabpages", "winpos", "winsize", "terminal", "localoptions" }
 opt.spelllang = { "en" }
 opt.termguicolors = true -- True color support
 opt.timeoutlen = 300

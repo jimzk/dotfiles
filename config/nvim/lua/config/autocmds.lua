@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- resize splits if window got resized
+-- stylua: ignore
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
     vim.cmd("tabdo wincmd =")
@@ -51,36 +52,26 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
   callback = function()
-    if vim.bo.buflisted then
-      vim.wo.cursorline = true
-    end
+    if vim.bo.buflisted then vim.wo.cursorline = true end
   end,
 })
-
 vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
   callback = function()
-    if vim.bo.buflisted then
-      vim.wo.cursorline = false
-    end
+    if vim.bo.buflisted then vim.wo.cursorline = false end
   end,
 })
 
-vim.api.nvim_create_autocmd({ "WinEnter" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
   callback = function()
     local height = vim.api.nvim_win_get_height(0)
-    vim.wo.scrolloff = height < 30 and 2 or 4
-    if vim.wo.number then
-      vim.wo.relativenumber = true
-    end
+    vim.wo.scrolloff = height < 30 and 1 or 3
+    if vim.wo.number then vim.wo.relativenumber = true end
   end,
 })
-
-vim.api.nvim_create_autocmd("WinLeave", {
+vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
   pattern = "*",
   callback = function()
-    if vim.wo.number then
-      vim.wo.relativenumber = false
-    end
+    if vim.wo.number then vim.wo.relativenumber = false end
   end,
 })
 
@@ -88,10 +79,7 @@ vim.api.nvim_create_autocmd("WinLeave", {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = Util.unlisted_filetypes,
   callback = function(event)
-    local filetype = vim.bo[event.buf].filetype
-    if filetype ~= "help" and filetype ~= "man" then
-      vim.bo[event.buf].buflisted = false
-    end
+    vim.bo[event.buf].buflisted = false
     -- vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
   end,
 })

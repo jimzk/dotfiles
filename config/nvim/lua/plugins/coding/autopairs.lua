@@ -88,6 +88,8 @@ M.config = function(_, opts)
       rule:with_pair(not_in_comments())
     end
   end
+
+  --   npairs.get_rule("{"):with_cr(cond.done())
 end
 
 return M

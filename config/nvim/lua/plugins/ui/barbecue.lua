@@ -7,8 +7,8 @@ return {
   },
   event = "VeryLazy",
   opts = {
-    include_buftypes = { "", "acwrite", "help", "quickfix", "notwrite" },
-    -- exclude_filetypes = Util.unlisted_filetypes,
+    include_buftypes = { "", "acwrite", "help", "quickfix", "nofile", "notwrite" },
+    exclude_filetypes = { "neo-tree" },
     -- custom_section = function()
     -- return " " .. os.date("%R")
     -- end,

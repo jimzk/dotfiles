@@ -32,9 +32,11 @@ M.on_attach = function(bufnr)
   map("n", "<leader>ci", "<cmd>LspInfo<cr>", "LSP Info", opts)
 
   map({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help, "[C] peek signature", opts)
-  local format = require("plugins.lsp.format").format
-  map("n", "<leader>cl", format, "format buffer", opts)
-  map("v", "<leader>cl", format, "format selection", opts)
+
+  local format = require("plugins.lsp.format")
+  map("n", "<leader>cl", format.format, "format buffer", opts)
+  map("v", "<leader>cl", format.format, "format selection", opts)
+  map("v", "<leader>cL", format.toggle, "toggle format", opts)
 end
 
 return M

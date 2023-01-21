@@ -6,8 +6,8 @@ local mappings = {
   ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
   ["<leader>~"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
   -- Tab
-  ["-"] = { "<cmd>tabnext<cr>", "next tab" },
-  ["="] = { "<cmd>tabprev<cr>", "prev tab" },
+  ["-"] = { "<cmd>tabprev<cr>", "prev tab" },
+  ["="] = { "<cmd>tabnext<cr>", "next tab" },
   -- Redo
   ["U"] = { "<C-r>", ignored },
 
@@ -19,7 +19,7 @@ local mappings = {
 
   -- Quit
   ["q"] = { "<cmd>close<cr>", ignored },
-  ["<C-q>"] = { "<cmd>xa<cr>", ignored },
+  ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
   ["<BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer" },
   ["<BS><BS>"] = { "<cmd>Bwipeout!<cr>", "delete buffer forcely" },

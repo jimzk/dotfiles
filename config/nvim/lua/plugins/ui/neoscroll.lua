@@ -1,7 +1,10 @@
 return {
   "karb94/neoscroll.nvim",
-  event = "VeryLazy",
+  event = "BufReadPre",
+  enabled = function()
+    return vim.g.neovide ~= true
+  end,
   opts = {
-    mappings = { "<C-u>", "<C-d>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+    mappings = { "<C-u>", "<C-d>", "zt", "zz", "zb" },
   },
 }

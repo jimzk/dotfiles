@@ -1,7 +1,7 @@
 -- statusline
 local M = {
   "nvim-lualine/lualine.nvim",
-  event = { "BufReadPre" },
+  event = "BufReadPost",
 }
 
 M.opts = function()
@@ -37,26 +37,18 @@ M.opts = function()
             local winnr = vim.fn.tabpagewinnr(context.tabnr)
             local bufnr = buflist[winnr]
             local is_mod = vim.fn.getbufvar(bufnr, "&mod")
-            if is_mod then
-              name = name .. (is_mod == 1 and " [+] " or "")
-            end
+            if is_mod then name = name .. (is_mod == 1 and " [+] " or "") end
             local is_readonly = vim.fn.getbufvar(bufnr, "&readonly")
-            if is_readonly then
-              name = name .. (is_readonly == 1 and " [-]" or "")
-            end
+            if is_readonly then name = name .. (is_readonly == 1 and " [-]" or "") end
             return name
           end,
         },
       },
       lualine_x = {
         { -- show session name
-          function()
-            return require("possession.session").session_name
-          end,
+          function() return require("possession.session").session_name end,
           icon = { "", align = "left" },
-          cond = function()
-            return require("possession.session").session_name ~= nil
-          end,
+          cond = function() return require("possession.session").session_name ~= nil end,
           padding = { left = 0, right = 1 },
           separator = "|",
         },
@@ -118,9 +110,7 @@ M.opts = function()
           function()
             local clients = {}
             for _, client in ipairs(vim.lsp.get_active_clients()) do
-              if client.name ~= "null-ls" then
-                table.insert(clients, client.name)
-              end
+              if client.name ~= "null-ls" then table.insert(clients, client.name) end
             end
             return table.concat(clients, " ")
           end,
@@ -132,15 +122,11 @@ M.opts = function()
         -- :h 'statusline' to check vim statusline symbols
         -- another example: "Ln %l/%L, Col %c"
         {
-          function()
-            return [[%l:%c (%LL)]]
-          end,
+          function() return [[%l:%c (%LL)]] end,
           separator = "",
         },
         {
-          function()
-            return vim.o.shiftwidth
-          end,
+          function() return vim.o.shiftwidth end,
           icon = { "", align = "left" },
           separator = "",
           padding = { left = 0, right = 1 },
@@ -153,9 +139,7 @@ M.opts = function()
         },
       },
       lualine_z = {
-        function()
-          return " " .. os.date("%R")
-        end,
+        function() return " " .. os.date("%R") end,
       },
     },
     extensions = { "nvim-tree", "toggleterm", "nvim-dap-ui", "fzf", "neo-tree" },

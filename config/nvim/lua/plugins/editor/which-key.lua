@@ -54,6 +54,7 @@ return {
           name = "+code",
           w = { name = "LSP workspace" },
         },
+        e = { name = "+neo-tree" },
         o = { name = "+options" },
         n = {
           name = "+editor",

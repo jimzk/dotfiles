@@ -9,13 +9,13 @@ return {
   },
 
   -- Improve startup time
-  {
-    "lewis6991/impatient.nvim",
-    lazy = false,
-    config = function()
-      require('impatient').enable_profile() -- Enable :LuaCacheProfile
-    end
-  },
+  -- { -- Lazy.nvim doesn't need it
+  --   "lewis6991/impatient.nvim",
+  --   enable = false,
+  --   config = function()
+  --     require("impatient").enable_profile() -- Enable :LuaCacheProfile
+  --   end,
+  -- },
 
   -- library used by other plugins
   "nvim-lua/plenary.nvim",

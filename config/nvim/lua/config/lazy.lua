@@ -9,7 +9,6 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
   spec = {
-    -- Author: set to HEAD for now. I'm sill making too many changes for this repo related to lazy itself
     { "folke/lazy.nvim" },
     { import = "plugins" },
     -- import any extras modules here
@@ -22,6 +21,9 @@ require("lazy").setup({
   },
   checker = { enabled = false }, -- automatically check for plugin updates
   performance = {
+    -- cache = {
+    --   disable_events = { "BufReadPost" },
+    -- },
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {

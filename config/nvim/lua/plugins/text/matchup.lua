@@ -19,11 +19,11 @@ return {
     vim.g.matchup_mappings_enabled = 0
     -- vim.g.matchup_matchparen_offscreen = { method = 'popup' }
     vim.g.matchup_matchparen_enabled = 1
-    require("nvim-treesitter.configs").setup {
+    require("nvim-treesitter.configs").setup({
       matchup = {
         enable = true, -- mandatory, false will disable the whole extension
         disable_virtual_text = false,
       },
-    }
-  end
+    })
+  end,
 }

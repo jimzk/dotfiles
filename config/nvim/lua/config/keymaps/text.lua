@@ -1,3 +1,9 @@
+-- Add undo break-points
+local chars = { ",", ".", ";", "/", "(" }
+for _, char in ipairs(chars) do
+  map("i", char, char .. "<C-g>u")
+end
+
 -- break line
 map({ "n", "i" }, "<S-cr>", function()
   local pos = vim.api.nvim_win_get_cursor(0)
@@ -21,10 +27,17 @@ map("n", "<leader>d", [[V"vY'>"vp]], "duplicate line")
 map("v", "<leader>d", [["vY'>"vp]], "duplicate line")
 
 -- Cmdline
-map({ "c", "i" }, "<C-E>", "<End>")
-map({ "c", "i" }, "<C-A>", "<Home>") -- if mapting silent = true then <C-A> can't work. Don't know why.
-map("c", "<C-j>", "<DOWN>")
-map("c", "<C-k>", "<UP>")
+-- :h emacs-keys*
+map({ "c", "i" }, "<C-E>", "<END>")
+-- Only in this way C-A can work otherwise there will be lagging. Don't know why.
+vim.cmd([[cnoremap <special> <C-A> <HOME>]])
+
+map({ "c", "i" }, "<C-B>", "<Left>")
+map({ "c", "i" }, "<C-F>", "<Right>")
+
+-- map("c", "<C-J>", "<DOWN>")
+-- map("c", "<C-K>", "<UP>")
+
 map({ "c", "i" }, "<M-BS>", "<C-W>")
 map({ "c", "i" }, "<S-BS>", "<C-U>")
 map({ "c", "i" }, "<M-b>", "<S-Left>")

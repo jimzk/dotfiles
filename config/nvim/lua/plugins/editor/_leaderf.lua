@@ -19,25 +19,20 @@ return {
     vim.g.Lf_PreviewPopupWidth = 100
     --  Remap key
     -- :h leaderf-prompt
+    -- stylua: ignore
     vim.g.Lf_CommandMap = {
-      ["<C-j>"] = {
-        "<C-n>", -- down
-      },
-      ["<C-k>"] = {
-        "<C-p>", -- up
-      },
-      -- ["<C-p>"] = {
-      --   "<Tab>", -- preview result
-      -- },
-      ["<C-x>"] = {
-        "<C-s>", -- split
-      },
-      ["<C-]>"] = {
-        "<C-v>", -- split vertical
-      },
-      ["<C-v>"] = {
-        "<C-y>", -- paste from clipboard
-      },
+      -- down
+      ["<C-j>"] = { "<C-n>" },
+      -- up
+      ["<C-k>"] = { "<C-p>" },
+      -- preview result
+      -- ["<C-p>"] = { "<Tab>" },
+      -- split
+      ["<C-x>"] = { "<C-s>" },
+      -- split vertical
+      ["<C-]>"] = { "<C-v>" },
+      -- paste from clipboard
+      ["<C-v>"] = { "<C-y>" },
     }
   end,
 }

@@ -7,7 +7,7 @@ local M = {
     "williamboman/mason.nvim",
     "hrsh7th/cmp-nvim-lsp",
     -- Signature help for neovim method
-    { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+    { "folke/neodev.nvim", config = true },
   },
 }
 

@@ -26,13 +26,16 @@ local nN = function(forward)
   local c = direction[vim.v.searchforward]
   -- Keep jumplist unchanged
   local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], c)
-  vim.cmd(cmd)
+  vim.cmd("silent! " .. cmd) -- suppress error "pattern not found"
   require("hlslens").start()
 end
 -- stylua: ignore
 map({ "n", "x", "o" }, "n", function() nN(true) end)
 -- stylua: ignore
 map({ "n", "x", "o" }, "N", function() nN(false) end)
+
+map("n", "<C-E>", "2<C-E>")
+map("n", "<C-Y>", "2<C-Y>")
 
 -- better up/down
 -- map("n", "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })

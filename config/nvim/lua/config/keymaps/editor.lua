@@ -163,7 +163,7 @@ mappings = {
   r = { "<cmd>FzfLua git_branches<cr>", "branch (fzf)" },
   B = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
   g = { "<cmd>Neogit kind=vsplit<cr>", "git operations (neogit)" },
-  G = { "<cmd>Git<cr><cmd>wincmd L<cr>", "git operations (fugitive)" },
+  G = { "<cmd>Git<cr><cmd>wincmd L<cr><cmd>6<cr>", "git operations (fugitive)" },
 
   -- d = { "<cmd>Gvdiffsplit<cr>", "current file diff" },
   d = { "<cmd>Gitsigns diffthis<cr>", "current file diff (gitsigns)" },
@@ -232,8 +232,8 @@ end, "show buffer info")
 
 mappings = {
   -- name = "+file",
-  ["<M-f>"] = { Util.telescope("find_files", { prompt_title = "Find Files (cwd)", }), "find files (cwd)" },
-  f = {"<cmd>LeaderfFile<cr>", "find files (leaderf)", mode = {"n", "x"}},
+  f = { Util.telescope("find_files", { prompt_title = "Find Files (cwd)", }), "find files (cwd)" },
+  -- f = {"<cmd>LeaderfFile<cr>", "find files (leaderf)", mode = {"n", "x"}},
   F = { function()
     local cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
     Util.telescope("find_files", {
@@ -247,8 +247,8 @@ mappings = {
     cwd = "~",
     prompt_title = "Find Files (HOME)",
   }), "find files (HOME)" },
-  -- b = { Util.telescope("buffers", { sort_lastused = true }), "buffers" },
-  b = {"<cmd>LeaderfBuffer<cr>", "buffers (leaderf)"},
+  b = { Util.telescope("buffers", { sort_lastused = true }), "buffers" },
+  -- b = {"<cmd>LeaderfBuffer<cr>", "buffers (leaderf)"},
   o = { function()
     require("telescope").extensions.frecency.frecency({
       prompt_title = "Oldfiles (cwd)",

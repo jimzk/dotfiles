@@ -1,6 +1,6 @@
 return {
   "saecki/crates.nvim",
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = { "nvim-lua/plenary.nvim" },
   ft = { "toml" },
   init = function()
     -- https://github.com/Saecki/crates.nvim#nvim-cmp-source

@@ -1,3 +1,4 @@
+-- stylua: ignore start
 map("v", ",<space>", function()
   vim.cmd [[normal! "vy]]
   local lua_code = vim.fn.getreg("+")
@@ -14,3 +15,8 @@ map("n", ",<space>", function()
       :gsub("[%s]+", " ")
   vim.cmd("lua " .. lua_code)
 end, "execute lua code from clipboard")
+
+local keys = {"D", "d", "C", "c"}
+for _, key in ipairs(keys) do
+  map({"n", "v"}, ","..key, '"_' .. key, "black hole ".. key)
+end

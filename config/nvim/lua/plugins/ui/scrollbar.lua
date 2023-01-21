@@ -3,14 +3,14 @@ return {
   event = "VeryLazy",
   opts = {
     handlers = {
-      color = '#36454F', -- current bar color
+      color = "#36454F", -- current bar color
       diagnostic = false,
       cursor = false,
       gitsigns = true,
     },
     marks = {
       GitAdd = {
-        text = "+"
+        text = "+",
       },
       GitChange = {
         text = "┆",
@@ -19,8 +19,8 @@ return {
         text = "-",
       },
       Search = {
-        text = { ".", '.' }
-      }
+        text = { ".", "." },
+      },
     },
   },
   config = function(_, opts)
@@ -28,5 +28,5 @@ return {
     -- vim.cmd [[au ColorScheme * hi! ScrollbarSearchHandle guifg=#81b29a]]
     require("scrollbar").setup(opts)
     require("scrollbar.handlers.gitsigns").setup()
-  end
+  end,
 }

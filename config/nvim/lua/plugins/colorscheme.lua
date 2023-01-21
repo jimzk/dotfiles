@@ -13,8 +13,14 @@ return {
     opts = {
       -- latte, frappe, macchiato, mocha
       flavour = "frappe",
+      term_colors = true, -- for neovide
+      dim_inactive = {
+        enabled = true,
+        shade = "dark",
+        percentage = 0.15,
+      },
       integrations = {
-        aerial = true,
+        -- aerial = true,
         gitsigns = true,
         leap = true,
         neotree = true,

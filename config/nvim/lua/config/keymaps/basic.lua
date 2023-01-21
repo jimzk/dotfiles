@@ -1,16 +1,6 @@
--- Add undo break-points
-local chars = { ",", ".", ";", "/", "(" }
-for _, char in ipairs(chars) do
-  map("i", char, char .. "<C-g>u")
-end
-
 -- floating terminal
-map("n", "<leader>ft", function()
-  Util.float_term(nil, { cwd = Util.get_root() })
-end, "terminal (root dir)")
-map("n", "<leader>fT", function()
-  Util.float_term()
-end, "terminal (cwd)")
+map("n", "<leader>ft", function() Util.float_term(nil, { cwd = Util.get_root() }) end, "terminal (root dir)")
+map("n", "<leader>fT", function() Util.float_term() end, "terminal (cwd)")
 
 map("t", "<esc><esc>", "<C-\\><C-n>", "enter normal mode")
 map("t", "<M-right>", [[<M-f>]])

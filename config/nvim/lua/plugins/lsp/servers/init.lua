@@ -31,7 +31,6 @@ local servers = {
   "sumneko_lua", -- Lua
   "rust_analyzer", -- Rust
   "bashls", -- Bash
-  "zk", -- Markdown
   "taplo", -- TOML
   "yamlls", -- YAML
   "jsonls", -- JSON
@@ -41,9 +40,7 @@ local servers_opts = {}
 for _, server in ipairs(servers) do
   local opts = get_default_opts()
   local ok, wopts = pcall(require, "plugins.lsp.servers." .. server)
-  if ok then
-    opts = vim.tbl_extend("force", opts, wopts)
-  end
+  if ok then opts = vim.tbl_extend("force", opts, wopts) end
   servers_opts[server] = opts
 end
 

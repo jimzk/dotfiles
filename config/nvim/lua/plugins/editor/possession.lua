@@ -11,7 +11,18 @@ return {
     },
     plugins = {
       -- Hack: avoid autocmd error when save session with neogit
-      delete_hidden_buffers = false,
+      -- delete_hidden_buffers = false,
+      delete_hidden_buffers = {
+        hooks = {
+          "before_load",
+        },
+        force = false,
+      },
+      close_windows = {
+        match = {
+          buftype = { "help" },
+        },
+      },
     },
   },
   config = function(_, opts)

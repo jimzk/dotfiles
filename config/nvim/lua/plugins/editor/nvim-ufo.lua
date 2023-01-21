@@ -11,12 +11,14 @@ M.init = function()
   -- set '0' to hind it for now until someone has solution.
   -- https://github.com/kevinhwang91/nvim-ufo/issues/4
   vim.o.foldcolumn = "0" -- '0' is not bad
+
   vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
   vim.o.foldlevelstart = 99
-  vim.o.foldenable = false
+  vim.o.foldenable = true
 end
 
 -- https://github.com/kevinhwang91/nvim-ufo#customize-fold-text
+-- stylua: ignore
 local handler = function(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
   local suffix = ("  %d "):format(endLnum - lnum)

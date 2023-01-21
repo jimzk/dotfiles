@@ -88,6 +88,7 @@ function M.setup(opts)
       callback = function()
         M.load("autocmds")
         M.load("keymaps")
+        M.load("abbrev")
         M.load("improvement")
       end,
     })
@@ -95,6 +96,7 @@ function M.setup(opts)
     -- load them now so they affect the opened buffers
     M.load("autocmds")
     M.load("keymaps")
+    M.load("abbrev")
     M.load("improvement")
   end
 
@@ -119,7 +121,7 @@ function M.has(range)
   return Semver.range(range or M.lazy_version):matches(require("lazy.core.config").version or "0.0.0")
 end
 
----@param name "autocmds" | "options" | "keymaps" | "improvement"
+---@param name "autocmds" | "options" | "keymaps" | "improvement" | "abbrev"
 function M.load(name)
   local lazy_util = require("lazy.core.util")
   -- always load lazyvim, then user file

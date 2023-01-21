@@ -6,7 +6,7 @@ local M = {
 }
 
 M.config = function()
-  require("nvim-treesitter.configs").setup {
+  require("nvim-treesitter.configs").setup({
     textobjects = {
       select = {
         enable = true,
@@ -22,9 +22,9 @@ M.config = function()
           -- ["ia"] = "@parameter.inner",
         },
         selection_modes = {
-          ['@parameter.outer'] = 'v', -- charwise
-          ['@function.outer'] = 'V', -- linewise
-          ['@class.outer'] = '<c-v>', -- blockwise
+          ["@parameter.outer"] = "v", -- charwise
+          ["@function.outer"] = "V", -- linewise
+          ["@class.outer"] = "<c-v>", -- blockwise
         },
         include_surrounding_whitespace = true,
       },
@@ -34,7 +34,7 @@ M.config = function()
           ["]e"] = { query = "@parameter.inner", desc = "exchange with next parameter" },
         },
         swap_previous = {
-          ["[e"] = { "@parameter.inner", desc = "exchange with prev parameter" }
+          ["[e"] = { "@parameter.inner", desc = "exchange with prev parameter" },
         },
       },
       move = {
@@ -59,15 +59,15 @@ M.config = function()
       },
       lsp_interop = {
         enable = true,
-        border = 'double',
+        border = "double",
         floating_preview_opts = {},
         peek_definition_code = {
-          ["gf"] = { query = "@function.outer", desc = "[TS] peek outer function" },
+          ["gF"] = { query = "@function.outer", desc = "[TS] peek outer function" },
           -- ["gJ"] = "@class.outer",
         },
       },
     },
-  }
+  })
 end
 
 return M

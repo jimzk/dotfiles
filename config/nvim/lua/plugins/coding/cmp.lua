@@ -29,11 +29,19 @@ local my_mapping = function()
   local cmp = require("cmp")
   local luasnip = require("luasnip")
 
-  local action_tab = function(fallback)
+  local tab = function(fallback)
     if cmp.visible() then
-      cmp.confirm({ select = false })
-    elseif luasnip.expand_or_locally_jumpable() then -- Jumpable is ignored is cursor out of current snippet
+      cmp.confirm({ select = true })
+    elseif luasnip.expand_or_jumpable() then -- Jumpable is ignored is cursor out of current snippet
       luasnip.expand_or_jump()
+    else
+      fallback()
+    end
+  end
+
+  local s_tab = function(fallback)
+    if luasnip.jumpable(-1) then
+      luasnip.jump(-1)
     else
       fallback()
     end
@@ -61,7 +69,8 @@ local my_mapping = function()
     ["<CR>"] = cmp.mapping.confirm({ select = false }),
     -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
     -- https://github.com/NvChad/NvChad/blob/main/lua/plugins/configs/cmp.lua#L66
-    ["<Tab>"] = cmp.mapping(action_tab, { "i", "s" }),
+    ["<Tab>"] = cmp.mapping(tab, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(s_tab, { "i", "s" }),
 
     ["<C-p>"] = cmp.mapping(select_item("prev"), { "i", "s" }),
     ["<C-n>"] = cmp.mapping(select_item("next"), { "i", "s" }),
@@ -79,7 +88,7 @@ local my_mapping_cmdline = function()
     ["<C-p>"] = { c = select_item("prev", cmp.SelectBehavior.Insert) },
     ["<C-n>"] = { c = select_item("next", cmp.SelectBehavior.Insert) },
     ["<C-c>"] = { c = cmp.mapping.abort() },
-    ["<Tab>"] = { c = cmp.mapping.confirm({ select = false }) },
+    ["<Tab>"] = { c = cmp.mapping.confirm({ select = true }) },
     -- ["<CR>"] = { c = cmp.mapping.confirm({ select = true }) },
   }
 end
@@ -92,7 +101,7 @@ M.config = function()
   local icons = require("config").icons.kinds
   cmp.setup({
     completion = {
-      completeopt = "menu,menuone,noinsert",
+      completeopt = "menu,menuone,noinsert,noselect",
     },
     snippet = {
       expand = function(args)
@@ -137,6 +146,10 @@ M.config = function()
   })
 
   cmp.setup.cmdline({ "/", "?" }, {
+    -- remove noselect
+    completion = {
+      completeopt = "menu,menuone,noinsert",
+    },
     -- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/mapping.lua#L61
     mapping = cmp.mapping.preset.cmdline(my_mapping_cmdline()),
     sources = {
@@ -145,6 +158,10 @@ M.config = function()
   })
 
   cmp.setup.cmdline(":", {
+    -- remove noselect
+    completion = {
+      completeopt = "menu,menuone,noinsert",
+    },
     mapping = cmp.mapping.preset.cmdline(my_mapping_cmdline()),
     sources = {
       { name = "cmdline" },
