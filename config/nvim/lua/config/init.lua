@@ -10,6 +10,8 @@ local defaults = {
   colorscheme = function()
     -- require("tokyonight").load()
     require("catppuccin").load()
+    -- Tiny modify
+    vim.cmd [[hi Comment guifg=#6b6f8c]] -- Lighter comment
   end,
   -- icons used by other plugins
   icons = {
@@ -31,6 +33,7 @@ local defaults = {
       Color = " ",
       Constant = " ",
       Constructor = " ",
+      Copilot = " ",
       Enum = " ",
       EnumMember = " ",
       Event = " ",
@@ -73,9 +76,9 @@ function M.setup(opts)
   if not M.has() then
     require("lazy.core.util").error(
       "**LazyVim** needs **lazy.nvim** version "
-        .. M.lazy_version
-        .. " to work properly.\n"
-        .. "Please upgrade **lazy.nvim**",
+      .. M.lazy_version
+      .. " to work properly.\n"
+      .. "Please upgrade **lazy.nvim**",
       { title = "LazyVim" }
     )
   end

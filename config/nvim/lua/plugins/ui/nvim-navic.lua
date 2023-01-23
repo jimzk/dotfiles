@@ -1,5 +1,5 @@
--- lsp symbol navigation for lualine
 return {
+  -- lsp symbol navigation
   "SmiteshP/nvim-navic",
   event = "BufReadPost",
   init = function()

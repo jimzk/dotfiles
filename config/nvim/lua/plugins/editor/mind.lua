@@ -7,10 +7,10 @@ return {
   opts = {
     keymaps = {
       normal = {
-        o = "open_data_index",
-        O = function() end,
-        a = "add_below",
-        A = "add_above",
+        -- o = "open_data_index",
+        -- O = function() end,
+        -- a = "add_below",
+        -- A = "add_above",
       },
     },
   },

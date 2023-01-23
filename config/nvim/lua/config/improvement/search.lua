@@ -8,6 +8,7 @@ local function toggle_hlsearch(char)
   if vim.fn.mode() == "n" then
     local keys = { "<CR>", "<Esc>" }
     local should_noh = vim.tbl_contains(keys, vim.fn.keytrans(char))
+    -- stylua: ignore
     if vim.o.hlsearch and should_noh then
       vim.cmd([[noh]])
     end
@@ -23,7 +24,10 @@ local asterisk = function(yank_keys, transfer_pattern)
   return function()
     vim.cmd('normal! "v' .. yank_keys)
     local view = vim.fn.winsaveview()
-    local pattern = vim.fn.getreg("v"):gsub("\n", [[\n]]):gsub("\\", [[\\]]):gsub("/", [[\/]]) -- escape
+    local pattern = vim.fn.getreg("v")
+        :gsub("\n$", "")-- remove last \n
+        :gsub("([/*\\%]])", "\\%1")-- escape / * \ ]
+        :gsub("\n", [[\n]])
     vim.fn.setreg("v", "") -- clear register
     if transfer_pattern then
       pattern = transfer_pattern(pattern)
@@ -37,18 +41,29 @@ end
 map("n", "*", asterisk("yiw"))
 map("v", "*", asterisk("y"))
 
-map("n", "gw", asterisk("yiw"), "search (*)")
-map("v", "gw", asterisk("y"), "search (*)")
+-- map("n", "gw", asterisk("yiw"), "search (*)")
+-- map("v", "gw", asterisk("y"), "search (*)")
 
 -- I reverse original syntax of * and g*
-local border_match = function(pattern)
-  return [[\<]] .. pattern .. [[\>]]
-end
+local border_match = function(pattern) return [[\<]] .. pattern .. [[\>]] end
 map("n", "g*", asterisk("yiw", border_match), "search by border")
 map("v", "g*", asterisk("y", border_match), "search by border")
 
--- Support search in visual range
-map("x", "/", "<Esc>/\\%V")
+-- Search in visual range
+map("x", "/", function()
+  local keys = "<Esc>/\\%V"
+  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+  vim.api.nvim_feedkeys(keys, "m", true)
+end, "search in visual range")
+-- Search in visible range (:h search-range)
+map("n", "<C-/>", function()
+  vim.wo.scrolloff = 0
+  local topline = vim.fn.winsaveview().topline
+  local bottomline = vim.api.nvim_win_get_height(0) + topline
+  local keys = string.format([[/\%%>%sl\%%<%sl]], topline - 1, bottomline)
+  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+  vim.api.nvim_feedkeys(keys, "m", true)
+end, "search in visible range")
 
 -- List search result in telescope
 map({ "n", "v" }, "<C-*>", function()

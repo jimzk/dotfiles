@@ -22,5 +22,20 @@ return {
     -- https://github.com/neovim/neovim/issues/5722#issuecomment-648820525
     vim.cmd([[hi QuickFixLine cterm=bold ctermfg=none ctermbg=none guibg=none]])
     -- vim.cmd([[hi! link BqfPreviewCursor BqfPreviewRange]])
+    vim.api.nvim_create_autocmd({ "FileType" }, {
+      pattern = "qf",
+      callback = function(options)
+        local bufnr = options.buf
+        -- Close qf if there is only one item
+        map("n", "<cr>", function()
+          local count = #vim.fn.getqflist()
+          require("bqf.qfwin.handler").open(count == 1)
+        end, nil, { buffer = bufnr })
+        -- Keymap help
+        map("n", "?", [[<cmd>silent !open https://github.com/kevinhwang91/nvim-bqf\\#function-table<cr>]],
+          nil, { buffer = bufnr }
+        )
+      end,
+    })
   end,
 }

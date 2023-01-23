@@ -9,18 +9,27 @@ return {
     autosave = {
       current = true,
     },
+    hooks = {
+      before_save = function(name)
+        vim.cmd [[wincmd =]] -- Turn off full windows
+        return {}
+      end,
+    },
     plugins = {
-      -- Hack: avoid autocmd error when save session with neogit
-      -- delete_hidden_buffers = false,
       delete_hidden_buffers = {
         hooks = {
           "before_load",
+          -- delete hidden buffer
+          vim.o.sessionoptions:match("buffer") and "before_save",
         },
-        force = false,
+        -- Avoid autocmd error when save session with neogit
+        force = true,
       },
       close_windows = {
+        preserve_layout = true, -- preserse empty window
         match = {
-          buftype = { "help" },
+          -- buftype = { "help" },
+          filetype = { "neo-tree", "aerial", "NeogitStatus", "toggleterm" }
         },
       },
     },

@@ -7,18 +7,16 @@ local M = {
 }
 
 M.init = function()
-  --- FIX: Atfer statuscolumn is introduced the foldcolumn will always show number
-  -- set '0' to hind it for now until someone has solution.
+  -- I don't want foldcolumn to be shown.
+  -- And foldcolumn has issue after statuscolumn is introduced.
   -- https://github.com/kevinhwang91/nvim-ufo/issues/4
   vim.o.foldcolumn = "0" -- '0' is not bad
-
   vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
   vim.o.foldlevelstart = 99
   vim.o.foldenable = true
 end
 
 -- https://github.com/kevinhwang91/nvim-ufo#customize-fold-text
--- stylua: ignore
 local handler = function(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
   local suffix = ("  %d "):format(endLnum - lnum)
@@ -53,13 +51,13 @@ M.opts = {
   close_fold_kinds = { "imports", "comment" },
   preview = {
     win_config = {
-      border = { "", "─", "", "", "", "─", "", "" },
-      winhighlight = "Normal:Folded",
-      winblend = 0,
+      border = "single",
+      winhighlight = "Normal:Normal",
+      winblend = 5,
     },
     mappings = {
-      scrollU = "<C-u>",
-      scrollD = "<C-d>",
+      scrollU = "<C-b>",
+      scrollD = "<C-f>",
     },
   },
 }
@@ -67,12 +65,23 @@ M.opts = {
 M.config = function(_, opts)
   local ufo = require("ufo")
   ufo.setup(opts)
+  -- Consistent preview window highlight
+  vim.cmd [[hi! link UfoPreviewCursorLine @comment]]
+  -- More clear foled line
+  vim.cmd [[hi Folded guifg=#949cbb guibg=#3b3f52]] -- link to Highlight of Pmenu
   map("n", "zR", ufo.openAllFolds)
   map("n", "zM", ufo.closeAllFolds)
   map("n", "zr", ufo.openFoldsExceptKinds)
   map("n", "zm", ufo.closeFoldsWith)
-  map({ "n", "x", "o" }, "]z", ufo.goNextClosedFold, "next fold (ufo)")
-  map({ "n", "x", "o" }, "[z", ufo.goPreviousClosedFold, "prev fold (ufo)")
+  map({ "n", "x", "o" }, "]z", function()
+    ufo.goNextClosedFold()
+    ufo.peekFoldedLinesUnderCursor()
+  end, "next fold (ufo)")
+  map({ "n", "x", "o" }, "[z", function()
+    ufo.goPreviousClosedFold()
+    ufo.peekFoldedLinesUnderCursor()
+  end, "prev fold (ufo)")
+  map("n", "\\", "za", "toggle fold")
 end
 
 return M

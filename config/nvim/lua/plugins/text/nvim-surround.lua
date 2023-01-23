@@ -1,11 +1,8 @@
 return {
   "kylechui/nvim-surround",
-  keys = { "cs", "ds", "ys" },
-  init = function()
-    map("n", "ds", nil, "detele surround")
-    map("n", "ys", nil, "add surround")
-    map("n", "cs", nil, "replace surround")
-  end,
+  event = "BufReadPost",
+  -- keys = { "cs", "ds", "ys", { "Y", mode = { "x" } } },
+  --
   -- :h nvim-surround.config.keymaps
   -- Tip:
   --  ysiwf: surrounded by function

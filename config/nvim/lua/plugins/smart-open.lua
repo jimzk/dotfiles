@@ -10,24 +10,24 @@ return {
   },
   keys = {
     {
-      "<leader>k",
+      "<leader>fk",
       function()
         require("telescope").extensions.smart_open.smart_open({
           prompt_title = "Smart Open Files (cwd)",
           cwd_only = true,
         })
       end,
-      desc = "open any files (smart open",
+      desc = "open any files (smart open)",
     },
     {
-      "<leader>K",
+      "<leader>fK",
       function()
         require("telescope").extensions.smart_open.smart_open({
           prompt_title = "Smart Open Files (global)",
           cwd_only = true,
         })
       end,
-      desc = "open any files globally (smart open",
+      desc = "open any files globally (smart open)",
     },
   },
   config = function(_, opts)

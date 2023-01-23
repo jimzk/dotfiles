@@ -1,7 +1,8 @@
 -- better text-objects
 return {
   "echasnovski/mini.ai",
-  lazy = false, -- if lazy load then which-key won't show keys. Don't know why.
+  -- if lazy load then which-key won't show keys. Don't know why.
+  lazy = false,
   -- dependencies = {
   --   {
   --     "nvim-treesitter/nvim-treesitter-textobjects",
@@ -24,8 +25,8 @@ return {
         goto_left = "[",
         goto_right = "]",
       },
-      n_lines = 200,
-      search_method = "cover_or_next",
+      n_lines = 50,
+      search_method = "cover",
       custom_textobjects = {
         -- b -> ), B -> }, k -> >, r -> ]
         b = { { "%b()" }, "^.().*().$" },
@@ -33,13 +34,6 @@ return {
         k = { { "%b<>" }, "^.().*().$" },
         r = { { "%b[]" }, "^.().*().$" },
         ["?"] = false, -- Disable prompt ask motion
-
-        -- o = ai.gen_spec.treesitter({
-        --   a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-        --   i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-        -- }, {}),
-        -- f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-        -- c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
       },
     }
   end,

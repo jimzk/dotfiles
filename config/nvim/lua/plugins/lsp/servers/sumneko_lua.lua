@@ -22,6 +22,21 @@ return {
         library = get_library(),
         checkThirdParty = false,
       },
+      format = {
+        enable = true,
+        -- https://github.com/sumneko/lua-language-server/wiki/Formatter
+        -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config.md
+        defaultConfig = {
+          -- The value should be STRING!
+          indent_style = "space",
+          indent_size = "2",
+          quote_style = "double",
+          local_assign_continuation_align_to_first_expression = "true",
+          -- call_arg_parentheses = "remove_table_only",
+          -- keep_one_space_between_table_and_bracket = true,
+          -- align_table_field_to_first_field = true,
+        },
+      },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {
         enable = false,

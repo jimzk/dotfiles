@@ -3,7 +3,6 @@ return { "tpope/vim-fugitive",
     "tpope/vim-rhubarb" -- Support :Browse of fugitive
   },
   event = "VeryLazy",
-  cmd = { "Git", "GBrowse" },
   init = function()
     local help_tags = {
       ["fugitiveblame"] = "Git_blame",

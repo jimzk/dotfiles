@@ -1,5 +1,5 @@
--- dashboard
 return {
+  -- Startup screen
   "goolord/alpha-nvim",
   event = "VimEnter",
   opts = function()
@@ -14,18 +14,38 @@ return {
       ]]
 
     dashboard.section.header.val = vim.split(logo, "\n")
-    -- stylua: ignore
     dashboard.section.buttons.val = {
-      dashboard.button("f", " " .. " Find Files", [[<cmd>lua Util.telescope("find_files", { prompt_title = "Find Files (cwd)", })() <CR>]]),
+      dashboard.button("f", " " .. " Find Files",
+        [[<cmd>lua Util.telescope("find_files", { prompt_title = "Find Files (cwd)", })() <CR>]]),
       dashboard.button("e", " " .. " New Files", ":ene <BAR> startinsert <CR>"),
       dashboard.button("o", " " .. " Recent Files", ":Telescope frecency <CR>"),
       dashboard.button("g", " " .. " Find Text", ":Telescope live_grep <CR>"),
-      dashboard.button("p", "勒" .. " Sessions", [[<cmd>lua Util.posession_list() <CR>]]),
       dashboard.button("c", " " .. " Nvim Config", [[<cmd>PossessionLoad config<CR>]]),
-      -- dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-      -- dashboard.button("s", "勒" .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
       dashboard.button("z", "鈴" .. " Lazy", ":Lazy<CR>"),
       dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+
+      -- Session list
+      -- Guide from https://github.com/jedrzejboczar/possession.nvim#startup-screen increases startuptime heavily. I rewrite by reading session files directly.
+      (function()
+        local group = { type = "group", opts = { spacing = 0 } }
+        group.val = {
+          {
+            type = "text",
+            val = "Sessions",
+            opts = {
+              position = "center"
+            }
+          }
+        }
+        local path = vim.fn.stdpath("data") .. "/possession"
+        local files = vim.split(vim.fn.glob(path .. "/*.json"), "\n")
+        for i, file in pairs(files) do
+          local basename = vim.fs.basename(file):gsub("%.json", "")
+          local button = dashboard.button(tostring(i), "勒 " .. basename, "<cmd>PossessionLoad " .. basename .. "<cr>")
+          table.insert(group.val, button)
+        end
+        return group
+      end)()
     }
     for _, button in ipairs(dashboard.section.buttons.val) do
       button.opts.hl = "AlphaButtons"

@@ -260,6 +260,7 @@ M.unlisted_filetypes = {
   "undotree",
   "noice",
   "NeogitPopup",
+  "octo",
 }
 
 _G.Util = M
@@ -301,4 +302,5 @@ _G.copy = function(...)
     msg = table.concat(params, "\n")
   end
   vim.fn.setreg("+", msg)
+  return msg
 end

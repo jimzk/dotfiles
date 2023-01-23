@@ -10,8 +10,15 @@ M.opts = {
   ensure_installed = "all",
   sync_install = false,
   auto_install = true,
-  highlight = { enable = true },
-  indent = { enable = false },
+  highlight = {
+    enable = true
+  },
+  indent = {
+    enable = false,
+    disable = {
+      "gitcommit"
+    }
+  },
   incremental_selection = {
     enable = true,
     keymaps = {

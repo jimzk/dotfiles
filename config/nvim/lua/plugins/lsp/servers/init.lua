@@ -20,7 +20,10 @@ local get_default_opts = function()
     on_attach = function(client, bufnr)
       -- Disable highlight from lsp
       -- https://www.reddit.com/r/neovim/comments/109vgtl/how_to_disable_highlight_from_lsp/
-      -- client.server_capabilities.semanticTokensProvider = nil
+      -- set semanticTokensProvider to nill for lua LSP will bring error. Don't know why.
+      -- if client.name ~= "lua_ls" then
+      --   client.server_capabilities.semanticTokensProvider = nil
+      -- end
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
     end,
@@ -32,8 +35,7 @@ local servers = {
   "rust_analyzer", -- Rust
   "bashls", -- Bash
   "taplo", -- TOML
-  "yamlls", -- YAML
-  "jsonls", -- JSON
+  "jsonls",
 }
 
 local servers_opts = {}

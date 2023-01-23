@@ -12,6 +12,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- https://www.reddit.com/r/neovim/comments/10rhoxs/how_to_make_scrolloff_option_scroll_past_end_of/
+-- Keep cursor centered when moving
+-- vim.cmd [[autocmd CursorMoved * normal! zz]]
+
 -- resize splits if window got resized
 -- stylua: ignore
 vim.api.nvim_create_autocmd({ "VimResized" }, {
@@ -50,6 +54,18 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- Auto save
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+  callback = function(opts)
+    local bufnr = opts.buf
+    local bo = vim.bo[bufnr]
+    if bo.modifiable and bo.buflisted and bo.modified then
+      vim.cmd [[up]]
+    end
+  end,
+})
+
+-- number column
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
   callback = function()
     if vim.bo.buflisted then vim.wo.cursorline = true end
@@ -64,18 +80,20 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
 vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
   callback = function()
     local height = vim.api.nvim_win_get_height(0)
-    vim.wo.scrolloff = height < 30 and 1 or 3
-    if vim.wo.number then vim.wo.relativenumber = true end
+    vim.wo.scrolloff = height < 30 and 3 or 8
+    -- if vim.wo.number then vim.wo.relativenumber = true end
+    -- vim.wo.wrap = true
   end,
 })
 vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
   pattern = "*",
   callback = function()
-    if vim.wo.number then vim.wo.relativenumber = false end
+    -- if vim.wo.number then vim.wo.relativenumber = false end
+    -- vim.wo.wrap = false
   end,
 })
 
--- close some filetypes with <q>
+-- set option buflisted
 vim.api.nvim_create_autocmd("FileType", {
   pattern = Util.unlisted_filetypes,
   callback = function(event)

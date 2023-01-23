@@ -4,27 +4,66 @@ if not vim.g.neovide then return end
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
 vim.g.neovide_input_use_logo = true
+
 -- https://github.com/neovide/neovide/issues/270#issuecomment-1221006358
+-- Copy paste
+map("x", "<D-x>", "x")
+map("n", "<D-c>", "y")
+map("n", "<D-v>", "gP")
+map({ "i", "c" }, "<D-v>", "<C-R>+")
+map("x", "<D-v>", "<Plug>(YankyPutAfterCharwise)")
+-- Move
+map({ "i" }, "<D-right>", "<END>")
+map({ "i" }, "<D-left>", "<HOME>")
+vim.cmd [[cnoremap <special> <D-right> <END>]]
+vim.cmd [[cnoremap <special> <D-left> <HOME>]]
+-- Undo / redo
+map("n", "<D-z>", "u")
+map("i", "<D-z>", "<Esc>ua")
+map("n", "<D-S-z>", "<C-r>")
+map("i", "<D-S-z>", [[<Esc><C-r>a]])
+-- Save
+map({ "i", "x", "n" }, "<D-s>", "<cmd>up<cr>")
+-- New tab
+map({ "i", "x", "n" }, "<D-t>", "<cmd>tabnew<cr>")
+-- Fullscreen
+map({ "i", "x", "n" }, "<C-D-f>", "<cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>")
+map({ "i", "x", "n" }, "<D-cr>", "<cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>")
+-- Break line
+map({ "n", "i" }, "<D-cr>", function()
+  local cmd = [[i\<cr>]]
+  local pos = vim.api.nvim_win_get_cursor(0)
+  vim.cmd([[execute "normal! ]] .. cmd .. [["]])
+  vim.api.nvim_win_set_cursor(0, pos)
+end)
+-- Delete to start
+map({ "i" }, "<D-BS>", "<C-u>", nil, { noremap = false })
+-- Duplicate lines
+map("n", "<D-d>", [[V"vY'>"vp]])
+map("v", "<D-d>", [["vY'>"vp]])
+
 vim.cmd [[
-vnoremap <special> <D-x> "+x
-vnoremap <special> <D-c> "+y
-nnoremap <special> <D-v> "+gP
-inoremap <special> <D-v> <C-R>+
+" vnoremap <special> <D-x> "+x
+" vnoremap <special> <D-c> "+y
+" nnoremap <special> <D-v> "+gP
+" inoremap <special> <D-v> <C-R>+
+" inoremap <special> <D-v> <C-R>
 
-execute 'vnoremap <script> <special> <D-v>' paste#paste_cmd['v']
-execute 'inoremap <script> <special> <D-v>' paste#paste_cmd['i']
-nnoremap <special> <silent> <D-t> <cmd>tabnew<cr>
-inoremap <special> <silent> <D-s> <cmd>x<cr>
-vnoremap <special> <silent> <D-s> <cmd>x<cr>
-nnoremap <special> <silent> <D-s> <cmd>x<cr>
+" execute 'vnoremap <script> <special> <D-v>' paste#paste_cmd['v']
+" execute 'inoremap <script> <special> <D-v>' paste#paste_cmd['i']
 
-nnoremap <special> <C-D-f> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
-nnoremap <special> <D-Cr> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
+" nnoremap <special> <silent> <D-t> <cmd>tabnew<cr>
+" inoremap <special> <silent> <D-s> <cmd>x<cr>
+" vnoremap <special> <silent> <D-s> <cmd>x<cr>
+" nnoremap <special> <silent> <D-s> <cmd>x<cr>
+
+" nnoremap <special> <C-D-f> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
+" nnoremap <special> <D-Cr> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
 
 "cnoremap <special> <D-c> <C-Y>
-cnoremap <special> <D-v> <C-R>+
-cnoremap <special> <D-left> <HOME>
-cnoremap <special> <D-right> <END>
+" cnoremap <special> <D-v> <C-R>+
+" cnoremap <special> <D-left> <HOME>
+" cnoremap <special> <D-right> <END>
 ]]
 
 local notify_opts = { title = "Neovide" }

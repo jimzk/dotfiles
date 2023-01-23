@@ -17,7 +17,7 @@ return {
       dim_inactive = {
         enabled = true,
         shade = "dark",
-        percentage = 0.15,
+        percentage = 0.05,
       },
       integrations = {
         -- aerial = true,

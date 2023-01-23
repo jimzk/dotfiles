@@ -1,4 +1,5 @@
 return {
+  -- K always fails to work. Replaced by ts-node-action
   "AndrewRadev/splitjoin.vim",
   event = "VeryLazy",
   init = function()

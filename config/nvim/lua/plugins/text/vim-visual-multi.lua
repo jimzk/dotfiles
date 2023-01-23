@@ -2,18 +2,22 @@ return {
   "mg979/vim-visual-multi",
   event = "VeryLazy",
   init = function()
-    map({ "n", "v" }, "<C-n>", nil, "multi select next")
-    map("n", "<M-n>", "<Plug>(VM-Add-Cursor-Down)", "multi select down")
-    map("n", "<M-S-n>", "<Plug>(VM-Add-Cursor-Up)", "multi select up")
-    map("n", "<S-up>", "<Plug>(VM-Select-Cursor-Up)", "visual up")
-    map("n", "<S-down>", "<Plug>(VM-Select-Cursor-Down)", "which_key_ignore")
-    map("n", "<S-left>", "<Plug>(VM-Select-h)", "which_key_ignore")
-    map("n", "<S-right>", "<Plug>(VM-Select-l)", "which_key_ignore")
+    -- :h vim-visual-multi
+    vim.g.VM_maps = {
+      ["Add Cursor Down"] = "<M-n>",
+      ["Add Cursor Up"] = "<M-p>",
+      ["VM Select Cursor Up"] = "<S-left>",
+      ["VM Select Cursor Down"] = "<S-down>",
+      ["VM Select h"] = "<S-left>",
+      ["VM Select l"] = "<S-right>",
+    }
+    vim.g.VM_leader = ",,"
+    -- vim.g.VM_default_mappings = 0
+
     -- Help: :h vm-highlight
     vim.g.VM_Mono_hl = "Cursor" -- All cursors
     vim.g.VM_Cursor_hl = "Cursor" -- Cursor in selection
     vim.g.VM_Extend_hl = "CurSearch" -- Selected items in selection
     -- vim.g.VM_Insert_hl = 'IncSearch' -- Multi insert place atfer selection
-    vim.g.VM_leader = ",,"
   end,
 }

@@ -3,7 +3,16 @@ return {
   "nvim-treesitter/nvim-treesitter-context",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   event = "VeryLazy",
-  config = function()
-    require("treesitter-context").setup {}
-  end
+  opts = {
+    patterns = {
+      default = {
+        "class",
+        "function",
+        "method",
+        "interface",
+        "struct",
+        "enum",
+      },
+    },
+  },
 }

@@ -71,6 +71,7 @@ end
 
 M.opts = function()
   local actions = require("telescope.actions")
+
   local opts = {}
   opts.defaults = {
     sorting_strategy = "ascending", -- cursor starts from top result
@@ -107,11 +108,11 @@ M.opts = function()
         ["<C-s>"] = actions.select_horizontal,
         ["<C-b>"] = actions.preview_scrolling_up,
         ["<C-f>"] = actions.preview_scrolling_down,
-        ["<C-Down>"] = actions.cycle_history_next,
-        ["<C-Up>"] = actions.cycle_history_prev,
-        ["<C-S-T>"] = function(...)
-          return require("trouble.providers.telescope").open_with_trouble(...)
-        end,
+        -- ["<C-Down>"] = actions.cycle_history_next,
+        -- ["<C-Up>"] = actions.cycle_history_prev,
+        -- ["<C-S-T>"] = function(...)
+        --   return require("trouble.providers.telescope").open_with_trouble(...)
+        -- end,
         -- Disable defaults
         ["<C-x>"] = false,
         ["<PageUp>"] = false,
@@ -121,51 +122,7 @@ M.opts = function()
       },
     },
   }
-
-  local show_hidden_and_ignored = function()
-    require("telescope.builtin").find_files({
-      no_ignore = true,
-      hidden = true,
-      prompt_title = "Find Files With Hidden and Ignored",
-    })
-  end
-  -- change working directory to items location
-  local cd_to_file_dir = function(prompt_bufnr)
-    local selection = require("telescope.actions.state").get_selected_entry()
-    local dir = vim.fn.fnamemodify(selection.path, ":p:h")
-    actions.close(prompt_bufnr)
-    -- Depending on what you want put `cd`, `lcd`, `tcd`
-    vim.cmd(string.format("lcd %s", dir))
-    vim.notify(string.format("cd to %s", dir:gsub(vim.fn.getenv("HOME"), "~")))
-  end
-
-  opts.pickers = {
-    find_files = {
-      find_command = { "rg", "--files", "--no-binary", "--glob", "!{**/.git/*,**/node_modules/*,target/*}" },
-      mappings = {
-        i = {
-          ["<C-h>"] = show_hidden_and_ignored,
-          ["<C-=>"] = cd_to_file_dir,
-        },
-      },
-    },
-    buffers = {
-      sort_lastused = true,
-      mappings = {
-        i = {
-          ["<C-BS>"] = actions.delete_buffer,
-        },
-      },
-    },
-    git_branches = {
-      mappings = {
-        i = {
-          ["<C-BS>"] = actions.git_delete_branch,
-        },
-      },
-    },
-    live_grep = {},
-  }
+  opts.pickers = require("plugins.editor.telescope.pickers")
   return opts
 end
 

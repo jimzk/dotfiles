@@ -3,6 +3,7 @@ local c = {
   ["vmv"] = "verb vmap",
   ["vmn"] = "verb nmap",
   ["vmo"] = "verb omap",
+  ["vmi"] = "verb imap",
   ["hil"] = "hi! link",
 }
 

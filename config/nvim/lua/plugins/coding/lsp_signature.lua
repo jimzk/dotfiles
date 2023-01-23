@@ -12,5 +12,6 @@ return {
     },
     hi_parameter = "Cursor",
     floating_window_above_cur_line = false,
+    toggle_key = "<C-space>"
   },
 }

@@ -1,5 +1,18 @@
 local M = {}
 
+-- Always use quickfix for lsp method
+local wrapper = function(lsp_method)
+  return function()
+    lsp_method {
+      on_list = function(opts)
+        vim.fn.setqflist({}, " ", opts)
+        vim.cmd "copen"
+      end,
+    }
+  end
+end
+
+-- stylua: ignore
 M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
   map("n", "[x", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
@@ -9,21 +22,29 @@ M.on_attach = function(bufnr)
   map("n", "g<C-x>", "<cmd>Trouble workspace_diagnostics<cr>", "[C] list diagnostics in workspace", opts)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  map("n", "gd", vim.lsp.buf.definition, "[C] definition", opts)
-  -- map("n", "gD", vim.lsp.buf.declaration, "[C] declaration", opts)
+  map("n", "gd", wrapper(vim.lsp.buf.definition), "[C] definition", opts)
   map("n", "gD", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
   map("n", "gh", function()
-    local winid = require('ufo').peekFoldedLinesUnderCursor()
-    if not winid then vim.lsp.buf.hover() end
+    local winid = require("ufo").peekFoldedLinesUnderCursor()
+    -- :h ufo.txt
+    if winid then
+      local buf = vim.api.nvim_win_get_buf(winid)
+      local keys = { "a", "i", "o", "A", "I", "O", "gd", "gr" }
+      for _, k in ipairs(keys) do
+        vim.keymap.set("n", k, "<CR>" .. k, { noremap = false, buffer = buf })
+      end
+    else
+      vim.lsp.buf.hover()
+    end
   end, "[C] hover or peek fold", opts)
-  map("n", "gI", vim.lsp.buf.implementation, "[C] go implementation", opts)
-  map("n", "gb", vim.lsp.buf.type_definition, "[C] go type definition", opts)
+  map("n", "gI", wrapper(vim.lsp.buf.implementation), "[C] go implementation", opts)
+  map("n", "gb", wrapper(vim.lsp.buf.type_definition), "[C] go type definition", opts)
   map("n", "gr", vim.lsp.buf.references, "[C] go reference", opts)
   map("n", "g[", vim.lsp.buf.incoming_calls, "[C] incoming call tree", opts)
   map("n", "g]", vim.lsp.buf.outgoing_calls, "[C] outgoing call tree", opts)
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "[C] rename", opts)
-  map({ "n", "v" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
+  map({ "n", "v", "i" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
 
   map("n", "<leader>cwa", function() vim.lsp.buf.add_workspace_folder() end, "add LSP workspace folder", opts)
   map("n", "<leader>cwr", function() vim.lsp.buf.remove_workspace_folder() end, "remove LSP workspace folder", opts)
@@ -31,12 +52,12 @@ M.on_attach = function(bufnr)
     "list LSP workspace folder", opts)
   map("n", "<leader>ci", "<cmd>LspInfo<cr>", "LSP Info", opts)
 
-  map({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help, "[C] peek signature", opts)
+  -- map({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help, "[C] peek signature", opts)
 
-  local format = require("plugins.lsp.format")
-  map("n", "<leader>cl", format.format, "format buffer", opts)
-  map("v", "<leader>cl", format.format, "format selection", opts)
-  map("v", "<leader>cL", format.toggle, "toggle format", opts)
+  local format = require "plugins.lsp.format"
+  map("n", "<leader>l", format.format, "format buffer", opts)
+  map("v", "<leader>l", format.format, "format selection", opts)
+  map("n", "<leader>jl", format.toggle, "toggle auto format", opts)
 end
 
 return M

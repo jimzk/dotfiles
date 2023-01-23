@@ -29,6 +29,7 @@ function M.keymaps()
       keymaps[key] = { mode = mode, keys = lhs, desc = desc, i = vim.tbl_count(keymaps), group = group }
     end
   end
+
   vim.keymap.set = map
 
   group = "General"
@@ -72,17 +73,17 @@ function M.keymaps()
 
     for _, m in ipairs(mappings) do
       lines[#lines + 1] = "| ``"
-        .. m.keys:gsub("|", "\\|"):gsub("`$", "` ")
-        .. "`` | "
-        .. m.desc
-        .. " | "
-        .. table.concat(
-          vim.tbl_map(function(mode)
-            return "**" .. mode .. "**"
-          end, m.mode),
-          ", "
-        )
-        .. " |"
+          .. m.keys:gsub("|", "\\|"):gsub("`$", "` ")
+          .. "`` | "
+          .. m.desc
+          .. " | "
+          .. table.concat(
+            vim.tbl_map(function(mode)
+              return "**" .. mode .. "**"
+            end, m.mode),
+            ", "
+          )
+          .. " |"
     end
     lines[#lines + 1] = ""
     lines[#lines + 1] = "</details>"

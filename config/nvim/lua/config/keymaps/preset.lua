@@ -11,9 +11,9 @@
 -- To use CSIu mapping:
 -- 1. Map two keys individually
 -- 2. Enbable CSIu in terminal or GUI.
-map("n", "<C-m>", "<Nop>") -- Need to map <Cr> as well
-map("n", "<CR>", [[<cmd>silent! exec "normal \<C-]>"<cr>]])
-map({ "n", "o", "v" }, "<Esc>", "<Esc>")
+-- map("n", "<C-m>", "<Nop>") -- Need to map <Cr> as well
+map("n", "<CR>", [[<cmd>silent! exec "normal! \<C-]>"<cr>]])
+map({ "n", "o", "x" }, "<Esc>", "<Esc>")
 
 -- Clear search with <esc>
 map({ "n" }, "<esc>", "<cmd>noh<cr><esc>", "escape and clear hlsearch")
@@ -37,9 +37,12 @@ map({ "n", "x", "o" }, "N", function() nN(false) end)
 map("n", "<C-E>", "2<C-E>")
 map("n", "<C-Y>", "2<C-Y>")
 
+-- Mark originaol position when combining lines
+map("n", "J", "m`Jg``")
+
 -- better up/down
--- map("n", "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
--- map("n", "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
 
 -- map("n", "<", "<<")
 -- map("n", ">", ">>")

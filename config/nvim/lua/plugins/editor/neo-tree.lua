@@ -24,9 +24,11 @@ return {
     --   function() require("neo-tree.command").execute({ toggle = true, dir = Util.get_root() }) end,
     --   desc = "neo-tree (root dir)",
     -- },
-    { "<leader>ee", "<cmd>Neotree focus<cr>", desc = "file explorer" },
+    { "<leader>ee", "<cmd>Neotree action=show<cr>", desc = "file explorer (not jump)" },
+    { "<leader>eE", "<cmd>Neotree action=focus<cr>", desc = "file explorer" },
     { "<leader>eq", "<cmd>Neotree close<cr>", desc = "close explorer" },
-    { "<leader>ef", "<cmd>Neotree reveal action=show<cr>", desc = "focus on buffers" },
+    { "<leader>ef", "<cmd>Neotree reveal action=show<cr>", desc = "focus on buffers (not jump)" },
+    { "<leader>eF", "<cmd>Neotree reveal action=focus<cr>", desc = "focus on buffers" },
     { "<leader>eb", "<cmd>Neotree buffers<cr>", desc = "buffers explorer" },
     { "<leader>eg", "<cmd>Neotree git_status<cr>", desc = "git status exploer" },
   },
@@ -47,6 +49,7 @@ return {
         "thumbs.db",
       },
       window = {
+        width = 35,
         mappings = {
           ["]"] = "next_git_modified",
           ["["] = "prev_git_modified",

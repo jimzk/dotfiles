@@ -31,7 +31,7 @@
     "prefix": "else",
     "body": [
       "else {",
-      "    ${1:todo!()}",
+      "\t${1:todo!()}",
       "}"
     ],
     "description": "else { … }"
@@ -50,8 +50,8 @@
   "fn": {
     "prefix": "fn",
     "body": [
-      "fn $1($2) $3{",
-      "    ${0:todo!()",
+      "fn ${1:name}($2) ${3:-> bool }{",
+      "\t${0:todo!()}",
       "}"
     ],
     "description": "fn …(…) { … }"
@@ -60,7 +60,7 @@
     "prefix": "for",
     "body": [
       "for $1 in $2 {",
-      "    ${3:todo!()}",
+      "\t${3:todo!()}",
       "}"
     ],
     "description": "for … in … { … }"
@@ -69,7 +69,7 @@
     "prefix": "if let",
     "body": [
       "if let $1 = $2 {",
-      "    ${0:todo!()}",
+      "\t${0:todo!()}",
       "}"
     ],
     "description": "if let … = … { … }"
@@ -78,7 +78,7 @@
     "prefix": "if let Some",
     "body": [
       "if let Some($1) = $2 {",
-      "    ${0:todo!()}",
+      "\t${0:todo!()}",
       "}"
     ],
     "description": "if let Some(…) = … { … }"
@@ -87,7 +87,7 @@
     "prefix": "if",
     "body": [
       "if $1 {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "if … { … }"
@@ -96,7 +96,7 @@
     "prefix": "impl for",
     "body": [
       "impl ${1:Trait} for ${2:Type} {",
-      "    $0",
+      "\t$0",
       "}"
     ],
     "description": "impl … for … { … }"
@@ -105,7 +105,7 @@
     "prefix": "impl",
     "body": [
       "impl ${1:Type} {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "impl … { … }"
@@ -115,7 +115,7 @@
     "body": [
       "#[inline]",
       "pub fn ${1:name}() {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "inlined function"
@@ -131,9 +131,9 @@
     "prefix": "let if ",
     "body": [
       "let $1 = if $2 {",
-      "    ${3:todo}",
+      "\t${3:todo}",
       "} else {",
-      "    ${4:todo}",
+      "\t${4:todo}",
       "};"
     ]
   },
@@ -141,7 +141,7 @@
     "prefix": "loop",
     "body": [
       "loop {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "loop { … }"
@@ -150,7 +150,7 @@
     "prefix": "main",
     "body": [
       "fn main() {",
-      "    ${1:todo!()}",
+      "\t${1:todo!()}",
       "}"
     ],
     "description": "fn main() { … }"
@@ -159,7 +159,7 @@
     "prefix": "match",
     "body": [
       "match $1 {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ]
   },
@@ -167,8 +167,8 @@
     "prefix": "match Option",
     "body": [
       "match $1 {",
-      "    Some($2) => $3",
-      "    None => $4,",
+      "\tSome($2) => $3",
+      "\tNone => $4,",
       "}"
     ]
   },
@@ -176,7 +176,7 @@
     "prefix": "let match",
     "body": [
       "let $1 = match $2 {",
-      "    $0",
+      "\t$0",
       "};"
     ]
   },
@@ -191,7 +191,7 @@
     "prefix": "mod block",
     "body": [
       "mod ${1:name} {",
-      "    ${2:todo!()}",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "mod … { … }"
@@ -222,8 +222,7 @@
     "body": [
       "#[derive(Debug)]",
       "struct ${1:Name} {",
-      "    ${2:field}: ${3:Type}",
-      "    $0",
+      "\t${2:field}: ${3:Type}",
       "}"
     ],
     "description": "struct … { … }"
@@ -232,8 +231,8 @@
     "prefix": "test fn",
     "body": [
       "#[test]",
-      "fn $1() {",
-      "    ${2:todo!()}",
+      "fn ${1:name}() {",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "#[test]"
@@ -242,8 +241,8 @@
     "prefix": "cfg test fn",
     "body": [
       "#[cfg(test)]",
-      "fn $1() {",
-      "    ${2:todo!()}",
+      "fn ${1:name}() {",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "#[cfg(test)]"
@@ -252,9 +251,8 @@
     "prefix": "trait",
     "body": [
       "trait $1 {",
-      "    ${2:todo!()}",
-      "}",
-      ""
+      "\t${2:todo!()}",
+      "}"
     ],
     "description": "trait … { … }"
   },
@@ -269,7 +267,7 @@
     "prefix": "while let",
     "body": [
       "while let $1 = $2 {",
-      "    ${0:todo!()}",
+      "\t${0:todo!()}",
       "}"
     ],
     "description": "while let … = … { … }"
@@ -278,7 +276,7 @@
     "prefix": "while let Some",
     "body": [
       "while let Some($1) = $2 {",
-      "    ${0:todo!()}",
+      "\t${0:todo!()}",
       "}"
     ],
     "description": "while let … = … { … }"
@@ -286,10 +284,26 @@
   "while": {
     "prefix": "while",
     "body": [
-      "while $1 {",
-      "    ${2:todo!()}",
+      "while ${1:condition} {",
+      "\t${2:todo!()}",
       "}"
     ],
     "description": "while … { … }"
+  },
+  "async fn": {
+    "prefix": "async fn",
+    "body": [
+      "async fn ${1:name}($2) ${3:-> bool }{",
+      "\t${0:todo!()}",
+      "}"
+    ],
+    "description": "async fn …(…) { … }"
+  },
+  "async": {
+    "prefix": "async",
+    "body": [
+      "async $0"
+    ],
+    "description": "keyword async"
   }
 }

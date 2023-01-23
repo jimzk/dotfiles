@@ -6,7 +6,6 @@ end
 local opts = { mode = "n", prefix = "g", preset = true }
 wk.register({
   name = "+go",
-  ["%"] = { "cycle forward ) } ] or group", mode = { "n", "v", "o" } },
   a = "print ascii of cursor char",
   i = "✭ insert in last insertion (mark ^)",
   ["_"] = "✭ last non-blank char",
@@ -46,72 +45,38 @@ wk.register({
 }, opts)
 
 opts = { mode = "o", preset = true }
-wk.register({
-  ["a"] = {
-    name = "+around",
-    ['"'] = [["..."]],
-    ["'"] = [['...']],
-    ["`"] = [[`...`]],
-    ["("] = [[(...)]],
-    ["{"] = [[{...}]],
-    ["["] = "[...]",
-    ["t"] = [[tag block]],
-    ["<lt>"] = [[<...>]],
-    ["B"] = [[alias a{]],
-    ["w"] = [[word with spaces]],
-    ["W"] = [[WORD with spaces]],
-    ["p"] = [[paragraph with blanklines]],
-    ["s"] = [[sentence with spaces]],
-    -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md
-    ["a"] = [[argument]],
-    ["q"] = [['...', "..." or `...`]],
-    ["N"] = "prev object",
-    ["n"] = "next object",
-    [","] = ",...,",
-    ["<Space>"] = "between whitespaces",
-    -- vim-textobj-entire
-    ["e"] = [[entire content]],
-    -- vim-textobj-line
-    ["l"] = [[entire line]],
-    -- vim-indent-object
-    -- ["i"] = [[indent content]],
-    -- vim-textobj-indblock
-    -- ["o"] = [[indent with blanklines]],
-    -- ["O"] = [[indent (exact) with blanklines]],
-  },
-  ["i"] = {
-    name = "+inside",
-    ['"'] = [["..."]],
-    ["'"] = [['...']],
-    ["`"] = [[`...`]],
-    ["("] = [[(...)]],
-    ["{"] = [[{...}]],
-    ["["] = "[...]",
-    ["<lt>"] = [[<...>]],
-    ["t"] = [[tag block]],
-    ["B"] = [[alias i{]],
-    ["w"] = [[word]],
-    ["W"] = [[WORD]],
-    ["p"] = [[paragraph]],
-    ["s"] = [[sentence]],
-    -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md
-    ["a"] = [[argument]],
-    ["q"] = [['...', "..." or `...`]],
-    ["N"] = "prev object",
-    ["n"] = "next object",
-    [","] = ",...,",
-    ["<Space>"] = "between whitespaces",
-    -- vim-textobj-entire
-    ["e"] = [[entire content without blanklines]],
-    -- vim-textobj-line
-    ["l"] = [[line without trailing whitespaces]],
-    -- vim-indent-object
-    -- ["i"] = [[indent content]],
-    -- -- vim-textobj-indblock
-    -- ["o"] = [[indent]],
-    -- ["O"] = [[indent (exact)]],
-  },
-}, opts)
+local textobj = {
+  -- ['"'] = [["..."]],
+  -- ["'"] = [['...']],
+  -- ["`"] = [[`...`]],
+  -- ["("] = [[(...)]],
+  -- ["{"] = [[{...}]],
+  -- ["["] = "[...]",
+  -- ["<lt>"] = [[<...>]],
+  ["t"] = [[tag block]],
+  ["B"] = [[alias a{]],
+  ["w"] = [[word]],
+  ["W"] = [[WORD]],
+  ["p"] = [[paragraph]],
+  ["s"] = [[sentence]],
+  -- mini-ai
+  -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md
+  ["a"] = [[argument]],
+  ["q"] = [[quotes ', " or `]],
+  ["N"] = "prev object",
+  ["n"] = "next object",
+  [","] = ",...,",
+  ["<Space>"] = "between whitespaces",
+  -- mini-indentscope
+  ["i"] = "indent content",
+  -- vim-textobj-line
+  ["l"] = [[line]],
+  -- vim-textobk-comment
+  ["c"] = [[comment]],
+}
+
+wk.register(vim.tbl_extend("force", textobj, { name = "+around" }), { mode = "o", prefix = "a" })
+wk.register(vim.tbl_extend("force", textobj, { name = "+inside" }), { mode = "o", prefix = "i" })
 
 opts = { mode = "n", prefix = "<c-w>", preset = true }
 wk.register({

@@ -1,19 +1,19 @@
--- git signs
+local text = "┃"
 return {
   "lewis6991/gitsigns.nvim",
   event = "BufReadPre",
   -- stylua: ignore
   opts = {
     signs      = {
-      add          = { hl = 'GitSignsAdd', text = '▎', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
-      change       = { hl = 'GitSignsChange', text = '▎', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
-      delete       = { hl = 'GitSignsDelete', text = '契', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
-      topdelete    = { hl = 'GitSignsDelete', text = '契', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
-      changedelete = { hl = 'GitSignsChange', text = '▎', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
-      untracked    = { text = "▎" },
+      add          = { text = text, hl = "GitSignsAdd", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+      change       = { text = text, hl = "GitSignsChange", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+      delete       = { text = text, hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+      topdelete    = { text = text, hl = "GitSignsDelete", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+      changedelete = { text = text, hl = "GitSignsChange", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+      untracked    = { text = text },
     },
-    signcolumn = false, -- Toggle with `:Gitsigns toggle_signs`
-    numhl      = true, -- Toggle with `:Gitsigns toggle_numhl`
+    signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+    numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
     linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
     word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
     on_attach  = function(buffer)

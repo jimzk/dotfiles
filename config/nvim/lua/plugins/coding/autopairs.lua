@@ -64,6 +64,9 @@ M.config = function(_, opts)
   local function not_in_comments()
     local nodes = { "string", "source", "comment" } -- Treesitter node name
     return ts_conds.is_in_range(function(params)
+      if not params then -- Filetype like json do not have node
+        return true
+      end
       assert(params.type ~= nil, "ts nodes can't be nil")
       local is_in_table = require("nvim-autopairs.utils").is_in_table(nodes, params.type)
       return not is_in_table

@@ -15,13 +15,16 @@ opt.cursorline = true -- Enable highlighting of the current line
 
 opt.hlsearch = true -- Highlight search text
 opt.incsearch = false -- Not jump to the first match immediately
-opt.wrap = true -- Line wrap
-opt.scrolloff = 4 -- Lines of context
+opt.wrap = false -- Line wrap
+opt.scrolloff = 0 -- Lines of context
 opt.sidescrolloff = 8 -- Columns of context
-opt.pumblend = 10 -- Popup blend
-opt.pumheight = 10 -- Maximum number of entries in a popup
+
 opt.number = true -- Print line number
-opt.relativenumber = true -- Relative line numbers
+-- opt.relativenumber = true -- Relative line numbers
+opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
+opt.numberwidth = 4
+-- NOTE: number is not right aligned.
+opt.statuscolumn = "%=%l%=%s"
 
 opt.tabstop = 4 -- Number of spaces tabs count for
 opt.shiftwidth = 4 -- Size of an indent
@@ -30,43 +33,67 @@ opt.expandtab = true -- Use spaces instead of tabs
 opt.smartindent = true -- Insert indents automatically
 
 opt.showmode = false -- dont show mode since we have a statusline
-opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.guifont = "FiraCode Nerd Font:h11"
 
-opt.ignorecase = true -- Ignore case
-opt.smartcase = true -- Don't ignore case with capitals
-opt.formatoptions = "jcroqlnt" -- tcqj
-opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
-opt.hidden = true -- Enable modified buffers in background
-opt.inccommand = "nosplit" -- preview incremental substitute
-opt.laststatus = 0
-opt.list = true -- Show some invisible characters (tabs...
-opt.mouse = "a" -- enable mouse mode
-opt.jumpoptions = "stack" -- Make jumplist behave like web browser back / forward
+opt.ignorecase     = true -- Ignore case
+opt.smartcase      = true -- Don't ignore case with capitals
+opt.formatoptions  = "jcroqlnt" -- tcqj
+opt.virtualedit    = "block" -- Allow going past the end of line in visual block mode
+opt.grepformat     = "%f:%l:%c:%m"
+opt.grepprg        = "rg --vimgrep"
+opt.hidden         = true -- Enable modified buffers in background
+opt.inccommand     = "nosplit" -- preview incremental substitute
+opt.laststatus     = 0
+opt.mouse          = "a" -- enable mouse for all mode
+opt.jumpoptions    = "stack" -- Make jumplist behave like web browser back / forward
+opt.spelllang      = { "en" }
+opt.termguicolors  = true -- True color support
+opt.timeoutlen     = 300
+opt.updatetime     = 200 -- save swap file and trigger CursorHold
+opt.wildmode       = "longest:full,full" -- Command-line completion mode
+opt.linebreak      = true -- won't cut word when wrapping
 opt.sessionoptions =
   { "blank", "buffers", "curdir", "folds", "help", "tabpages", "winpos", "winsize", "terminal", "localoptions" }
-opt.spelllang = { "en" }
-opt.termguicolors = true -- True color support
-opt.timeoutlen = 300
-opt.updatetime = 200 -- save swap file and trigger CursorHold
-opt.wildmode = "longest:full,full" -- Command-line completion mode
-opt.winminwidth = 5 -- minimum window width
-opt.linebreak = true -- won't cut word when wrapping
+opt.winminwidth    = 1 -- minimum window width
+opt.winminheight   = 0 -- minimum window height
 
 opt.undofile = true
 opt.undolevels = 10000
 -- opt.swapfile = false
+opt.backup = false -- Don't backup file while overwriting file
+opt.writebackup = false
 
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 opt.splitkeep = "screen"
 
-opt.magic = true -- Support regex in cmdline
-opt.wildmenu = true -- Enable Menu after <Tab> in cmdline
-opt.wildignore = "*.o,*~,*.pyc,*/.DS_Store" -- Files ignored in wildmenu
+-- UI
+opt.pumblend  = 12 -- Make builtin completion menus slightly transparent
+opt.pumheight = 12 -- Make popup menu smaller
+opt.winblend  = 10 -- Make floating windows slightly transparent
+opt.list      = true -- Show some invisible characters (tabs...
+---@diagnostic disable-next-line: assign-type-mismatch
+opt.listchars = "tab:> ,trail:·,nbsp:+,extends:…,precedes:…" -- Define which helper symbols to show
 
-opt.shortmess = "filnxtToOFWIcC"
+-- Window border
+-- From: https://github.com/echasnovski/mini.basics/blob/main/lua/mini/basics.lua#L477
+opt.fillchars = [[eob: ,fold: ,foldopen: ,foldsep: ,foldclose:]]
+
+local win_borders_fillchars = {
+  bold   = { vert = "vert:┃", rest = ",horiz:━,horizdown:┳,horizup:┻,,verthoriz:╋,vertleft:┫,vertright:┣" },
+  dot    = { vert = "vert:·", rest = ",horiz:·,horizdown:·,horizup:·,,verthoriz:·,vertleft:·,vertright:·" },
+  double = { vert = "vert:║", rest = ",horiz:═,horizdown:╦,horizup:╩,,verthoriz:╬,vertleft:╣,vertright:╠" },
+  single = { vert = "vert:│", rest = ",horiz:─,horizdown:┬,horizup:┴,,verthoriz:┼,vertleft:┤,vertright:├" },
+  solid  = { vert = "vert: ", rest = ",horiz: ,horizdown: ,horizup: ,,verthoriz: ,vertleft: ,vertright: " },
+}
+local fillchars = win_borders_fillchars["bold"]
+local chars = fillchars.vert .. fillchars.rest
+opt.fillchars:append(chars)
+
+opt.magic      = true -- Support regex in cmdline
+opt.wildmenu   = true -- Enable Menu after <Tab> in cmdline
+opt.wildignore = "*.o,*~,*.pyc,*/.DS_Store" -- Files ignored in wildmenu
+opt.shortmess  = "filnxtToOFWIcC"
 -- Noice.nvim compatibility
 -- https://github.com/folke/noice.nvim/wiki/A-Guide-to-Messages#handling-hit-enter-messages
 -- opt.shortmess = "filnxtToOFWIcCs" --

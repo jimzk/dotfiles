@@ -1,9 +1,9 @@
 Util.read_specs("config.keymaps", {
+  "preset",
   "normal",
-  "basic",
   "editor",
   -- "table",  -- lazy load by which-key
   "misc",
   "text",
-  "preset",
+  "terminal",
 })

@@ -1,4 +1,3 @@
--- stylua: ignore start
 -- toggle options
 local toggle = function(option, silent, values)
   return { function()
@@ -47,7 +46,7 @@ local mappings = {
   o = { "<cmd>Telescope vim_options<cr>", "all vim options" },
   b = { function()
     vim.cmd [[Gitsigns toggle_current_line_blame]]
-    vim.notify [[Toggle inline Git blame]]
+    vim.notify("Toggle inline Git blame", vim.log.levels.INFO, { title = "Option" })
   end, "toggle line blame" },
   g = { function()
     if not vim.g.gitsigns_deleted_word_diff_enabled then
@@ -76,22 +75,7 @@ mappings = {
   -- highlights under cursor
   H = { vim.show_pos, "show highlight under cursor" },
   z = { "<cmd>Lazy<cr>", "Lazy" },
-  ["nl"] = { "<cmd>Noice last<cr>", "last message" },
-  ["nh"] = { "<cmd>Noice history<cr>", "message history" },
-  ["na"] = { "<cmd>Noice all<cr>", "all messages" },
-  ["nt"] = { "<cmd>Noice telescope<cr>", "all message by telescope" },
-  ["nn"] = { function()
-    if vim.g.noice_disabled then
-      vim.cmd [[Noice enable]]
-      vim.notify("Noice Enabled", vim.log.levels.INFO, { title = "Noice" })
-      vim.g.noice_disabled = false
-    else
-      vim.cmd [[Noice disable]]
-      vim.notify("Noice Disabled", vim.log.levels.INFO, { title = "Noice" })
-      vim.g.noice_disabled = true
-    end
-  end,
-    "all message by telescope" },
+  t = { function() vim.notify(vim.treesitter.get_node_at_cursor()) end, "inspect treesitter ndoe in current cursor" }
 }
 set_mapppings(mappings, { prefix = "<leader>n" })
 
@@ -102,7 +86,7 @@ mappings = {
     local path = vim.fn.expand("%:p")
     vim.cmd("silent !open " .. path)
   end, "open file by VSCode" },
-  v = { function()
+  O = { function()
     local path = vim.fn.getcwd()
     vim.cmd("silent !code " .. path)
   end, "open cwd by VSCode" },
@@ -114,7 +98,7 @@ mappings = {
   C = { function()
     vim.cmd("Gcd")
     vim.notify("cd to Git repo root " .. vim.fn.getcwd():gsub(vim.fn.getenv("HOME"), "~"))
-  end, "cd to repository root" },
+  end, "cd to repo root" },
   y = { function()
     local file_path = vim.fn.expand("%:p")
     vim.fn.setreg("+", file_path)
@@ -122,7 +106,10 @@ mappings = {
   end, "copy file path" },
   r = { function()
     vim.ui.input(
-      { prompt = "Enter new file name: " },
+      {
+        prompt = "[G] Enter new file name: ",
+        default = vim.fn.expand("%:t"),
+      },
       function(input)
         if not input then return end
         vim.cmd("GRename " .. input)
@@ -130,7 +117,10 @@ mappings = {
   end, "[G] rename file" },
   m = { function()
     vim.ui.input(
-      { prompt = "Move file to: " },
+      {
+        prompt = "[G] Move file to: ",
+        default = vim.fn.expand("%:."),
+      },
       function(input)
         if not input then return end
         vim.cmd("GMove " .. input)
@@ -153,14 +143,20 @@ mappings = {
   o = { "<cmd>GBrowse!<cr>", "copy GitHub URL for file" },
   O = { "<cmd>GBrowse<cr>", "open GitHub URL for file" },
   f = { "<cmd>FzfLua git_status<cr>", "git status file (fzf)" },
-  l = { "<cmd>FzfLua git_bcommits<cr>", "file commits (fzf)" },
-  L = { "<cmd>FzfLua git_commits<cr>", "repo commits (fzf)" },
+  -- l = { "<cmd>FzfLua git_bcommits<cr>", "file commits (fzf)" },
+  -- L = { "<cmd>FzfLua git_commits<cr>", "repo commits (fzf)" },
+  l = { function()
+    vim.g.bcommits_file_path = vim.api.nvim_buf_get_name(0)
+    vim.cmd [[Telescope git_bcommits]]
+  end, "file commits (telescope)" },
+  L = { "<cmd>Telescope git_commits<cr>", "repo commits (telescope)" },
 
   -- { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
   -- { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
 
   s = { "<cmd>FzfLua git_stash<cr>", "stash (fzf)" },
-  r = { "<cmd>FzfLua git_branches<cr>", "branch (fzf)" },
+  -- r = { "<cmd>FzfLua git_branches<cr>", "branch (fzf)" },
+  r = { "<cmd>Telescope git_branches<cr>", "branch (telescope)" },
   B = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
   g = { "<cmd>Neogit kind=vsplit<cr>", "git operations (neogit)" },
   G = { "<cmd>Git<cr><cmd>wincmd L<cr><cmd>6<cr>", "git operations (fugitive)" },
@@ -175,6 +171,23 @@ mappings = {
   -- end, "current file diff" },
   D = { "<cmd>DiffviewOpen<cr><cmd>wincmd l<cr><cmd>wincmd l<cr>", "all files diff (diffview)" },
 
+  -- review PR locally
+  p = { function()
+    vim.ui.input(
+      { prompt = "Enter indent width: " },
+      function(input)
+        if not input then
+          return
+        end
+        if not tonumber(input, 10) then
+          vim.notify("Invalid indent width", vim.log.levels.ERROR)
+          return
+        end
+        vim.cmd("!gh pr checkout " .. input .. " && git reset HEAD~")
+        vim.cmd("DiffviewOpen")
+      end
+    )
+  end, "review PR locally" },
   -- lazygit
   z = { function() Util.float_term({ "lazygit" }) end, "Lazygit (cwd)" },
   Z = { function() Util.float_term({ "lazygit" }, { cwd = Util.get_root() }) end,
@@ -188,8 +201,6 @@ mappings = {
   -- taken from runtime/lua/_editor.lua
   ["<cr>"] = { "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
     "redraw / clear hlsearch / diff update", },
-  z = { "<cmd>ZenMode<cr>", "zen mode" },
-  u = { "<cmd>UndotreeToggle<cr>", "show undo history (undotree)" },
   l = { "<cmd>lopen<cr>", "open location List" },
   q = { "<cmd>copen<cr>", "open quickfix List" },
   t = { function()
@@ -224,31 +235,52 @@ ignorecase  %s
     vim.fn.getcwd():gsub(home, "~"),
     "/" .. relative_file_path,
     vim.bo.filetype,
-    vim.o.ignorecase and '✅' or '❌',
-    vim.o.wrap and '✅' or '❌'
+    vim.o.ignorecase and "✅" or "❌",
+    vim.o.wrap and "✅" or "❌"
   )
   require("notify")(msg, vim.log.levels.INFO, { title = "File Detail", timeout = 3000 })
 end, "show buffer info")
 
 mappings = {
   -- name = "+file",
-  f = { Util.telescope("find_files", { prompt_title = "Find Files (cwd)", }), "find files (cwd)" },
+  f = { Util.telescope("find_files", {
+    prompt_title = "Find Files (cwd)",
+    hidden = true,
+    no_ignore = true,
+    follow = true,
+  }), "find files (cwd)" },
   -- f = {"<cmd>LeaderfFile<cr>", "find files (leaderf)", mode = {"n", "x"}},
   F = { function()
     local cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
     Util.telescope("find_files", {
       cwd = cwd,
       prompt_title = "Find Files (buffer dir)",
+      hidden = true,
+      no_ignore = true,
+      follow = true,
     })()
   end, "find files (cwd)" },
   ["<C-f>"] = { Util.telescope("find_files", {
-    find_command = { "rg", "--files", "--glob",
-      "!{**/.git/*,**/node_modules/*,target/*,**/*.pdf,**/*.jpg,**.mp3,**/*.mp4,Library/*,Pictures/*,Downloads/*,**/bin/*,}", },
+    prompt_title = "Find Files (workspace)",
+    find_command = { "rg", "--files",
+      "--glob",
+      "!{**/.git/*,**/node_modules/*,target/*,**/*.pdf,**/*.jpg,**.mp3,**/*.mp4,Library/*,Pictures/*,Downloads/*,**/bin/*,}",
+      "--glob",
+      "!{**/oh-my-zsh/*}",
+      -- "!{.Trash/**,.cache/**,.vscode/**,.m2/**,.npm/**}",
+    },
     cwd = "~",
-    prompt_title = "Find Files (HOME)",
-  }), "find files (HOME)" },
-  b = { Util.telescope("buffers", { sort_lastused = true }), "buffers" },
+    search_dirs = { "~/workspace", "~/.dotfiles", "~/.config" },
+  }), "find files (workspace)" },
+
+  -- https://www.reddit.com/r/neovim/comments/10qubtl/comment/j6rwly4
+  -- b = { ":buffers<CR>:buffer<Space>", "switch buffer" }
+  b = { Util.telescope("buffers", {
+    show_all_buffers = true,
+    sort_lastused = true
+  }), "buffers" },
   -- b = {"<cmd>LeaderfBuffer<cr>", "buffers (leaderf)"},
+
   o = { function()
     require("telescope").extensions.frecency.frecency({
       prompt_title = "Oldfiles (cwd)",
@@ -260,7 +292,6 @@ mappings = {
       prompt_title = "Oldfiles (global)",
     })
   end, "old files (global)" },
-  h = { function() require("harpoon.ui").toggle_quick_menu() end, "harpoon" },
   n = { "<cmd>enew<cr>", "new file" },
   j = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
 }
@@ -274,9 +305,7 @@ mappings = {
   n = { "<cmd>Neogen<cr>", "add class / function comment (neogen)" },
 }
 set_mapppings(mappings, { prefix = "<leader>c" })
--- stylua: ignore end
 
---stylua: ignore
 mappings = {
   s = { function()
     vim.ui.input(
@@ -293,7 +322,7 @@ mappings = {
     -- https://github.com/nvim-telescope/telescope-project.nvim
     require("telescope").extensions.project.project({
       prompt_title = "Find Git Projects",
-      display_type = 'minimal', -- or full
+      display_type = "minimal", -- or full
     })
   end, "git projects" },
 }

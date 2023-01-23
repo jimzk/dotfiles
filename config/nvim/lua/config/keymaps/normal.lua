@@ -1,7 +1,7 @@
 local ignored = "which_key_ignore"
 local mappings = {
   -- Alternative Windows
-  ["<Tab>"] = { "<cmd>up<cr><cmd>wincmd p<cr>", "✭ go last accessed win" },
+  ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
   ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
   ["<leader>~"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
@@ -26,10 +26,10 @@ local mappings = {
   ["<S-BS>"] = { "<cmd>bufdo Bwipeout<cr>", "delete all buffer" },
 
   -- Move to window using the <ctrl> hjkl keys
-  ["<C-h>"] = { "<cmd>up<cr><cmd>wincmd h<cr>", ignored },
-  ["<C-j>"] = { "<cmd>up<cr><cmd>wincmd j<cr>", ignored },
-  ["<C-k>"] = { "<cmd>up<cr><cmd>wincmd k<cr>", ignored },
-  ["<C-l>"] = { "<cmd>up<cr><cmd>wincmd l<cr>", ignored },
+  ["<C-h>"] = { "<cmd>wincmd h<cr>", ignored },
+  ["<C-j>"] = { "<cmd>wincmd j<cr>", ignored },
+  ["<C-k>"] = { "<cmd>wincmd k<cr>", ignored },
+  ["<C-l>"] = { "<cmd>wincmd l<cr>", ignored },
   -- Move window
   ["<C-S-h>"] = { "<cmd>wincmd H<cr>", ignored },
   ["<C-S-j>"] = { "<cmd>wincmd J<cr>", ignored },
@@ -43,19 +43,27 @@ local mappings = {
   ["<C-Right>"] = { "<cmd>vertical resize +2<cr>", "increase window width" },
 
   -- Maximize window
-  -- stylua: ignore
-  ["<C-->"] = { function()
-    local height = vim.api.nvim_win_get_height(0)
-    local v = (height + 8 >= vim.o.lines) and "vertical " or ""
-    vim.cmd(v .. "wincmd _")
-  end, "max win height" },
-  -- stylua: ignore
-  ["<C-\\>"] = { function()
-    local width = vim.api.nvim_win_get_width(0)
-    local h = (width + 8 >= vim.o.columns) and "horizontal " or ""
-    vim.cmd(h .. "wincmd |")
-  end, "max win width" },
-  ["<C-=>"] = { "<cmd>wincmd =<cr>", "equal win" },
+  -- ["<C-->"] = { function()
+  --   local height = vim.api.nvim_win_get_height(0)
+  --   local v = (height + 8 >= vim.o.lines) and "vertical " or ""
+  --   vim.cmd(v .. "wincmd _")
+  -- end, "max win height" },
+  -- ["<C-\\>"] = { function()
+  --   local width = vim.api.nvim_win_get_width(0)
+  --   local h = (width + 8 >= vim.o.columns) and "horizontal " or ""
+  --   vim.cmd(h .. "wincmd |")
+  -- end, "max win width" },
+  ["<C-=>"] = { function()
+    if vim.g.full_window then
+      vim.cmd [[wincmd =]]
+      -- vim.notify("Exit full screen", vim.log.levels.INFO, { title = "Window" })
+    else
+      vim.cmd [[wincmd _]]
+      vim.cmd [[wincmd |]]
+      -- vim.notify("Enter full screen", vim.log.levels.INFO, { title = "Window" })
+    end
+    vim.g.full_window = not vim.g.full_window
+  end, "toggle full window" },
 
   ["<F1>"] = { "<cmd>Telescope help_tags<cr>", "help" },
   -- Scroll

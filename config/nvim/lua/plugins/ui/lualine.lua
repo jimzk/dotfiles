@@ -110,8 +110,11 @@ M.opts = function()
           function()
             local clients = {}
             for _, client in ipairs(vim.lsp.get_active_clients()) do
-              if client.name ~= "null-ls" then table.insert(clients, client.name) end
+              if client.name ~= "null-ls" and client.name ~= "copilot" then
+                clients[client.name] = true
+              end
             end
+            clients = vim.tbl_keys(clients)
             return table.concat(clients, " ")
           end,
           icon = { "", align = "left" },
