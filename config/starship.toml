@@ -1,6 +1,6 @@
 # https://starship.rs/config
 add_newline = false
-continuation_prompt = "[▶▶ ](bold green)"
+# continuation_prompt = "[▶▶ ](bold green)"
 
 [character]
 success_symbol = "[▶](bold green)"

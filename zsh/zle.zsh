@@ -141,9 +141,9 @@ _fzf_git_commit_widget() {
     local commits=$(
         eval $COMMAND |
         fzf --no-cycle --preview "$PREVIEW_FULL" \
-            --height=80% --preview-window down,65%,wrap \
-            --header='^f short info' \
-            --bind "ctrl-f:preview($PREVIEW_DEFAULT)" |
+            --height=80% --preview-window down,65%,wrap |
+            # --header='^i short info' \
+            # --bind "ctrl-i:preview($PREVIEW_DEFAULT)" |
         awk '{print $1}' | __join_lines)
     __redraw $commits
 }
