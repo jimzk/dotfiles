@@ -14,7 +14,7 @@ return {
       -- disable most presets and set my customized keymap
       -- https://github.com/folke/which-key.nvim/blob/main/lua/which-key/plugins/presets/init.lua
       presets = {
-        operators = true,
+        operators = false,
         motions = false,
         text_objects = false,
         windows = false,

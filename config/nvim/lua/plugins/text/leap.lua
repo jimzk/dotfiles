@@ -1,12 +1,12 @@
 return {
-  -- easily jump to any location and enhanced f/t motions for Leap
+  -- Easily jump to any location and enhanced f/t motions for Leap
   "ggandor/leap.nvim",
   keys = {
-    { "f", "<Plug>(leap-forward-to)", mode = { "n", "x" } },
-    { "F", "<Plug>(leap-backward-to)", mode = { "n", "x" } },
-    { "f", "<Plug>(leap-forward-till)", mode = { "o" } },
-    { "F", "<Plug>(leap-backward-till)", mode = { "o" } },
-    { "gf", "<Plug>(leap-cross-window)", mode = { "n" }, desc = "leap cross window" },
+    { "s", "<Plug>(leap-forward-to)", mode = { "n", "x" } },
+    { "S", "<Plug>(leap-backward-to)", mode = { "n", "x" } },
+    { "s", "<Plug>(leap-forward-till)", mode = { "o" } },
+    { "S", "<Plug>(leap-backward-till)", mode = { "o" } },
+    { "gs", "<Plug>(leap-cross-window)", mode = { "n" }, desc = "leap cross window" },
   },
   -- stylua: ignore
   opts = {

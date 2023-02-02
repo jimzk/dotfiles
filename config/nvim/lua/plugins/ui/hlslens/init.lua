@@ -26,12 +26,11 @@ return {
     vim.cmd([[hi! link HlSearchLensNear CurSearch ]])
 
     -- https://github.com/kevinhwang91/nvim-hlslens#vim-visual-multi
-    vim.cmd([[
-aug VMlens
-  au!
-  au User visual_multi_start lua require("plugins.ui.hlslens.vmlens").start()
-  au User visual_multi_exit lua require("plugins.ui.hlslens.vmlens").exit()
-aug END
-]])
+    vim.cmd [[
+    aug VMlens
+      au!
+      au User visual_multi_start lua require("plugins.ui.hlslens.vmlens").start()
+      au User visual_multi_exit lua require("plugins.ui.hlslens.vmlens").exit()
+    aug END ]]
   end,
 }

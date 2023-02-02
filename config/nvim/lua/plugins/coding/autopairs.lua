@@ -64,11 +64,10 @@ M.config = function(_, opts)
   local function not_in_comments()
     local nodes = { "string", "source", "comment" } -- Treesitter node name
     return ts_conds.is_in_range(function(params)
-      if not params then -- Filetype like json do not have node
-        return true
-      end
+      -- Filetype like json do not have node
+      if not params then return true end
       assert(params.type ~= nil, "ts nodes can't be nil")
-      local is_in_table = require("nvim-autopairs.utils").is_in_table(nodes, params.type)
+      local is_in_table = utils.is_in_table(nodes, params.type)
       return not is_in_table
     end, function()
       local cursor = vim.api.nvim_win_get_cursor(0)
@@ -81,13 +80,15 @@ M.config = function(_, opts)
   -- Do not autopair in comment, e.g. -- line comment in lua
   -- Remember, do not add a new rule if it exists.
   local start_pairs = { "{", "(", "[", "<", "'", '"', "`" }
+  -- FIX error due to broken error
+  -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/lua/nvim-treesitter/ts_utils.lua#L303-L306
+  require("nvim-treesitter.ts_utils").is_in_node_range = vim.treesitter.is_in_node_range
   for _, start_pair in ipairs(start_pairs) do
     local rules = npairs.get_rule(start_pair)
     -- " and ' have multiple rules
     -- See https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#L33
     rules = rules.with_move and { rules } or rules
     for _, rule in ipairs(rules) do
-      -- :with_pair(ts_conds.is_not_ts_node(nodes)) can't work, it still autopair at the end of comment
       rule:with_pair(not_in_comments())
     end
   end

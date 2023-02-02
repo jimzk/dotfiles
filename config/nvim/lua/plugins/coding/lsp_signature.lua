@@ -11,7 +11,7 @@ return {
       border = "rounded",
     },
     hi_parameter = "Cursor",
-    floating_window_above_cur_line = false,
-    toggle_key = "<C-space>"
+    floating_window_above_cur_line = true,
+    toggle_key = "<C-space>",
   },
 }

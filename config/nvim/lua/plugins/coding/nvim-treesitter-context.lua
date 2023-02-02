@@ -15,4 +15,10 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("treesitter-context").setup(opts)
+    -- set TreesitterContext to Normal's guibg
+    vim.cmd [[hi! TreesitterContext guibg=none gui=bold]]
+    vim.cmd [[hi! link TreesitterContextLineNumber Normal]]
+  end
 }

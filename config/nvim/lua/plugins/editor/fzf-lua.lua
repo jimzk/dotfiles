@@ -36,10 +36,11 @@ M.opts = {
       -- Rotate preview clockwise/counter-clockwise
       ["<F5>"] = "toggle-preview-ccw",
       ["<F6>"] = "toggle-preview-cw",
-      ["<C-f>"] = "preview-page-down",
-      ["<C-b>"] = "preview-page-up",
-      ["<S-down>"] = "preview-page-down",
-      ["<S-up>"] = "preview-page-up",
+      -- C-f and C-b not work. Don't know why.
+      ["<C-f>"] = "preview-half-page-down",
+      ["<C-b>"] = "preview-half-page-up",
+      ["<S-down>"] = "preview-half-page-down",
+      ["<S-up>"] = "preview-half-page-up",
     },
   },
   fzf_opts = {
@@ -83,15 +84,18 @@ M.config = function(_, opts)
     for _, keymap in ipairs(keymaps) do
       -- style from https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/core.lua#L609
       header = header
-        .. " "
-        .. ([[<%s> to %s]]):format(utils.ansi_codes.yellow(keymap[1]), utils.ansi_codes.red(keymap[2]))
+          .. " "
+          .. ([[<%s> to %s]]):format(utils.ansi_codes.yellow(keymap[1]), utils.ansi_codes.red(keymap[2]))
     end
     return header .. [["]]
   end
 
   local get_query = function(opts)
     local query = opts.__resume_data.last_query
-    query = query and query:gsub(" ", "\\ ") or " "
+    query = query and query:gsub(" ", "\\ ")
+    if not query or query == "" then
+      query = " "
+    end
     return query
   end
 
@@ -116,29 +120,9 @@ M.config = function(_, opts)
     },
   }
 
-  map("n", "<C-g>", function()
-    fzf.oldfiles({ cwd_only = true })
-  end, "find file in buffers")
+  map("n", "<C-g>", function() fzf.oldfiles({ cwd_only = true }) end, "find file in buffers")
   local cycle_key = "tab"
   fzf.setup({
-    git = {
-      files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
-        git_icons = false,
-        actions = {
-          [cycle_key] = function(_, opts)
-            fzf.files({
-              prompt = "AllFiles❯ ",
-              cwd = "~",
-              -- no hidden file, exclude some directories
-              fd_opts = "--color=never --type f --follow -E .git -E Library -E Pictures -E 'go'",
-              fzf_opts = {
-                ["--query"] = get_query(opts),
-              },
-            })
-          end,
-        },
-      }),
-    },
     files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
       actions = {
         [cycle_key] = function(_, opts)
@@ -188,10 +172,23 @@ M.config = function(_, opts)
         end,
       },
     }),
-  })
-
-  fzf.setup({
     git = {
+      files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
+        git_icons = false,
+        actions = {
+          [cycle_key] = function(_, opts)
+            fzf.files({
+              prompt = "AllFiles❯ ",
+              cwd = "~",
+              -- no hidden file, exclude some directories
+              fd_opts = "--color=never --type f --follow -E .git -E Library -E Pictures -E 'go'",
+              fzf_opts = {
+                ["--query"] = get_query(opts),
+              },
+            })
+          end,
+        },
+      }),
       -- TODO: open item by :Browse
       -- ADD header for actions
       status = {
@@ -230,11 +227,10 @@ M.config = function(_, opts)
       },
     },
     grep = {
-      -- !Example to use glob: foo -- *.txt (only include txt)
+      -- Example to use glob: foo -- *.txt (only include txt)
       -- https://github.com/ibhagwan/fzf-lua/wiki#how-can-i-restrict-my-grep-search-to-just-certain-files
       rg_glob = true,
       actions = {
-        -- ["btab"] = { actions.grep_lgrep }, -- toogle between grep and live_grep
         ["tab"] = function(_, opts)
           -- relative path
           local path = vim.fn.expand("%:.")
@@ -246,20 +242,21 @@ M.config = function(_, opts)
             opts.prompt = "Rg(Buffer)❯ "
             opts.rg_opts = opts.rg_opts:gsub("$", pattern)
           end
-          -- fzf.live_grep(opts)  -- This doesn't work. I guess it's due to opts.cmd is fixed
+          -- fzf.live_grep(opts)  -- This doesn't work. I guess it's because opts.cmd can't be changed.
           fzf.live_grep({
             resume = true,
             resume_search_default = opts.__resume_data.last_query,
             rg_opts = opts.rg_opts,
             prompt = opts.prompt,
           })
-          -- live_grep_resume can't restore prompt and rg_opts
+          -- live_grep_resume can't restore prompt and rg_opts. Need some hack.
           _G._live_grep_opts = {
             rg_opts = opts.rg_opts,
             prompt = opts.prompt,
           }
         end,
-        -- ["ctrl-f"] = function() end,
+        -- abort
+        ["ctrl-f"] = function() end,
       },
     },
     highlights = {
@@ -273,9 +270,7 @@ M.config = function(_, opts)
     },
   })
   _G._live_grep_opts = {}
-  map("n", "<C-f>", function()
-    fzf.live_grep_resume(_G._live_grep_opts)
-  end, "search")
+  map("n", "<C-f>", function() fzf.live_grep_resume(_G._live_grep_opts) end, "search")
   map("v", "<C-f>", fzf.grep_visual, "search visual selection")
 end
 

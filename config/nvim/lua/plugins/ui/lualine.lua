@@ -67,6 +67,7 @@ M.opts = function()
           },
           separator = " ",
           padding = { left = 1, right = 0 },
+          color = { bg = "none" } -- transparent background
         },
         {
           "diagnostics",
@@ -76,6 +77,7 @@ M.opts = function()
             info = icons.diagnostics.Info,
             hint = icons.diagnostics.Hint,
           },
+          color = { bg = "none" } -- transparent background
         },
       },
       lualine_x = {
@@ -100,11 +102,19 @@ M.opts = function()
         --   color = fg("Constant"),
         --   separator = "",
         -- },
-        {
-          require("lazy.status").updates,
-          cond = require("lazy.status").has_updates,
-          color = fg("Special"),
+
+        {  -- Show visual line count (https://www.reddit.com/r/neovim/comments/1130kh5/comment/j8navg6)
+          function()
+            local is_visual_mode = vim.fn.mode():find("[Vv]")
+            if not is_visual_mode then return "" end
+            local starts = vim.fn.line("v")
+            local ends = vim.fn.line(".")
+            local lines = starts <= ends and ends - starts + 1 or starts - ends + 1
+            return tostring(lines) .. "L"
+          end,
           separator = "",
+          icon = {"", align = "left"},
+          padding = { left = 0, right = 0 },
         },
         { -- List active lsp
           function()
@@ -147,6 +157,19 @@ M.opts = function()
     },
     extensions = { "nvim-tree", "toggleterm", "nvim-dap-ui", "fzf", "neo-tree" },
   }
+end
+
+M.config = function(_, opts)
+  require("lualine").setup(opts)
+  -- consistent highlight with editor background
+  vim.cmd [[hi lualine_c_normal guibg=none]]
+  vim.defer_fn(function()
+    -- This one should be defer executed
+    vim.cmd [[hi lualine_transitional_lualine_b_normal_to_lualine_c_normal guibg=none]]
+    -- I guess lualine lazyly loads highlight.
+    -- For example, it set `lualine_transitional_lualine_b_visual_to_lualine_c_normal` only when I use visual mode.
+    -- So setting it here will be overrided then.
+  end, 1000)
 end
 
 return M

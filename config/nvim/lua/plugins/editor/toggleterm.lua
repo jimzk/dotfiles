@@ -1,19 +1,22 @@
 local M = {
   "akinsho/toggleterm.nvim",
   version = "*",
-  keys = { { "<M-space>", desc = "toggle terminal" } },
+  keys = {
+    { "<M-space>",   desc = "toggle terminal" },
+    { "<S-M-space>", "<cmd>ToggleTermToggleAll<cr>", mode = { "n", "t" }, desc = "toggle all terminal" },
+  },
 }
 
 M.opts = {
   open_mapping = [[<M-space>]],
   insert_mappings = true, -- whether or not the open mapping applies in insert mode
-  direction = "vertical", -- 'vertical' | 'horizontal' | 'tab' | 'float'
+  direction = "horizontal", -- 'vertical' | 'horizontal' | 'tab' | 'float'
   shade_terminals = true, -- Background color
   size = function(term)
     if term.direction == "horizontal" then
       return 25
     elseif term.direction == "vertical" then
-      return vim.o.columns * 0.35
+      return vim.opts.columns * 0.4
     end
   end,
   float_opts = {
@@ -33,10 +36,10 @@ M.config = function(_, opts)
       opts = { buffer = true }
       map("n", "<Tab>", [[<cmd>wincmd p<cr>]], "alternative window", opts)
       map("t", "<M-space>", [[<cmd>ToggleTerm<cr>]], "toggle term", opts)
-      map({ "t", "n" }, "<C-S-h>", [[<Nop>]], "toggle term", opts)
-      map({ "t", "n" }, "<C-S-j>", [[<cmd>ToggleTerm<cr><cmd>ToggleTerm direction=horizontal<cr>]], "toggle term", opts)
-      map({ "t", "n" }, "<C-S-k>", [[<Nop>]], "toggle term", opts)
-      map({ "t", "n" }, "<C-S-l>", [[<cmd>ToggleTerm<cr><cmd>ToggleTerm direction=vertical<cr>]], "toggle term", opts)
+      map({ "t", "n" }, "<C-S-h>", [[<Nop>]], nil, opts)
+      map({ "t", "n" }, "<C-S-j>", [[<cmd>ToggleTermToggleAll<cr><cmd>ToggleTerm direction=horizontal<cr>]], nil, opts)
+      map({ "t", "n" }, "<C-S-k>", [[<Nop>]], nil, opts)
+      map({ "t", "n" }, "<C-S-l>", [[<cmd>ToggleTermToggleAll<cr><cmd>ToggleTerm direction=vertical<cr>]], nil, opts)
       map("n", "<BS>", [[<Nop>]], nil, opts)
       map("n", "<C-o>", [[<Nop>]], nil, opts)
       map("n", "<C-i>", [[<Nop>]], nil, opts)

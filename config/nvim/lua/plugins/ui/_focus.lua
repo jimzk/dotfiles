@@ -12,7 +12,7 @@ return {
   opts = {
     -- autoresize == true messup harpoon and telescope.
     autoresize = false,
-    width = 100,
+    width = 140,
     height = 40,
     -- Focus.lua will make sure window is not smaller than minwidth/minheight
     -- If there is no enough room then it will occupy toggleterm or quickfix size.

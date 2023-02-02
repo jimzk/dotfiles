@@ -14,11 +14,21 @@ return {
       -- latte, frappe, macchiato, mocha
       flavour = "frappe",
       term_colors = true, -- for neovide
-      dim_inactive = {
-        enabled = true,
-        shade = "dark",
-        percentage = 0.05,
-      },
+      custom_highlights = function(colors)
+        return {
+          -- brighter highlight (frappe)
+          CursorLine = { bg = "#464a61" },
+          CursorLineNr = { fg = "#cfd0f5" },
+          LineNr = { fg = "#5c637c" },
+          WinSeparator = { fg = "#404556" },
+          Visual = { style = {} }, -- Remove bold
+        }
+      end,
+      -- dim_inactive = {
+      --   enabled = true,
+      --   shade = "dark",
+      --   percentage = 0.05,
+      -- },
       integrations = {
         -- aerial = true,
         gitsigns = true,
@@ -35,7 +45,6 @@ return {
         which_key = true,
         illuminate = true,
         lsp_trouble = true,
-        -- barbecue = true,
         harpoon = true,
         barbecue = {
           dim_dirname = true,
@@ -64,7 +73,6 @@ return {
     },
   },
 
-  -- catppuccin
   {
     "EdenEast/nightfox.nvim",
   },

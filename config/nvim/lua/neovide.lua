@@ -10,7 +10,8 @@ vim.g.neovide_input_use_logo = true
 map("x", "<D-x>", "x")
 map("n", "<D-c>", "y")
 map("n", "<D-v>", "gP")
-map({ "i", "c" }, "<D-v>", "<C-R>+")
+map({ "i" }, "<D-v>", "<C-R>+")
+vim.cmd [[cnoremap <special> <D-v> <C-R>+]]
 map("x", "<D-v>", "<Plug>(YankyPutAfterCharwise)")
 -- Move
 map({ "i" }, "<D-right>", "<END>")
@@ -42,32 +43,8 @@ map({ "i" }, "<D-BS>", "<C-u>", nil, { noremap = false })
 map("n", "<D-d>", [[V"vY'>"vp]])
 map("v", "<D-d>", [["vY'>"vp]])
 
-vim.cmd [[
-" vnoremap <special> <D-x> "+x
-" vnoremap <special> <D-c> "+y
-" nnoremap <special> <D-v> "+gP
-" inoremap <special> <D-v> <C-R>+
-" inoremap <special> <D-v> <C-R>
-
-" execute 'vnoremap <script> <special> <D-v>' paste#paste_cmd['v']
-" execute 'inoremap <script> <special> <D-v>' paste#paste_cmd['i']
-
-" nnoremap <special> <silent> <D-t> <cmd>tabnew<cr>
-" inoremap <special> <silent> <D-s> <cmd>x<cr>
-" vnoremap <special> <silent> <D-s> <cmd>x<cr>
-" nnoremap <special> <silent> <D-s> <cmd>x<cr>
-
-" nnoremap <special> <C-D-f> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
-" nnoremap <special> <D-Cr> <cmd>let g:neovide_fullscreen = 1 - g:neovide_fullscreen<cr>
-
-"cnoremap <special> <D-c> <C-Y>
-" cnoremap <special> <D-v> <C-R>+
-" cnoremap <special> <D-left> <HOME>
-" cnoremap <special> <D-right> <END>
-]]
-
 local notify_opts = { title = "Neovide" }
-vim.g.guifont_size = 12
+vim.g.guifont_size = 13
 vim.o.guifont = "FiraCode Nerd Font Mono" .. ":h" .. vim.g.guifont_size
 
 -- local change_font_size = function(delta)
@@ -84,25 +61,36 @@ vim.o.guifont = "FiraCode Nerd Font Mono" .. ":h" .. vim.g.guifont_size
 
 -- https://neovide.dev/faq.html#how-can-i-dynamically-change-the-scale-at-runtime
 vim.g.neovide_scale_factor = 1.0
-local change_scale_factor = function(delta) vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta end
-vim.keymap.set("n", "<D-]>", function() change_scale_factor(1.05) end, { desc = "increase font scale" })
-vim.keymap.set("n", "<D-[>", function() change_scale_factor(1 / 1.05) end, { desc = "decrease font scale" })
-vim.keymap.set("n", "<D-=>", function() vim.g.neovide_scale_factor = 1.0 end, { desc = "revert font scale" })
+local change_scale_factor = function(delta)
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+end
+map("n", "<D-]>", function() change_scale_factor(1.05) end, "increase font scale")
+map("n", "<D-[>", function() change_scale_factor(1 / 1.05) end, "decrease font scale")
+map("n", "<D-=>", function() vim.g.neovide_scale_factor = 1.0 end, "revert font scale")
 
 -- https://neovide.dev/faq.html#how-can-i-dynamically-change-the-transparency-at-runtime-macos
-vim.g.neovide_transparency = 0.95
--- vim.g.neovide_transparency_point = 1
--- -- vim.g.neovide_background_color = "#192330" .. string.format("%x", 255 * vim.g.neovide_transparency_point)
--- local change_transparency = function(delta)
---   vim.g.neovide_transparency_point = vim.g.neovide_transparency_point + delta
---   vim.g.neovide_background_color = "#192330" .. string.format("%x", 255 * vim.g.neovide_transparency_point)
---   if math.ceil(vim.g.neovide_transparency_point * 100) % 5 == 0 then
---     vim.notify("Transparency: " .. vim.g.neovide_transparency_point, vim.log.levels.INFO, notify_opts)
---   end
--- end
--- vim.keymap.set("n", "<D-,>", function()
---   change_transparency(-0.01)
--- end, { desc = "decrease transparency" })
--- vim.keymap.set("n", "<D-.>", function()
---   change_transparency(0.01)
--- end, { desc = "increase transparency" })
+vim.g.neovide_transparency = 0.99
+-- map("n", "<D-\\>", function()
+--   vim.ui.input(
+--     { prompt = "Current transparency is " .. vim.g.neovide_transparency .. ", input a new value: " },
+--     function(input)
+--       if not input then return end
+--       if type(input) ~= "number" then
+--         vim.notify("Input should be a number", vim.log.levels.ERROR, notify_opts)
+--         return
+--       end
+--       vim.g.neovide_transparency = tonumber(input)
+--     end
+--   )
+-- end, "Neovide: change transparency")
+vim.g.neovide_transparency_point = 1
+local change_transparency = function(delta)
+  vim.notify.dismiss()
+  local transparency = vim.g.neovide_transparency + delta
+  if transparency < 0 then transparency = 0 end
+  if transparency > 1 then transparency = 1 end
+  vim.g.neovide_transparency = transparency
+  vim.notify("Transparency: " .. transparency, vim.log.levels.INFO, notify_opts)
+end
+map("n", "<D-=>", function() change_transparency(0.025) end, "increase transparency")
+map("n", "<D-->", function() change_transparency(-0.025) end, "decrease transparency")

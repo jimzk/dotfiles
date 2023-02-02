@@ -22,12 +22,22 @@ map({ "n" }, "<esc>", "<cmd>noh<cr><esc>", "escape and clear hlsearch")
 -- map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })
 -- map({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", nil, { expr = true })
 local nN = function(forward)
-  local direction = forward and { "n", "N" } or { "N", "n" }
-  local c = direction[vim.v.searchforward]
+  local direction = forward and { "N", "n" } or { "n", "N" }
+  local char = direction[vim.v.searchforward + 1] -- lua table index starts from 1
+  -- Integrate with hlslens and ufo, support jumping to folded text
+  -- https://github.com/kevinhwang91/nvim-hlslens#nvim-ufo
+  local ok, winid = require("hlslens").nNPeekWithUFO(char)
+  if ok and winid then
+    -- Type <CR> will switch to preview window and fire `trace` action
+    vim.keymap.set("n", "<CR>", function()
+      local keyCodes = vim.api.nvim_replace_termcodes("<Tab><CR>", true, false, true)
+      vim.api.nvim_feedkeys(keyCodes, "im", false)
+    end, { buffer = true })
+  end
   -- Keep jumplist unchanged
-  local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], c)
-  vim.cmd("silent! " .. cmd) -- suppress error "pattern not found"
-  require("hlslens").start()
+  -- local cmd = string.format([[execute('keepjumps normal! ' . v:count1 . '%s')]], char)
+  -- vim.cmd("silent! " .. cmd) -- suppress error "pattern not found"
+  -- require("hlslens").start()
 end
 -- stylua: ignore
 map({ "n", "x", "o" }, "n", function() nN(true) end)
@@ -41,8 +51,16 @@ map("n", "<C-Y>", "2<C-Y>")
 map("n", "J", "m`Jg``")
 
 -- better up/down
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
+map({ "n", "x", "o" }, "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
+map({ "n", "x", "o" }, "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
+-- Easy move to line header and end
+map({ "n", "x", "o" }, "H", "v:count == 0 ? 'g^' : '^'", nil, { expr = true })
+map({ "n", "x", "o" }, "L", "v:count == 0 ? 'g$' : '$'", nil, { expr = true })
+
+-- Avoid lost visual selection
+for _, key in pairs({ "~", "u", "U" }) do
+  map("x", key, "<cmd>setlocal nocursorline<cr>" .. key .. "gv<cmd>setlocal cursorline<cr>")
+end
 
 -- map("n", "<", "<<")
 -- map("n", ">", ">>")

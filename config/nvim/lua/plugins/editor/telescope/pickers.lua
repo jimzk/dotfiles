@@ -4,12 +4,11 @@ local previewers = require("telescope.previewers")
 
 local M = {}
 
-actions.show_hidden_and_ignored = function()
-  require("telescope.builtin").find_files({
+actions.show_hidden_and_ignored = function(prompt_bufnr)
+  require("telescope.builtin").find_files {
     no_ignore = true,
     hidden = true,
-    prompt_title = "Find Files With Hidden and Ignored",
-  })
+  }
 end
 -- change working directory to items location
 actions.cd_to_file_dir = function(prompt_bufnr)
@@ -22,10 +21,10 @@ actions.cd_to_file_dir = function(prompt_bufnr)
 end
 
 M.find_files = {
-  find_command = { "rg", "--files", "--no-binary", "--glob", "!{**/.git/*,**/node_modules/*,target/*}" },
+  find_command = { "rg", "--files", "--no-binary", "--glob", "!{**/.git/*,**/node_modules/*,target/*,**/.DS_Store}" },
   mappings = {
     i = {
-      ["<C-h>"] = actions.show_hidden_and_ignored,
+      -- ["<C-h>"] = actions.show_hidden_and_ignored,
       ["<C-=>"] = actions.cd_to_file_dir,
     },
   },

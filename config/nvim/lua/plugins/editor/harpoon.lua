@@ -8,14 +8,14 @@ return {
       "<leader>K",
       function()
         require("harpoon.mark").add_file()
-        vim.notify("Add file to harpoon", vim.log.levels.INOF, { title = "Harpoon" })
+        vim.notify("Add file to harpoon", vim.log.levels.INFO, { title = "Harpoon" })
       end,
       desc = "harpoon add file",
     },
-    { "<C-]>", function() require("harpoon.ui").nav_next() end, desc = "harpoon next" },
-    { "<C-[>", function() require("harpoon.ui").nav_prev() end, desc = "harpoon prev" },
+    { "<C-]>", function() require("harpoon.ui").nav_next() end, desc = "harpoon go next" },
+    { "<C-[>", function() require("harpoon.ui").nav_prev() end, desc = "harpoon go prev" },
     -- Navigate by file number
-    { "g1", function() require("harpoon.ui").nav_file(1) end, desc = "harpoon file 1..9" },
+    { "g1", function() require("harpoon.ui").nav_file(1) end, desc = "go harpoon file 1..9" },
     { "g2", function() require("harpoon.ui").nav_file(2) end, desc = "which_key_ignore" },
     { "g3", function() require("harpoon.ui").nav_file(3) end, desc = "which_key_ignore" },
     { "g4", function() require("harpoon.ui").nav_file(4) end, desc = "which_key_ignore" },
@@ -25,7 +25,9 @@ return {
     { "g8", function() require("harpoon.ui").nav_file(8) end, desc = "which_key_ignore" },
     { "g9", function() require("harpoon.ui").nav_file(9) end, desc = "which_key_ignore" },
   },
-  config = function()
+  opts = {},
+  config = function(_, opts)
+    require("harpoon").setup(opts)
     local ui = require("harpoon.ui")
     vim.api.nvim_create_autocmd("FileType", {
       pattern = { "harpoon" },

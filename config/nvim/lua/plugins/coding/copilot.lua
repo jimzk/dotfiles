@@ -1,27 +1,31 @@
 return {
   -- Coding with Copilot
   "zbirenbaum/copilot.lua",
-  event = "VeryLazy",
+  event = "InsertEnter",
   keys = {
     { mode = { "i" }, "<C-\\>", "<cmd>Copilot panel<CR>", desc = { "Copilot suggection list" } },
   },
-  config = function()
-    require("copilot").setup {
-      suggestion = {
-        enabled = true,
-        auto_trigger = true,
+  opts = {
+    suggestion = {
+      enabled = true,
+      auto_trigger = true,
+      keymap = {
+        accept_word = "<M-n>",
       },
-      panel = {
-        enabled = true,
-        auto_refresh = true,
-      },
-      filetypes = {
-        markdown = true,
-        gitcommit = true,
-        gitrebase = true,
-        svn = true,
-      }
-    }
+    },
+    panel = {
+      enabled = true,
+      auto_refresh = true,
+    },
+    filetypes = {
+      markdown = true,
+      gitcommit = true,
+      gitrebase = true,
+      svn = true,
+    },
+  },
+  config = function(_, opts)
+    require("copilot").setup(opts)
     local cmp = require("cmp")
     cmp.event:on("menu_opened", function()
       -- require("copilot.suggestion").dismiss()

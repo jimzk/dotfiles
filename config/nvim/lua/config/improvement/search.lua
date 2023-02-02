@@ -10,7 +10,7 @@ local function toggle_hlsearch(char)
     local should_noh = vim.tbl_contains(keys, vim.fn.keytrans(char))
     -- stylua: ignore
     if vim.o.hlsearch and should_noh then
-      vim.cmd([[noh]])
+      vim.cmd [[noh]]
     end
   end
 end

@@ -15,16 +15,16 @@ opt.cursorline = true -- Enable highlighting of the current line
 
 opt.hlsearch = true -- Highlight search text
 opt.incsearch = false -- Not jump to the first match immediately
-opt.wrap = false -- Line wrap
-opt.scrolloff = 0 -- Lines of context
-opt.sidescrolloff = 8 -- Columns of context
+opt.wrap = true -- Line wrap
+opt.scrolloff = 6 -- Lines of context
+opt.sidescrolloff = 10 -- Columns of context
 
 opt.number = true -- Print line number
 -- opt.relativenumber = true -- Relative line numbers
-opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
-opt.numberwidth = 4
+opt.signcolumn = "yes:1"
+opt.numberwidth = 3
 -- NOTE: number is not right aligned.
-opt.statuscolumn = "%=%l%=%s"
+opt.statuscolumn = "%=%l%= %s"
 
 opt.tabstop = 4 -- Number of spaces tabs count for
 opt.shiftwidth = 4 -- Size of an indent
@@ -59,7 +59,7 @@ opt.winminheight   = 0 -- minimum window height
 
 opt.undofile = true
 opt.undolevels = 10000
--- opt.swapfile = false
+opt.swapfile = false
 opt.backup = false -- Don't backup file while overwriting file
 opt.writebackup = false
 
@@ -68,9 +68,9 @@ opt.splitright = true -- Put new windows right of current
 opt.splitkeep = "screen"
 
 -- UI
-opt.pumblend  = 12 -- Make builtin completion menus slightly transparent
+opt.pumblend  = 5 -- Make builtin completion menus slightly transparent
 opt.pumheight = 12 -- Make popup menu smaller
-opt.winblend  = 10 -- Make floating windows slightly transparent
+opt.winblend  = 0 -- Make floating windows slightly transparent. Shoule be zero or treesitter-context will be affected
 opt.list      = true -- Show some invisible characters (tabs...
 ---@diagnostic disable-next-line: assign-type-mismatch
 opt.listchars = "tab:> ,trail:·,nbsp:+,extends:…,precedes:…" -- Define which helper symbols to show
@@ -86,7 +86,7 @@ local win_borders_fillchars = {
   single = { vert = "vert:│", rest = ",horiz:─,horizdown:┬,horizup:┴,,verthoriz:┼,vertleft:┤,vertright:├" },
   solid  = { vert = "vert: ", rest = ",horiz: ,horizdown: ,horizup: ,,verthoriz: ,vertleft: ,vertright: " },
 }
-local fillchars = win_borders_fillchars["bold"]
+local fillchars = win_borders_fillchars["single"]
 local chars = fillchars.vert .. fillchars.rest
 opt.fillchars:append(chars)
 

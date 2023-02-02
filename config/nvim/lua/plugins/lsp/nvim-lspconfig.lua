@@ -12,16 +12,22 @@ local M = {
 }
 
 local config_diagnostic = function()
-  -- options for vim.diagnostic.config()
   local diagnostics = {
     underline = true,
     update_in_insert = false,
     virtual_text = { spacing = 4, prefix = "●" },
     severity_sort = true,
+    float = {
+      show_header = true,
+      -- source = "if_many",
+      border = "single",
+      focusable = false,
+    },
   }
-  for name, icon in pairs(require("config").icons.diagnostics) do
+  for name, _ in pairs(require("config").icons.diagnostics) do
     name = "DiagnosticSign" .. name
-    vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+    -- vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+    vim.fn.sign_define(name, { numhl = name })
   end
   vim.diagnostic.config(diagnostics)
 end

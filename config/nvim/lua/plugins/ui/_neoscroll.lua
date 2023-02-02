@@ -1,4 +1,5 @@
 return {
+  -- animate scroll move
   "karb94/neoscroll.nvim",
   event = "BufReadPre",
   enabled = function()

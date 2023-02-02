@@ -12,8 +12,8 @@ return {
       nextfile = "J",
       split = "s",
       vsplit = "v",
-      ptogglemode = "=", -- toggle preview window size
-      pscrollorig = "-", -- scroll back original position in preview window
+      -- ptogglemode = "=", -- toggle preview window size
+      -- pscrollorig = "-", -- scroll back original position in preview window
     },
   },
   config = function(_, opts)
@@ -27,13 +27,16 @@ return {
       callback = function(options)
         local bufnr = options.buf
         -- Close qf if there is only one item
+        local path = vim.fn.stdpath("config") .. "/lua/plugins/editor/nvim-bqf.lua"
         map("n", "<cr>", function()
           local count = #vim.fn.getqflist()
           require("bqf.qfwin.handler").open(count == 1)
         end, nil, { buffer = bufnr })
         -- Keymap help
-        map("n", "?", [[<cmd>silent !open https://github.com/kevinhwang91/nvim-bqf\\#function-table<cr>]],
-          nil, { buffer = bufnr }
+        map("n", "?", function()
+          vim.cmd [[silent !open https://github.com/kevinhwang91/nvim-bqf\\#function-table]]
+          vim.cmd("tabnew " .. path)
+        end, nil, { buffer = bufnr }
         )
       end,
     })

@@ -27,6 +27,10 @@
         "path": "./rust/advanced.json"
       },
       {
+        "language": "rust",
+        "path": "./rust/tokio.json"
+      },
+      {
         "language": "gitcommit",
         "path": "./gitcommit.json"
       },

@@ -26,5 +26,7 @@ return {
     local move = indentscopt.move_cursor
     map({ "n", "x", "o" }, "]i", function() move("bottom", false) end, "indent scope start")
     map({ "n", "x", "o" }, "[i", function() move("top", false) end, "indent scope end")
+    -- Darker highlight of IndentBlanklineChar
+    vim.cmd [[hi! MiniIndentscopeSymbol guifg=#979cb3]]
   end,
 }

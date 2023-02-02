@@ -24,19 +24,22 @@ M.on_attach = function(bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   map("n", "gd", wrapper(vim.lsp.buf.definition), "[C] definition", opts)
   map("n", "gD", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
-  map("n", "gh", function()
-    local winid = require("ufo").peekFoldedLinesUnderCursor()
-    -- :h ufo.txt
-    if winid then
-      local buf = vim.api.nvim_win_get_buf(winid)
-      local keys = { "a", "i", "o", "A", "I", "O", "gd", "gr" }
-      for _, k in ipairs(keys) do
-        vim.keymap.set("n", k, "<CR>" .. k, { noremap = false, buffer = buf })
+
+  if vim.bo[bufnr].filetype ~= "rust" then
+    map("n", "gh", function()
+      local winid = require("ufo").peekFoldedLinesUnderCursor()
+      -- :h ufo.txt
+      if winid then
+        local buf = vim.api.nvim_win_get_buf(winid)
+        local keys = { "a", "i", "o", "A", "I", "O", "gd", "gr" }
+        for _, k in ipairs(keys) do
+          vim.keymap.set("n", k, "<CR>" .. k, { noremap = false, buffer = buf })
+        end
+      else
+        vim.lsp.buf.hover()
       end
-    else
-      vim.lsp.buf.hover()
-    end
-  end, "[C] hover or peek fold", opts)
+    end, "[C] hover or peek fold", opts)
+  end
   map("n", "gI", wrapper(vim.lsp.buf.implementation), "[C] go implementation", opts)
   map("n", "gb", wrapper(vim.lsp.buf.type_definition), "[C] go type definition", opts)
   map("n", "gr", vim.lsp.buf.references, "[C] go reference", opts)

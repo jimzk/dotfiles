@@ -18,7 +18,7 @@ map({ "n", "i" }, "<S-cr>", "<Cmd>call append(line('.'), repeat([''], v:count1))
 -- Reselect latest changed, put, or yanked text
 -- From: https://github.com/echasnovski/mini.basics/blob/main/lua/mini/basics.lua#L536
 -- FIX: not work
-map("n", "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = "visually select changed text" })
+-- map("n", "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = "visually select changed text" })
 
 -- Navigate in insert mode
 map("i", "<C-h>", "<Left>")
@@ -32,24 +32,24 @@ map("v", "<leader>d", [["vY'>"vp]], "duplicate line")
 
 -- Cmdline
 -- :h emacs-keys*
-map({ "c", "i" }, "<C-E>", "<END>")
-map({ "i" }, "<C-A>", "<HOME>")
--- Only in this way C-A can work otherwise there will be lagging. Don't know why.
-vim.cmd([[cnoremap <special> <C-A> <HOME>]])
-
-map({ "c", "i" }, "<C-B>", "<Left>")
-map({ "c", "i" }, "<C-F>", "<Right>")
-
--- map("c", "<C-J>", "<DOWN>")
--- map("c", "<C-K>", "<UP>")
-
+local map_ic = function(lhs, rhs)
+  map("i", lhs, rhs)
+  -- Only in this way many keys (e.g. C-A) can work otherwise it will be lagging. Don't know why.
+  vim.cmd("cnoremap <special> " .. lhs .. " " .. rhs)
+end
+map_ic("<C-E>", "<END>")
+map_ic("<C-A>", "<HOME>")
+map_ic("<C-B>", "<Left>")
+map_ic("<C-F>", "<Right>")
 -- Delete
-map({ "c", "i" }, "<M-BS>", "<C-W>") -- delete word
-map({ "c", "i" }, "<S-BS>", "<C-U>") -- delete to start
-map({ "c", "i" }, "<C-BS>", "<right><BS>") -- delete back
-
+map_ic("<M-BS>", "<C-W>") -- delete word
+map_ic("<S-BS>", "<C-U>") -- delete to start
+map_ic("<C-BS>", "<right><BS>") -- delete back
 -- Move
-map({ "c", "i" }, "<M-b>", "<S-Left>")
-map({ "c", "i" }, "<M-f>", "<S-Right>")
-map({ "c", "i" }, "<M-Left>", "<S-Left>")
-map({ "c", "i" }, "<M-Right>", "<S-Right>")
+map_ic("<M-b>", "<S-Left>")
+map_ic("<M-f>", "<S-Right>")
+map_ic("<M-Left>", "<S-Left>")
+map_ic("<M-Right>", "<S-Right>")
+-- History in cmdline
+vim.cmd("cnoremap <special> <M-p> <Up>")
+vim.cmd("cnoremap <special> <M-n> <Down>")

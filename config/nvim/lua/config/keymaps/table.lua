@@ -117,8 +117,8 @@ wk.register({
   x = "swap current window with next",
   ["-"] = "decrease height",
   ["+"] = "increase height",
-  ["<lt>"] = "decrease width",
-  [">"] = "increase width",
+  -- ["<lt>"] = "decrease width",
+  -- [">"] = "increase width",
 
   ["<C-=>"] = { "<cmd>wincmd =<cr>", "equally size" },
   ["<C-->"] = { "<cmd>wincmd |<cr>", "max out height" },

@@ -30,8 +30,10 @@ local get_default_opts = function()
   }
 end
 
+-- Lsp list
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
-  "sumneko_lua", -- Lua
+  "lua_ls", -- Lua
   "rust_analyzer", -- Rust
   "bashls", -- Bash
   "taplo", -- TOML

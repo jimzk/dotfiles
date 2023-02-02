@@ -42,7 +42,7 @@
       "#[derive(Debug)]",
       "enum ${1:Name} {",
       "\t${2:Value1},",
-      "\t${3:Value2},",
+      "\t${3:Value2},$0",
       "}"
     ],
     "description": "enum … { … }"
@@ -56,6 +56,33 @@
     ],
     "description": "fn …(…) { … }"
   },
+  "fn self": {
+    "prefix": "fn self",
+    "body": [
+      "fn ${1:name}(self$2) ${3:-> bool }{",
+      "\t${0:todo!()}",
+      "}"
+    ],
+    "description": "fn …(self, …) { … }"
+  },
+  "fn &self": {
+    "prefix": "fn &self",
+    "body": [
+      "fn ${1:name}(&self$2) ${3:-> bool }{",
+      "\t${0:todo!()}",
+      "}"
+    ],
+    "description": "fn …(&self, …) { … }"
+  },
+  "fn &mut self": {
+    "prefix": "fn &mut self",
+    "body": [
+      "fn ${1:name}(&mut self$2) ${3:-> bool }{",
+      "\t${0:todo!()}",
+      "}"
+    ],
+    "description": "fn …(&mut self, …) { … }"
+  },
   "for": {
     "prefix": "for",
     "body": [
@@ -68,7 +95,7 @@
   "if let": {
     "prefix": "if let",
     "body": [
-      "if let $1 = $2 {",
+      "if let $2 = $1 {",
       "\t${0:todo!()}",
       "}"
     ],
@@ -203,6 +230,13 @@
     ],
     "description": "static …: … = …;"
   },
+  "'static": {
+    "prefix": "'static",
+    "body": [
+      "'static"
+    ],
+    "description": "'static"
+  },
   "struct tuple": {
     "prefix": "tuple struct",
     "body": [
@@ -304,6 +338,20 @@
     "body": [
       "async $0"
     ],
-    "description": "keyword async"
+    "description": "async"
+  },
+  "pub async": {
+    "prefix": "pub async",
+    "body": [
+      "pub async $0"
+    ],
+    "description": "pub async"
+  },
+  "pub": {
+    "prefix": "pub",
+    "body": [
+      "pub $0"
+    ],
+    "description": "pub"
   }
 }

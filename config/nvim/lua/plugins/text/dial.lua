@@ -25,11 +25,13 @@ return {
         -- ts-node-action provides boolean switcher
         -- augend.constant.alias.bool, -- bool, false
         augend.semver.alias.semver, -- 0.3.0 -> 0.3.1 ..
-        augend.hexcolor.new({ -- #000000, #ffffff ...
+        augend.hexcolor.new { -- #000000, #ffffff ...
           case = "lower",
-        }),
+        },
       },
     }
   end,
-  config = function(_, opts) require("dial.config").augends:register_group(opts) end,
+  config = function(_, opts)
+    require("dial.config").augends:register_group(opts)
+  end,
 }

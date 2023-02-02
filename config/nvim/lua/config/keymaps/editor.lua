@@ -21,12 +21,17 @@ local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 local mappings = {
   -- name = "+options",
   n = toggle("number"),
-  r = toggle("relativenumber"),
+  -- r = toggle("relativenumber"),
+  r = { function()
+    Util.toggle("modifiable")
+    Util.toggle("readonly")
+  end, "toggle modifiable", },
   w = toggle("wrap"),
   s = toggle("ignorecase"),
   h = toggle("hlsearch"),
   i = toggle("incsearch"),
   c = toggle("conceallevel", false, { 0, conceallevel }),
+  p = toggle("paste"), -- Paste without losing indent
   m = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
   f = { require("plugins.lsp.format").toggle, "toggle format on save" },
   d = { Util.toggle_diagnostics, "toggle diagnostics" },
@@ -34,9 +39,7 @@ local mappings = {
     vim.ui.input(
       { prompt = "Enter indent width: " },
       function(input)
-        if not input then
-          return
-        end
+        if not input then return end
         vim.bo.tabstop = tonumber(input)
         vim.bo.shiftwidth = tonumber(input)
         vim.notify("Set indent width to " .. input)
@@ -75,7 +78,11 @@ mappings = {
   -- highlights under cursor
   H = { vim.show_pos, "show highlight under cursor" },
   z = { "<cmd>Lazy<cr>", "Lazy" },
-  t = { function() vim.notify(vim.treesitter.get_node_at_cursor()) end, "inspect treesitter ndoe in current cursor" }
+  t = { function()
+    local node = vim.treesitter.get_node_at_cursor()
+    copy(node)
+    vim.notify(node .. " is copied")
+  end, "inspect and copy treesitter ndoe under cursor" }
 }
 set_mapppings(mappings, { prefix = "<leader>n" })
 
@@ -119,7 +126,7 @@ mappings = {
     vim.ui.input(
       {
         prompt = "[G] Move file to: ",
-        default = vim.fn.expand("%:."),
+        default = "./" .. vim.fn.expand("%:."),
       },
       function(input)
         if not input then return end
@@ -135,13 +142,13 @@ mappings = {
 }
 set_mapppings(mappings, { prefix = "<leader>h" })
 
-map("x", "<leader>go", [["vy<cmd>'<,'>GBrowse!<cr>]], "[G] copy GitHub URL for range")
+map("n", "<leader>go", [[<cmd>GBrowse!<cr>]], "[G] copy GitHub URL for file")
+map("n", "<leader>gO", [[<cmd>GBrowse<cr>]], "[G] open GitHub URL for file")
+map("x", "<leader>go", [["vy<cmd>'<,'>GBrowse!<cr>]], "[G] copy GitHub URL for file")
 map("x", "<leader>gO", [["vy<cmd>'<,'>GBrowse<cr>]], "[G] open GitHub URL for range")
 
 mappings = {
   -- name = "+Git",
-  o = { "<cmd>GBrowse!<cr>", "copy GitHub URL for file" },
-  O = { "<cmd>GBrowse<cr>", "open GitHub URL for file" },
   f = { "<cmd>FzfLua git_status<cr>", "git status file (fzf)" },
   -- l = { "<cmd>FzfLua git_bcommits<cr>", "file commits (fzf)" },
   -- L = { "<cmd>FzfLua git_commits<cr>", "repo commits (fzf)" },
@@ -174,16 +181,14 @@ mappings = {
   -- review PR locally
   p = { function()
     vim.ui.input(
-      { prompt = "Enter indent width: " },
+      { prompt = "Enter PR number for review: " },
       function(input)
-        if not input then
-          return
-        end
+        if not input then return end
         if not tonumber(input, 10) then
-          vim.notify("Invalid indent width", vim.log.levels.ERROR)
+          vim.notify("Input is not a number", vim.log.levels.ERROR)
           return
         end
-        vim.cmd("!gh pr checkout " .. input .. " && git reset HEAD~")
+        vim.cmd("silent !gh pr checkout " .. input .. " && git reset HEAD~")
         vim.cmd("DiffviewOpen")
       end
     )

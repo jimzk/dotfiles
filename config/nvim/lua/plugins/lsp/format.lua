@@ -30,7 +30,6 @@ function M.format()
       end
     end,
   })
-  vim.cmd [[up]]
 end
 
 function M.on_attach(client, buf)

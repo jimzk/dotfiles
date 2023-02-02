@@ -4,7 +4,7 @@ return {
   dependencies = { "nvim-treesitter" },
   keys = {
     -- The most commonly used: cycle boolean, case, quotes,
-    { "K", function() require("ts-node-action").node_action() end, desc = "ts node action" },
+    { "K", function() require("ts-node-action").node_action() end, desc = "[TS] node action" },
   },
   opts = function()
     -- Add customized actions. Ref: https://github.com/CKolkey/ts-node-action#builtin-actions

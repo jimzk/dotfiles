@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   callback = function(opts)
     local bufnr = opts.buf
     local bo = vim.bo[bufnr]
-    if bo.modifiable and bo.buflisted and bo.modified then
+    if bo.modifiable and bo.buflisted and vim.api.nvim_buf_get_name(0) ~= "" then
       vim.cmd [[up]]
     end
   end,
@@ -67,20 +67,24 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 
 -- number column
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
-  callback = function()
-    if vim.bo.buflisted then vim.wo.cursorline = true end
+  callback = function(opts)
+    local ft = vim.bo[opts.buf].filetype
+    if not vim.tbl_contains({ "alpha" }, ft) then
+      vim.wo.cursorline = true
+    end
   end,
 })
 vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
   callback = function()
-    if vim.bo.buflisted then vim.wo.cursorline = false end
+    vim.wo.cursorline = false
   end,
 })
 
 vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
   callback = function()
-    local height = vim.api.nvim_win_get_height(0)
-    vim.wo.scrolloff = height < 30 and 3 or 8
+    -- local height = vim.api.nvim_win_get_height(0)
+    -- vim.wo.scrolloff = height < 30 and 3 or 8
+    --
     -- if vim.wo.number then vim.wo.relativenumber = true end
     -- vim.wo.wrap = true
   end,

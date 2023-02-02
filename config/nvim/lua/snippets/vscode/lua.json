@@ -25,9 +25,9 @@
       "function()"
     ],
     "body": [
-      "function($1)",
+      "function($2)",
       "\t$0",
-      "end"
+      "end$1"
     ]
   },
   "pcall": {

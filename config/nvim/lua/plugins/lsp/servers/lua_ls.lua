@@ -6,8 +6,8 @@ local get_library = function()
 end
 
 return {
-  -- https://github.com/sumneko/lua-language-server/blob/master/locale/en-us/setting.lua
-  -- https://github.com/sumneko/lua-language-server/wiki/Settings
+  -- https://github.com/LuaLS/lua-language-server/blob/master/locale/en-us/setting.lua
+  -- https://github.com/LuaLS/lua-language-server/wiki/Settings
   settings = {
     Lua = {
       runtime = {
@@ -15,16 +15,18 @@ return {
       },
       diagnostics = {
         -- Get the language server to recognize the global `vim`
-        globals = { "vim", "hs" },
+        globals = { "vim", "hs", "spoon" },
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
         library = get_library(),
+        -- Do not show annoying setting message
+        -- https://www.reddit.com/r/neovim/comments/10qvoky/why_am_i_keep_getting_asked_this_question_all_the/
         checkThirdParty = false,
       },
       format = {
         enable = true,
-        -- https://github.com/sumneko/lua-language-server/wiki/Formatter
+        -- https://github.com/LuaLS/lua-language-server/wiki/Formatter
         -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config.md
         defaultConfig = {
           -- The value should be STRING!
@@ -42,7 +44,8 @@ return {
         enable = false,
       },
       completion = {
-        callSnippet = "Disable", -- Do not complete with arguments. Consistent with ray-x/lsp_signature.nvim
+        -- Do not complete with arguments, as we always omit arguments
+        callSnippet = "Disable",
       },
       semantic = {
         enable = false, -- Disable highlight as it conflict with treesitter
