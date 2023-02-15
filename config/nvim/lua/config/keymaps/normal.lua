@@ -13,7 +13,6 @@ local mappings = {
 
   -- Save file
   ["<C-s>"] = { "<cmd>up<cr>", "save", mode = { "i", "v", "n", "s" } },
-  ["<C-S-s>"] = { "<cmd>bufdo up<cr>", "save all", mode = { "i", "v", "n", "s" } },
   ["<leader>w"] = { "<cmd>up<cr>", "save" },
   ["<leader>W"] = { "<cmd>bufdo up<cr>", "save all" },
 
@@ -35,12 +34,11 @@ local mappings = {
   ["<C-S-j>"] = { "<cmd>wincmd J<cr>", ignored },
   ["<C-S-k>"] = { "<cmd>wincmd K<cr>", ignored },
   ["<C-S-l>"] = { "<cmd>wincmd L<cr>", ignored },
-
-  -- Resize window using <ctrl> arrow keys
-  ["<C-Up>"] = { "<cmd>resize +2<cr>", "increase window height" },
-  ["<C-Down>"] = { "<cmd>resize -2<cr>", "decrease window height" },
-  ["<C-Left>"] = { "<cmd>vertical resize -2<cr>", "decrease window width" },
-  ["<C-Right>"] = { "<cmd>vertical resize +2<cr>", "increase window width" },
+  -- Resize window
+  ["<C-M-k>"] = { "<cmd>resize +4<cr>", "increase window height" },
+  ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
+  ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
+  ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
 
   -- Maximize window
   -- ["<C-->"] = { function()
@@ -56,11 +54,9 @@ local mappings = {
   ["<C-=>"] = { function()
     if vim.g.full_window then
       vim.cmd [[wincmd =]]
-      -- vim.notify("Exit full screen", vim.log.levels.INFO, { title = "Window" })
     else
       vim.cmd [[wincmd _]]
       vim.cmd [[wincmd |]]
-      -- vim.notify("Enter full screen", vim.log.levels.INFO, { title = "Window" })
     end
     vim.g.full_window = not vim.g.full_window
   end, "toggle full window" },

@@ -339,12 +339,35 @@ set -g mouse on
 set -g status-keys vi
 set -g mode-keys vi
 
-# set C-s to be prefix key
-set -gu prefix2
-unbind C-a
+# prefix key: C-a
+# set -gu prefix2
+# unbind C-a
 unbind C-b
-set -g prefix C-s
-bind C-s send-prefix
+# set -g prefix C-s
+# bind C-s send-prefix
+
+# pane navigation intetrated with neovim (<C-hjkl> navigates without prefix key, just like in neovim)
+# https://github.com/aserowy/tmux.nvim#navigation
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h' { if -F '#{pane_at_left}' '' 'select-pane -L' }
+bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j' { if -F '#{pane_at_bottom}' '' 'select-pane -D' }
+bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k' { if -F '#{pane_at_top}' '' 'select-pane -U' }
+bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l' { if -F '#{pane_at_right}' '' 'select-pane -R' }
+bind-key -T copy-mode-vi 'C-h' if -F '#{pane_at_left}' '' 'select-pane -L'
+bind-key -T copy-mode-vi 'C-j' if -F '#{pane_at_bottom}' '' 'select-pane -D'
+bind-key -T copy-mode-vi 'C-k' if -F '#{pane_at_top}' '' 'select-pane -U'
+bind-key -T copy-mode-vi 'C-l' if -F '#{pane_at_right}' '' 'select-pane -R'
+# pane resize integrated with neovim
+# https://github.com/aserowy/tmux.nvim#resize
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind -n 'C-M-h' if-shell "$is_vim" 'send-keys C-M-h' 'resize-pane -L 1'
+bind -n 'C-M-j' if-shell "$is_vim" 'send-keys C-M-j' 'resize-pane -D 1'
+bind -n 'C-M-k' if-shell "$is_vim" 'send-keys C-M-k' 'resize-pane -U 1'
+bind -n 'C-M-l' if-shell "$is_vim" 'send-keys C-M-l' 'resize-pane -R 1'
+bind-key -T copy-mode-vi C-M-h resize-pane -L 1
+bind-key -T copy-mode-vi C-M-j resize-pane -D 1
+bind-key -T copy-mode-vi C-M-k resize-pane -U 1
+bind-key -T copy-mode-vi C-M-l resize-pane -R 1
 
 # pane navigation
 bind -r C-h select-pane -L  # move left
@@ -359,7 +382,7 @@ bind -r C-p previous-window # select previous window
 bind -r C-n next-window     # select next window
 bind -r b last-window
 bind -r C-b last-window
-bind \; last-window        # move to last active window
+bind \; last-window        # prefix+; moves to last active window
 # swap window recursively
 bind -r < { swap-window -t -1; previous-window }
 bind -r > { swap-window -t +1; next-window }

@@ -82,7 +82,6 @@ M.config = function(_, opts)
     ufo.peekFoldedLinesUnderCursor()
   end, "prev fold (ufo)")
   map("n", "<C-m>", "za", "toggle fold")
-  map("n", "<C-S-m>", ufo.openAllFolds, "open all folds")
 end
 
 return M
