@@ -1,4 +1,3 @@
--- stylua: ignore start
 map("v", ",<space>", function()
   vim.cmd [[normal! "vy]]
   local lua_code = vim.fn.getreg("+")

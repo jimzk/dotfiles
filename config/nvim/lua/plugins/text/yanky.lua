@@ -8,11 +8,17 @@ return {
     { "p", "<Plug>(YankyPutAfter)", desc = ignored },
     { "P", "<Plug>(YankyPutBefore)", desc = ignored },
     -- No yank at visual put
-    { "p", "<Plug>(YankyPutAfterCharwise)", mode = "x", desc = ignored },
-    { "P", "<Plug>(YankyPutAfterCharwise)", mode = "x", desc = ignored },
+    { "p", function()
+      local mode = vim.fn.mode()
+      -- Respect indentation in current context if selection is linewise
+      return mode == "V"
+          and "<Plug>(YankyPutIndentAfterLinewise)"
+          or "<Plug>(YankyPutAfterCharwise)"
+    end, mode = "x", desc = ignored, expr = true },
+    { "P", "p", mode = "x", desc = ignored, remap = true },
     -- Yank linewise
-    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = ignored },
-    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = ignored },
+    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = ignored },
+    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = ignored },
 
     -- Preserve cursor position on yank
     { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = ignored },

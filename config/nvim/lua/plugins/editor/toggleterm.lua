@@ -2,7 +2,7 @@ local M = {
   "akinsho/toggleterm.nvim",
   version = "*",
   keys = {
-    { "<M-space>",   desc = "toggle terminal" },
+    { "<M-space>", desc = "toggle terminal" },
     { "<S-M-space>", "<cmd>ToggleTermToggleAll<cr>", mode = { "n", "t" }, desc = "toggle all terminal" },
   },
 }
@@ -34,7 +34,7 @@ M.config = function(_, opts)
     callback = function()
       vim.wo.cursorline = false
       opts = { buffer = true }
-      map("n", "<Tab>", [[<cmd>wincmd p<cr>]], "alternative window", opts)
+      map("n", "<Tab>", Util.focus_win, "alternative window", opts)
       map("t", "<M-space>", [[<cmd>ToggleTerm<cr>]], "toggle term", opts)
       map({ "t", "n" }, "<C-S-h>", [[<Nop>]], nil, opts)
       map({ "t", "n" }, "<C-S-j>", [[<cmd>ToggleTermToggleAll<cr><cmd>ToggleTerm direction=horizontal<cr>]], nil, opts)

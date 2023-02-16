@@ -26,13 +26,9 @@ return {
         goto_right = "]",
       },
       n_lines = 50,
-      search_method = "cover",
+      search_method = "cover_or_next",
       custom_textobjects = {
-        -- b -> ), B -> }, k -> >, r -> ]
-        b = { { "%b()" }, "^.().*().$" },
-        B = { { "%b{}" }, "^.().*().$" },
-        k = { { "%b<>" }, "^.().*().$" },
-        r = { { "%b[]" }, "^.().*().$" },
+        b = { { "%b()", "%b{}" }, "^.().*().$" },
         ["?"] = false, -- Disable prompt ask motion
       },
     }
@@ -40,14 +36,10 @@ return {
   config = function(_, opts)
     local ai = require("mini.ai")
     ai.setup(opts)
-    local label = function(key, desc)
-      map({ "x", "o" }, "i" .. key, nil, desc)
-      map({ "x", "o" }, "a" .. key, nil, desc)
-    end
-    label("b", "alias (")
-    label("B", "alias {")
-    label("k", "alias <")
-    label("r", "alias [")
+    map({ "x", "o" }, "ib", nil, "{} or ()")
+    map({ "x", "o" }, "ab", nil, "{} or ()")
+    map({ "x", "o" }, "i<Space>", "iW")
+    map({ "x", "o" }, "a<Space>", "aW")
 
     -- ]a and [a move to start at parameter. Defaults stay at end.
     map({ "n", "x", "o" }, "]a", function()

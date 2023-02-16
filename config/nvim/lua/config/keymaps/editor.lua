@@ -81,7 +81,7 @@ mappings = {
   t = { function()
     local node = vim.treesitter.get_node_at_cursor()
     copy(node)
-    vim.notify(node .. " is copied")
+    vim.notify("Treesitter node [" .. node .. "] is copied")
   end, "inspect and copy treesitter ndoe under cursor" }
 }
 set_mapppings(mappings, { prefix = "<leader>n" })
@@ -149,7 +149,6 @@ map("x", "<leader>gO", [["vy<cmd>'<,'>GBrowse<cr>]], "[G] open GitHub URL for ra
 
 mappings = {
   -- name = "+Git",
-  f = { "<cmd>FzfLua git_status<cr>", "git status file (fzf)" },
   -- l = { "<cmd>FzfLua git_bcommits<cr>", "file commits (fzf)" },
   -- L = { "<cmd>FzfLua git_commits<cr>", "repo commits (fzf)" },
   l = { function()
@@ -157,7 +156,6 @@ mappings = {
     vim.cmd [[Telescope git_bcommits]]
   end, "file commits (telescope)" },
   L = { "<cmd>Telescope git_commits<cr>", "repo commits (telescope)" },
-
   -- { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
   -- { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
 
@@ -167,7 +165,6 @@ mappings = {
   B = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
   g = { "<cmd>Neogit kind=vsplit<cr>", "git operations (neogit)" },
   G = { "<cmd>Git<cr><cmd>wincmd L<cr><cmd>6<cr>", "git operations (fugitive)" },
-
   -- d = { "<cmd>Gvdiffsplit<cr>", "current file diff" },
   d = { "<cmd>Gitsigns diffthis<cr>", "current file diff (gitsigns)" },
   -- d = { function()
@@ -177,7 +174,6 @@ mappings = {
   --   vim.cmd [[wincmd l]]
   -- end, "current file diff" },
   D = { "<cmd>DiffviewOpen<cr><cmd>wincmd l<cr><cmd>wincmd l<cr>", "all files diff (diffview)" },
-
   -- review PR locally
   p = { function()
     vim.ui.input(
@@ -248,6 +244,7 @@ end, "show buffer info")
 
 mappings = {
   -- name = "+file",
+  g = { "<cmd>FzfLua git_status<cr>", "git status file (fzf)" },
   f = { Util.telescope("find_files", {
     prompt_title = "Find Files (cwd)",
     hidden = true,
@@ -277,7 +274,6 @@ mappings = {
     cwd = "~",
     search_dirs = { "~/workspace", "~/.dotfiles", "~/.config" },
   }), "find files (workspace)" },
-
   -- https://www.reddit.com/r/neovim/comments/10qubtl/comment/j6rwly4
   -- b = { ":buffers<CR>:buffer<Space>", "switch buffer" }
   b = { Util.telescope("buffers", {
@@ -312,17 +308,42 @@ mappings = {
 set_mapppings(mappings, { prefix = "<leader>c" })
 
 mappings = {
+  -- Overwrite or create session
   s = { function()
-    vim.ui.input(
-      { prompt = "New session name: " },
-      function(name)
-        if not name then return end
-        vim.cmd("PossessionSave " .. name)
-      end)
+    vim.ui.select({ "Overwrite", "Save New" }, {
+      prompt = "Session",
+    }, function(choice)
+      if choice == "Overwrite" then
+        local path = vim.fn.stdpath("data") .. "/possession"
+        local sessions = {}
+        for _, file in ipairs(vim.split(vim.fn.glob(path .. "/*.json"), "\n")) do
+          table.insert(sessions, vim.fn.fnamemodify(file, ":t:r"))
+        end
+        vim.ui.select(sessions, {
+          prompt = "Overwite Session"
+        }, function(session)
+          if not session then return end
+          vim.cmd("PossessionSave! " .. session)
+        end)
+      end
+      if choice == "Save New" then
+        vim.ui.input({
+          prompt = "New session name: ",
+        }, function(name)
+          if not name then return end
+          vim.cmd("PossessionSave! " .. name)
+        end)
+      end
+    end)
   end, "save new session", },
   d = { "<cmd>PossessionDelete<cr>", "delete current session" },
   q = { "<cmd>PossessionClose<cr>", "close current session" },
-  p = { Util.posession_list, "load session" },
+  p = { function()
+    require("telescope").extensions.possession.list(
+      require("telescope.themes").get_dropdown {
+        layout_config = { mirror = true }
+      })
+  end, "load session" },
   g = { function()
     -- https://github.com/nvim-telescope/telescope-project.nvim
     require("telescope").extensions.project.project({

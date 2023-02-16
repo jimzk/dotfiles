@@ -1,5 +1,5 @@
 local wk = require("which-key")
-local ignored_keys = { "&", "Y", "y", "d", "D", "v", "m", "J", "f", "F" }
+local ignored_keys = { "&", "Y", "y", "d", "D", "v", "m", "J", "f", "F", "t", "T", "w", "b", "e", "ge" }
 for _, key in ipairs(ignored_keys) do
   wk.register({ [key] = "which_key_ignore" })
 end
@@ -54,25 +54,19 @@ local textobj = {
   -- ["["] = "[...]",
   -- ["<lt>"] = [[<...>]],
   ["t"] = [[tag block]],
-  ["B"] = [[alias a{]],
+  ["B"] = [[{}]],
   ["w"] = [[word]],
   ["W"] = [[WORD]],
   ["p"] = [[paragraph]],
-  ["s"] = [[sentence]],
+  -- ["s"] = [[sentence]],
   -- mini-ai
   -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md
   ["a"] = [[argument]],
-  ["q"] = [[quotes ', " or `]],
+  ["q"] = [[quotes ('' "" or ``)]],
   ["N"] = "prev object",
   ["n"] = "next object",
   [","] = ",...,",
-  ["<Space>"] = "between whitespaces",
-  -- mini-indentscope
-  ["i"] = "indent content",
-  -- vim-textobj-line
-  ["l"] = [[line]],
-  -- vim-textobk-comment
-  ["c"] = [[comment]],
+  -- ["<Space>"] = "between whitespaces",
 }
 
 wk.register(vim.tbl_extend("force", textobj, { name = "+around" }), { mode = "o", prefix = "a" })
@@ -95,7 +89,6 @@ wk.register({
     "break window into new tab",
   },
   f = "split file under cursor (see gf)",
-
   -- navigation
   ["^"] = "split alternative buffer #",
   w = "go next window",
@@ -106,11 +99,9 @@ wk.register({
   -- preview navigation
   P = { "go preview window" },
   z = { "close preview window" },
-
   -- close
   o = "close other windows",
   c = "close window",
-
   -- layout
   r = { "rotate window layout" }, -- useless, can be removed in the future
   H = "(HJKL) move window to most left",
@@ -123,7 +114,6 @@ wk.register({
   ["<C-=>"] = { "<cmd>wincmd =<cr>", "equally size" },
   ["<C-->"] = { "<cmd>wincmd |<cr>", "max out height" },
   ["<C-\\>"] = { "<cmd>wincmd _<cr>", "max out width" },
-
   -- coding (not much useful)
   d = { "go definition under cursor and split" },
   i = { "go declaration under cursor and split" },

@@ -44,8 +44,8 @@ function M.get_root()
     for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders
       local paths = workspace and vim.tbl_map(function(ws)
-        return vim.uri_to_fname(ws.uri)
-      end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
+            return vim.uri_to_fname(ws.uri)
+          end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then
@@ -260,8 +260,16 @@ M.unlisted_filetypes = {
   "undotree",
   "noice",
   "NeogitPopup",
+  "NeogitCommitView",
   "octo",
+  "OverseerForm",
 }
+
+M.focus_win = function()
+  local picker = require("window-picker")
+  local picked_window_id = picker.pick_window() or vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_win(picked_window_id)
+end
 
 _G.Util = M
 

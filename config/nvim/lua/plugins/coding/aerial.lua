@@ -2,11 +2,12 @@ return {
   "stevearc/aerial.nvim",
   cmd = { "AerialToggle", "AerialOpen" },
   init = function()
-    map("n", "go", "<cmd>AerialToggle<CR>", "[C] outline")
+    map("n", "go", "<cmd>AerialOpen<CR>", "[C] outline")
   end,
   opts = {
     layout = {
       max_width = { 60, 0.35 },
+      min_width = 20,
       default_direction = "right",
     },
     keymaps = {

@@ -8,7 +8,6 @@ local function toggle_hlsearch(char)
   if vim.fn.mode() == "n" then
     local keys = { "<CR>", "<Esc>" }
     local should_noh = vim.tbl_contains(keys, vim.fn.keytrans(char))
-    -- stylua: ignore
     if vim.o.hlsearch and should_noh then
       vim.cmd [[noh]]
     end

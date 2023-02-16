@@ -85,7 +85,6 @@ return {
       },
     },
   },
-  -- stylua: ignore
   keys = {
     { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "redirect cmdline" },
     -- { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true,

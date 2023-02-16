@@ -9,6 +9,8 @@ local decremental_selection_key = "_"
 local highlight_disabled_langs = { "", "gitcommit", "markdown" }
 M.opts = {
   ensure_installed = "all",
+  -- https://www.reddit.com/r/neovim/comments/1144spy/comment/j8vpwey
+  ignore_install = { "comment" },
   sync_install = false,
   auto_install = true,
   highlight = {

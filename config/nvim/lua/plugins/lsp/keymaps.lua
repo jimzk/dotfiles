@@ -2,17 +2,39 @@ local M = {}
 
 -- Always use quickfix for lsp method
 local wrapper = function(lsp_method)
-  return function()
-    lsp_method {
-      on_list = function(opts)
-        vim.fn.setqflist({}, " ", opts)
-        vim.cmd "copen"
-      end,
-    }
+  local on_list = function(opts)
+    -- local cursor = vim.api.nvim_win_get_cursor(0)
+    local filter = {}
+    -- Some lsp return duplicate items. Remove them!
+    local items = {}
+    for _, item in ipairs(opts.items) do
+      local lnum = tostring(item.lnum)
+      local col = item.col
+      if filter[lnum] ~= col then
+        table.insert(items, item)
+      end
+      filter[lnum] = col
+    end
+    opts.items = items
+    vim.fn.setqflist({}, " ", opts)
+    vim.cmd [[copen]]
+  end
+  if lsp_method == vim.lsp.buf.references then
+    return function(context)
+      lsp_method(
+        context,
+        { on_list = on_list }
+      )
+    end
+  else
+    return function()
+      lsp_method {
+        on_list = on_list
+      }
+    end
   end
 end
 
--- stylua: ignore
 M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
   map("n", "[x", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
@@ -23,7 +45,8 @@ M.on_attach = function(bufnr)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   map("n", "gd", wrapper(vim.lsp.buf.definition), "[C] definition", opts)
-  map("n", "gD", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
+  map("n", "gD", wrapper(vim.lsp.buf.declaration), "[C] declaration", opts)
+  map("n", "g<C-d>", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
 
   if vim.bo[bufnr].filetype ~= "rust" then
     map("n", "gh", function()
@@ -42,7 +65,7 @@ M.on_attach = function(bufnr)
   end
   map("n", "gI", wrapper(vim.lsp.buf.implementation), "[C] go implementation", opts)
   map("n", "gb", wrapper(vim.lsp.buf.type_definition), "[C] go type definition", opts)
-  map("n", "gr", vim.lsp.buf.references, "[C] go reference", opts)
+  map("n", "gr", wrapper(vim.lsp.buf.references), "[C] go reference", opts)
   map("n", "g[", vim.lsp.buf.incoming_calls, "[C] incoming call tree", opts)
   map("n", "g]", vim.lsp.buf.outgoing_calls, "[C] outgoing call tree", opts)
 

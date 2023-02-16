@@ -1,29 +1,47 @@
 local ignored = "which_key_ignore"
 local mappings = {
   -- Alternative Windows
-  ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
+  -- ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
   ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
   ["<leader>~"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
   -- Tab
-  ["-"] = { "<cmd>tabprev<cr>", "prev tab" },
-  ["="] = { "<cmd>tabnext<cr>", "next tab" },
+  ["-"] = { "gT", "prev tab" },
+  ["="] = { "gt", "next tab" },
   -- Redo
   ["U"] = { "<C-r>", ignored },
-
   -- Save file
   ["<C-s>"] = { "<cmd>up<cr>", "save", mode = { "i", "v", "n", "s" } },
   ["<leader>w"] = { "<cmd>up<cr>", "save" },
   ["<leader>W"] = { "<cmd>bufdo up<cr>", "save all" },
-
   -- Quit
   ["q"] = { "<cmd>close<cr>", ignored },
   ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
-  ["<BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer" },
-  ["<BS><BS>"] = { "<cmd>Bwipeout!<cr>", "delete buffer forcely" },
-  ["<S-BS>"] = { "<cmd>bufdo Bwipeout<cr>", "delete all buffer" },
-
+  ["<BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
+  ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
+  ["<C-BS>"] = { "<cmd>tabclose<cr>", "close tab" },
+  -- https://www.reddit.com/r/neovim/comments/114z9ua/comment/j904vaa/
+  ["<S-BS>"] = { function()
+    local api = vim.api
+    local active_buffers = {}
+    for _, win in ipairs(api.nvim_list_wins()) do
+      active_buffers[api.nvim_win_get_buf(win)] = true
+    end
+    local count = 0
+    local buffers = api.nvim_list_bufs()
+    for _, buf in ipairs(buffers) do
+      local bo = vim.bo[buf]
+      if active_buffers[buf] ~= true
+          and bo.buflisted
+          and bo.modified ~= true
+      then
+        api.nvim_buf_delete(buf, {})
+        count = count + 1
+      end
+    end
+    vim.notify(string.format("%d unmodified hidden buffers deleted", count))
+  end, "delete unmodified hidden buffers" },
   -- Move to window using the <ctrl> hjkl keys
   ["<C-h>"] = { "<cmd>wincmd h<cr>", ignored },
   ["<C-j>"] = { "<cmd>wincmd j<cr>", ignored },
@@ -39,7 +57,6 @@ local mappings = {
   ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
   ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
   ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
-
   -- Maximize window
   -- ["<C-->"] = { function()
   --   local height = vim.api.nvim_win_get_height(0)
@@ -60,7 +77,6 @@ local mappings = {
     end
     vim.g.full_window = not vim.g.full_window
   end, "toggle full window" },
-
   ["<F1>"] = { "<cmd>Telescope help_tags<cr>", "help" },
   -- Scroll
   ["<Up>"] = { "<C-y>k", ignored },

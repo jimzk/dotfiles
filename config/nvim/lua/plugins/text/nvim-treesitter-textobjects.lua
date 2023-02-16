@@ -15,8 +15,8 @@ M.config = function()
         keymaps = {
           ["af"] = { query = "@function.outer", desc = "[TS] method" },
           ["if"] = { query = "@function.inner", desc = "[TS] method " },
-          ["ac"] = { query = "@class.outer", desc = "[TS] class" },
-          ["ic"] = { query = "@class.inner", desc = "[TS] class" },
+          ["aC"] = { query = "@class.outer", desc = "[TS] class" },
+          ["iC"] = { query = "@class.inner", desc = "[TS] class" },
           -- mini.ai has already provided aa and ia
           -- ["aa"] = "@parameter.outer",
           -- ["ia"] = "@parameter.inner",

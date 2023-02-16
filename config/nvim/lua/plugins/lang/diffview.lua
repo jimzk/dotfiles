@@ -57,7 +57,7 @@ local get_keymaps = function()
       { "n", "?", actions.help({ "view", "diff4" }), { desc = "diffview_ignore" } },
     },
     file_panel = {
-      { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = "diffview_ignore" } },
+      { "n", "<tab>", Util.focus_win, { desc = "diffview_ignore" } },
       { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
       { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 
@@ -86,7 +86,7 @@ local get_keymaps = function()
       { "n", "O", actions.focus_entry, { desc = "Open diff and jump" } },
       { "n", "<cr>", actions.focus_entry, { desc = "Open diff and jump" } },
 
-      { "n", "<C-b>", actions.scroll_view(-0.2), { desc = "Scroll view up" } },
+      { "n", "<C-b>", actions.scroll_view( -0.2), { desc = "Scroll view up" } },
       { "n", "<C-f>", actions.scroll_view(0.2), { desc = "Scroll view down" } },
 
       { "n", "a", actions.toggle_stage_entry, { desc = "Stage / unstage file" } },
@@ -116,7 +116,7 @@ local get_keymaps = function()
       { "n", "?", actions.help("file_panel"), { desc = "Open the help panel" } },
     },
     file_history_panel = {
-      { "n", "<tab>", "<cmd>wincmd p<cr>", { desc = "diffview_ignore" } },
+      { "n", "<tab>", Util.focus_win, { desc = "diffview_ignore" } },
       { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
       { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 
@@ -171,6 +171,7 @@ local get_keymaps = function()
       { "n", "q", actions.close, { desc = "Close help menu" } },
       { "n", "<esc>", actions.close, { desc = "Close help menu" } },
       { "n", "?", actions.close, { desc = "Close help menu" } },
+      { "n", "\\", "<Nop>", { desc = "diffview_ignore" } },
     }
   }
 

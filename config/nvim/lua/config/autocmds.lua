@@ -17,7 +17,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- vim.cmd [[autocmd CursorMoved * normal! zz]]
 
 -- resize splits if window got resized
--- stylua: ignore
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
     vim.cmd("tabdo wincmd =")
@@ -59,6 +58,8 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   callback = function(opts)
     local bufnr = opts.buf
     local bo = vim.bo[bufnr]
+    -- OverseerFrom file's buflisted will be reset to true. Handle specially.
+    if bo.filetype == "OverseerForm" then return end
     if bo.modifiable and bo.buflisted and vim.api.nvim_buf_get_name(0) ~= "" then
       vim.cmd [[up]]
     end

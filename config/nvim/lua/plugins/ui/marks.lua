@@ -39,7 +39,6 @@ M.config = function(_, opts)
   local utils = require("marks.utils")
   utils.add_sign = function(bufnr, text, line, id, group, priority)
     -- hide mark v as I have special use
-    -- stylua: ignore
     if text == "v" then return end
     priority = priority or 10
     local sign_name = "Marks_" .. text

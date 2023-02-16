@@ -39,16 +39,14 @@ local nN = function(forward)
   -- vim.cmd("silent! " .. cmd) -- suppress error "pattern not found"
   -- require("hlslens").start()
 end
--- stylua: ignore
 map({ "n", "x", "o" }, "n", function() nN(true) end)
--- stylua: ignore
 map({ "n", "x", "o" }, "N", function() nN(false) end)
 
 map("n", "<C-E>", "2<C-E>")
 map("n", "<C-Y>", "2<C-Y>")
 
 -- Mark originaol position when combining lines
-map("n", "J", "m`Jg``")
+-- map("n", "J", "m`Jg``")
 
 -- better up/down
 map({ "n", "x", "o" }, "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })

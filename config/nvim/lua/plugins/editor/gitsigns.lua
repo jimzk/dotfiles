@@ -2,7 +2,6 @@ local text = "┃"
 return {
   "lewis6991/gitsigns.nvim",
   event = "BufReadPre",
-  -- stylua: ignore
   opts = {
     signs      = {
       add          = { text = text, hl = "GitSignsAdd", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
@@ -25,9 +24,9 @@ return {
 
       map({ "n", "x", "o" }, ")", gs.next_hunk, "[G] next git change")
       map({ "n", "x", "o" }, "(", gs.prev_hunk, "[G] prev git change")
-      map({ "o", "x" }, "ih", "<cmd>Gitsigns select_hunk<CR>", "[G] Git change")
+      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "[G] Git change")
 
-      map({ "n", "v" }, "<leader>a", "<cmd>Gitsigns stage_hunk<CR><cmd>up<cr>", "[G] stage hunk")
+      map({ "n", "x" }, "<leader>a", "<cmd>Gitsigns stage_hunk<CR><cmd>up<cr>", "[G] stage hunk")
       map("n", "<leader>A", function()
         gs.stage_buffer()
         vim.cmd [[up]]

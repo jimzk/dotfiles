@@ -20,7 +20,9 @@ return {
         -- possession.nvim
         if opts.prompt == "New session name: " then
           return {
-            relative = 'win'
+            relative = "win",
+            width = 20,
+            min_width = { 20, 0 },
           }
         end
       end,
@@ -29,15 +31,15 @@ return {
       },
     },
     select = {
-      backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
+      backend = { "builtin", "telescope", "fzf_lua", "fzf", "builtin", "nui" },
       telescope = require("telescope.themes").get_cursor({
         prompt_prefix = " ",
         initial_mode = "normal",
       }),
       builtin = {
-        max_width = { 150, 0.9 },
-        min_width = { 50, 0.25 },
-        height = nil,
+        -- max_width = { 150, 0.9 },
+        min_width = { 25, 0 },
+        min_height = { 0, 0 },
       },
     },
   },

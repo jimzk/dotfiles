@@ -32,14 +32,15 @@ M.opts = function()
           max_length = vim.o.columns,
           mode = 2,
           fmt = function(name, context)
-            -- Show + if buffer is modified in tab
             local buflist = vim.fn.tabpagebuflist(context.tabnr)
             local winnr = vim.fn.tabpagewinnr(context.tabnr)
             local bufnr = buflist[winnr]
-            local is_mod = vim.fn.getbufvar(bufnr, "&mod")
-            if is_mod then name = name .. (is_mod == 1 and " [+] " or "") end
-            local is_readonly = vim.fn.getbufvar(bufnr, "&readonly")
-            if is_readonly then name = name .. (is_readonly == 1 and " [-]" or "") end
+            if vim.fn.getbufvar(bufnr, "&mod") == 1 then
+              name = name .. " [+] "
+            end
+            if vim.fn.getbufvar(bufnr, "&readonly") == 1 then
+              name = name .. " [-]"
+            end
             return name
           end,
         },
@@ -81,29 +82,11 @@ M.opts = function()
         },
       },
       lualine_x = {
-        -- {
-        --   function()
-        --     return require("noice").api.status.command.get()
-        --   end,
-        --   cond = function()
-        --     return package.loaded["noice"] and require("noice").api.status.command.has()
-        --   end,
-        --   color = fg("Statement"),
-        --   separator = "",
-        --   padding = { left = 0, right = 1 },
-        -- },
-        -- {
-        --   function()
-        --     return require("noice").api.status.mode.get()
-        --   end,
-        --   cond = function()
-        --     return package.loaded["noice"] and require("noice").api.status.mode.has()
-        --   end,
-        --   color = fg("Constant"),
-        --   separator = "",
-        -- },
-
-        {  -- Show visual line count (https://www.reddit.com/r/neovim/comments/1130kh5/comment/j8navg6)
+        {
+          "overseer",
+          label = "",
+        },
+        { -- Show visual line count (https://www.reddit.com/r/neovim/comments/1130kh5/comment/j8navg6)
           function()
             local is_visual_mode = vim.fn.mode():find("[Vv]")
             if not is_visual_mode then return "" end
@@ -113,7 +96,7 @@ M.opts = function()
             return tostring(lines) .. "L"
           end,
           separator = "",
-          icon = {"", align = "left"},
+          icon = { "", align = "left" },
           padding = { left = 0, right = 0 },
         },
         { -- List active lsp
@@ -163,11 +146,12 @@ M.config = function(_, opts)
   require("lualine").setup(opts)
   -- consistent highlight with editor background
   vim.cmd [[hi lualine_c_normal guibg=none]]
+  vim.cmd [[hi lualine_b_inactive gui=none guifg=#8087a0]]
   vim.defer_fn(function()
     -- This one should be defer executed
     vim.cmd [[hi lualine_transitional_lualine_b_normal_to_lualine_c_normal guibg=none]]
     -- I guess lualine lazyly loads highlight.
-    -- For example, it set `lualine_transitional_lualine_b_visual_to_lualine_c_normal` only when I use visual mode.
+    -- For example, `lualine_transitional_lualine_b_visual_to_lualine_c_normal` will only be set when I enter visual mode.
     -- So setting it here will be overrided then.
   end, 1000)
 end

@@ -34,6 +34,7 @@ return {
           indent_size = "2",
           quote_style = "double",
           local_assign_continuation_align_to_first_expression = "true",
+          align_array_table = "false"
           -- call_arg_parentheses = "remove_table_only",
           -- keep_one_space_between_table_and_bracket = true,
           -- align_table_field_to_first_field = true,

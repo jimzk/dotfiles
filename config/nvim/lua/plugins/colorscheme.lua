@@ -21,7 +21,7 @@ return {
           CursorLineNr = { fg = "#cfd0f5" },
           LineNr = { fg = "#5c637c" },
           WinSeparator = { fg = "#404556" },
-          Visual = { style = {} }, -- Remove bold
+          Visual = { style = {}, fg = "#e5e6ec", bg = "#505775" }, -- Remove bold
         }
       end,
       -- dim_inactive = {

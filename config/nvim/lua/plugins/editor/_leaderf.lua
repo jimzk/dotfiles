@@ -19,7 +19,6 @@ return {
     vim.g.Lf_PreviewPopupWidth = 100
     --  Remap key
     -- :h leaderf-prompt
-    -- stylua: ignore
     vim.g.Lf_CommandMap = {
       -- down
       ["<C-j>"] = { "<C-n>" },
