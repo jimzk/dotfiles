@@ -1,7 +1,6 @@
 return {
   -- Run frequently-used tasks in background
   "stevearc/overseer.nvim",
-  event = "BufRead",
   keys = {
     { "<leader>jo", "<cmd>OverseerRun<cr>", desc = "run task (Overseer)" },
     { "<leader>jO", "<cmd>OverseerToggle<cr>", desc = "toggle task result (Overseer)" },

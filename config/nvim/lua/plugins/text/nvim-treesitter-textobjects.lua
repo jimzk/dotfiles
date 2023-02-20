@@ -15,8 +15,8 @@ M.config = function()
         keymaps = {
           ["af"] = { query = "@function.outer", desc = "[TS] method" },
           ["if"] = { query = "@function.inner", desc = "[TS] method " },
-          ["aC"] = { query = "@class.outer", desc = "[TS] class" },
-          ["iC"] = { query = "@class.inner", desc = "[TS] class" },
+          ["ac"] = { query = "@class.outer", desc = "[TS] class" },
+          ["ic"] = { query = "@class.inner", desc = "[TS] class" },
           -- mini.ai has already provided aa and ia
           -- ["aa"] = "@parameter.outer",
           -- ["ia"] = "@parameter.inner",
@@ -31,34 +31,48 @@ M.config = function()
       swap = {
         enable = true,
         swap_next = {
-          ["]e"] = { query = "@parameter.inner", desc = "exchange with next parameter" },
+          ["]e"] = { query = "@parameter.inner", desc = "[TS] exchange parameter with next" },
         },
         swap_previous = {
-          ["[e"] = { "@parameter.inner", desc = "exchange with prev parameter" },
+          ["[e"] = { "@parameter.inner", desc = "[TS] exchange parameter with prev" },
         },
       },
       move = {
         enable = true,
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
-          ["]]"] = { query = "@function.outer", desc = "[TS] next method start" },
+          ["]f"] = { query = "@function.outer", desc = "[TS] next method start" },
           ["]c"] = { query = "@class.outer", desc = "[TS] next class start" },
+          ["]h"] = { query = "@conditional.outer", desc = "[TS] next condition start" },
         },
         goto_next_end = {
-          ["]["] = { query = "@function.outer", desc = "[TS] current or next method end" },
+          ["]F"] = { query = "@function.outer", desc = "[TS] current or next method end" },
           ["]C"] = { query = "@class.outer", desc = "[TS] current or next class end" },
+          ["]H"] = { query = "@conditional.outer", desc = "[TS] current or next condition end" },
         },
         goto_previous_start = {
-          ["[["] = { query = "@function.outer", desc = "[TS] current or prev method start" },
+          ["[f"] = { query = "@function.outer", desc = "[TS] current or prev method start" },
           ["[c"] = { query = "@class.outer", desc = "[TS] current or prev class start" },
+          ["[h"] = { query = "@conditional.outer", desc = "[TS] current or prev condition start" },
         },
         goto_previous_end = {
-          ["[]"] = { query = "@function.outer", desc = "[TS] prev method end" },
+          ["[F"] = { query = "@function.outer", desc = "[TS] prev method end" },
           ["[C"] = { query = "@class.outer", desc = "[TS] prev class end" },
+          ["[H"] = { query = "@conditional.outer", desc = "[TS] prev condition end" },
         },
+        -- goto_next = {
+        --   ["]<C-f>"] = { query = "@function.outer", desc = "[TS] next method start or end" },
+        --   ["]<C-c>"] = { query = "@class.outer", desc = "[TS] next class start or end" },
+        --   ["]<C-d>"] = { query = "@conditional.outer", desc = "[TS] next condition start or start" },
+        -- },
+        -- goto_previous = {
+        --   ["[<C-f>"] = { query = "@function.outer", desc = "[TS] prev method start or end" },
+        --   ["[<C-c>"] = { query = "@class.outer", desc = "[TS] prev class start or end" },
+        --   ["[<C-d>"] = { query = "@conditional.outer", desc = "[TS] prev condition start or start" },
+        -- }
       },
       lsp_interop = {
-        enable = true,
+        enable = false,
         border = "double",
         floating_preview_opts = {},
         peek_definition_code = {

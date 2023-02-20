@@ -5,6 +5,7 @@ local c = {
   ["vmo"] = "verb omap",
   ["vmi"] = "verb imap",
   ["hil"] = "hi! link",
+  ["tne"] = "tabnew"
 }
 
 for lhs, rhs in pairs(c) do

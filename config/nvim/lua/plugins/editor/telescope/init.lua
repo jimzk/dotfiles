@@ -101,6 +101,7 @@ M.opts = function()
     buffer_previewer_maker = get_preview_maker(),
     mappings = {
       i = {
+        ["<CR>"] = actions.select_default + actions.center,
         ["<Esc>"] = actions.close, -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
         ["<C-M-p>"] = actions.results_scrolling_up,

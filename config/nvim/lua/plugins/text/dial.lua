@@ -1,6 +1,7 @@
 return {
   -- increment and decrement value
   "monaqa/dial.nvim",
+  event = "VeryLazy",
   keys = {
     { "<C-a>", "<Plug>(dial-increment)", mode = { "n", "x" }, desc = "increment number/date..." },
     { "<C-x>", "<Plug>(dial-decrement)", mode = { "n", "x" }, desc = "decrement number/date..." },

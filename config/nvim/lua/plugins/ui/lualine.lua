@@ -102,8 +102,17 @@ M.opts = function()
         { -- List active lsp
           function()
             local clients = {}
+            local bufnr = vim.api.nvim_get_current_buf()
             for _, client in ipairs(vim.lsp.get_active_clients()) do
               if client.name ~= "null-ls" and client.name ~= "copilot" then
+                if client.attached_buffers[bufnr] then
+                  clients[client.name] = true
+                end
+              end
+            end
+            local ft = vim.bo.filetype
+            for _, client in pairs(require("null-ls").get_sources()) do
+              if client.filetypes[ft] then
                 clients[client.name] = true
               end
             end

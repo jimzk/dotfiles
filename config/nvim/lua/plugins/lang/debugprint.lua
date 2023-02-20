@@ -3,13 +3,13 @@ return {
   "andrewferrier/debugprint.nvim",
   keys = { "g?" },
   init = function()
-    map({ "n" }, "g?p", nil, "insert debug print below line")
-    map({ "n" }, "g?P", nil, "insert debug print above line")
-    map({ "n", "v" }, "g?v", nil, "insert variable debug print below line")
-    map({ "n", "v" }, "g?V", nil, "insert variable debug print above line")
-    map({ "n" }, "g?o", nil, "debug print operation")
-    map({ "n" }, "g?O", nil, "debug print operation (above line)")
-    map({ "n" }, "g?<BS>", "<cmd>DeleteDebugPrints<cr>", "delete all debug prints")
+    map({ "n" }, "<leader>cdp", nil, "insert debug print below line")
+    map({ "n" }, "<leader>cdP", nil, "insert debug print above line")
+    map({ "n", "v" }, "<leader>cdv", nil, "insert variable debug print below line")
+    map({ "n", "v" }, "<leader>cdV", nil, "insert variable debug print above line")
+    map({ "n" }, "<leader>cdo", nil, "debug print operation")
+    map({ "n" }, "<leader>cdO", nil, "debug print operation (above line)")
+    map({ "n" }, "<leader>cd<BS>", "<cmd>DeleteDebugPrints<cr>", "delete all debug prints")
   end,
   config = function(_, opts)
     require("debugprint").setup(opts)

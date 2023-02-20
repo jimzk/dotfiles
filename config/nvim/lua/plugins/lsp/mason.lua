@@ -8,6 +8,7 @@ return {
     ensure_installed = {
       "shfmt",
       "stylua",
+      "prettierd",
     }
   },
 }

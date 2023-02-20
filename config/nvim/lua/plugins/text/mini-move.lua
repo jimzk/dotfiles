@@ -18,13 +18,12 @@ return {
       line_up = "<M-k>",
     },
   },
-
   config = function(_, opts)
     require("mini.move").setup(opts)
     -- More keymap in insert mode
-    map("i", "<M-j>", "<cmd>m .+1<cr>", "Move line down")
-    map("i", "<M-k>", "<cmd>m .-2<cr>", "Move line up")
-    map("i", "<M-h>", "<cmd>lua MiniMove.move_line('left')<cr>", "Move line left")
-    map("i", "<M-l>", "<cmd>lua MiniMove.move_line('right')<cr>", "Move line right")
+    -- map("i", "<M-j>", "<cmd>m .+1<cr>", "Move line down")
+    -- map("i", "<M-k>", "<cmd>m .-2<cr>", "Move line up")
+    -- map("i", "<M-h>", "<cmd>lua MiniMove.move_line('left')<cr>", "Move line left")
+    -- map("i", "<M-l>", "<cmd>lua MiniMove.move_line('right')<cr>", "Move line right")
   end,
 }

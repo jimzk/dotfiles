@@ -45,8 +45,11 @@ opt.hidden         = true -- Enable modified buffers in background
 opt.inccommand     = "nosplit" -- preview incremental substitute
 opt.laststatus     = 0
 opt.mouse          = "a" -- enable mouse for all mode
-opt.jumpoptions    = "stack" -- Make jumplist behave like web browser back / forward
-opt.spelllang      = { "en" }
+-- https://www.reddit.com/r/neovim/comments/11dmaed/keep_buffer_view_when_you_return_to_file/
+opt.jumpoptions    = "stack,view" -- Make jumplist behave like web browser back / forward
+-- https://www.reddit.com/r/neovim/comments/11bppvy/neovim_using_the_spellchecker/
+opt.spelllang      = { "en_us" }
+opt.spell          = false
 opt.termguicolors  = true -- True color support
 opt.timeoutlen     = 300
 opt.updatetime     = 200 -- save swap file and trigger CursorHold

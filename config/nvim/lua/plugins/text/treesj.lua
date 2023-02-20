@@ -20,8 +20,12 @@ return {
           map("n", "J", "<Cmd>TSJJoin<CR>", nil, opts)
           map("n", "K", "<Cmd>TSJSplit<CR>", nil, opts)
         else
-          map("n", "J", "<Cmd>SplitjoinJoin<CR>", nil, opts)
-          map("n", "K", "<Cmd>SplitjoinSplit<CR>", nil, opts)
+          if vim.fn.maparg("J") == "" then
+            map("n", "J", "<Cmd>SplitjoinJoin<CR>", nil, opts)
+          end
+          if vim.fn.maparg("K") == "" then
+            map("n", "K", "<Cmd>SplitjoinSplit<CR>", nil, opts)
+          end
         end
       end,
     })

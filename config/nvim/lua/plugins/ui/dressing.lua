@@ -21,7 +21,7 @@ return {
         if opts.prompt == "New session name: " then
           return {
             relative = "win",
-            width = 20,
+            width = 22,
             min_width = { 20, 0 },
           }
         end

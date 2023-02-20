@@ -18,8 +18,8 @@ M.config = function(_, opts)
   -- url
   map(ox, "ir", t.url, "url")
   -- Indentation
-  map(ox, "ii", function() t.indentation(true, true) end, "indent")
-  map(ox, "ai", function() t.indentation(false, false) end, "indent including start and end line")
+  map(ox, "iI", function() t.indentation(true, true) end, "indent in current context")
+  map(ox, "aI", function() t.indentation(false, false) end, "indent in current context")
   map(ox, "i<C-i>", function() t.restOfIndentation() end, "to indent end")
   -- Paragraph
   -- map(ox, "<C-}>", function() t.restOfParagraph() end, "to paragraph end (linewise)")

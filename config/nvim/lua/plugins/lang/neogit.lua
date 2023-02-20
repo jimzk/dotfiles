@@ -7,7 +7,7 @@ return {
     },
     mappings = {
       status = {
-        ["l"] = "Toggle",
+        ["<space>"] = "Toggle",
         ["<tab>"] = "",
       }
     },

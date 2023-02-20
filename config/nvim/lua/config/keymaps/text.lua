@@ -21,10 +21,12 @@ map({ "n", "i" }, "<S-cr>", "<Cmd>call append(line('.'), repeat([''], v:count1))
 -- map("n", "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = "visually select changed text" })
 
 -- Navigate in insert mode
-map("i", "<C-h>", "<Left>")
-map("i", "<C-l>", "<Right>")
+-- map("i", "<C-h>", "<Left>")
+-- map("i", "<C-l>", "<Right>")
 map("i", "<C-j>", "<Down>")
 map("i", "<C-k>", "<Up>")
+map("i", "<C-z>", "<cmd>normal! u<cr>")
+map("i", "<C-S-z>", [[<cmd>exec "normal! \<C-r>"<cr>]]) -- Flaw: cursor won't be recovered
 
 -- duplicate line
 map("n", "<leader>d", [[V"vY'>"vp]], "duplicate line")

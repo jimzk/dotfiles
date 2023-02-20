@@ -20,7 +20,7 @@ vim.cmd [[cnoremap <special> <D-right> <END>]]
 vim.cmd [[cnoremap <special> <D-left> <HOME>]]
 -- Undo / redo
 map("n", "<D-z>", "u")
-map("i", "<D-z>", "<Esc>ua")
+map("i", "<D-z>", "<cmd>normal! u<cr>")
 map("n", "<D-S-z>", "<C-r>")
 map("i", "<D-S-z>", [[<Esc><C-r>a]])
 -- Save

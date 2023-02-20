@@ -17,17 +17,17 @@ return {
     end, mode = "x", desc = ignored, expr = true },
     { "P", "p", mode = "x", desc = ignored, remap = true },
     -- Yank linewise
-    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = ignored },
-    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = ignored },
+    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = "put the yanked up linewise" },
+    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = "put the yanked down linewise" },
 
     -- Preserve cursor position on yank
     { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = ignored },
     { "Y", "<Plug>(YankyYank)$", mode = { "n", "x" }, desc = ignored },
 
-    { "<C-}>", "<Plug>(YankyCycleForward)", desc = ignored },
-    { "<C-{>", "<Plug>(YankyCycleBackward)", desc = ignored },
+    { "]y", "<Plug>(YankyCycleForward)", desc = "put the next yanked" },
+    { "[y", "<Plug>(YankyCycleBackward)", desc = "put the prev yanked" },
 
-    { "<leader>jp", "<cmd>Telescope yank_history<cr>", desc = "yank history" },
+    -- { "<leader>jp", "<cmd>Telescope yank_history<cr>", desc = "yank history" },
   }, --
   opts = {
     highlight = {

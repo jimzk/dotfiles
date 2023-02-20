@@ -82,7 +82,7 @@ mappings = {
     local node = vim.treesitter.get_node_at_cursor()
     copy(node)
     vim.notify("Treesitter node [" .. node .. "] is copied")
-  end, "inspect and copy treesitter ndoe under cursor" }
+  end, "copy treesitter ndoe under cursor" }
 }
 set_mapppings(mappings, { prefix = "<leader>n" })
 
@@ -91,7 +91,7 @@ mappings = {
   -- name = "+file operation",
   o = { function()
     local path = vim.fn.expand("%:p")
-    vim.cmd("silent !open " .. path)
+    vim.cmd("silent !code " .. path)
   end, "open file by VSCode" },
   O = { function()
     local path = vim.fn.getcwd()

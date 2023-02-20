@@ -30,7 +30,7 @@ wk.register({
     ["}"] = "next unmatched }",
     s = "next misspelled word",
     ["`"] = "next mark",
-    I = "peek all next match of cursor word",
+    -- I = "peek all next match of cursor word",
     ["<C-i>"] = "go next match of cursor word",
   },
   ["["] = {
@@ -39,20 +39,13 @@ wk.register({
     ["{"] = "prev unmatched {",
     s = "prev misspelled word",
     ["`"] = "prev mark",
-    I = { "peek all match of cursor word", mode = "n" },
+    -- I = { "peek all match of cursor word", mode = "n" },
     ["<C-i>"] = { "go first match of cursor word", mode = "n" },
   },
 }, opts)
 
 opts = { mode = "o", preset = true }
 local textobj = {
-  -- ['"'] = [["..."]],
-  -- ["'"] = [['...']],
-  -- ["`"] = [[`...`]],
-  -- ["("] = [[(...)]],
-  -- ["{"] = [[{...}]],
-  -- ["["] = "[...]",
-  -- ["<lt>"] = [[<...>]],
   ["t"] = [[tag block]],
   ["B"] = [[{}]],
   ["w"] = [[word]],

@@ -11,7 +11,7 @@ return {
       bo = {
         filetype = { "NvimTree", "neo-tree", "notify", "aerial" },
         -- buftype = { "terminal" },
-        buftype = {},
+        buftype = { "terminal" },
       },
     },
     other_win_hl_color = "#e35e4f",

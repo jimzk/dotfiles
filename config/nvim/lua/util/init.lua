@@ -271,6 +271,11 @@ M.focus_win = function()
   vim.api.nvim_set_current_win(picked_window_id)
 end
 
+M.feedkeys = function(keys)
+  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+  vim.api.nvim_feedkeys(keys, "m", true)
+end
+
 _G.Util = M
 
 _G.map = function(mode, lhs, rhs, desc, opts)

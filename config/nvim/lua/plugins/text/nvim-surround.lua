@@ -11,23 +11,28 @@ return {
     keymaps = {
       insert = false,
       insert_line = false,
-      visual = "Y",
-      visual_line = "gY",
+      -- add surrounds by s
+      normal = "s",
+      normal_cur = "ss",
+      normal_line = "S",
+      normal_cur_line = "SS",
+      visual = "s",
+      visual_line = "S",
     },
     surrounds = {
-      r = {
-        add = { "[", "]" },
-      },
-      k = {
+      o = {
         add = { "<", ">" },
+      },
+      O = {
+        add = { "[", "]" },
       },
       q = {
         add = { '"', '"' },
       },
     },
     aliases = {
-      ["k"] = { ">" },
-      ["r"] = { "]" },
+      o = { ">" },
+      O = { "]" },
     },
     move_cursor = false,
   },
