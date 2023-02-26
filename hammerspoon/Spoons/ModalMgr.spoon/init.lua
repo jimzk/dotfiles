@@ -14,30 +14,30 @@ obj.active_list = {}
 obj.supervisor = nil
 
 function obj:init()
-    hsupervisor_keys = {{"alt", "shift"}, "f1"}
+    hsupervisor_keys = { { "alt", "shift" }, "f1" }
     obj.supervisor = hs.hotkey.modal.new(hsupervisor_keys[1], hsupervisor_keys[2], "Initialize Modal Environment")
     obj.supervisor:bind(hsupervisor_keys[1], hsupervisor_keys[2], "Toggle Hammerspoon", function()
         obj.supervisor:exit()
         hs.alert.show("Disable Hammerspoon")
     end)
-    obj.supervisor:bind({"ctrl", "cmd", "shift"}, "f1", "Toggle Help Panel", function()
-        obj:toggleCheatsheet({all=obj.supervisor})
+    obj.supervisor:bind({ "ctrl", "cmd", "shift" }, "f1", "Toggle Help Panel", function()
+        obj:toggleCheatsheet({ all = obj.supervisor })
     end)
 
-    obj.modal_tray = hs.canvas.new({x = 0, y = 0, w = 0, h = 0})
+    obj.modal_tray = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
     obj.modal_tray:level(hs.canvas.windowLevels.tornOffMenu)
     obj.modal_tray[1] = {
         type = "circle",
         action = "fill",
-        fillColor = {hex = "#FFFFFF", alpha = 0.7},
+        fillColor = { hex = "#FFFFFF", alpha = 0.7 },
     }
-    obj.which_key = hs.canvas.new({x = 0, y = 0, w = 0, h = 0})
+    obj.which_key = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
     obj.which_key:level(hs.canvas.windowLevels.tornOffMenu)
     obj.which_key[1] = {
         type = "rectangle",
         action = "fill",
-        fillColor = {hex = "#EEEEEE", alpha = 0.95},
-        roundedRectRadii = {xRadius = 10, yRadius = 10},
+        fillColor = { hex = "#EEEEEE", alpha = 0.95 },
+        roundedRectRadii = { xRadius = 10, yRadius = 10 },
     }
 end
 
@@ -50,6 +50,7 @@ end
 
 function obj:new(id)
     obj.modal_list[id] = hs.hotkey.modal.new()
+    return obj.modal_list[id]
 end
 
 --- ModalMgr:toggleCheatsheet([idList], [force])
@@ -100,7 +101,7 @@ function obj:toggleCheatsheet(iterList, force)
             -- hs.alert.show("index: "..inspect(index))
             local len = string.len(val)
             local text = string.format("[%s]", val)
-            if index then  -- if no key description
+            if index then -- if no key description
                 local k = string.sub(keys_pool[idx], 0, index - 1)
                 local v = string.sub(keys_pool[idx], index + 1, len)
                 text = string.format("[%s] %s", k, v)
@@ -111,7 +112,7 @@ function obj:toggleCheatsheet(iterList, force)
                     text = text,
                     textFont = "Courier-Bold",
                     textSize = 16,
-                    textColor = {hex = "#2390FF", alpha = 1},
+                    textColor = { hex = "#2390FF", alpha = 1 },
                     textAlignment = "justified",
                     frame = {
                         x = tostring(40 / (cres.w / 5 * 3)),
@@ -126,7 +127,7 @@ function obj:toggleCheatsheet(iterList, force)
                     text = text,
                     textFont = "Courier-Bold",
                     textSize = 16,
-                    textColor = {hex = "#2390FF"},
+                    textColor = { hex = "#2390FF" },
                     textAlignment = "justified",
                     frame = {
                         x = "50%",
@@ -159,13 +160,13 @@ function obj:activate(idList, trayColor, showKeys)
         local cscreen = hs.screen.mainScreen()
         local cres = cscreen:fullFrame()
         local lcres = cscreen:absoluteToLocal(cres)
-        obj.modal_tray:frame(cscreen:localToAbsolute{
+        obj.modal_tray:frame(cscreen:localToAbsolute {
             x = 0,
             y = cres.h - 50,
             w = 50,
             h = 50,
         })
-        obj.modal_tray[1].fillColor = {hex = trayColor, alpha = 0.5}
+        obj.modal_tray[1].fillColor = { hex = trayColor, alpha = 0.5 }
         obj.modal_tray:show()
     end
     if showKeys then
@@ -199,6 +200,24 @@ end
 
 function obj:deactivateAll()
     obj:deactivate(obj.active_list)
+end
+
+function obj:newModal(name, color)
+    local M = {}
+    M.name = name
+    M.modal = obj:new(name)
+    M.activate = function()
+        spoon.ModalMgr:deactivateAll()
+        -- Show an status indicator so we know we're in some modal environment now
+        spoon.ModalMgr:activate({ M.name }, color)
+    end
+    M.deactivate = function()
+        spoon.ModalMgr:deactivate({ M.name })
+    end
+    M.modal
+        :bind("", "escape", "cheatsheet_ignore", M.deactivate)
+        :bind("shift", "/", "cheatsheet_ignore", function() spoon.ModalMgr:toggleCheatsheet() end)
+    return M
 end
 
 return obj

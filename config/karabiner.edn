@@ -1,1 +1,338 @@
-../karabiner/karabiner.edn
+;; ref
+;;   - example: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org
+;;   - example configuration: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/resources/configurations/edn/example.edn
+;;   - tutorial: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/tutorial.md
+;;   - keycodes: https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj
+;;   - karabiner:
+;;     - keycodes: https://github.com/pqrs-org/Karabiner-Elements/blob/master/src/apps/PreferencesWindow/Resources/simple_modifications.json
+;;     - modifiers keys: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/#frommodifiersmandatory
+;;     - complex_modifications manipulator definition: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/
+;;   - helpful user configuration examples
+;;     - https://github.com/nikitavoloboev/dotfiles/blob/master/karabiner/karabiner.edn
+
+;; code won't read cheatsheet section
+;; ! for mandatory
+;; # for optional
+;; ## for optional any
+;; C T O S for left command control optional shift
+;; Q W E R for right command control optional shift
+;; !! for mandatory command + control + optional + shift (hyper)
+;; need to prefix C T O S F with ! or #
+;; F for fn
+;; P for caps_lock
+{
+  ;; Casesensitive
+  :applications {
+    :browser ["^com\\.microsoft\\.edgemac$" "^com\\.google\\.Chrome$" "^com\\.apple\\.Safari$"]
+    :terminal ["^com\\.googlecode\\.iterm2$" "^com.jetbrains" "^com\\.microsoft\\.VSCode$" "^com\\.apple\\.Terminal$"]
+    :intelliJ ["^com.jetbrains"]
+
+    :IDEA ["^com\\.jetbrains\\.intellij\\.ce$"]
+    :GoLand ["^com\\.jetbrains\\.goland$"]
+
+    :Edge ["^com\\.microsoft\\.edgemac$"]
+    :iTerm ["^com\\.googlecode\\.iterm2$"]
+    :VSCode ["^com\\.microsoft\\.VSCode$"]
+    :intelliJ-IDEA ["^com\\.jetbrains\\.intellij$"]
+    :intelliJ-GoLand ["^com\\.jetbrains\\.goland$"]
+
+    :WeChat ["^com\\.tencent\\.xinWeChat$"]
+    :Discord ["^com\\.hnc\\.Discord$"]
+    :Telegram ["^ru\\.keepcoder\\.Telegram$"]
+
+    :Karabiner-Elements ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
+    :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
+    :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
+
+    :Obsidian ["^md\\.obsidian$"]
+    :Things3 ["^com\\.culturedcode\\.ThingsMac$"]
+    :Raindrop ["^io\\.raindrop\\.macapp$"]
+    :Bitwarden ["^com\\.bitwarden\\.desktop$"]
+    :Flomo ["^com\\.google\\.Chrome\\.app\\.mjnbhimggobpdngjimoodpenobognheo"]
+    :PDFExpert ["^com\\.readdle\\.PDFExpert-Mac$"]
+    :Youdao ["^com\\.youdao\\.YoudaoDict"]
+    :Finder ["^com\\.apple\\.finder$"]
+    :SystemReferences ["^com\\.apple\\.systempreferences$"]
+    :Music ["^com\\.apple\\.Music$"]
+    :Notes ["^com\\.apple\\.Notes$"]
+    :ActivityMonitor ["^com\\.apple\\.ActivityMonitor$"]
+  }
+
+  :input-sources {
+    :pinyin {
+        :input_mode_id "com.apple.inputmethod.SCIM.Shuangpin"
+        :input_source_id "com.apple.inputmethod.SCIM.Shuangpin"
+        :language "zh-Hans"
+    }
+    :us {
+      :input_mode_id ""
+      :input_source_id "com.apple.keylayout.US"
+      :language "en"
+    }
+  }
+
+  :templates {
+    ;; :launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%sument \"\"'"
+    :open "open \"%s\""
+    :safeOpen "/usr/local/bin/hs -c \"SafeOpen('%s')\""
+    :edit "/usr/local/bin/code \"%s\""
+    ;; AppleScipt keystroke and key code table: https://eastmanreference.com/complete-list-of-applescript-key-codes
+    ;; have permission issues: 'System Events got an error: osascript is not allowed to send keystrokes.'
+    ;; :alfred "osascript -e 'tell application \"Alfred 4\" to search' -e 'tell application \"System Events\" to keystroke \"%s\"'"
+    ;; :alfred-execute "osascript -e 'tell application \"Alfred 4\" to search' -e 'tell application \"System Events\"' -e 'keystroke \"%s\"' -e 'key code 36' -e 'end tell'"
+    :alfred "/usr/local/bin/hs -c \"Alfred('%s')\""
+    :alfred-execute "/usr/local/bin/hs -c \"Alfred('%s', true)\""
+    :alfred-flow "osascript -e 'tell application \"Alfred 4\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"
+    :hs "/usr/local/bin/hs -c \"%s\""
+    :script "/usr/local/bin/bash ~/.dotfiles/karabiner/scripts/%s"
+  }
+
+  ;;; helper function to generate things little bit quicker
+  ;; quick define "layers" or "state" feature(use set_variable)
+  ;; can use as conditions in rule list
+  ;; {:<layer name> {:from <froms>}}
+  :simlayers {
+    ;; most frequently used modes
+    ; :app-mode {:key :spacebar :condi :!terminal}
+    :spacebar-mode {:key :spacebar}
+    :terminal-mode {:key :j}
+  }
+  :simlayer-threshold 250
+
+  ;; Examples
+  ;; [:0 [:!!5] nil {:alone :pinyin}] change input method
+  :main [
+    {:des "keys without prefix"
+      :rules [
+        ; map caps_lock to control
+        [:##caps_lock {:key :right_control} nil {:alone :escape}]
+        ; super key
+        [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
+        ; simultaneously =⌫ to delete backward
+        ;; [[:equal_sign :delete_or_backspace] :delete_forward]
+      ]
+    }
+    {:des "basic"
+      :rules [
+        [:!Ch :!Cm :Hammerspoon]  ;; Hammerspoon can't be hinded by cmd-h
+        ; [:!Ch [:hs "hs.window.focusedWindow():application():hide()"] :iTerm]
+      ]
+    }
+    {:des "fn"
+      :rules [
+        ; ctrl 1/2
+        [:!Ta [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
+        [:!Ts [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
+        [:!Td [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
+        [:!Tw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
+        [:!TSa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TSs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
+        [:!TSd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TSw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
+        ; center
+        [:!Tf [:hs "spoon.Win.toggleFullScreen()"]]
+        [:!Tg [:hs "spoon.Win.moveAndResize('fullscreen')"]]
+        [:!TCg [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
+        [:!TSg [:hs "spoon.Win.resizeWindow({ x = 0.2, y = 0, w = 0.6, h = 1 })"]]
+        ;; desktop navigation
+        [:!Ti :!CTOf7] ;; Previous Space
+        [:!To :!CTOf9] ;; Next Space
+        [:!Tu :mission_control] ;; Mission Control
+        [:!Tup_arrow :!!f11] ;; Show Desktop
+        [:!Tdown_arrow :!!f2] ;; Application Windows
+        ;; previous / next tabs
+        ;; move window to space and focus
+        [:!TSi [:hs "MoveFocusedWindowToSpace('prev', true)"]]
+        [:!TSo [:hs "MoveFocusedWindowToSpace('next', true)"]]
+        ;; previous / next tabs
+        [:!Thyphen :!CSopen_bracket :iTerm]
+        [:!Tequal_sign :!CSclose_bracket :iTerm]
+        [:!Thyphen :!TStab :Finder]
+        [:!Tequal_sign :!Ttab :Finder]
+        [:!Thyphen :!CSopen_bracket :VSCode]
+        [:!Tequal_sign :!CSclose_bracket :VSCode]
+        [:!Thyphen :!CSopen_bracket :intelliJ]
+        [:!Tequal_sign :!CSclose_bracket :intelliJ]
+        [:!Thyphen :up_arrow :WeChat]
+        [:!Tequal_sign :down_arrow :WeChat]
+        [:!Thyphen :!Oup_arrow :Discord]
+        [:!Tequal_sign :!Odown_arrow :Discord]
+        [:!Thyphen :!Oup_arrow :Telegram]
+        [:!Tequal_sign :!Odown_arrow :Telegram]
+        [:!Thyphen :!TStab]
+        [:!Tequal_sign :!Ttab]
+        ;; arrow key
+        ; [:!Th [:left_arrow]]
+        ; [:!Tj [:down_arrow]]
+        ; [:!Tk [:up_arrow]]
+        ; [:!Tl [:right_arrow]]
+        ; [:!TCh [:!Cleft_arrow]]
+        ; [:!TCj [:!Cdown_arrow]]
+        ; [:!TCk [:!Cup_arrow]]
+        ; [:!TCl [:!Cright_arrow]]
+        ; [:!TSh [:!Sleft_arrow]]
+        ; [:!TSj [:!Sdown_arrow]]
+        ; [:!TSk [:!Sup_arrow]]
+        ; [:!TSl [:!Sright_arrow]]
+        ; [:!TOh [:!Oleft_arrow]]
+        ; [:!TOj [:!Odown_arrow]]
+        ; [:!TOk [:!Oup_arrow]]
+        ; [:!TOl [:!Oright_arrow]]
+        ;; home and end
+        ; [:!Topen_bracket [:home]]
+        ; [:!Tclose_bracket [:end]]
+        ; [:!TSTopen_bracket [:!Shome]]
+        ; [:!TSTclose_bracket [:!Send]]
+        ;; navigate applications
+        [:!Tn [:!Ctab]]
+        [:!TCn [:!CStab]]
+        ;; move window to recent display and focus
+        [:!Tdelete_or_backspace [:hs "spoon.Win.moveToScreen('next')"]]
+        [:!TSdelete_or_backspace [:hs "ShowFocusedWindowInfo()"]]
+        ; Misc
+        [:!Tcomma :!Tf3]  ;; focus on docker
+        [:!TScomma :!CTSf2]  ;; hide/show Dock
+        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Alfred)
+        [:!Tsemicolon :!CTS4]  ;; Look word up in Eudic dictionary
+        [:!TSsemicolon :!Ch :Youdao]
+        [:!TSsemicolon [:open "/Applications/网易有道词典.app"]]
+        ;; act like fn + f1..f12
+        [:!Tf1 :display_brightness_decrement]
+        [:!Tf2 :display_brightness_increment]
+        [:!Tf3 :mission_control]
+        [:!Tf4 :dashboard]
+        [:!Tf7 :vk_consumer_previous]
+        [:!Tf8 :play_or_pause]
+        [:!Tf9 :vk_consumer_next]
+        [:!Tf10 :mute]
+        [:!Tf11 :volume_decrement]
+        [:!Tf12 :volume_increment]
+        ;; Applications
+        [:!Tspacebar :!CTOSspacebar]  ;; Alfred
+        [:!Treturn_or_enter [:hs "hs.window.focusedWindow():application():hide()"] :iTerm]
+        [:!Treturn_or_enter [:open "/Applications/iTerm.app"]] ;; iTerm2
+        [:!Tquote :!Ch :browser]
+        [:!Tquote [:open "/Applications/Google Chrome.app"]]
+        [:!Tm :!Ch :Music]
+        [:!Tm [:open "/System/Applications/Music.app/"]]
+        [:!Tt :!!5 :browser] ;; add Things3 task
+        [:!Tt [:!TOC5]]
+        [:!TSt :!Ch :Things3]
+        [:!TSt [:open "/Applications/Things3.app"]]
+        [:!Tv :!Ch :VSCode]
+        [:!Tv [:open "/Applications/Visual Studio Code.app"]]
+        [:!Tbackslash :!Ch :Obsidian]
+        [:!Tbackslash [:open "/Applications/Obsidian.app"]]
+        [:!Te :!Ch :Finder]
+        [:!Te [:open "/System/Library/CoreServices/Finder.app"]]
+        [:!Tx :!Ch :WeChat]
+        [:!Tx [:open "/Applications/WeChat.app"]]
+        [:!Tc :!Ch :Discord]
+        [:!Tc [:open "/Applications/Discord.app"]]
+        [:!Tz :!Ch :Telegram]
+        [:!Tz [:open "/Applications/Telegram.app"]]
+        [:!Tp :!Ch :PDFExpert]
+        [:!Tp [:safeOpen "com.readdle.PDFExpert-Mac"]]
+        [:!Tb :!Ch :Bitwarden]
+        [:!Tb [:open "/Applications/Bitwarden.app"]]
+        [:!Tq :!Ch :Flomo]
+        [:!Tq [:open "/Users/fjchen/Applications/Chrome Apps.localized/flomo.app"]]
+      ]
+    }
+    {:des "hyperkey (QWER)"
+      :rules [
+      ]
+    }
+    {:des "spacebar mode"
+      :rules [:spacebar-mode
+        [:q [:hs "spoon.Win.activate()"]] ;; Window management
+        [:e [:hs "spoon.Config:activate()"]] ;; Window management
+        [:b [:hs "spoon.Bookmark:activate()"]] ;; Window management
+        ;; arrow key
+        [:h [:left_arrow]]
+        [:j [:down_arrow]]
+        [:k [:up_arrow]]
+        [:l [:right_arrow]]
+        [:!Ch [:!Cleft_arrow]]
+        [:!Cj [:!Cdown_arrow]]
+        [:!Ck [:!Cup_arrow]]
+        [:!Cl [:!Cright_arrow]]
+        [:!Sh [:!Sleft_arrow]]
+        [:!Sj [:!Sdown_arrow]]
+        [:!Sk [:!Sup_arrow]]
+        [:!Sl [:!Sright_arrow]]
+        [:!Oh [:!Oleft_arrow]]
+        [:!Oj [:!Odown_arrow]]
+        [:!Ok [:!Oup_arrow]]
+        [:!Ol [:!Oright_arrow]]
+        ;; home and end
+        [:hyphen [:home]]
+        [:equal_sign  [:end]]
+        [:!Shyphen [:!Shome]]
+        [:!Sequal_sign  [:!Send]]
+        ;; mouse move
+        [:w {:mkey {:y -1600 :speed 1.20}}]
+        [:s {:mkey {:y 1600 :speed 1.20}}]
+        [:a {:mkey {:x -1600 :speed 1.20}}]
+        [:d {:mkey {:x 1600 :speed 1.20}}]
+        [:!Sw {:mkey {:y -3200 :speed 1.10}}]
+        [:!Ss {:mkey {:y 3200 :speed 1.10}}]
+        [:!Sa {:mkey {:x -3200 :speed 1.10}}]
+        [:!Sd {:mkey {:x 3200 :speed 1.10}}]
+        ; [:!Tw {:mkey {:y -800 :speed 1.20}}]
+        ; [:!Ts {:mkey {:y 800 :speed 1.20}}]
+        ; [:!Ta {:mkey {:x -800 :speed 1.20}}]
+        ; [:!Td {:mkey {:x 800 :speed 1.20}}]
+        ;; scroll
+        [:i {:mkey {:vwheel -32 :speed 1.30}}]
+        [:o {:mkey {:vwheel 32 :speed 1.30}}]
+        [:!Si {:mkey {:vwheel -64 :speed 1.30}}]
+        [:!So {:mkey {:vwheel 64 :speed 1.30}}]
+        [:!Oi {:mkey {:vwheel -16 :speed 1.30}}]
+        [:!Oo {:mkey {:vwheel 16 :speed 1.30}}]
+        ;; left click
+        [:return_or_enter :button1]
+        [:!Creturn_or_enter {:pkey :button1 :modi :left_command}]
+        [:!Treturn_or_enter {:pkey :button1 :modi :left_control}]
+        [:!Oreturn_or_enter {:pkey :button1 :modi :left_option}]
+        [:!Sreturn_or_enter {:pkey :button1 :modi :left_shift}]
+        ;; right click
+        [:backslash :button2]
+      ]
+    }
+    {:des "terminal (j)"
+      :rules [[:condi :terminal-mode] ;; :terminal]
+        ;; terminal
+        [:escape [:!Tu :e :x :i :t :return_or_enter]] ; exit terminal
+        [:r [:!Ta :t :l :d :r :spacebar :return_or_enter]] ; tldr
+        [:u [:!Tu :c :l :e :a :r :return_or_enter]] ; clear screen
+        ;; vim
+        [:q [:escape :escape :!Ssemicolon :!Tu :q :!S1 :return_or_enter]] ; exit in vim
+        [:w [:escape :escape :!Ssemicolon :!Tu :w :q :!S1 :return_or_enter]] ; save and exit in vim
+        [:v [:spacebar :!Sbackslash :spacebar :v :i :m :spacebar :hyphen :return_or_enter]] ; temporary cat in vim
+        ;; reload zsh
+        [:z [:!Tu :e :x :e :c :spacebar :z :s :h :return_or_enter]]
+
+        ;; zle widget
+        [:c [:!Tg :c]] ; command cheatsheet
+        [:g [:!Tg :g]] ; shortcut cheatsheet
+        ;; [:v [:!Tg :v]] ; old cheat
+        [:b [:!Tg :b]] ; git branch
+        [:d [:!Tg :d]] ; git file
+        [:l [:!Tg :l]] ; git commit
+        [:h [:!Tg :h]] ; git file commit
+        [:t [:!Tg :t]] ; git tag
+        [:s [:!Tg :s]] ; git status
+        [:e [:!Tg :e]] ; env
+        [:a [:!Tg :a]] ; alias
+        [:f [:!Tg :f]] ; env
+        ;; reuse commands
+        [:p [:!S1 :!S4 :return_or_enter]] ;; !$ last argument in last argument
+        ;; [:6 [:!S1 :!S6 :return_or_enter]] ;; !^ first argument in last argument
+        ;; [:8 [:!S1 :!S8 :return_or_enter]] ;; !* all arguments in last argument
+        ;; [:9 [:!Tu :!S1 :!Ssemicolon :hyphen :return_or_enter]] ;; !-: last command excpt for last argument
+        ;; [:0 [:!Tu :r :return_or_enter]] ;; execute last command
+      ]
+    }
+  ]
+}
