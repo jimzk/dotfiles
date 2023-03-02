@@ -125,16 +125,14 @@ function M.moveAndResize(option)
                 x = wf.x - stepw,
                 y = wf.y - steph,
                 w = wf.w + (stepw * 2),
-                h = wf.h +
-                (steph * 2)
+                h = wf.h + (steph * 2)
             })
         elseif option == "shrink" then
             cwin:setFrameInScreenBounds({
                 x = wf.x + stepw,
                 y = wf.y + steph,
                 w = wf.w - (stepw * 2),
-                h = wf.h -
-                (steph * 2)
+                h = wf.h - (steph * 2)
             })
         end
     else
@@ -191,19 +189,6 @@ function M.toggleFullScreen()
     cwin:toggleFullScreen()
 end
 
-function dump(o)
-    if type(o) == "table" then
-        local s = "{ "
-        for k, v in pairs(o) do
-            if type(k) ~= "number" then k = '"' .. k .. '"' end
-            s = s .. "[" .. k .. "] = " .. dump(v) .. ","
-        end
-        return s .. "} "
-    else
-        return tostring(o)
-    end
-end
-
 function M.resizeWindow(size1, fill)
     M.deactivate()
     local w1 = hs.window.focusedWindow()
@@ -245,20 +230,19 @@ end
 
 M.modal
     :bind("", "tab", "Send Window to Next Display", function() M.moveToScreen("next") end)
-    :bind("", "E", "Move Window to Next Desktop", function() MoveFocusedWindowToSpace("next", true) end)
-    :bind("", "Q", "Move Window to Prev Desktop", function() MoveFocusedWindowToSpace("prev", true) end)
+    :bind("", "'", "Move Window to Next Desktop", function() MoveFocusedWindowToSpace("next", true) end)
+    :bind("", ";", "Move Window to Prev Desktop", function() MoveFocusedWindowToSpace("prev", true) end)
 M.modal
     :bind("", "F", "Fullscreen", M.toggleFullScreen)
-    :bind("", "G", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
-    :bind("", "V", "Center Larger", resize({ x = 0.1, y = 0, w = 0.8, h = 1 }))
-    :bind("", "C", "Center", resize({ x = 0.2, y = 0, w = 0.6, h = 1 }))
+    :bind("", "G", "Center Larger", resize({ x = 0.1, y = 0, w = 0.8, h = 1 }))
+    :bind("shift", "G", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
 local scale = 1 / 60
 local stepResize = function(u, d, l, r) return function() M.resize(u, d, l, r) end end
 M.modal
     :bind("ctrl", "H", "Horizontal Shrink", stepResize(0, 0, -scale, -scale), nil, stepResize(0, 0, -scale, -scale))
     :bind("ctrl", "L", "Horizontal Expand", stepResize(0, 0, scale, scale), nil, stepResize(0, 0, scale, scale))
     :bind("ctrl", "J", "Vertical Expand", stepResize(scale, scale, 0, 0), nil, stepResize(scale, scale, 0, 0))
-    :bind("ctrl", "K", "Vertical Shrink", stepResize( -scale, -scale, 0, 0), nil, stepResize( -scale, -scale, 0, 0))
+    :bind("ctrl", "K", "Vertical Shrink", stepResize(-scale, -scale, 0, 0), nil, stepResize(-scale, -scale, 0, 0))
     :bind("", "H", "Move Window Left", function() M.stepMove("left") end, nil, function() M.stepMove("left") end)
     :bind("", "L", "cheatsheet_ignore", function() M.stepMove("right") end, nil, function() M.stepMove("right") end)
     :bind("", "J", "cheatsheet_ignore", function() M.stepMove("down") end, nil, function() M.stepMove("down") end)
@@ -273,15 +257,15 @@ M.modal
     :bind("", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }))
     :bind("", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }))
     :bind("", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }))
-    :bind("ctrl", "A", "1/2 Left Fill", resize({ x = 0, y = 0, w = 0.5, h = 1 }, true))
-    :bind("ctrl", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }, true))
-    :bind("ctrl", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }, true))
-    :bind("ctrl", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }, true))
+    :bind("cmd", "A", "1/2 Left Fill", resize({ x = 0, y = 0, w = 0.5, h = 1 }, true))
+    :bind("cmd", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }, true))
+    :bind("cmd", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }, true))
+    :bind("cmd", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }, true))
 M.modal
-    :bind("cmd", "A", "2/3 Left", resize({ x = 0, y = 0, w = 0.66, h = 1 }))
-    :bind("cmd", "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }))
-    :bind("cmd", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }))
-    :bind("cmd", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }))
+    :bind("ctrl", "A", "2/3 Left", resize({ x = 0, y = 0, w = 0.66, h = 1 }))
+    :bind("ctrl", "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }))
+    :bind("ctrl", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }))
+    :bind("ctrl", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }))
     :bind({ "ctrl", "cmd" }, "A", "2/3 Left Fill", resize({ x = 0, y = 0, w = 0.66, h = 1 }, true))
     :bind({ "ctrl", "cmd" }, "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }, true))
     :bind({ "ctrl", "cmd" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }, true))
@@ -291,9 +275,35 @@ M.modal
     :bind("alt", "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }))
     :bind("alt", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }))
     :bind("alt", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.34 }))
-    :bind({ "ctrl", "alt" }, "A", "1/3 Left Fill", resize({ x = 0, y = 0, w = 0.34, h = 1 }, true))
-    :bind({ "ctrl", "alt" }, "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }, true))
-    :bind({ "ctrl", "alt" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }, true))
-    :bind({ "ctrl", "alt" }, "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.34 }, true))
+    :bind({ "cmd", "alt" }, "A", "1/3 Left Fill", resize({ x = 0, y = 0, w = 0.34, h = 1 }, true))
+    :bind({ "cmd", "alt" }, "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }, true))
+    :bind({ "cmd", "alt" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }, true))
+    :bind({ "cmd", "alt" }, "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.34 }, true))
 
+local appName = {
+    ["Code"] = "Visual Studio Code",
+    ["Things"] = "Things3",
+    ["iTerm2"] = "iTerm",
+}
+function M.openOrHideApp(name)
+    local frontmostApp = hs.application.frontmostApplication()
+    local frontmostAppName = frontmostApp:name()
+    if frontmostAppName == name or appName[frontmostAppName] == name then
+        frontmostApp:hide()
+        return
+    end
+    hs.application.launchOrFocus(name)
+end
+
+-- local apps = {
+--     E = "WeChat",
+--     T = "Telegram",
+--     G = "Discord",
+--     Q = "flomo",
+--     V = "Visual Studio Code",
+--     F = "Finder",
+-- }
+-- for key, app in pairs(apps) do
+--     M.modal:bind("", key, "Open " .. app, M.openApp(app))
+-- end
 return M

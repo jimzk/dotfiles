@@ -45,6 +45,7 @@
     :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
 
     :Obsidian ["^md\\.obsidian$"]
+    :Notion ["^notion\\.id$"]
     :Things3 ["^com\\.culturedcode\\.ThingsMac$"]
     :Raindrop ["^io\\.raindrop\\.macapp$"]
     :Bitwarden ["^com\\.bitwarden\\.desktop$"]
@@ -74,6 +75,7 @@
   :templates {
     ;; :launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%sument \"\"'"
     :open "open \"%s\""
+    :openApp "/usr/local/bin/hs -c \"spoon.Win.openOrHideApp('%s')\""
     :safeOpen "/usr/local/bin/hs -c \"SafeOpen('%s')\""
     :edit "/usr/local/bin/code \"%s\""
     ;; AppleScipt keystroke and key code table: https://eastmanreference.com/complete-list-of-applescript-key-codes
@@ -107,95 +109,68 @@
         ; map caps_lock to control
         [:##caps_lock {:key :right_control} nil {:alone :escape}]
         ; super key
-        [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
-        ; simultaneously =⌫ to delete backward
-        ;; [[:equal_sign :delete_or_backspace] :delete_forward]
+        ; [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
+        [:escape :!Ctab]
+        ; [:##right_shift :right_shift nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
+        [:##right_command :right_command nil {:alone [:openApp "iTerm"]}]
+        [:##right_shift :right_shift nil {:alone [:openApp "Obsidian"]}]
+        [:##right_option :right_option nil {:alone [:openApp "Google Chrome"]}]
       ]
     }
-    {:des "basic"
+    {:des "Applications"
       :rules [
-        [:!Ch :!Cm :Hammerspoon]  ;; Hammerspoon can't be hinded by cmd-h
-        ; [:!Ch [:hs "hs.window.focusedWindow():application():hide()"] :iTerm]
+        ;; Applications
+        [:!Tn [:openApp "Notion"]]
+        [:!Ti [:openApp "Discord"]]
+        [:!To [:openApp "WeChat"]]
+        [:!Tperiod [:openApp "Things3"]]
+        [:!Tt [:openApp "Telegram"]]
+        [:!Tv [:openApp "Visual Studio Code"]]
+        [:!Tm [:openApp "Music"]]
+        [:!Te [:openApp "Finder"]]
+        [:!Tbackslash [:openApp "Bitwarden"]]
+        [:!Tf [:openApp "flomo"]]
+        [:!Tslash :!COSf12]
+        [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
+        [:!Ty [:openApp "网易有道词典"]]
       ]
     }
-    {:des "fn"
+    {:des "left control"
       :rules [
-        ; ctrl 1/2
+        [:!T0 [:hs "spoon.Win.activate()"]] ;; Window management
+        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Alfred)
+        [:!Tspacebar :!CTOSspacebar]  ;; Alfred
+        [:!Treturn_or_enter :!!5 :browser]
+        [:!Treturn_or_enter [:!TOC5]] ;; add Things3 task
+        [:!Tcomma [:hs "spoon.Config:activate()"]]  ;; Config
+        [:!Tb [:hs "spoon.Bookmark:activate()"]]  ;; Bookmark
+        ;; 1/2
         [:!Ta [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
         [:!Ts [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
         [:!Td [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
         [:!Tw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
-        [:!TSa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
-        [:!TSs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
-        [:!TSd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
-        [:!TSw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
+        [:!TCa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
+        [:!TCd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
         ; center
-        [:!Tf [:hs "spoon.Win.toggleFullScreen()"]]
         [:!Tg [:hs "spoon.Win.moveAndResize('fullscreen')"]]
         [:!TCg [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
-        [:!TSg [:hs "spoon.Win.resizeWindow({ x = 0.2, y = 0, w = 0.6, h = 1 })"]]
         ;; desktop navigation
-        [:!Ti :!CTOf7] ;; Previous Space
-        [:!To :!CTOf9] ;; Next Space
-        [:!Tu :mission_control] ;; Mission Control
-        [:!Tup_arrow :!!f11] ;; Show Desktop
-        [:!Tdown_arrow :!!f2] ;; Application Windows
-        ;; previous / next tabs
+        [:!Tsemicolon :!CTOf7] ;; Previous Space
+        [:!Tquote :!CTOf9] ;; Next Space
         ;; move window to space and focus
-        [:!TSi [:hs "MoveFocusedWindowToSpace('prev', true)"]]
-        [:!TSo [:hs "MoveFocusedWindowToSpace('next', true)"]]
-        ;; previous / next tabs
-        [:!Thyphen :!CSopen_bracket :iTerm]
-        [:!Tequal_sign :!CSclose_bracket :iTerm]
-        [:!Thyphen :!TStab :Finder]
-        [:!Tequal_sign :!Ttab :Finder]
-        [:!Thyphen :!CSopen_bracket :VSCode]
-        [:!Tequal_sign :!CSclose_bracket :VSCode]
-        [:!Thyphen :!CSopen_bracket :intelliJ]
-        [:!Tequal_sign :!CSclose_bracket :intelliJ]
-        [:!Thyphen :up_arrow :WeChat]
-        [:!Tequal_sign :down_arrow :WeChat]
-        [:!Thyphen :!Oup_arrow :Discord]
-        [:!Tequal_sign :!Odown_arrow :Discord]
-        [:!Thyphen :!Oup_arrow :Telegram]
-        [:!Tequal_sign :!Odown_arrow :Telegram]
-        [:!Thyphen :!TStab]
-        [:!Tequal_sign :!Ttab]
-        ;; arrow key
-        ; [:!Th [:left_arrow]]
-        ; [:!Tj [:down_arrow]]
-        ; [:!Tk [:up_arrow]]
-        ; [:!Tl [:right_arrow]]
-        ; [:!TCh [:!Cleft_arrow]]
-        ; [:!TCj [:!Cdown_arrow]]
-        ; [:!TCk [:!Cup_arrow]]
-        ; [:!TCl [:!Cright_arrow]]
-        ; [:!TSh [:!Sleft_arrow]]
-        ; [:!TSj [:!Sdown_arrow]]
-        ; [:!TSk [:!Sup_arrow]]
-        ; [:!TSl [:!Sright_arrow]]
-        ; [:!TOh [:!Oleft_arrow]]
-        ; [:!TOj [:!Odown_arrow]]
-        ; [:!TOk [:!Oup_arrow]]
-        ; [:!TOl [:!Oright_arrow]]
-        ;; home and end
-        ; [:!Topen_bracket [:home]]
-        ; [:!Tclose_bracket [:end]]
-        ; [:!TSTopen_bracket [:!Shome]]
-        ; [:!TSTclose_bracket [:!Send]]
-        ;; navigate applications
-        [:!Tn [:!Ctab]]
-        [:!TCn [:!CStab]]
+        [:!TSsemicolon [:hs "MoveFocusedWindowToSpace('prev', true)"]]
+        [:!TSquote [:hs "MoveFocusedWindowToSpace('next', true)"]]
+        [:!Tup_arrow :mission_control] ;; Mission Control
+        ; [:!Tup_arrow :!!f11] ;; Show Desktop
+        [:!Tdown_arrow :!!f2] ;; Application Windows
         ;; move window to recent display and focus
-        [:!Tdelete_or_backspace [:hs "spoon.Win.moveToScreen('next')"]]
-        [:!TSdelete_or_backspace [:hs "ShowFocusedWindowInfo()"]]
-        ; Misc
-        [:!Tcomma :!Tf3]  ;; focus on docker
-        [:!TScomma :!CTSf2]  ;; hide/show Dock
-        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Alfred)
-        [:!Tsemicolon :!CTS4]  ;; Look word up in Eudic dictionary
-        [:!TSsemicolon :!Ch :Youdao]
-        [:!TSsemicolon [:open "/Applications/网易有道词典.app"]]
+        [:!Ttab [:hs "spoon.Win.moveToScreen('next')"]]
+        ; [:!TSdelete_or_backspace [:hs "ShowFocusedWindowInfo()"]]
+        ; Docker
+        [:!Tp :!Tf3]  ;; focus on docker
+        [:!TSp :!CTSf2]  ;; hide/show Dock
         ;; act like fn + f1..f12
         [:!Tf1 :display_brightness_decrement]
         [:!Tf2 :display_brightness_increment]
@@ -207,89 +182,80 @@
         [:!Tf10 :mute]
         [:!Tf11 :volume_decrement]
         [:!Tf12 :volume_increment]
-        ;; Applications
-        [:!Tspacebar :!CTOSspacebar]  ;; Alfred
-        [:!Treturn_or_enter [:hs "hs.window.focusedWindow():application():hide()"] :iTerm]
-        [:!Treturn_or_enter [:open "/Applications/iTerm.app"]] ;; iTerm2
-        [:!Tquote :!Ch :browser]
-        [:!Tquote [:open "/Applications/Google Chrome.app"]]
-        [:!Tm :!Ch :Music]
-        [:!Tm [:open "/System/Applications/Music.app/"]]
-        [:!Tt :!!5 :browser] ;; add Things3 task
-        [:!Tt [:!TOC5]]
-        [:!TSt :!Ch :Things3]
-        [:!TSt [:open "/Applications/Things3.app"]]
-        [:!Tv :!Ch :VSCode]
-        [:!Tv [:open "/Applications/Visual Studio Code.app"]]
-        [:!Tbackslash :!Ch :Obsidian]
-        [:!Tbackslash [:open "/Applications/Obsidian.app"]]
-        [:!Te :!Ch :Finder]
-        [:!Te [:open "/System/Library/CoreServices/Finder.app"]]
-        [:!Tx :!Ch :WeChat]
-        [:!Tx [:open "/Applications/WeChat.app"]]
-        [:!Tc :!Ch :Discord]
-        [:!Tc [:open "/Applications/Discord.app"]]
-        [:!Tz :!Ch :Telegram]
-        [:!Tz [:open "/Applications/Telegram.app"]]
-        [:!Tp :!Ch :PDFExpert]
-        [:!Tp [:safeOpen "com.readdle.PDFExpert-Mac"]]
-        [:!Tb :!Ch :Bitwarden]
-        [:!Tb [:open "/Applications/Bitwarden.app"]]
-        [:!Tq :!Ch :Flomo]
-        [:!Tq [:open "/Users/fjchen/Applications/Chrome Apps.localized/flomo.app"]]
-      ]
-    }
-    {:des "hyperkey (QWER)"
-      :rules [
+        ;; arrow key
+        [:!Th [:left_arrow]]
+        [:!Tj [:down_arrow]]
+        [:!Tk [:up_arrow]]
+        [:!Tl [:right_arrow]]
+        [:!TSh [:!Sleft_arrow]]
+        [:!TSj [:!Sdown_arrow]]
+        [:!TSk [:!Sup_arrow]]
+        [:!TSl [:!Sright_arrow]]
+        [:!TOh [:!Oleft_arrow]]
+        [:!TOj [:!Odown_arrow]]
+        [:!TOk [:!Oup_arrow]]
+        [:!TOl [:!Oright_arrow]]
+        [:!TCh [:!Cleft_arrow]]
+        [:!TCj [:!Cdown_arrow]]
+        [:!TCk [:!Cup_arrow]]
+        [:!TCl [:!Cright_arrow]]
+        [:!TCSh [:!CSleft_arrow]]
+        [:!TCSj [:!CSdown_arrow]]
+        [:!TCSk [:!CSup_arrow]]
+        [:!TCSl [:!CSright_arrow]]
+        ;; home / end
+        [:!Thyphen [:home]]
+        [:!Tequal_sign  [:end]]
+        [:!TShyphen [:!Shome]]
+        [:!TSequal_sign  [:!Send]]
+        ;; menu
+        [:!Tdelete_or_backspace [:hs "RightClickFocusedWindow()"]]
       ]
     }
     {:des "spacebar mode"
       :rules [:spacebar-mode
-        [:q [:hs "spoon.Win.activate()"]] ;; Window management
-        [:e [:hs "spoon.Config:activate()"]] ;; Window management
-        [:b [:hs "spoon.Bookmark:activate()"]] ;; Window management
-        ;; arrow key
-        [:h [:left_arrow]]
-        [:j [:down_arrow]]
-        [:k [:up_arrow]]
-        [:l [:right_arrow]]
-        [:!Ch [:!Cleft_arrow]]
-        [:!Cj [:!Cdown_arrow]]
-        [:!Ck [:!Cup_arrow]]
-        [:!Cl [:!Cright_arrow]]
-        [:!Sh [:!Sleft_arrow]]
-        [:!Sj [:!Sdown_arrow]]
-        [:!Sk [:!Sup_arrow]]
-        [:!Sl [:!Sright_arrow]]
-        [:!Oh [:!Oleft_arrow]]
-        [:!Oj [:!Odown_arrow]]
-        [:!Ok [:!Oup_arrow]]
-        [:!Ol [:!Oright_arrow]]
+        ;; previous / next tabs
+        [:i :!CSopen_bracket :iTerm]
+        [:o :!CSclose_bracket :iTerm]
+        [:i :!TStab :Finder]
+        [:o :!Ttab :Finder]
+        [:i :!CSopen_bracket :VSCode]
+        [:o :!CSclose_bracket :VSCode]
+        [:i :!CSopen_bracket :intelliJ]
+        [:o :!CSclose_bracket :intelliJ]
+        [:i :up_arrow :WeChat]
+        [:o :down_arrow :WeChat]
+        [:i :!Oup_arrow :Discord]
+        [:o :!Odown_arrow :Discord]
+        [:i :!Oup_arrow :Telegram]
+        [:o :!Odown_arrow :Telegram]
+        [:i :!TStab]
+        [:o :!Ttab]
         ;; home and end
-        [:hyphen [:home]]
-        [:equal_sign  [:end]]
-        [:!Shyphen [:!Shome]]
-        [:!Sequal_sign  [:!Send]]
+        ; [:hyphen [:home]]
+        ; [:equal_sign  [:end]]
+        ; [:!Shyphen [:!Shome]]
+        ; [:!Sequal_sign  [:!Send]]
         ;; mouse move
-        [:w {:mkey {:y -1600 :speed 1.20}}]
-        [:s {:mkey {:y 1600 :speed 1.20}}]
-        [:a {:mkey {:x -1600 :speed 1.20}}]
-        [:d {:mkey {:x 1600 :speed 1.20}}]
-        [:!Sw {:mkey {:y -3200 :speed 1.10}}]
-        [:!Ss {:mkey {:y 3200 :speed 1.10}}]
-        [:!Sa {:mkey {:x -3200 :speed 1.10}}]
-        [:!Sd {:mkey {:x 3200 :speed 1.10}}]
-        ; [:!Tw {:mkey {:y -800 :speed 1.20}}]
-        ; [:!Ts {:mkey {:y 800 :speed 1.20}}]
-        ; [:!Ta {:mkey {:x -800 :speed 1.20}}]
-        ; [:!Td {:mkey {:x 800 :speed 1.20}}]
+        [:k {:mkey {:y -1600 :speed 1.20}}]
+        [:j {:mkey {:y 1600 :speed 1.20}}]
+        [:h {:mkey {:x -1600 :speed 1.20}}]
+        [:l {:mkey {:x 1600 :speed 1.20}}]
+        [:!Sk {:mkey {:y -3200 :speed 1.10}}]
+        [:!Sj {:mkey {:y 3200 :speed 1.10}}]
+        [:!Sh {:mkey {:x -3200 :speed 1.10}}]
+        [:!Sl {:mkey {:x 3200 :speed 1.10}}]
+        [:!Ck {:mkey {:y -800 :speed 1.20}}]
+        [:!Cj {:mkey {:y 800 :speed 1.20}}]
+        [:!Ch {:mkey {:x -800 :speed 1.20}}]
+        [:!Cl {:mkey {:x 800 :speed 1.20}}]
         ;; scroll
-        [:i {:mkey {:vwheel -32 :speed 1.30}}]
-        [:o {:mkey {:vwheel 32 :speed 1.30}}]
-        [:!Si {:mkey {:vwheel -64 :speed 1.30}}]
-        [:!So {:mkey {:vwheel 64 :speed 1.30}}]
-        [:!Oi {:mkey {:vwheel -16 :speed 1.30}}]
-        [:!Oo {:mkey {:vwheel 16 :speed 1.30}}]
+        [:p {:mkey {:vwheel -32 :speed 1.30}}]
+        [:n {:mkey {:vwheel 32 :speed 1.30}}]
+        [:!Sp {:mkey {:vwheel -64 :speed 1.30}}]
+        [:!Sn {:mkey {:vwheel 64 :speed 1.30}}]
+        [:!Cp {:mkey {:vwheel -20 :speed 1.30}}]
+        [:!Cn {:mkey {:vwheel 20 :speed 1.30}}]
         ;; left click
         [:return_or_enter :button1]
         [:!Creturn_or_enter {:pkey :button1 :modi :left_command}]

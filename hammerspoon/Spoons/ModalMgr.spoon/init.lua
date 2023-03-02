@@ -205,18 +205,20 @@ end
 function obj:newModal(name, color)
     local M = {}
     M.name = name
+    M.color = color
     M.modal = obj:new(name)
     M.activate = function()
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
-        spoon.ModalMgr:activate({ M.name }, color)
+        spoon.ModalMgr:activate({ M.name }, M.color)
     end
     M.deactivate = function()
         spoon.ModalMgr:deactivate({ M.name })
     end
     M.modal
-        :bind("", "escape", "cheatsheet_ignore", M.deactivate)
+        :bind("", "escape", "cheatsheet_ignore", function() M.deactivate() end)
         :bind("shift", "/", "cheatsheet_ignore", function() spoon.ModalMgr:toggleCheatsheet() end)
+        :bind("", "/", "cheatsheet_ignore", function() spoon.ModalMgr:toggleCheatsheet() end)
     return M
 end
 

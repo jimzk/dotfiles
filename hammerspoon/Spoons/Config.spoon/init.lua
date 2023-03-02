@@ -22,6 +22,10 @@ M.modal
         M.deactivate()
         hs.reload()
     end)
+    :bind("", "C", "Edit cheatsheet", function()
+        M.deactivate()
+        hs.execute("/usr/local/bin/code ~/.dotfiles/cheatsheets/navi")
+    end)
 M.modal
     :bind("", "1", "Doc: goku", function()
         M.deactivate()
