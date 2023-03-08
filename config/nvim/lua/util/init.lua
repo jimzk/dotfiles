@@ -83,6 +83,12 @@ function M.telescope(builtin, opts)
       local dir = opts.cwd or vim.fn.getcwd()
       dir = vim.fs.normalize(dir):gsub(vim.fn.getenv("HOME"), "~")
       opts.results_title = "Path: " .. dir
+    elseif builtin == "live_grep" then
+      opts.wrap_results = false
+      opts.layout_strategy = "horizontal"
+      opts.layout_config = opts.layout_config or {}
+      opts.layout_config.horizontal = opts.layout_config.horizontal or {}
+      opts.layout_config.horizontal.preview_width = 0.7
     end
 
     -- if builtin == "files" then

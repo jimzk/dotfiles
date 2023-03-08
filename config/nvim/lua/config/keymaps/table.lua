@@ -18,6 +18,8 @@ wk.register({
   u = { "lowercase", mode = { "v", "o" } },
   U = { "uppercase", mode = { "v", "o" } },
   ["'"] = "go mark without changing jumplist",
+  [";"] = "go older position in change list",
+  [","] = "go newer position in change list",
   ["<lt>"] = { "display output of last command", mode = "n" },
   ["<C-g>"] = { "display cursor position info", mode = "n" },
 }, opts)
@@ -129,11 +131,9 @@ wk.register({
     ["7"] = { "CTRL-W f split file under cursor" },
     ["8"] = { "CTRL-W ] split tag under cursor" },
     ["9"] = { "CTRL-] go tag" },
-
     ["a"] = { "CTRL-W } open tag in preview window" },
     ["b"] = { "CTRL-W P go preview window" },
     ["c"] = { "CTRL-W z close preview window" },
-
     ["A"] = { ":h :put documentation for :put" },
   },
   ["0"] = {

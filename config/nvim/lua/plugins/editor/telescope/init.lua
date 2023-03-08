@@ -7,16 +7,16 @@ local M = {
   event = "CursorHold", -- BufReadPre, VimEnter
   keys = {
     { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-    { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },
+    -- C-space to fuzzy refind
+    -- See: https://www.reddit.com/r/neovim/comments/121otka/a_nice_telescope_surprise/
+    { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+    { "<leader><C-/>", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
     { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-
     { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-    { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
     { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
     { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
     { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
     { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-    { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
     { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
     { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
     { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
@@ -71,7 +71,11 @@ end
 
 M.opts = function()
   local actions = require("telescope.actions")
-
+  actions.delete_buffer_and_select_default = function(prompt_bufnr)
+    actions.select_default(prompt_bufnr)
+    actions.center(prompt_bufnr)
+    vim.cmd [[bd#]]
+  end
   local opts = {}
   opts.defaults = {
     sorting_strategy = "ascending", -- cursor starts from top result
@@ -92,9 +96,9 @@ M.opts = function()
     prompt_prefix = " ",
     selection_caret = " ",
     path_display = {
-      truncate = true, -- truncate long file name
+      truncate = true,            -- truncate long file name
     },
-    results_title = false, -- hide results title
+    results_title = false,        -- hide results title
     dynamic_preview_title = true, -- Use dynamic preview title if avaliable
     file_ignore_patterns = { "node_modules", "/dist" },
     wrap_results = true,
@@ -102,6 +106,7 @@ M.opts = function()
     mappings = {
       i = {
         ["<CR>"] = actions.select_default + actions.center,
+        ["<C-CR>"] = actions.delete_buffer_and_select_default,
         ["<Esc>"] = actions.close, -- disable normal mode
         ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
         ["<C-M-p>"] = actions.results_scrolling_up,

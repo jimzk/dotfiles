@@ -1,6 +1,6 @@
 return {
   "kylechui/nvim-surround",
-  event = "BufReadPost",
+  event = "VeryLazy",
   -- keys = { "cs", "ds", "ys", { "Y", mode = { "x" } } },
   --
   -- :h nvim-surround.config.keymaps
@@ -12,10 +12,10 @@ return {
       insert = false,
       insert_line = false,
       -- add surrounds by s
-      normal = "s",
-      normal_cur = "ss",
-      normal_line = "S",
-      normal_cur_line = "SS",
+      normal = "ys",
+      normal_cur = "yss",
+      normal_line = "yS",
+      normal_cur_line = "ySS",
       visual = "s",
       visual_line = "S",
     },

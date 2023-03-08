@@ -19,7 +19,7 @@ local get_default_opts = function()
     },
     on_attach = function(client, bufnr)
       -- Disable highlight from lsp
-      client.server_capabilities.semanticTokensProvider = {}
+      -- client.server_capabilities.semanticTokensProvider = {}
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
     end,
@@ -29,12 +29,12 @@ end
 -- Lsp list
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
-  "lua_ls", -- Lua
+  "lua_ls",        -- Lua
   "rust_analyzer", -- Rust
-  "bashls", -- Bash
-  "taplo", -- TOML
-  "jsonls", -- JSON
-  "tsserver", -- JavaScript, TypeScript
+  "bashls",        -- Bash
+  "taplo",         -- TOML
+  "jsonls",        -- JSON
+  "tsserver",      -- JavaScript, TypeScript
 }
 
 local servers_opts = {}

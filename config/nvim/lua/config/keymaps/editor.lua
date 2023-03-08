@@ -142,10 +142,24 @@ mappings = {
 }
 set_mapppings(mappings, { prefix = "<leader>h" })
 
-map("n", "<leader>go", [[<cmd>GBrowse!<cr>]], "[G] copy GitHub URL for file")
-map("n", "<leader>gO", [[<cmd>GBrowse<cr>]], "[G] open GitHub URL for file")
-map("x", "<leader>go", [["vy<cmd>'<,'>GBrowse!<cr>]], "[G] copy GitHub URL for file")
-map("x", "<leader>gO", [["vy<cmd>'<,'>GBrowse<cr>]], "[G] open GitHub URL for range")
+map("n", "<leader>go", function()
+  vim.cmd [[silent! GBrowse!]]
+  local url = vim.fn.getreg("+")
+  local line, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  url = url .. [[#L]] .. tonumber(line)
+  vim.fn.setreg("+", url)
+end, "[G] copy file's GitHub URL")
+map("n", "<leader>gO", function()
+  local clipboard = vim.fn.getreg("+")
+  vim.cmd [[silent! GBrowse!]]
+  local url = vim.fn.getreg("+")
+  local line, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  url = url .. [[\#L]] .. tonumber(line)
+  vim.cmd([[silent! !open "]] .. url .. [["]])
+  vim.fn.setreg("+", clipboard)
+end, "[G] open file's GitHub URL")
+map("x", "<leader>go", [["vy<cmd>'<,'>GBrowse!<cr>]], "[G] copy file's ranged GitHub URL")
+map("x", "<leader>gO", [["vy<cmd>'<,'>GBrowse<cr>]], "[G] open file's ranged GitHub URL")
 
 mappings = {
   -- name = "+Git",
@@ -173,7 +187,17 @@ mappings = {
   --   vim.cmd [[DiffviewToggleFiles]]
   --   vim.cmd [[wincmd l]]
   -- end, "current file diff" },
-  D = { "<cmd>DiffviewOpen<cr><cmd>wincmd l<cr><cmd>wincmd l<cr>", "all files diff (diffview)" },
+  -- https://www.reddit.com/r/neovim/comments/11ls23z/comment/jbe7uzl
+  D = { function()
+    local views = require("diffview.lib").views
+    if #views == 0 then
+      vim.cmd [[DiffviewOpen]]
+      vim.cmd [[wincmd l]]
+      vim.cmd [[wincmd l]]
+    else
+      vim.cmd("DiffviewClose")
+    end
+  end, "all files diff (diffview)" },
   -- review PR locally
   p = { function()
     vim.ui.input(

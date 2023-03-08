@@ -25,36 +25,46 @@ M.opts = function()
         winbar = {},
       },
     },
-    tabline = {
-      lualine_b = {
-        {
-          "tabs",
-          max_length = vim.o.columns,
-          mode = 2,
-          fmt = function(name, context)
-            local buflist = vim.fn.tabpagebuflist(context.tabnr)
-            local winnr = vim.fn.tabpagewinnr(context.tabnr)
-            local bufnr = buflist[winnr]
-            if vim.fn.getbufvar(bufnr, "&mod") == 1 then
-              name = name .. " [+] "
-            end
-            if vim.fn.getbufvar(bufnr, "&readonly") == 1 then
-              name = name .. " [-]"
-            end
-            return name
-          end,
-        },
-      },
-      lualine_x = {
-        { -- show session name
-          function() return require("possession.session").session_name end,
-          icon = { "", align = "left" },
-          cond = function() return require("possession.session").session_name ~= nil end,
-          padding = { left = 0, right = 1 },
-          separator = "|",
-        },
-      },
-    },
+    -- tabline = {
+    --   lualine_b = {
+    --     {
+    --       "buffers",
+    --       max_length = vim.o.columns * 8 / 10,
+    --       filetype_names = {
+    --         TelescopePrompt = "Telescope",
+    --         dashboard = "Dashboard",
+    --         packer = "Packer",
+    --         fzf = "FZF",
+    --         alpha = "Alpha",
+    --         ["neo-tree"] = "NeoTree",
+    --       },
+    --       component_separators = { left = "", right = "|" },
+    --       section_separators = { left = "", right = "" },
+    --     },
+    --   },
+    --   lualine_z = {
+    --     {
+    --       "tabs",
+    --       max_length = vim.o.columns,
+    --       mode = 0,
+    --       component_separators = { left = "", right = "" },
+    --       section_separators = { left = "", right = "" },
+    --       padding = { left = 1, right = 1 },
+    --       -- fmt = function(name, context)
+    --       --   local buflist = vim.fn.tabpagebuflist(context.tabnr)
+    --       --   local winnr = vim.fn.tabpagewinnr(context.tabnr)
+    --       --   local bufnr = buflist[winnr]
+    --       --   if vim.fn.getbufvar(bufnr, "&mod") == 1 then
+    --       --     name = name .. " [+] "
+    --       --   end
+    --       --   if vim.fn.getbufvar(bufnr, "&readonly") == 1 then
+    --       --     name = name .. " [-]"
+    --       --   end
+    --       --   return name
+    --       -- end,
+    --     },
+    --   },
+    -- },
     sections = {
       lualine_a = { "mode" },
       lualine_b = { "branch" },
@@ -86,7 +96,8 @@ M.opts = function()
           "overseer",
           label = "",
         },
-        { -- Show visual line count (https://www.reddit.com/r/neovim/comments/1130kh5/comment/j8navg6)
+        {
+          -- Show visual line count (https://www.reddit.com/r/neovim/comments/1130kh5/comment/j8navg6)
           function()
             local is_visual_mode = vim.fn.mode():find("[Vv]")
             if not is_visual_mode then return "" end
@@ -99,12 +110,21 @@ M.opts = function()
           icon = { "", align = "left" },
           padding = { left = 0, right = 0 },
         },
-        { -- List active lsp
+        {
+          -- show session name
+          function() return require("possession.session").session_name end,
+          icon = { "", align = "left" },
+          cond = function() return require("possession.session").session_name ~= nil end,
+          padding = { left = 0, right = 0 },
+          separator = "",
+        },
+        {
+          -- List active lsp
           function()
             local clients = {}
             local bufnr = vim.api.nvim_get_current_buf()
             for _, client in ipairs(vim.lsp.get_active_clients()) do
-              if client.name ~= "null-ls" and client.name ~= "copilot" then
+              if client.name ~= "null-ls" then
                 if client.attached_buffers[bufnr] then
                   clients[client.name] = true
                 end
@@ -121,6 +141,7 @@ M.opts = function()
           end,
           icon = { "", align = "left" },
           padding = { left = 1, right = 1 },
+          separator = "",
         },
       },
       lualine_y = {

@@ -183,7 +183,6 @@ local get_keymaps = function()
     { "n", "<C-g>", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<C-S-g>", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<leader>gd", "<Nop>", { desc = "diffview_ignore" } },
-    { "n", "<leader>gD", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<leader>gh", "<Nop>", { desc = "diffview_ignore" } },
   }
   for _, v in pairs(keymaps) do

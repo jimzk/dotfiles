@@ -43,10 +43,10 @@ M.opts = {
 M.config = function(_, opts)
   require("nvim-treesitter.configs").setup(opts)
   -- map init_selection by manual for position mark
-  map("n", incremental_selection_key, function()
-    vim.cmd([[normal! mv]]) -- init range selection
-    require("nvim-treesitter.incremental_selection").init_selection()
-  end, "incremental selection")
+  -- map("n", incremental_selection_key, function()
+  --   vim.cmd([[normal! mv]]) -- init range selection
+  --   require("nvim-treesitter.incremental_selection").init_selection()
+  -- end, "incremental selection")
 end
 
 return M

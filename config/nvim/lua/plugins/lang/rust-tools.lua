@@ -29,8 +29,8 @@ return {
       map({ "n", "v" }, "<leader>ck", rt.runnables.runnables, "[RS] run or test code", opts)
       map("n", "<leader>cm", rt.open_cargo_toml.open_cargo_toml, "[RS] open cargo.toml", opts)
       map("n", "<leader>cp", rt.parent_module.parent_module, "[RS] go parent module", opts)
-      map("n", "<C-M-j>", "<cmd>RustMoveItemDown<cr>", "[RS] move item down", opts)
-      map("n", "<C-M-k>", "<cmd>RustMoveItemUp<cr>", "[RS] move item up", opts)
+      map("n", "<M-down>", "<cmd>RustMoveItemDown<cr>", "[RS] move item down", opts)
+      map("n", "<M-up>", "<cmd>RustMoveItemUp<cr>", "[RS] move item up", opts)
       map("n", "<leader>c.", function()
         vim.cmd [[silent !open "https://rust-analyzer.github.io/manual.html\#magic-completions"]]
         vim.cmd [[silent !open "https://rust-analyzer.github.io/manual.html\#format-string-completion"]]

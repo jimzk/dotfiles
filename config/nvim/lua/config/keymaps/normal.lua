@@ -5,9 +5,13 @@ local mappings = {
   -- Alternative buffer
   ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
   ["<leader>~"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
-  -- Tab
-  ["-"] = { "gT", "prev tab" },
-  ["="] = { "gt", "next tab" },
+  -- Buffer and Tab
+  ["-"] = { "<cmd>bp<cr>", "prev buffer" },
+  ["="] = { "<cmd>bn<cr>", "next buffer" },
+  ["_"] = { "<cmd>vertical sbp<cr>", "prev buffer and split" },
+  ["+"] = { "<cmd>vertical sbn<cr>", "next buffer and split" },
+  ["<C-->"] = { "gT", "prev tab" },
+  ["<C-=>"] = { "gt", "next tab" },
   -- Redo
   ["U"] = { "<C-r>", ignored },
   -- Save file
@@ -19,7 +23,7 @@ local mappings = {
   ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
   ["<BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
-  ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
+  -- ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
   ["<C-BS>"] = { "<cmd>tabclose<cr>", "close tab" },
   -- https://www.reddit.com/r/neovim/comments/114z9ua/comment/j904vaa/
   ["<S-BS>"] = { function()
@@ -68,7 +72,7 @@ local mappings = {
   --   local h = (width + 8 >= vim.o.columns) and "horizontal " or ""
   --   vim.cmd(h .. "wincmd |")
   -- end, "max win width" },
-  ["<C-=>"] = { function()
+  ["<C-\\>"] = { function()
     if vim.g.full_window then
       vim.cmd [[wincmd =]]
     else
@@ -93,3 +97,14 @@ for key, mapping in pairs(mappings) do
   local desc = mapping[2]
   map(mode, lhs, rhs, desc, opts)
 end
+
+-- https://luyuhuang.tech/2023/03/21/nvim.html#跳转到行开头
+local function home()
+  local head = (vim.api.nvim_get_current_line():find("[^%s]") or 1) - 1
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  cursor[2] = cursor[2] == head and 0 or head
+  vim.api.nvim_win_set_cursor(0, cursor)
+end
+
+vim.keymap.set({ "i", "n" }, "<Home>", home)
+vim.keymap.set("n", "0", home)

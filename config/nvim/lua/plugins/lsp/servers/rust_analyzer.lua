@@ -60,6 +60,43 @@ return {
   -- https://rust-analyzer.github.io/manual.html
   settings = {
     ["rust-analyzer"] = {
+      inlayHints = {
+        maxLength = 100,
+        bindingModeHints = {
+          enable = true,
+        },
+        -- closureReturnTypeHints = {
+        --   enable = "always",
+        -- },
+        -- discriminantHints = {
+        --   enable = "always",
+        -- },
+        -- expressionAdjustmentHints = {
+        --   enable = "always",
+        -- },
+        -- lifetimeElisionHints = {
+        --   enable = "always",
+        -- },
+        reborrowHints = {
+          enable = "always",
+        },
+      },
+      hover = {
+        actions = {
+          references = {
+            enable = true
+          }
+        }
+      },
+      procMacro = {
+        enable = true
+      },
+      diagnostics = {
+        disabled = {
+          -- https://www.reddit.com/r/rust/comments/vj2ghz/comment/idhpunt/
+          "unresolved-proc-macro",
+        }
+      },
       completion = {
         postfix = {
           -- Enable postfix like `dbg`, `if`, `not`, etc.

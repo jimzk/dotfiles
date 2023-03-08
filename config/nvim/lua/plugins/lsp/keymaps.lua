@@ -39,7 +39,8 @@ M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
   map("n", "[x", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
   map("n", "]x", function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic", opts)
-  map("n", "gx", function() vim.diagnostic.open_float { height = 10, width = 60 } end, "[C] peek diagnostic", opts)
+  map("n", "gx", function() vim.diagnostic.open_float { focusable = true, focus = true } end,
+    "[C] peek diagnostic", opts)
   map("n", "gX", "<cmd>Trouble document_diagnostics<cr>", "[C] list diagnostics in buffer", opts)
   map("n", "g<C-x>", "<cmd>Trouble workspace_diagnostics<cr>", "[C] list diagnostics in workspace", opts)
 
