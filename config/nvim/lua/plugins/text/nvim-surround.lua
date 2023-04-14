@@ -17,7 +17,7 @@ return {
       normal_line = "yS",
       normal_cur_line = "ySS",
       visual = "s",
-      visual_line = "S",
+      visual_line = "gs",
     },
     surrounds = {
       o = {

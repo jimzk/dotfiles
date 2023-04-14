@@ -5,21 +5,31 @@ local M = {
 }
 
 M.keys = {
-  { "\\", function()
-    local focusable_windows_on_tabpage = vim.tbl_filter(
-      function(win) return vim.api.nvim_win_get_config(win).focusable end,
-      vim.api.nvim_tabpage_list_wins(0)
-    )
-    require("leap").leap { target_windows = focusable_windows_on_tabpage }
-  end, mode = { "n" }, desc = "leap cross window" },
-  { "\\", function()
-    local current_window = vim.fn.win_getid()
-    require("leap").leap {
-      target_windows = { current_window, },
-      -- NOTE: forward excludes the match but backward won't for operation
-      inclusive_op = false,
-    }
-  end, mode = { "x", "o" }, desc = "leap current window" },
+  {
+    ";",
+    function()
+      local focusable_windows_on_tabpage = vim.tbl_filter(
+        function(win) return vim.api.nvim_win_get_config(win).focusable end,
+        vim.api.nvim_tabpage_list_wins(0)
+      )
+      require("leap").leap { target_windows = focusable_windows_on_tabpage }
+    end,
+    mode = { "n" },
+    desc = "leap cross window"
+  },
+  {
+    ";",
+    function()
+      local current_window = vim.fn.win_getid()
+      require("leap").leap {
+        target_windows = { current_window, },
+        -- NOTE: forward excludes the match but backward won't for operation
+        inclusive_op = false,
+      }
+    end,
+    mode = { "x", "o" },
+    desc = "leap current window"
+  },
   -- { "s", "<Plug>(leap-forward-to)", mode = { "n", "x" } },
   -- { "S", "<Plug>(leap-backward-to)", mode = { "n", "x" } },
   -- { "s", "<Plug>(leap-forward-till)", mode = { "o" } },
