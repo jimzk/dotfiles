@@ -15,7 +15,6 @@ local mappings = {
   -- Redo
   ["U"] = { "<C-r>", ignored },
   -- Save file
-  ["<C-s>"] = { "<cmd>up<cr>", "save", mode = { "i", "v", "n", "s" } },
   ["<leader>w"] = { "<cmd>up<cr>", "save" },
   ["<leader>W"] = { "<cmd>bufdo up<cr>", "save all" },
   -- Quit
@@ -52,10 +51,10 @@ local mappings = {
   ["<C-k>"] = { "<cmd>wincmd k<cr>", ignored },
   ["<C-l>"] = { "<cmd>wincmd l<cr>", ignored },
   -- Move window
-  ["<C-S-h>"] = { "<cmd>wincmd H<cr>", ignored },
-  ["<C-S-j>"] = { "<cmd>wincmd J<cr>", ignored },
-  ["<C-S-k>"] = { "<cmd>wincmd K<cr>", ignored },
-  ["<C-S-l>"] = { "<cmd>wincmd L<cr>", ignored },
+  ["<C-M-left>"] = { "<cmd>wincmd H<cr>", ignored },
+  ["<C-M-down>"] = { "<cmd>wincmd J<cr>", ignored },
+  ["<C-M-up>"] = { "<cmd>wincmd K<cr>", ignored },
+  ["<C-M-right>"] = { "<cmd>wincmd L<cr>", ignored },
   -- Resize window
   ["<C-M-k>"] = { "<cmd>resize +4<cr>", "increase window height" },
   ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },

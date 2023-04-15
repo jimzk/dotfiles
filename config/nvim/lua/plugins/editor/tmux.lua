@@ -1,5 +1,8 @@
 return {
   "aserowy/tmux.nvim",
+  -- Know issue in Tmux
+  --   - <C-S-*> works the same as <C-*>
+  --   - <C-i> and <Tab>, <C-[> and <Esc> can not be distinguished.
   event = "VeryLazy",
   opts = {
     navigation = {
@@ -18,7 +21,6 @@ return {
       map("n", "<C-j>", tmux.move_bottom)
       map("n", "<C-k>", tmux.move_top)
       map("n", "<C-l>", tmux.move_right)
-      -- NOTE: <C-S-*> can't work in tmux
       map("n", "<C-M-h>", tmux.resize_left)
       map("n", "<C-M-j>", tmux.resize_bottom)
       map("n", "<C-M-k>", tmux.resize_top)

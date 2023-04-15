@@ -105,7 +105,7 @@ local get_keymaps = function()
       { "n", "U", actions.restore_entry, { desc = "Revert to verseion on left side" } },
       { "n", "l", actions.open_commit_log, { desc = "Open commit details" } },
 
-      { "n", "<C-S-space>", actions.goto_file, { desc = "Close diffview and open file in split" } },
+      { "n", "<C-M-space>", actions.goto_file, { desc = "Close diffview and open file in split" } },
       { "n", "<C-space>", actions.goto_file_edit, { desc = "Close diffview and open file" } },
 
       { "n", "i", actions.listing_style, { desc = "Toggle listing style" } },
@@ -154,7 +154,7 @@ local get_keymaps = function()
       { "n", "zR", actions.open_all_folds, { desc = "Expand all folds" } },
       { "n", "zM", actions.close_all_folds, { desc = "Collapse all folds" } },
 
-      { "n", "<C-S-space>", actions.goto_file, { desc = "Close diffview and open file in split" } },
+      { "n", "<C-M-space>", actions.goto_file, { desc = "Close diffview and open file in split" } },
       { "n", "<C-space>", actions.goto_file_edit, { desc = "Close diffview and open file" } },
 
       { "n", "\\", actions.cycle_layout, { desc = "Change view layout" } },
@@ -181,7 +181,7 @@ local get_keymaps = function()
     { "n", "<C-[>", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<C-]>", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<C-g>", "<Nop>", { desc = "diffview_ignore" } },
-    { "n", "<C-S-g>", "<Nop>", { desc = "diffview_ignore" } },
+    { "n", "<C-M-g>", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<leader>gd", "<Nop>", { desc = "diffview_ignore" } },
     { "n", "<leader>gh", "<Nop>", { desc = "diffview_ignore" } },
   }

@@ -338,13 +338,10 @@ set -g mouse on
 #   really you should export VISUAL or EDITOR environment variable, see manual
 set -g status-keys vi
 set -g mode-keys vi
+set -sg repeat-time 1500 # increase repeat timeout
 
-# prefix key: C-a
-# set -gu prefix2
-# unbind C-a
-unbind C-b
-# set -g prefix C-s
-# bind C-s send-prefix
+set -gu prefix2
+unbind C-a
 
 # pane navigation intetrated with neovim (<C-hjkl> navigates without prefix key, just like in neovim)
 # https://github.com/aserowy/tmux.nvim#navigation
@@ -369,40 +366,50 @@ bind-key -T copy-mode-vi C-M-j resize-pane -D 1
 bind-key -T copy-mode-vi C-M-k resize-pane -U 1
 bind-key -T copy-mode-vi C-M-l resize-pane -R 1
 
+# Keybindings Note
+# -r: repeat mode support
+
 # pane navigation
-bind -r C-h select-pane -L  # move left
-bind -r C-j select-pane -D  # move down
-bind -r C-k select-pane -U  # move up
-bind -r C-l select-pane -R  # move right
+# bind -r C-h select-pane -L  # move left
+# bind -r C-j select-pane -D  # move down
+# bind -r C-k select-pane -U  # move up
+# bind -r C-l select-pane -R  # move right
+# unbind hjkl to avoid no effect during repeat mode when using vim
+unbind h
+unbind j
+unbind k
+unbind l
 
 # window navigation
 bind -r p previous-window # select previous window
 bind -r n next-window     # select next window
 bind -r C-p previous-window # select previous window
 bind -r C-n next-window     # select next window
-bind -r b last-window
-bind -r C-b last-window
+bind b last-window
+bind C-b last-window # not repeat
 bind \; last-window        # prefix+; moves to last active window
 # swap window recursively
 bind -r < { swap-window -t -1; previous-window }
 bind -r > { swap-window -t +1; next-window }
-bind -r W 'choose-tree -Zw; display-message "list all windows"'
+bind W 'choose-tree -Zw; display-message "list all windows"'
 
 # session
 unbind C-c
 bind C-c new-window
 bind C 'new-session; display-message "new session"'
-bind -r S 'choose-tree -Zs; display-message "list all sessions"'
+bind S 'choose-tree -Zs; display-message "list all sessions"'
 
 # pane navigation
-bind -r g last-pane
-bind -r C-g last-pane
+bind g last-pane
+bind C-g last-pane
 # change pane layout recursively
 bind -r C-space 'rotate-window; display-message "rotate windows layout"'
 bind -r Space next-layout
-# swap pane recursively
-bind -r \} swap-pane -D
-bind -r \{ swap-pane -U
+# swap pane
+bind -r C-M-Left "swap-pane -U"  # move pane to left/up
+bind -r C-M-Right "swap-pane -D"  # move pane to right/down
+# bind -r \} swap-pane -D
+# bind -r \{ swap-pane -U
 
 # new pane in current path (split window)
 bind v split-window -h -c "#{pane_current_path}"    # split horizontally
@@ -414,7 +421,7 @@ unbind +
 bind z run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 # kill pane without confirmation
 bind x kill-pane
-bind -r C-x kill-pane
+bind C-x kill-pane
 
 # toggle bottom status line
 bind = 'set status; display-message "toggle status line"'
@@ -429,7 +436,7 @@ run -b 'tmux bind -t vi-copy L bottom-line 2> /dev/null || true'
 run -b 'tmux bind -T copy-mode-vi L send -X bottom-line 2> /dev/null || true'
 # buffers
 unbind P
-bind C-] choose-buffer # choose which buffer to paste from
+bind C-] choose-buffer # choose buffer to paste from
 
 # move status line to top
 #set -g status-position top

@@ -12,8 +12,8 @@ return {
       end,
       desc = "harpoon add file",
     },
-    { "<C-]>", function() require("harpoon.ui").nav_next() end, desc = "harpoon go next" },
-    { "<C-[>", function() require("harpoon.ui").nav_prev() end, desc = "harpoon go prev" },
+    -- { "<C-]>", function() require("harpoon.ui").nav_next() end, desc = "harpoon go next" },
+    -- { "<C-[>", function() require("harpoon.ui").nav_prev() end, desc = "harpoon go prev" },
     -- Navigate by file number
     { "g1", function() require("harpoon.ui").nav_file(1) end, desc = "go harpoon file 1..9" },
     { "g2", function() require("harpoon.ui").nav_file(2) end, desc = "which_key_ignore" },
