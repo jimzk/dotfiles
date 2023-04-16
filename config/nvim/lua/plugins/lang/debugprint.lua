@@ -1,17 +1,41 @@
 return {
-  -- Make debug print smooth
+  -- Print for debugging smoothly
   "andrewferrier/debugprint.nvim",
-  keys = { "g?" },
-  init = function()
-    map({ "n" }, "<leader>cdp", nil, "insert debug print below line")
-    map({ "n" }, "<leader>cdP", nil, "insert debug print above line")
-    map({ "n", "v" }, "<leader>cdv", nil, "insert variable debug print below line")
-    map({ "n", "v" }, "<leader>cdV", nil, "insert variable debug print above line")
-    map({ "n" }, "<leader>cdo", nil, "debug print operation")
-    map({ "n" }, "<leader>cdO", nil, "debug print operation (above line)")
-    map({ "n" }, "<leader>cd<BS>", "<cmd>DeleteDebugPrints<cr>", "delete all debug prints")
-  end,
-  config = function(_, opts)
-    require("debugprint").setup(opts)
-  end,
+  keys = {
+    {
+      "<leader>Dp",
+      function() return require("debugprint").debugprint() end,
+      desc = "print current line below for debugging",
+      expr = true
+    },
+    {
+      "<leader>DP",
+      function() return require("debugprint").debugprint({ above = true }) end,
+      desc = "print current line above for debugging",
+      expr = true
+    },
+    {
+      "<leader>Dv",
+      mode = { "n", "x" },
+      function() return require("debugprint").debugprint({ variable = true }) end,
+      desc = "print variable below for debugging",
+      expr = true
+    },
+    {
+      "<leader>DV",
+      mode = { "n", "x" },
+      function() return require("debugprint").debugprint({ variable = true, above = true }) end,
+      desc = "print variable above for debugging",
+      expr = true
+    },
+    {
+      "<leader>D<BS>",
+      "<cmd>DeleteDebugPrints<cr>",
+      desc = "delete all debug prints",
+    },
+  },
+  opts = {
+    create_keymaps = false,
+    move_to_debugline = false,
+  },
 }

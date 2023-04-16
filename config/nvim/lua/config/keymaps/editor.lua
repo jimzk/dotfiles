@@ -74,12 +74,16 @@ mappings = {
   c = { "<cmd>Telescope colorscheme enable_preview=true<cr>", "list colorschemes" },
   a = { "<cmd>Telescope autocommands<cr>", "list autocommands" },
   k = { "<cmd>Telescope keymaps<cr>", "list keymaps" },
+  C = { "<cmd>Telescope commands<cr>", "list commands" },
+  m = { "<cmd>Telescope man_pages<cr>", "list man pages" },
   h = { "<cmd>FzfLua highlights<cr>", "list highlights" },
+  v = { "<cmd>Telescope vim_options<cr>", "list vim options" },
+  ["<F1>"] = { "<cmd>Telescope help_tags<cr>", "list help tags" },
   -- highlights under cursor
   H = { vim.show_pos, "show highlight under cursor" },
   z = { "<cmd>Lazy<cr>", "Lazy" },
   t = { function()
-    local node = vim.treesitter.get_node_at_cursor()
+    local node = vim.treesitter.get_node():type()
     copy(node)
     vim.notify("Treesitter node [" .. node .. "] is copied")
   end, "copy treesitter ndoe under cursor" }

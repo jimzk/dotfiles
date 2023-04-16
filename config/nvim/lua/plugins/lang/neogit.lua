@@ -5,11 +5,11 @@ return {
     integrations = {
       diffview = true,
     },
-    mappings = {
-      status = {
-        ["<space>"] = "Toggle",
-        ["<tab>"] = "",
-      }
-    },
+    -- mappings = {
+    --   status = {
+    --     ["<space>"] = "Toggle",
+    --     ["<tab>"] = "",
+    --   }
+    -- },
   },
 }

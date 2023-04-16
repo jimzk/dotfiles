@@ -2,7 +2,13 @@ return {
   -- Split and join
   "Wansmer/treesj",
   dependencies = {
-    "AndrewRadev/splitjoin.vim",
+    {
+      "AndrewRadev/splitjoin.vim",
+      init = function()
+        vim.g.splitjoin_join_mapping = ""
+        vim.g.splitjoin_split_mapping = ""
+      end,
+    },
   },
   event = "VeryLazy",
   opts = {

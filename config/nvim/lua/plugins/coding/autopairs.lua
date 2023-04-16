@@ -80,14 +80,10 @@ M.config = function(_, opts)
   -- Do not autopair in comment, e.g. -- line comment in lua
   -- Remember, do not add a new rule if it exists.
   local start_pairs = { "{", "(", "[", "<", "'", '"', "`" }
-  -- FIX error due to broken error
-  -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/lua/nvim-treesitter/ts_utils.lua#L303-L306
-  require("nvim-treesitter.ts_utils").is_in_node_range = vim.treesitter.is_in_node_range
   for _, start_pair in ipairs(start_pairs) do
-    local rules = npairs.get_rule(start_pair)
+    local rules = npairs.get_rules(start_pair)
     -- " and ' have multiple rules
     -- See https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs/rules/basic.lua#L33
-    rules = rules.with_move and { rules } or rules
     for _, rule in ipairs(rules) do
       rule:with_pair(not_in_comments())
     end

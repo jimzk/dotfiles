@@ -9,9 +9,9 @@ local M = {
 
 M.opts = {
   open_mapping = [[<M-space>]],
-  insert_mappings = true, -- whether or not the open mapping applies in insert mode
+  insert_mappings = true,   -- whether or not the open mapping applies in insert mode
   direction = "horizontal", -- 'vertical' | 'horizontal' | 'tab' | 'float'
-  shade_terminals = true, -- Background color
+  shade_terminals = true,   -- Background color
   size = function(term)
     if term.direction == "horizontal" then
       return 25
@@ -34,7 +34,7 @@ M.config = function(_, opts)
     callback = function()
       vim.wo.cursorline = false
       opts = { buffer = true }
-      map("n", "<Tab>", Util.focus_win, "alternative window", opts)
+      map("n", "<leader><space>", Util.focus_win, "alternative window", opts)
       map("t", "<M-space>", [[<cmd>ToggleTerm<cr>]], "toggle term", opts)
       map({ "t", "n" }, "<C-S-h>", [[<Nop>]], nil, opts)
       map({ "t", "n" }, "<C-S-j>", [[<cmd>ToggleTermToggleAll<cr><cmd>ToggleTerm direction=horizontal<cr>]], nil, opts)

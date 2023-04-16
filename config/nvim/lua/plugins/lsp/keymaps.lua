@@ -37,12 +37,12 @@ end
 
 M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
-  map("n", "[x", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
-  map("n", "]x", function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic", opts)
-  map("n", "gx", function() vim.diagnostic.open_float { focusable = true, focus = true } end,
+  map("n", "[\\", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
+  map("n", "]\\", function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic", opts)
+  map("n", "g\\", function() vim.diagnostic.open_float { focusable = true, focus = true } end,
     "[C] peek diagnostic", opts)
-  map("n", "gX", "<cmd>Trouble document_diagnostics<cr>", "[C] list diagnostics in buffer", opts)
-  map("n", "g<C-x>", "<cmd>Trouble workspace_diagnostics<cr>", "[C] list diagnostics in workspace", opts)
+  map("n", "g<M-\\>", "<cmd>Trouble document_diagnostics<cr>", "[C] list diagnostics in buffer", opts)
+  map("n", "g|", "<cmd>Trouble workspace_diagnostics<cr>", "[C] list diagnostics in workspace", opts)
 
   local ft = vim.bo[bufnr].filetype
   -- See `:help vim.lsp.*` for documentation on any of the below functions

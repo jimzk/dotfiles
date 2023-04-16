@@ -106,7 +106,7 @@ M.opts = function()
             local lines = starts <= ends and ends - starts + 1 or starts - ends + 1
             return tostring(lines) .. "L"
           end,
-          separator = "",
+          separator = " ",
           icon = { "", align = "left" },
           padding = { left = 0, right = 0 },
         },

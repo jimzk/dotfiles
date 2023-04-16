@@ -2,7 +2,7 @@ return {
   "s1n7ax/nvim-window-picker",
   event = "VeryLazy",
   keys = {
-    { "<tab>", Util.focus_win, desc = "pick a window", mode = { "n", "x", } }
+    { "<leader><space>", Util.focus_win, desc = "pick a window", mode = { "n", "x", } }
   },
   opts = {
     -- include_current_win = true,

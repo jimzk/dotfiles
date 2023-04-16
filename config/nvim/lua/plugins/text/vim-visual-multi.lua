@@ -4,8 +4,8 @@ return {
   init = function()
     -- :h vim-visual-multi
     vim.g.VM_maps = {
-      ["Add Cursor Down"] = "<M-n>",
-      ["Add Cursor Up"] = "<M-p>",
+      ["Add Cursor Down"] = "<M-S-j>",
+      ["Add Cursor Up"] = "<M-S-k>",
       ["VM Select Cursor Up"] = "<S-left>",
       ["VM Select Cursor Down"] = "<S-down>",
       ["VM Select h"] = "<S-left>",

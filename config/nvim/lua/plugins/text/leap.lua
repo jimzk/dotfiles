@@ -40,8 +40,8 @@ M.keys = {
 M.opts = {
   -- :h leap.opts.special_keys
   special_keys = {
-    repeat_search = "<enter>",
-    -- NOTE: these 3 keys do not work for customized leap.leap
+    repeat_search = "<enter>", -- useful!
+    -- NOTE: these 3 keys only work in Plug (e.g. <Plug><leap-forward-to)), but not in call of for require("leap").leap (what I configured)
     next_phase_one_target = "<enter>",
     next_target = { "n" },
     prev_target = { "N" },
@@ -50,18 +50,22 @@ M.opts = {
     multi_accept = "<enter>",
     multi_revert = "<backspace>",
   },
-  -- Typing these keys won't exit leap mode
+  -- When the number of matches if less than number of safe_labels,
+  -- 1) All matches will be labeled by safe_labels.
+  -- 1) It will automatically jump to the first match.
+  -- 2) After automatic jump, the leap mode won't dismiss and you can still type label to jump other match.
+  -- NOTE: the above only works in Plug, but not in call of require("leap").leap
   safe_labels = {
     "f", "i", "o", "u", "b", "g", "m",
     "F", "I", "O", "U", "B", "G", "M",
     "J", "K",
   },
   labels = {
-    "f", "j", "k", "l", "h", "o", "d", "w", "e", "m", "b",
-    "F", "J", "K", "L", "H", "O", "D", "W", "E", "M", "B",
-    "u", "y", "v", "r", "g", "t", "c",
-    "U", "Y", "V", "R", "G", "T", "C",
-    "x", "z",
+    "f", "j", "d", "k", "l", "h", "w", "e", "m", "b",
+    "u", "y", "v", "r", "g", "t", "c", "p", "i", "n",
+    "x", "z", "o", -- "a", "s", "q",
+    "F", "J", "D", "K", "L", "H", "W", "E", "M", "B",
+    "U", "Y", "V", "R", "G", "T", "C", "P", "I", "N",
   }
 }
 

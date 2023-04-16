@@ -14,6 +14,7 @@ wk.register({
   v = "✭ visual last selection",
   n = "select next matched",
   N = "select previous matched",
+  x = "open URL, github repo, issue...)",
   c = "comment",
   u = { "lowercase", mode = { "v", "o" } },
   U = { "uppercase", mode = { "v", "o" } },
@@ -105,10 +106,6 @@ wk.register({
   ["+"] = "increase height",
   -- ["<lt>"] = "decrease width",
   -- [">"] = "increase width",
-
-  ["<C-=>"] = { "<cmd>wincmd =<cr>", "equally size" },
-  ["<C-->"] = { "<cmd>wincmd |<cr>", "max out height" },
-  ["<C-\\>"] = { "<cmd>wincmd _<cr>", "max out width" },
   -- coding (not much useful)
   d = { "go definition under cursor and split" },
   i = { "go declaration under cursor and split" },

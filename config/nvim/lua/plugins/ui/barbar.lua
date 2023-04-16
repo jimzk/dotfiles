@@ -1,4 +1,3 @@
--- I don't use barbar.nvim anymore. Just keep it
 M = {
   "romgrk/barbar.nvim",
   event = "VeryLazy",
@@ -37,10 +36,15 @@ M.opts = {
     button = "",
     -- Enables / disables diagnostic symbols
     diagnostics = {
-      [vim.diagnostic.severity.ERROR] = { enabled = true, icon = "ﬀ" },
+      [vim.diagnostic.severity.ERROR] = { enabled = true, icon = " " },
       [vim.diagnostic.severity.WARN] = { enabled = false },
       [vim.diagnostic.severity.INFO] = { enabled = false },
-      [vim.diagnostic.severity.HINT] = { enabled = true },
+      [vim.diagnostic.severity.HINT] = { enabled = false },
+    },
+    gitsigns = {
+      added = { enabled = true, icon = "+" },
+      changed = { enabled = true, icon = "~" },
+      deleted = { enabled = true, icon = "-" },
     },
     filetype = {
       -- Sets the icon's highlight group.
@@ -53,11 +57,13 @@ M.opts = {
     -- Configure the icons on the bufferline when modified or pinned.
     -- Supports all the base icon options.
     modified = { button = "●" },
-    pinned = { button = "車", filename = true, separator = { right = "" } },
+    pinned = { button = "", filename = true },
+    -- Use a preconfigured buffer appearance— can be 'default', 'powerline', or 'slanted'
+    preset = "default",
     -- Configure the icons on the bufferline based on the visibility of a buffer.
     -- Supports all the base icon options, plus `modified` and `pinned`.
     alternate = { filetype = { enabled = false } },
-    current = { buffer_index = true },
+    current = { buffer_index = false },
     inactive = { button = "×" },
     visible = { modified = { buffer_number = false } },
   },
@@ -71,6 +77,8 @@ M.opts = {
   minimum_padding = 1,
   -- Sets the maximum buffer name length.
   maximum_length = 30,
+  -- Sets the minimum buffer name length.
+  minimum_length = 0,
   -- If set, the letters for each buffer in buffer-pick mode will be
   -- assigned based on their name. Otherwise or in case all letters are
   -- already assigned, the behavior is to assign letters in order of
@@ -102,13 +110,18 @@ M.config = function(_, opts)
   vim.defer_fn(function()
     map("n", "-", "<CMD>BufferPrevious<CR>", "previous buffer")
     map("n", "=", "<CMD>BufferNext<CR>", "next buffer")
+    map("n", "<C-_>", "<CMD>BufferMovePrevious<CR>", "move tab to previous")
+    map("n", "<C-+>", "<CMD>BufferMoveNext<CR>", "move tab to next")
     map("n", "<BS>", "<CMD>BufferClose<CR>", "delete buffer")
-    map("n", "<S-BS>", "<CMD>BufferCloseAllButCurrentOrPinned<CR>", "delete all buffer")
-    map("n", "<C-0>", "<CMD>BufferPick<CR>", "pick a buffer")
+    map("n", "<S-BS>", "<CMD>BufferCloseAllButVisible<CR>", "delete all buffer")
+    -- map("n", "<C-0>", "<CMD>BufferPick<CR>", "pick a buffer")
+    map("n", "<C-0>", "<CMD>BufferPin<CR><CMD>Hbac toggle_pin<CR>", "pin buffer")
   end, 0)
 
   local set_hl = function(status, styles)
-    local parts = { "", "Sign", "Mpd", "ERROR", "INFO", "WARN", "HINT" }
+    -- NOTE: icon highlight will be overriten by web-devicons
+    local parts = { "", "Icon", "Sign", "Index", "Target", "Mod", "ERROR", "INFO", "WARN", "HINT", "ADDED", "CHANGED",
+      "DELETED" }
     for _, value in pairs(parts) do
       local hl = "Buffer" .. status .. value
       vim.cmd([[hi! ]] .. hl .. " " .. styles)
@@ -116,7 +129,13 @@ M.config = function(_, opts)
   end
   set_hl("DefaultVisible", "guibg=#303446")
   set_hl("DefaultCurrent", "gui=bold guibg=#51576d")
-  vim.cmd [[hi BufferDefaultCurrent guifg=#b5e395]]
+  vim.cmd [[hi BufferDefaultVisibleADDED guifg=#a6d189]]
+  vim.cmd [[hi BufferDefaultVisibleDELETED guifg=#e78284]]
+  local fg_color = "#c2c2c2"
+  vim.cmd("hi BufferDefaultCurrent guifg=" .. fg_color)
+  vim.cmd("hi BufferDefaultVisible guifg=" .. fg_color)
+  vim.cmd("hi BufferDefaultCurrentMod guifg=" .. fg_color) -- Highlight for modified buffers
+  vim.cmd [[hi BufferDefaultTabpageFill guibg=none]]
 end
 
 -- -- https://github.com/romgrk/barbar.nvim#integration-with-filetree-plugins

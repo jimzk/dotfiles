@@ -4,7 +4,7 @@ local mappings = {
   -- ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
   ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
-  ["<leader>~"] = { "<cmd>split #<cr>", "✭ split alternative buffer" },
+  ["<leader>~"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
   -- Buffer and Tab
   ["-"] = { "<cmd>bp<cr>", "prev buffer" },
   ["="] = { "<cmd>bn<cr>", "next buffer" },
@@ -22,7 +22,7 @@ local mappings = {
   ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
   ["<BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
-  -- ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
+  ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
   ["<C-BS>"] = { "<cmd>tabclose<cr>", "close tab" },
   -- https://www.reddit.com/r/neovim/comments/114z9ua/comment/j904vaa/
   ["<S-BS>"] = { function()
@@ -60,18 +60,9 @@ local mappings = {
   ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
   ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
   ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
-  -- Maximize window
-  -- ["<C-->"] = { function()
-  --   local height = vim.api.nvim_win_get_height(0)
-  --   local v = (height + 8 >= vim.o.lines) and "vertical " or ""
-  --   vim.cmd(v .. "wincmd _")
-  -- end, "max win height" },
-  -- ["<C-\\>"] = { function()
-  --   local width = vim.api.nvim_win_get_width(0)
-  --   local h = (width + 8 >= vim.o.columns) and "horizontal " or ""
-  --   vim.cmd(h .. "wincmd |")
-  -- end, "max win width" },
-  ["<C-\\>"] = { function()
+  ["<leader>="] = { "<cmd>wincmd =<cr>", "equally size" },
+  ["<leader>-"] = { "<cmd>wincmd |<cr>", "max out height" },
+  ["<leader>\\"] = { function()
     if vim.g.full_window then
       vim.cmd [[wincmd =]]
     else
@@ -80,12 +71,11 @@ local mappings = {
     end
     vim.g.full_window = not vim.g.full_window
   end, "toggle full window" },
-  ["<F1>"] = { "<cmd>Telescope help_tags<cr>", "help" },
   -- Scroll
   ["<Up>"] = { "<C-y>k", ignored },
   ["<Down>"] = { "<C-e>j", ignored },
-  ["<Left>"] = { "10zh", ignored },
-  ["<Right>"] = { "10zl", ignored },
+  -- ["<Left>"] = { "10zh", ignored },
+  -- ["<Right>"] = { "10zl", ignored },
 }
 
 local opts = {}
@@ -97,6 +87,7 @@ for key, mapping in pairs(mappings) do
   map(mode, lhs, rhs, desc, opts)
 end
 
+-- Press key twice to jump fist blank char of link
 -- https://luyuhuang.tech/2023/03/21/nvim.html#跳转到行开头
 local function home()
   local head = (vim.api.nvim_get_current_line():find("[^%s]") or 1) - 1
@@ -104,6 +95,15 @@ local function home()
   cursor[2] = cursor[2] == head and 0 or head
   vim.api.nvim_win_set_cursor(0, cursor)
 end
-
 vim.keymap.set({ "i", "n" }, "<Home>", home)
 vim.keymap.set("n", "0", home)
+-- map({ "n", "x", "o" }, "H", "v:count == 0 ? 'g^' : '^'", nil, { expr = true })
+-- map({ "n", "x", "o" }, "L", "v:count == 0 ? 'g$' : ':lua home()'", nil, { expr = true })
+map({ "n", "x", "o" }, "H", home)
+map({ "n", "x", "o" }, "L", "$")
+map({ "n", "x", "o" }, "gH", "g^")
+map({ "n", "x", "o" }, "gL", "g$")
+map({ "n", "x", "o" }, "$", "L", "to top line (H)")
+map({ "n", "x", "o" }, "^", "H", "to bottom line (L)")
+map({ "n", "x", "o" }, "<M-S-L>", "L", "to top line (H)")
+map({ "n", "x", "o" }, "<M-S-H>", "H", "to bottom line (L)")

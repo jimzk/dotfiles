@@ -45,15 +45,15 @@ map({ "n", "x", "o" }, "N", function() nN(false) end)
 map("n", "<C-E>", "2<C-E>")
 map("n", "<C-Y>", "2<C-Y>")
 
+map("n", "}", "}zz")
+map("n", "{", "{zz")
+
 -- Mark originaol position when combining lines
 -- map("n", "J", "m`Jg``")
 
 -- better up/down
 map({ "n", "x", "o" }, "j", "v:count == 0 ? 'gj' : 'j'", nil, { expr = true })
 map({ "n", "x", "o" }, "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
--- Easy move to line header and end
-map({ "n", "x", "o" }, "H", "v:count == 0 ? 'g^' : '^'", nil, { expr = true })
-map({ "n", "x", "o" }, "L", "v:count == 0 ? 'g$' : '$'", nil, { expr = true })
 
 -- Avoid lost visual selection
 for _, key in pairs({ "~", "u", "U" }) do
@@ -66,7 +66,3 @@ end
 -- https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 -- map("x", ">", ">gv")
 -- map("x", "<", "<gv")
-
--- No yank for c/C
--- map({ "n" }, "c", '"_c')
--- map({ "n" }, "C", '"_C')

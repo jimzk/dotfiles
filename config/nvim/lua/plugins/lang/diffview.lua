@@ -18,7 +18,7 @@ local get_keymaps = function()
       { "n", "<cr>", actions.goto_file_edit, { desc = "Close diffview and open file" } },
       { "n", "<S-cr>", actions.goto_file, { desc = "Close diffview and open file in split" } },
 
-      { "n", "<tab>", actions.focus_files, { desc = "Focus on file panel" } },
+      { "n", "<leader><space>", actions.focus_files, { desc = "Focus on file panel" } },
 
       { "n", "\\", actions.cycle_layout, { desc = "Change view layout" } },
 
@@ -57,7 +57,7 @@ local get_keymaps = function()
       { "n", "?", actions.help({ "view", "diff4" }), { desc = "diffview_ignore" } },
     },
     file_panel = {
-      { "n", "<tab>", Util.focus_win, { desc = "diffview_ignore" } },
+      { "n", "<leader><space>", Util.focus_win, { desc = "diffview_ignore" } },
       { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
       { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 
@@ -116,7 +116,7 @@ local get_keymaps = function()
       { "n", "?", actions.help("file_panel"), { desc = "Open the help panel" } },
     },
     file_history_panel = {
-      { "n", "<tab>", Util.focus_win, { desc = "diffview_ignore" } },
+      { "n", "<leader><space>", Util.focus_win, { desc = "diffview_ignore" } },
       { "n", "<esc>", actions.toggle_files, { desc = "Close panel" } },
       { "n", "q", actions.toggle_files, { desc = "Close panel" } },
 

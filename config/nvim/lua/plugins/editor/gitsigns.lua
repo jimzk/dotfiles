@@ -11,7 +11,7 @@ return {
       changedelete = { text = text, hl = "GitSignsChange", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
       untracked    = { text = text },
     },
-    signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+    signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
     numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
     linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
     word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
@@ -39,6 +39,8 @@ return {
       map("n", "<leader><cr>", gs.preview_hunk, "[G] preview hunk")
 
       map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "[G] line blame")
+
+      map("n", "<leader>gq", "<CMD>Gitsigns setqflist<CR>", "[G] show git changes quickfix list")
     end,
   },
 }
