@@ -129,7 +129,7 @@
         [:!Tm [:openApp "Music"]]
         [:!Te [:openApp "Finder"]]
         [:!Tbackslash [:openApp "Bitwarden"]]
-        [:!Tf [:openApp "flomo"]]
+        [:!Tc [:openApp "flomo"]]
         [:!Tslash :!COSf12]
         [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
         [:!Ty [:openApp "网易有道词典"]]
@@ -154,8 +154,8 @@
         [:!TCd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
         [:!TCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
         ; center
-        [:!Tg [:hs "spoon.Win.moveAndResize('fullscreen')"]]
-        [:!TCg [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
+        [:!Tz [:hs "spoon.Win.moveAndResize('fullscreen')"]]
+        [:!TSz [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
         ;; desktop navigation
         [:!Tsemicolon :!CTOf7] ;; Previous Space
         [:!Tquote :!CTOf9] ;; Next Space
