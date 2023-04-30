@@ -208,6 +208,10 @@ function obj:newModal(name, color)
     M.color = color
     M.modal = obj:new(name)
     M.activate = function()
+        if spoon.ModalMgr.active_list[M.name] then
+            spoon.ModalMgr:deactivate({ M.name })
+            return
+        end
         spoon.ModalMgr:deactivateAll()
         -- Show an status indicator so we know we're in some modal environment now
         spoon.ModalMgr:activate({ M.name }, M.color)

@@ -177,14 +177,15 @@ function M.centerCursor()
     local cres = cscreen:fullFrame()
     if cwin then
         -- Center the cursor on the focused window
-        hs.mouse.setAbsolutePosition({ x = wf.x + wf.w / 2, y = wf.y + wf.h / 2 })
+        hs.mouse.absolutePosition({ x = wf.x + wf.w / 2, y = wf.y + wf.h / 2 })
     else
         -- Center the cursor on the screen
-        hs.mouse.setAbsolutePosition({ x = cres.x + cres.w / 2, y = cres.y + cres.h / 2 })
+        hs.mouse.absolutePosition({ x = cres.x + cres.w / 2, y = cres.y + cres.h / 2 })
     end
 end
 
 function M.toggleFullScreen()
+    M.deactivate()
     local cwin = hs.window.focusedWindow()
     cwin:toggleFullScreen()
 end
@@ -192,6 +193,7 @@ end
 function M.resizeWindow(size1, fill)
     M.deactivate()
     local w1 = hs.window.focusedWindow()
+    w1:setFullScreen(false)
     if not w1 then
         hs.alert.show("No focused window found!")
         return
@@ -228,25 +230,79 @@ local resize = function(size1, tiling)
     return function() M.resizeWindow(size1, tiling) end
 end
 
+-- https://www.reddit.com/r/hammerspoon/comments/og0tio/move_mouse_linearly/
+function M.moveCusorSmoothly(x1, y1, x2, y2, sleep)
+    local xdiff = x2 - x1
+    local ydiff = y2 - y1
+    local loop = math.floor(math.sqrt((xdiff * xdiff) + (ydiff * ydiff))) * 5
+    local xinc = xdiff / loop
+    local yinc = ydiff / loop
+    sleep = math.floor((sleep * 1000000) / loop)
+    for i = 1, loop do
+        x1 = x1 + xinc
+        y1 = y1 + yinc
+        hs.mouse.absolutePosition({ x = math.floor(x1), y = math.floor(y1) })
+        hs.timer.usleep(sleep)
+    end
+    hs.mouse.absolutePosition({ x = math.floor(x2), y = math.floor(y2) })
+end
+
+function M.moveCursor(xfactor, yFactor)
+    local cscreen = hs.screen.mainScreen()
+    local cres = cscreen:fullFrame()
+    local xOffset = cres.w / 250 * xfactor
+    local yOffset = cres.h / 120 * yFactor
+    return function()
+        local point = hs.mouse.getAbsolutePosition()
+        M.moveCusorSmoothly(point.x, point.y, point.x + xOffset, point.y + yOffset, 0.0001)
+    end
+end
+
+function M.scroll(xdiff, ydiff)
+    M.centerCursor()
+    hs.eventtap.scrollWheel({ xdiff, ydiff }, {})
+end
+
+function M.switchApp()
+    M.deactivate()
+    hs.eventtap.keyStroke({ "cmd" }, "tab")
+    hs.eventtap.keyStroke({}, "space")
+    M.centerCursor()
+end
+
 M.modal
     :bind("", "tab", "Send Window to Next Display", function() M.moveToScreen("next") end)
     :bind("", "'", "Move Window to Next Desktop", function() MoveFocusedWindowToSpace("next", true) end)
     :bind("", ";", "Move Window to Prev Desktop", function() MoveFocusedWindowToSpace("prev", true) end)
 M.modal
-    :bind("", "F", "Fullscreen", M.toggleFullScreen)
+    :bind("", "return", "Fullscreen", M.toggleFullScreen)
+    :bind("", "space", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
     :bind("", "G", "Center Larger", resize({ x = 0.1, y = 0, w = 0.8, h = 1 }))
-    :bind("shift", "G", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
 local scale = 1 / 60
 local stepResize = function(u, d, l, r) return function() M.resize(u, d, l, r) end end
 M.modal
-    :bind("ctrl", "H", "Horizontal Shrink", stepResize(0, 0, -scale, -scale), nil, stepResize(0, 0, -scale, -scale))
-    :bind("ctrl", "L", "Horizontal Expand", stepResize(0, 0, scale, scale), nil, stepResize(0, 0, scale, scale))
-    :bind("ctrl", "J", "Vertical Expand", stepResize(scale, scale, 0, 0), nil, stepResize(scale, scale, 0, 0))
-    :bind("ctrl", "K", "Vertical Shrink", stepResize(-scale, -scale, 0, 0), nil, stepResize(-scale, -scale, 0, 0))
+    :bind("shift", "H", "Horizontal Shrink", stepResize(0, 0, -scale, -scale), nil, stepResize(0, 0, -scale, -scale))
+    :bind("shift", "L", "Horizontal Expand", stepResize(0, 0, scale, scale), nil, stepResize(0, 0, scale, scale))
+    :bind("shift", "J", "Vertical Expand", stepResize(scale, scale, 0, 0), nil, stepResize(scale, scale, 0, 0))
+    :bind("shift", "K", "Vertical Shrink", stepResize(-scale, -scale, 0, 0), nil, stepResize(-scale, -scale, 0, 0))
     :bind("", "H", "Move Window Left", function() M.stepMove("left") end, nil, function() M.stepMove("left") end)
     :bind("", "L", "cheatsheet_ignore", function() M.stepMove("right") end, nil, function() M.stepMove("right") end)
     :bind("", "J", "cheatsheet_ignore", function() M.stepMove("down") end, nil, function() M.stepMove("down") end)
     :bind("", "K", "cheatsheet_ignore", function() M.stepMove("up") end, nil, function() M.stepMove("up") end)
+
+-- M.modal
+--     :bind("", "H", "Move Cursor Left", M.moveCursor(-1, 0), nil, M.moveCursor(-1, 0))
+--     :bind("", "L", "cheatsheet_ignore", M.moveCursor(1, 0), nil, M.moveCursor(1, 0))
+--     :bind("", "J", "cheatsheet_ignore", M.moveCursor(0, 1), nil, M.moveCursor(0, 1))
+--     :bind("", "K", "cheatsheet_ignore", M.moveCursor(0, -1), nil, M.moveCursor(0, -1))
+--     :bind("shift", "L", "cheatsheet_ignore", M.moveCursor(2, 0), nil, M.moveCursor(2, 0))
+--     :bind("shift", "H", "Move Cursor Left Fast", M.moveCursor(-2, 0), nil, M.moveCursor(-2, 0))
+--     :bind("shift", "J", "cheatsheet_ignore", M.moveCursor(0, 2), nil, M.moveCursor(0, 2))
+--     :bind("shift", "K", "cheatsheet_ignore", M.moveCursor(0, -2), nil, M.moveCursor(0, -2))
+--     :bind("", "M", "Center Cursor", M.centerCursor)
+--     :bind("", "N", "Scroll Down", function() M.scroll(0, -5) end, nil, function() M.scroll(0, -5) end)
+--     :bind("", "P", "Scroll Up", function() M.scroll(0, 5) end, nil, function() M.scroll(0, 5) end)
+
 M.modal
     :bind("", "Y", "Corner (YUIO)", resize({ x = 0, y = 0, w = 0.5, h = 0.5 }))
     :bind("", "U", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 0.5 }))
@@ -257,24 +313,24 @@ M.modal
     :bind("", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }))
     :bind("", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }))
     :bind("", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }))
-    :bind("cmd", "A", "1/2 Left Fill", resize({ x = 0, y = 0, w = 0.5, h = 1 }, true))
-    :bind("cmd", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }, true))
-    :bind("cmd", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }, true))
-    :bind("cmd", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }, true))
+    :bind("alt", "A", "1/2 Left Fill", resize({ x = 0, y = 0, w = 0.5, h = 1 }, true))
+    :bind("alt", "D", "cheatsheet_ignore", resize({ x = 0.5, y = 0, w = 0.5, h = 1 }, true))
+    :bind("alt", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.5, w = 1, h = 0.5 }, true))
+    :bind("alt", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.5 }, true))
 M.modal
-    :bind("ctrl", "A", "2/3 Left", resize({ x = 0, y = 0, w = 0.66, h = 1 }))
-    :bind("ctrl", "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }))
-    :bind("ctrl", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }))
-    :bind("ctrl", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }))
-    :bind({ "ctrl", "cmd" }, "A", "2/3 Left Fill", resize({ x = 0, y = 0, w = 0.66, h = 1 }, true))
-    :bind({ "ctrl", "cmd" }, "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }, true))
-    :bind({ "ctrl", "cmd" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }, true))
-    :bind({ "ctrl", "cmd" }, "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }, true))
+    :bind("shift", "A", "2/3 Left", resize({ x = 0, y = 0, w = 0.66, h = 1 }))
+    :bind("shift", "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }))
+    :bind("shift", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }))
+    :bind("shift", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }))
+    :bind({ "shift", "alt" }, "A", "2/3 Left Fill", resize({ x = 0, y = 0, w = 0.66, h = 1 }, true))
+    :bind({ "shift", "alt" }, "D", "cheatsheet_ignore", resize({ x = 0.34, y = 0, w = 0.66, h = 1 }, true))
+    :bind({ "shift", "alt" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.34, w = 1, h = 0.66 }, true))
+    :bind({ "shift", "alt" }, "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.66 }, true))
 M.modal
-    :bind("alt", "A", "1/3 Left", resize({ x = 0, y = 0, w = 0.34, h = 1 }))
-    :bind("alt", "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }))
-    :bind("alt", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }))
-    :bind("alt", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.34 }))
+    :bind("cmd", "A", "1/3 Left", resize({ x = 0, y = 0, w = 0.34, h = 1 }))
+    :bind("cmd", "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }))
+    :bind("cmd", "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }))
+    :bind("cmd", "W", "cheatsheet_ignore", resize({ x = 0, y = 0, w = 1, h = 0.34 }))
     :bind({ "cmd", "alt" }, "A", "1/3 Left Fill", resize({ x = 0, y = 0, w = 0.34, h = 1 }, true))
     :bind({ "cmd", "alt" }, "D", "cheatsheet_ignore", resize({ x = 0.66, y = 0, w = 0.34, h = 1 }, true))
     :bind({ "cmd", "alt" }, "S", "cheatsheet_ignore", resize({ x = 0, y = 0.66, w = 1, h = 0.34 }, true))
@@ -293,6 +349,9 @@ function M.openOrHideApp(name)
         return
     end
     hs.application.launchOrFocus(name)
+    -- hs.timer.delayed.new(0.01, function()
+    --     M.centerCursor()
+    -- end):start()
 end
 
 -- local apps = {
