@@ -15,9 +15,9 @@ format = "on [$branch]($style) "
 
 # https://starship.rs/config/#git-status
 [git_status]
-ahead = "[△${count}](bold green)"
-behind = "[▽${count}](bold red)"
-diverged = "[△${ahead_count}](bold green)[▽${behind_count}](bold red)"
+ahead = "[⏶${count}](bold green)"
+behind = "[⏷${count}](bold red)"
+diverged = "[⏶${ahead_count}](bold green)[⏷${behind_count}](bold red)"
 up_to_date = "[✓](bold green)"
 untracked = "[?${count}](bold #EEEEEE)"
 modified = "[!${count}](bold fg:#FFF89A)"
