@@ -261,6 +261,13 @@
     ],
     "description": "unreachable!(…)"
   },
+  "dbg": {
+    "prefix": "dbg!",
+    "body": [
+      "dbg!(${1})"
+    ],
+    "description": "dbg!(…)"
+  },
   "vec": {
     "prefix": "vec!",
     "body": [

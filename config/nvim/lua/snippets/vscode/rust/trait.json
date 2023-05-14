@@ -1,0 +1,84 @@
+{
+  "From": {
+    "prefix": "impl From",
+    "body": [
+      "impl From<${1:FromType}> for ${2:ToType} {",
+      "    fn from(value: ${1:FromType}) -> Self {",
+      "        ${0:todo!()}",
+      "    }",
+      "}"
+    ],
+    "description": "impl From<…> for … { … }"
+  },
+  "TryFrom": {
+    "prefix": "impl TryFrom",
+    "body": [
+      "impl TryFrom<${1:FromType}> for ${2:ToType} {",
+      "    type Error = ${3:Error};",
+      "",
+      "    fn try_from(value: ${1:FromType}) -> Result<Self, Self::Error> {",
+      "        ${0:todo!()}",
+      "    }",
+      "}"
+    ],
+    "description": "impl TryFrom<…> for … { … }"
+  },
+  "FromStr": {
+    "prefix": "impl FromStr",
+    "body": [
+      "impl FromStr for ${1:Type} {",
+      "    type Err = ${2:Error};",
+      "",
+      "    fn from_str(s: &str) -> Result<Self, Self::Err> {",
+      "        ${0:todo!()}",
+      "    }",
+      "}"
+    ],
+    "description": "impl FromStr for … { … }"
+  },
+  "Default": {
+    "prefix": "impl Default",
+    "body": [
+      "impl Default for ${1:Type} {",
+      "    fn default() -> Self {",
+      "        Self {",
+      "            ${2:foo}: ${3:Default::default()},",
+      "            ${0:todo!()}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "impl Default for … { … }"
+  },
+  "Default::default()": {
+    "prefix": "Default::default()",
+    "body": ["Default::default()"],
+    "description": "Default::default()"
+  },
+  "..Default::default()": {
+    "prefix": "..Default::default()",
+    "body": ["..Default::default()"],
+    "description": "..Default::default()"
+  },
+  "Display": {
+    "prefix": "impl Display",
+    "body": [
+      "impl fmt::Display for ${1:Type} {",
+      "    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {",
+      "        write!(f, \"({}, {}$0)\", self.${2:x}, self.${3:y})",
+      "    }",
+      "}"
+    ],
+    "description": "impl Display for … { … }"
+  },
+  "ToString": {
+    "prefix": "impl ToString",
+    "body": [
+      "impl ToString for ${1:Type} {",
+      "    fn to_string(&self) -> String {",
+      "        format!(\"({}, {}$0)\", self.${2:x}, self.${3:y})",
+      "    }",
+      "}"
+    ]
+  }
+}
