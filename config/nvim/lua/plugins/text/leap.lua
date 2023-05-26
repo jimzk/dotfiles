@@ -56,9 +56,9 @@ M.opts = {
   -- 2) After automatic jump, the leap mode won't dismiss and you can still type label to jump other match.
   -- NOTE: the above only works in Plug, but not in call of require("leap").leap
   safe_labels = {
-    "f", "i", "o", "u", "b", "g", "m",
-    "F", "I", "O", "U", "B", "G", "M",
-    "J", "K",
+    "f", "p", "o", "u", "b", "g", "m",
+    "F", "P", "O", "U", "B", "G", "M",
+    "H", "J", "K", "L"
   },
   labels = {
     "f", "j", "d", "k", "l", "h", "w", "e", "m", "b",

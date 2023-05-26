@@ -52,10 +52,10 @@ M.config = function()
     }),
     window = {
       completion = {
-        border = "single",
+        border = "none",
       },
       documentation = {
-        border = "single"
+        border = "none"
       },
     },
     formatting = {
@@ -107,6 +107,9 @@ M.config = function()
       format = format.format_cmdline,
     },
   })
+  -- vim.cmd [[hi CmpItemAbbrMatch guifg=#c2dfae]]
+  -- vim.cmd [[hi CmpItemAbbrMatchFuzzy guifg=#c2dfae]]
+  -- vim.cmd [[hi PmenuSel guifg=#c2dfae]]
 end
 
 return M

@@ -48,12 +48,16 @@ M.menu = {
   path = "[Path]",
 }
 
-M.maxwidth = 40
+M.maxwidth = 45
 
 M.format = function(entry, item)
   item.kind = (M.icons[item.kind] or "") .. item.kind
   if #item.abbr > M.maxwidth then
-    item.abbr = vim.fn.strcharpart(item.abbr, 0, M.maxwidth) .. "…"
+    local maxwidth = M.maxwidth
+    if vim.o.filetype == "rust" then
+      maxwidth = maxwidth + 20
+    end
+    item.abbr = vim.fn.strcharpart(item.abbr, 0, maxwidth) .. "…"
   end
   item.menu = M.menu[entry.source.name]
   return item
