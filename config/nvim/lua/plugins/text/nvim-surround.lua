@@ -12,27 +12,53 @@ return {
       insert = false,
       insert_line = false,
       -- add surrounds by s
-      normal = "ys",
-      normal_cur = "yss",
-      normal_line = "yS",
-      normal_cur_line = "ySS",
-      visual = "s",
-      visual_line = "gs",
+      normal = "sa",
+      normal_cur = "saa", -- line
+      normal_line = "sA", -- line with break
+      normal_cur_line = "sAA",
+      visual = "sa",
+      visual_line = "sA",
+      delete = "sd",
+      change = "sr",
     },
+    -- alia   add    remove/replace
+    -- k      <>     <>
+    -- r      []     []
+    -- b      ()     (), {}
+    -- B      {}     {}
+    -- q      ""     "", '', ``
+    -- s             any brackets or quotes
+    -- See :h nvim-surround.aliasing
+    --     :h nvim-surround.config.aliases
+    --
+    -- key to add brackets (ys)
     surrounds = {
-      o = {
+      k = {
         add = { "<", ">" },
       },
-      O = {
+      r = {
         add = { "[", "]" },
+      },
+      b = {
+        add = { "(", ")" },
+      },
+      B = {
+        add = { "{", "}" },
       },
       q = {
         add = { '"', '"' },
       },
+      Q = {
+        add = { "'", "'" },
+      },
     },
     aliases = {
-      o = { ">" },
-      O = { "]" },
+      a = false, -- remove default alias
+      r = { "]" },
+      k = { ">" },
+      b = { "}", ")" },
+      B = { "}" },
+      q = { '"', "'", "`" },
     },
     move_cursor = false,
   },

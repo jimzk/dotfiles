@@ -3,13 +3,14 @@ local mappings = {
   -- Alternative Windows
   -- ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
-  ["<leader>`"] = { "<C-^>", "✭ alternative buffer" },
-  ["<leader>~"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
-  -- Buffer and Tab
-  ["-"] = { "<cmd>bp<cr>", "prev buffer" },
-  ["="] = { "<cmd>bn<cr>", "next buffer" },
-  ["_"] = { "<cmd>vertical sbp<cr>", "prev buffer and split" },
-  ["+"] = { "<cmd>vertical sbn<cr>", "next buffer and split" },
+  ["<leader><tab>"] = { "<C-^>", "✭ alternative buffer" },
+  ["<leader><s-tab>"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
+  -- Buffers
+  -- ["-"] = { "<cmd>bp<cr>", "prev buffer" },
+  -- ["="] = { "<cmd>bn<cr>", "next buffer" },
+  -- ["_"] = { "<cmd>vertical sbp<cr>", "prev buffer and split" },
+  -- ["+"] = { "<cmd>vertical sbn<cr>", "next buffer and split" },
+  -- Tabs
   ["<C-->"] = { "gT", "prev tab" },
   ["<C-=>"] = { "gt", "next tab" },
   -- Redo
@@ -21,11 +22,11 @@ local mappings = {
   ["q"] = { "<cmd>close<cr>", ignored },
   ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
-  ["<BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
-  ["<BS><BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
   ["<C-BS>"] = { "<cmd>tabclose<cr>", "close tab" },
+  ["<M-BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
+  -- ["<leader><A-BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
   -- https://www.reddit.com/r/neovim/comments/114z9ua/comment/j904vaa/
-  ["<S-BS>"] = { function()
+  ["<M-S-BS>"] = { function()
     local api = vim.api
     local active_buffers = {}
     for _, win in ipairs(api.nvim_list_wins()) do
@@ -60,9 +61,9 @@ local mappings = {
   ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
   ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
   ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
-  ["<leader>="] = { "<cmd>wincmd =<cr>", "equally size" },
-  ["<leader>-"] = { "<cmd>wincmd |<cr>", "max out height" },
-  ["<leader>\\"] = { function()
+  ["<C-M-=>"] = { "<cmd>wincmd =<cr>", "equal window size" },
+  -- ["<leader>-"] = { "<cmd>wincmd |<cr>", "max out height" },
+  ["<C-M-\\>"] = { function()
     if vim.g.full_window then
       vim.cmd [[wincmd =]]
     else
@@ -95,15 +96,19 @@ local function home()
   cursor[2] = cursor[2] == head and 0 or head
   vim.api.nvim_win_set_cursor(0, cursor)
 end
-vim.keymap.set({ "i", "n" }, "<Home>", home)
-vim.keymap.set("n", "0", home)
 -- map({ "n", "x", "o" }, "H", "v:count == 0 ? 'g^' : '^'", nil, { expr = true })
 -- map({ "n", "x", "o" }, "L", "v:count == 0 ? 'g$' : ':lua home()'", nil, { expr = true })
+map({ "n", "i" }, "<Home>", home)
 map({ "n", "x", "o" }, "H", home)
+map({ "n", "x", "o" }, "0", home)
 map({ "n", "x", "o" }, "L", "$")
 map({ "n", "x", "o" }, "gH", "g^")
 map({ "n", "x", "o" }, "gL", "g$")
-map({ "n", "x", "o" }, "$", "L", "to top line (H)")
-map({ "n", "x", "o" }, "^", "H", "to bottom line (L)")
-map({ "n", "x", "o" }, "<M-S-L>", "L", "to top line (H)")
-map({ "n", "x", "o" }, "<M-S-H>", "H", "to bottom line (L)")
+map({ "n", "x", "o" }, "$", "L", "H")
+map({ "n", "x", "o" }, "^", "H", "L")
+-- map({ "n", "x", "o" }, "<M-S-L>", "L", "L (bottom)")
+-- map({ "n", "x", "o" }, "<M-S-H>", "H", "H (top)")
+
+-- Reverse ` and "
+map({ "n", "x", "o" }, "'")
+map({ "n", "x", "o" }, "`")

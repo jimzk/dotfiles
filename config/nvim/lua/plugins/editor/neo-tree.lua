@@ -3,8 +3,25 @@ return {
   "nvim-neo-tree/neo-tree.nvim",
   event = "VeryLazy", -- Loading on demand will cause first invoking slow
   dependencies = {
-    "s1n7ax/nvim-window-picker",
     "MunifTanjim/nui.nvim",
+    {
+      "s1n7ax/nvim-window-picker",
+      event = "VeryLazy",
+      -- keys = {
+      --   { "<leader>`", Util.focus_win, desc = "pick a window" }
+      -- },
+      opts = {
+        hint = "floating-big-letter",
+        filter_rules = {
+          include_current_win = false,
+          bo = {
+            filetype = { "NvimTree", "neo-tree", "notify", "aerial" },
+            -- buftype = { "terminal" },
+            buftype = { "terminal", "quickfix" },
+          },
+        },
+      },
+    },
   },
   keys = {
     -- {
@@ -43,10 +60,6 @@ return {
         ["<Cr>"] = "open_with_window_picker",
         R = "noop",
         ["<C-r>"] = "refresh",
-        [">"] = "noop",
-        ["<"] = "noop",
-        ["]"] = "prev_source",
-        ["["] = "next_source",
       },
     },
     filesystem = {
@@ -56,7 +69,7 @@ return {
         "thumbs.db",
       },
       window = {
-        width = 35,
+        width = 40,
         mappings = {
           ["<C-x>"] = "noop",
           F = { "clear_filter" },
@@ -72,11 +85,11 @@ return {
     local cc = require("neo-tree.sources.common.commands")
     -- Open file in new tab with neotree shown
     cc.open_tabnew = (function(func)
-          return function(...)
-            func(...)
-            vim.cmd [[Neotree reveal action=show]]
-          end
-        end)(cc.open_tabnew)
+      return function(...)
+        func(...)
+        vim.cmd [[Neotree reveal action=show]]
+      end
+    end)(cc.open_tabnew)
     require("neo-tree").setup(opts)
   end
 }

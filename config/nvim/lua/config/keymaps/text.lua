@@ -5,12 +5,12 @@ for _, char in ipairs(chars) do
 end
 
 -- break line
-map({ "n", "i" }, "<C-cr>", function()
-  local cmd = [[i\<cr>]]
-  local pos = vim.api.nvim_win_get_cursor(0)
-  vim.cmd([[execute "normal! ]] .. cmd .. [["]])
-  vim.api.nvim_win_set_cursor(0, pos)
-end, "break line")
+-- map({ "n", "i" }, "<C-cr>", function()
+--   local cmd = [[i\<cr>]]
+--   local pos = vim.api.nvim_win_get_cursor(0)
+--   vim.cmd([[execute "normal! ]] .. cmd .. [["]])
+--   vim.api.nvim_win_set_cursor(0, pos)
+-- end, "break line")
 
 -- https://www.reddit.com/r/neovim/comments/10kah18/comment/j5pwppw/?utm_source=share&utm_medium=web2x&context=3
 map({ "n", "i" }, "<S-cr>", "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>", "assert new line below")
@@ -28,9 +28,9 @@ map("i", "<C-k>", "<Up>")
 map("i", "<C-z>", "<cmd>normal! u<cr>")
 map("i", "<C-S-z>", [[<cmd>exec "normal! \<C-r>"<cr>]]) -- Flaw: cursor won't be recovered
 
--- duplicate line
-map("n", "<leader>d", [[V"vY'>"vp]], "duplicate line")
-map("v", "<leader>d", [["vY'>"vp]], "duplicate line")
+-- duplicate line (deprecated by duplicate.nvim)
+-- map("n", "<leader>d", [[V"vY'>"vp]], "duplicate line")
+-- map("v", "<leader>d", [["vY'>"vp]], "duplicate line")
 
 -- Cmdline
 -- :h emacs-keys*

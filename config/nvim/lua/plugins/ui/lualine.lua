@@ -124,7 +124,7 @@ M.opts = function()
             local clients = {}
             local bufnr = vim.api.nvim_get_current_buf()
             for _, client in ipairs(vim.lsp.get_active_clients()) do
-              if client.name ~= "null-ls" then
+              if client.name ~= "null-ls" and client.name ~= "copilot" then
                 if client.attached_buffers[bufnr] then
                   clients[client.name] = true
                 end
@@ -139,7 +139,20 @@ M.opts = function()
             clients = vim.tbl_keys(clients)
             return table.concat(clients, " ")
           end,
-          icon = { "", align = "left" },
+          icon = { "󰒍", align = "left" }, -- alternative: 
+          padding = { left = 1, right = 0 },
+          separator = "",
+        },
+        {
+          function()
+            local icon = ""
+            local status = require("copilot.api").status.data
+            return icon .. (status.message or "")
+          end,
+          cond = function()
+            local ok, clients = pcall(vim.lsp.get_active_clients, { name = "copilot", bufnr = 0 })
+            return ok and #clients > 0
+          end,
           padding = { left = 1, right = 1 },
           separator = "",
         },

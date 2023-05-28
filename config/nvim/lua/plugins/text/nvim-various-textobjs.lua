@@ -16,7 +16,7 @@ M.config = function(_, opts)
   -- diagnostic
   map(ox, "ix", t.diagnostic, "diagnostic")
   -- url
-  map(ox, "ir", t.url, "url")
+  map(ox, "iR", t.url, "url")
   -- Indentation
   map(ox, "iI", function() t.indentation(true, true) end, "indent in current context")
   map(ox, "aI", function() t.indentation(false, false) end, "indent in current context")
@@ -24,10 +24,10 @@ M.config = function(_, opts)
   -- Paragraph
   -- map(ox, "<C-}>", function() t.restOfParagraph() end, "to paragraph end (linewise)")
   -- Key/value
-  map(ox, "iv", function() t.value(true) end, "value (KV)")
-  map(ox, "av", function() t.value(false) end, "value (KV)")
-  map(ox, "ik", function() t.key(true) end, "key (KV)")
-  map(ox, "ak", function() t.key(false) end, "key (KV)")
+  map(ox, "iV", function() t.value(true) end, "value (KV)")
+  map(ox, "aV", function() t.value(false) end, "value (KV)")
+  map(ox, "iK", function() t.key(true) end, "key (KV)")
+  map(ox, "aK", function() t.key(false) end, "key (KV)")
   -- entire content
   map(ox, "ie", function() t.entireBuffer() end, "entire content")
   map(ox, "ae", function() t.entireBuffer() end, "entire content")

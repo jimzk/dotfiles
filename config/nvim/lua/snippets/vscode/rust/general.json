@@ -86,11 +86,38 @@
   "for": {
     "prefix": "for",
     "body": [
-      "for $1 in $2 {",
+      "for ${2:i} in $1 {",
       "\t${3:todo!()}",
       "}"
     ],
     "description": "for … in … { … }"
+  },
+  "for i": {
+    "prefix": "for i",
+    "body": [
+      "for i in ${1:0}..${2:10} {",
+      "\t${3:todo!()}",
+      "}"
+    ],
+    "description": "for i in x..y { … }"
+  },
+  "for iter": {
+    "prefix": "for iter",
+    "body": [
+      "for ${2:i} in $1.iter() {",
+      "\t${3:todo!()}",
+      "}"
+    ],
+    "description": "for i in vec.iter().enumerate() { … }"
+  },
+  "for iter.enumerate": {
+    "prefix": "for iter.enumerate",
+    "body": [
+      "for (i, v) in $1.iter().enumerate() {",
+      "\t${3:todo!()}",
+      "}"
+    ],
+    "description": "for i in vec.iter().enumerate() { … }"
   },
   "if let": {
     "prefix": "if let",

@@ -73,15 +73,15 @@ M.config = function(_, opts)
   map("n", "zM", ufo.closeAllFolds)
   map("n", "zr", ufo.openFoldsExceptKinds)
   map("n", "zm", ufo.closeFoldsWith)
-  map({ "n", "x", "o" }, ">", function()
+  map({ "n", "x", "o" }, "zl", function()
     ufo.goNextClosedFold()
     ufo.peekFoldedLinesUnderCursor()
   end, "next fold (ufo)")
-  map({ "n", "x", "o" }, "<", function()
+  map({ "n", "x", "o" }, "zh", function()
     ufo.goPreviousClosedFold()
     ufo.peekFoldedLinesUnderCursor()
   end, "prev fold (ufo)")
-  map("n", "<C-m>", "za", "toggle fold")
+  -- map("n", "<C-m>", "za", "toggle fold")
 end
 
 return M

@@ -1,7 +1,10 @@
 local M = {
   -- Enhanced f/F/t/T motions.
   -- Known issue: https://github.com/ggandor/flit.nvim/issues/3.
-  "fjchen7/flit.nvim", -- I add support for exclude match in o/x mode
+  -- Change of my repo:
+  -- * support for exclude match in o/x mode
+  -- * support for setting key to false.
+  "fjchen7/flit.nvim",
   dependencies = {
     "ggandor/leap.nvim",
   },
@@ -9,8 +12,8 @@ local M = {
 }
 
 M.opts = {
-  keys = { f = "f", F = "F", t = "T", T = "T" },
-  labeled_modes = "nvo",
+  keys = { f = "f", F = "F", t = false, T = false },
+  labeled_modes = "o", -- "nvo"
   -- my option
   motion_specific_args = {
     o = {

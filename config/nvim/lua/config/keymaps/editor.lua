@@ -326,7 +326,7 @@ mappings = {
 }
 set_mapppings(mappings, { prefix = "<leader>f" })
 
-map("n", "<leader><Tab>", "<cmd>Telescope resume<cr>", "resume telescope")
+map("n", "<leader>`", "<cmd>Telescope resume<cr>", "resume telescope")
 
 mappings = {
   -- name = "+coding",
@@ -381,3 +381,15 @@ mappings = {
   end, "git projects" },
 }
 set_mapppings(mappings, { prefix = "<leader>p" })
+
+mappings = {
+  ["<leader>"] = {
+    ["="] = { "=", "indent (=)", mode = { "n", "x", "o" } },
+    ["H"] = { "H", "H", mode = { "n", "x", "o" } },
+    ["L"] = { "L", "L", mode = { "n", "x", "o" } },
+    ["M"] = { "M", "M", mode = { "n", "x", "o" } },
+  },
+  -- ["<C-u>"] = { "<C-u>zz" },
+  -- ["<C-d>"] = { "<C-d>zz" },
+}
+set_mapppings(mappings, { prefix = "" })

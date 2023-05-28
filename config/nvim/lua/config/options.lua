@@ -14,9 +14,9 @@ opt.conceallevel = 0 -- Hide * markup for bold and italic
 opt.cursorline = true -- Enable highlighting of the current line
 
 opt.hlsearch = true -- Highlight search text
-opt.incsearch = false -- Not jump to the first match immediately
+opt.incsearch = true -- Not jump to the first match immediately
 opt.wrap = true -- Line wrap
-opt.scrolloff = 6 -- Lines of context
+opt.scrolloff = 2 -- Lines of context
 opt.sidescrolloff = 10 -- Columns of context
 
 opt.number = true -- Print line number
@@ -43,7 +43,7 @@ opt.grepformat     = "%f:%l:%c:%m"
 opt.grepprg        = "rg --vimgrep"
 opt.hidden         = true -- Enable modified buffers in background
 opt.inccommand     = "nosplit" -- preview incremental substitute
-opt.laststatus     = 0
+opt.laststatus     = 3
 opt.mouse          = "a" -- enable mouse for all mode
 -- https://www.reddit.com/r/neovim/comments/11dmaed/keep_buffer_view_when_you_return_to_file/
 opt.jumpoptions    = "stack,view" -- Make jumplist behave like web browser back / forward

@@ -24,16 +24,17 @@ M.opts = {
   -- Hide inactive buffers and file extensions. Other options are `alternate`, `current`, and `visible`.
   hide = { extensions = true }, -- hide invisible buffer, more clean!
   -- Disable highlighting alternate buffers
-  highlight_alternate = false,
+  highlight_alternate = true,
   -- Disable highlighting file icons in inactive buffers
-  highlight_inactive_file_icons = false,
+  highlight_inactive_file_icons = true,
   -- Enable highlighting visible buffers
   highlight_visible = true,
   icons = {
     -- Configure the base icons on the bufferline.
-    buffer_index = false,
+    buffer_index = true,
     buffer_number = false,
-    button = "",
+    -- button = "",
+    button = false,
     -- Enables / disables diagnostic symbols
     diagnostics = {
       [vim.diagnostic.severity.ERROR] = { enabled = true, icon = " " },
@@ -62,9 +63,9 @@ M.opts = {
     preset = "default",
     -- Configure the icons on the bufferline based on the visibility of a buffer.
     -- Supports all the base icon options, plus `modified` and `pinned`.
-    alternate = { filetype = { enabled = false } },
-    current = { buffer_index = false },
-    inactive = { button = "×" },
+    alternate = { filetype = { enabled = true } },
+    current = { buffer_index = true },
+    inactive = { button = false },
     visible = { modified = { buffer_number = false } },
   },
   -- If true, new buffers will be inserted at the start/end of the list.
@@ -76,7 +77,7 @@ M.opts = {
   -- Sets the minimum padding width with which to surround each tab
   minimum_padding = 1,
   -- Sets the maximum buffer name length.
-  maximum_length = 30,
+  maximum_length = 20,
   -- Sets the minimum buffer name length.
   minimum_length = 0,
   -- If set, the letters for each buffer in buffer-pick mode will be
@@ -108,14 +109,28 @@ M.config = function(_, opts)
   require("bufferline").setup(opts)
   -- override default mapping
   vim.defer_fn(function()
+    -- Buffers
     map("n", "-", "<CMD>BufferPrevious<CR>", "previous buffer")
     map("n", "=", "<CMD>BufferNext<CR>", "next buffer")
-    map("n", "<C-_>", "<CMD>BufferMovePrevious<CR>", "move tab to previous")
-    map("n", "<C-+>", "<CMD>BufferMoveNext<CR>", "move tab to next")
-    map("n", "<BS>", "<CMD>BufferClose<CR>", "delete buffer")
-    map("n", "<S-BS>", "<CMD>BufferCloseAllButVisible<CR>", "delete all buffer")
-    -- map("n", "<C-0>", "<CMD>BufferPick<CR>", "pick a buffer")
-    map("n", "<C-0>", "<CMD>BufferPin<CR><CMD>Hbac toggle_pin<CR>", "pin buffer")
+    map("n", "_", "<CMD>vs<CR><CMD>BufferPrevious<CR>", "split previous buffer")
+    map("n", "+", "<CMD>vs<CR><CMD>BufferNext<CR>", "split next buffer")
+    -- Move buffers
+    map("n", "<M-->", "<CMD>BufferMovePrevious<CR>", "move buffer to previous")
+    map("n", "<M-=>", "<CMD>BufferMoveNext<CR>", "move buffer to next")
+    -- map("n", "<leader><BS>", "<CMD>BufferClose<CR>", "delete buffer")
+    -- map("n", "<leader><S-BS>", "<CMD>BufferCloseAllButVisible<CR>", "delete all buffer")
+    -- map("n", "<C-0>", "<CMD>BufferPin<CR><CMD>Hbac toggle_pin<CR>", "pin buffer")
+    map("n", "<C-p>", "<CMD>BufferPin<CR>", "pin buffer")
+    map("n", "<M-1>", "<CMD>BufferGoto 1<CR>")
+    map("n", "<M-2>", "<CMD>BufferGoto 2<CR>")
+    map("n", "<M-3>", "<CMD>BufferGoto 3<CR>")
+    map("n", "<M-4>", "<CMD>BufferGoto 4<CR>")
+    map("n", "<M-5>", "<CMD>BufferGoto 5<CR>")
+    map("n", "<M-6>", "<CMD>BufferGoto 6<CR>")
+    map("n", "<M-7>", "<CMD>BufferGoto 7<CR>")
+    map("n", "<M-8>", "<CMD>BufferGoto 8<CR>")
+    map("n", "<M-9>", "<CMD>BufferGoto 9<CR>")
+    map("n", "<M-0>", "<CMD>BufferLast<CR>", "go to last buffer")
   end, 0)
 
   local set_hl = function(status, styles)
@@ -131,6 +146,7 @@ M.config = function(_, opts)
   set_hl("DefaultCurrent", "gui=bold guibg=#51576d")
   vim.cmd [[hi BufferDefaultVisibleADDED guifg=#a6d189]]
   vim.cmd [[hi BufferDefaultVisibleDELETED guifg=#e78284]]
+  vim.cmd [[hi BufferDefaultVisibleIndex guifg=#f4b8e4]]
   local fg_color = "#c2c2c2"
   vim.cmd("hi BufferDefaultCurrent guifg=" .. fg_color)
   vim.cmd("hi BufferDefaultVisible guifg=" .. fg_color)

@@ -21,9 +21,10 @@ return {
       search_method = "cover",
       custom_textobjects = {
         -- ib/ab is overwritten by matchup
-        b = { { "%b()", "%b{}", "%b[]" }, "^.().*().$" },
+        b = { { "%b()", "%b{}" }, "^.().*().$" },
         B = { { "%b{}" }, "^.().*().$" },
-        K = { { "%b<>" }, "^.().*().$" },
+        k = { { "%b<>" }, "^.().*().$" },
+        r = { { "%b[]" }, "^.().*().$" },
         -- O = { { "%b[]" }, "^.().*().$" },
         ["?"] = false, -- Disable prompt ask motion
         g = gen_spec.function_call({ name_pattern = "[%w_:%.]" }),
@@ -35,15 +36,16 @@ return {
     ai.setup(opts)
     local keymaps = {
       B = "{}",
-      K = "<>",
+      k = "<>",
+      r = "[]",
       g = "all function prarameters",
     }
     for key, desc in pairs(keymaps) do
       map({ "x", "o" }, "i" .. key, nil, desc)
       map({ "x", "o" }, "a" .. key, nil, desc)
     end
-    map({ "x", "o" }, "i<Space>", "iW", "between space")
-    map({ "x", "o" }, "a<Space>", "aW", "between space")
+    map({ "x", "o" }, "i<Space>", "iW", "between spaces")
+    map({ "x", "o" }, "a<Space>", "aW", "between spaces")
     -- ]a and [a move to start at parameter. Defaults stay at end.
     map({ "n", "x", "o" }, "]a", function()
       ai.move_cursor("left", "i", "a", { search_method = "next" })

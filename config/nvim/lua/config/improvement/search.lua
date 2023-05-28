@@ -24,10 +24,10 @@ local asterisk = function(yank_keys, transfer_pattern)
     vim.cmd('normal! "v' .. yank_keys)
     local view = vim.fn.winsaveview()
     local pattern = vim.fn.getreg("v")
-        :gsub("\n$", "")-- remove last \n
-        :gsub("([/*\\%]])", "\\%1")-- escape / * \ ]
+        :gsub("\n$", "")            -- remove last \n
+        :gsub("([/*\\%]])", "\\%1") -- escape / * \ ]
         :gsub("\n", [[\n]])
-    vim.fn.setreg("v", "") -- clear register
+    vim.fn.setreg("v", "")          -- clear register
     if transfer_pattern then
       pattern = transfer_pattern(pattern)
     end
@@ -49,11 +49,11 @@ map("n", "g*", asterisk("yiw", border_match), "search by border")
 map("v", "g*", asterisk("y", border_match), "search by border")
 
 -- Search in visual range
-map("x", "/", function()
-  local keys = "<Esc>/\\%V"
-  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
-  vim.api.nvim_feedkeys(keys, "m", true)
-end, "search in visual range")
+-- map("x", "/", function()
+--   local keys = "<Esc>/\\%V"
+--   keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+--   vim.api.nvim_feedkeys(keys, "m", true)
+-- end, "search in visual range")
 -- Search in visible range (:h search-range)
 map("n", "<C-/>", function()
   vim.wo.scrolloff = 0

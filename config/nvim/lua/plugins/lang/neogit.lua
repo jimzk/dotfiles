@@ -1,5 +1,5 @@
 return {
-  "TimUntersberger/neogit",
+  "NeogitOrg/neogit",
   event = "VeryLazy",
   opts = {
     integrations = {

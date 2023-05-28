@@ -4,8 +4,8 @@ local M = {
   event = "BufReadPost",
 }
 
-local incremental_selection_key = "+"
-local decremental_selection_key = "_"
+local incremental_selection_key = "<cr>"
+local decremental_selection_key = "<bs>"
 local highlight_disabled_langs = { "", "gitcommit", "markdown" }
 M.opts = {
   ensure_installed = "all",
@@ -32,9 +32,9 @@ M.opts = {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = false,
-      node_incremental = incremental_selection_key,
-      node_decremental = decremental_selection_key,
+      init_selection = "<cr>",
+      node_incremental = "<cr>",
+      node_decremental = "<bs>",
       scope_incremental = false, -- '<TAB>'
     },
   },

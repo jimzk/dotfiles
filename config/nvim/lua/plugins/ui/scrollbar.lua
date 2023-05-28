@@ -29,10 +29,11 @@ return {
     require("scrollbar").setup(opts)
     require("scrollbar.handlers.gitsigns").setup()
     -- Customized highlights
-    vim.cmd [[hi! ScrollbarHandle guibg=#51576d]]
-    vim.cmd [[hi! ScrollbarSearchHandle guibg=#51576d]]
+    local guifg = "#666c8d"
+    vim.cmd("hi! ScrollbarHandle guibg=" .. guifg)
+    vim.cmd("hi! ScrollbarSearchHandle guibg=" .. guifg)
     for _, key in ipairs { "Add", "Change", "Delete" } do
-      vim.cmd("hi ScrollbarGit" .. key .. "Handle guibg=#51576d")
+      vim.cmd("hi ScrollbarGit" .. key .. "Handle guibg=" .. guifg)
     end
   end,
 }

@@ -5,31 +5,32 @@ local M = {
 }
 
 M.keys = {
-  {
-    ";",
-    function()
-      local focusable_windows_on_tabpage = vim.tbl_filter(
-        function(win) return vim.api.nvim_win_get_config(win).focusable end,
-        vim.api.nvim_tabpage_list_wins(0)
-      )
-      require("leap").leap { target_windows = focusable_windows_on_tabpage }
-    end,
-    mode = { "n" },
-    desc = "leap cross window"
-  },
-  {
-    ";",
-    function()
-      local current_window = vim.fn.win_getid()
-      require("leap").leap {
-        target_windows = { current_window, },
-        -- NOTE: forward excludes the match but backward won't for operation
-        inclusive_op = false,
-      }
-    end,
-    mode = { "x", "o" },
-    desc = "leap current window"
-  },
+  -- {
+  --   ";",
+  --   function()
+  --     local focusable_windows_on_tabpage = vim.tbl_filter(
+  --       function(win) return vim.api.nvim_win_get_config(win).focusable end,
+  --       vim.api.nvim_tabpage_list_wins(0)
+  --     )
+  --     require("leap").leap { target_windows = focusable_windows_on_tabpage }
+  --   end,
+  --   mode = { "n" },
+  --   desc = "leap cross window by two keys"
+  -- },
+  -- {
+  --   ";",
+  --   function()
+  --     local current_window = vim.fn.win_getid()
+  --     require("leap").leap {
+  --       target_windows = { current_window, },
+  --       -- NOTE: forward excludes the match but backward won't for operation
+  --       inclusive_op = false,
+  --     }
+  --   end,
+  --   mode = { "x", "o" },
+  --   desc = "leap current window by two keys"
+  -- },
+
   -- { "s", "<Plug>(leap-forward-to)", mode = { "n", "x" } },
   -- { "S", "<Plug>(leap-backward-to)", mode = { "n", "x" } },
   -- { "s", "<Plug>(leap-forward-till)", mode = { "o" } },
@@ -74,6 +75,10 @@ M.config = function(_, opts)
   leap.setup(opts)
   -- Greying out the search area
   vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+  -- align with highlights of flash.nvim
+  vim.cmd [[hi! link LeapMatch Substitute]]
+  vim.cmd [[hi! link LeapLabelPrimary Substitute]]
+  vim.cmd [[hi LeapLabelSecondary guifg=#99d1db guibg=#51576d]]
 end
 
 return M

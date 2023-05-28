@@ -12,7 +12,7 @@
 -- 1. Map two keys individually
 -- 2. Enbable CSIu in terminal or GUI.
 -- map("n", "<C-m>", "<Nop>") -- Need to map <Cr> as well
-map("n", "<CR>", [[<cmd>silent! exec "normal! \<C-]>"<cr>]])
+map("n", "<C-b>", [[<cmd>silent! exec "normal! \<C-]>"<cr>]])
 map({ "n", "o", "x" }, "<Esc>", "<Esc>")
 
 -- Clear search with <esc>
