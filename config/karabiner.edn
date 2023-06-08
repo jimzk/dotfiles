@@ -134,7 +134,7 @@
         [:!Tx [:openApp "flomo"]]
         [:!Tslash :!COSf12] ;; Quick flomo
         [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
-        [:!Ty [:openApp "网易有道词典"]]
+        [:!Ty [:openApp "网易有道翻译"]]
       ]
     }
     {:des "left control"
