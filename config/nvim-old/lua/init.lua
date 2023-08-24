@@ -1,6 +1,0 @@
-require("utils")
-require("plugin")
-require("editor")
-require("plugin.init")
-require("keymap")
-require("neovide")
