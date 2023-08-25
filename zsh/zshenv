@@ -48,8 +48,8 @@ FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --an
 --bind='alt-n:toggle+down' \
 --bind='alt-p:toggle+up' \
 --bind='ctrl-space:toggle' \
---bind='ctrl-f:preview-page-down' \
---bind='ctrl-b:preview-page-up' \
+--bind='alt-f:preview-half-page-down' \
+--bind='alt-b:preview-half-page-up' \
 --bind='shift-up:preview-page-up' \
 --bind='shift-down:preview-page-down' \
 --bind 'ctrl-\:toggle-preview' \
@@ -69,8 +69,7 @@ export LS_COLORS=${LS_COLORS:-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:s
 export ZLS_COLORS=$LS_COLORS
 export PAGER='less'
 # colorful man
-# https://blog.quarticcat.com/posts/how-do-i-make-my-zsh-smooth-as-fuck/#man-pages
-export MANPAGER='sh -c "col -bx | bat -pl man --theme=Monokai\ Extended"'
+# https://blog.quarticcat.com/posts/how-do-i-make-my-zsh-smooth-as-fuck/#man-pages; export MANPAGER='sh -c "col -bx | bat -pl man --theme=Monokai\ Extended"'
 export MANROFFOPT='-c'
 # less color
 #   -i: ignore case at search

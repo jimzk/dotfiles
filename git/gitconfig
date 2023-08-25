@@ -1,6 +1,6 @@
 # This is Git's per-user configuration file.
 [core]
-    ignorecase = true
+    ignorecase = false
     # pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
 	editor = nvim
@@ -17,7 +17,6 @@
     default = simple
 [alias]
     # I do not load zsh plugin "git" (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git) and only add those I need from it
-
     lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
     lgv = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %Cgreen(%cr) %C(bold blue)%an <%ce>%Creset%n%B' --date=relative"
     lgvv = "lgv --name-status"
@@ -32,6 +31,8 @@
     aliax = "!git config --get-regexp ^alias\\. | sort | cut -c7- | sed -e \"s/ '/ /\" -e \"s/'$/$/\" | sed -e \"s/ / = '/\" -e \"s/$/'/\""
     # Undo last commit, but don't throw away your changes
     undo = "reset --soft HEAD^"
+    # Open diff by nvim diffview. See https://www.reddit.com/r/neovim/comments/11ls23z/comment/jbe7uzl
+    # dt = "! args=$@; shift $#; nvim -c \"DiffviewOpen $args\""
 [color]  # Improved colors for the highlighted bits
     ui = true
 [gui]
@@ -67,7 +68,13 @@
     path = ~/.dotfiles/git/gitconfig.local
     path = ~/.dotfiles/git/delta.gitconfig
 [commit]
-	template = ~/.dotfiles/git/gitmessage
+    template = ~/.dotfiles/git/gitmessage
+[rebase]
+    autoSquash = true
+    autoStash = true
 [gc]
     # https://donatstudios.com/yagni-git-gc
-	auto = 0
+    auto = 0
+[pull]
+    # use fast forward only mode when pulling (avoid merge commit)
+    ff = only

@@ -96,3 +96,4 @@ source $DOTFILES_ZSH_HOME/zshenv
 source $DOTFILES_ZSH_HOME/zle.zsh
 source $DOTFILES_ZSH_HOME/alias.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
+eval "$(github-copilot-cli alias -- "$0")"

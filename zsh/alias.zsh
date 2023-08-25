@@ -2,14 +2,9 @@ case "$OSTYPE" in
     darwin* )
         alias pc='tee >(pbcopy)' # copy + stdout
         alias pp=pbpaste
-        alias proxy="_proxy"
-        alias unproxy="_unproxy"
-        _unproxy() {
-            unset http_proxy https_proxy all_proxy
-        }
-        _proxy() {
-            export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
-        }
+        alias proxy_clash="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
+        alias unproxy="unset http_proxy https_proxy all_proxy"
+        alias proxy_proxyman="export https_proxy=http://172.20.10.2:9090 http_proxy=http://172.20.10.2:9090 all_proxy=socks5://172.20.10.2:9090"
         alias 'proxy?'="_is_proxy"
         _is_proxy() {
             r=$(curl -sL -vv https://www.google.com --max-time 3 2>/dev/null)
@@ -19,7 +14,6 @@ case "$OSTYPE" in
                 echo "✅ $(tput setaf 2)"In Proxy!"$(tput sgr0)"
             fi
         }
-        _proxy
         ;;
     linux* )
         alias open="_f(){ open_command ${@:-.} }; _f" # `open_command` is zsh builtin functions
@@ -82,6 +76,17 @@ alias 'brew?'='_quick_grep "_brew_list" $@'
 alias 'zstyle?'='_quick_grep "zstyle -L" $@'
 
 # git
+git_current_branch () {
+    local ref
+    ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null) 
+    local ret=$? 
+    if [[ $ret != 0 ]]
+    then
+        [[ $ret == 128 ]] && return
+        ref=$(command git rev-parse --short HEAD 2> /dev/null)  || return
+    fi
+    echo ${ref#refs/heads/}
+}
 alias gs='git status'
 alias gss='git status -sb'
 alias gsh='git stash'
@@ -89,32 +94,44 @@ alias gshp='git stash pop'
 alias gshname='git stash push -m'
 alias ga='git add'
 alias gaa='git add -A'
+alias gab='_f(){ git add $@ && git absorb }; _f'
+alias gabr='_f(){ git add $@ && git absorb --and-rebase }; _f'
 alias gc='git commit'
 alias gcm='git commit -m'
+alias gcf='git commit --fixup'
 alias gc!='git commit --amend -v'
 alias gc!!='git commit --amend -v -C HEAD'
 alias 'gc-'='git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) -v'
+alias gcl='git clone'
 alias gk='git checkout'
 alias gk-='git checkout -'
 # checkout branch
 alias gkb='git checkout $(git branch --sort=-committerdate --color=always -a | fzf --query "!remote " --preview "git lg {-1} -20" --height=70% --preview-window down,70%,wrap,border --header="^d delete branch" --bind "ctrl-d:execute(git branch -d {-1} > /dev/null)+reload(git branch --sort=-committerdate --color=always -a)" | awk "{print $NF}" |  sed -e "s/remotes\///" -e "s/*//")'
 alias gp='git push'
 alias gp!='git push -f'
+alias gpb='git push --set-upstream origin $(git_current_branch)'
+alias gpl='git pull'
 alias gb='git branch'
 alias gbv='git branch -vv'
+alias gbd='git branch -d'
 alias gd='git diff'
+alias gf='git fetch'
+alias gfp='git fetch --prune'  # prune branch that is deleted on remote
 alias glg='git lg'
+alias glgs='git lg --stat'  # show changed files
 alias glgv='git lgv'
 alias glgvv='git lgvv'
 alias gre='git restore'
 alias gres='git restore --staged'
-alias gr='git rebase'
-alias gri='git rebase -i'
-alias gra='git rebase --abort'
-alias grc='git rebase --continue'
-alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) }; _f'
+alias gr='git remote'
+alias grv='git remote -v'
+alias grb='git rebase'
+alias grbi='git rebase -i --autosquash --autostash'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
+alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return 1; git add $@ && git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) }; _f'
 alias gac.='gac .'
-alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return; git add $@; gc! }; _f'
+alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return 1; git add $@ && gc! }; _f'
 alias g='git'
 
 # show information
@@ -131,7 +148,10 @@ alias @ip='curl -s "cip.cc"'
 alias wtf='_wtf'
 
 # more efficient
-alias 'vim$'="vim -c \"normal '0\""  # open last file
+alias vim="nvim"
+alias v="nvim"
+alias vv="neovide --frame none"
+alias 'vim$'="nvim -c \"normal '0\""  # open last file
 alias ':q'='exit'
 alias now='date +"%Y-%m-%d %T"'
 
@@ -144,6 +164,8 @@ alias n='nnn -T d -io -P v'
 alias d='_f(){ du -sh $@ | sort -h }; _f'
 alias 'd*'='_f(){ du -sh * | sort -h }; _f'
 alias trn='tr -d "\n"'
+# Fix neovim highlight in tmux: https://gist.github.com/gutoyr/4192af1aced7a1b555df06bd3781a722
+alias tmux='env TERM=screen-256color tmux'
 alias tn='tmux new -A -s main'
 alias ta='tmux attach'
 alias tl='tmux list-session'

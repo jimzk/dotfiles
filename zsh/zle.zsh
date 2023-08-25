@@ -22,7 +22,8 @@ bindkey -e
 # zsh-autosuggestion
 bindkey '^o' autosuggest-execute
 
-# zsh navi widget
+# zsh navi widget, tweaked from `navi widget zsh`.
+# ^o opens cheatsheet
 _navi_call() {
     local result="$(navi --fzf-overrides '--tiebreak=begin,length' --print "$@" </dev/tty)"
     [[ -n "$result" ]] && printf "%s" "$result"
