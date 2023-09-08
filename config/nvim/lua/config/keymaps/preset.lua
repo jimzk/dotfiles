@@ -15,8 +15,10 @@
 map("n", "<C-b>", [[<cmd>silent! exec "normal! \<C-]>"<cr>]])
 map({ "n", "o", "x" }, "<Esc>", "<Esc>")
 
--- Clear search with <esc>
-map({ "n" }, "<esc>", "<cmd>noh<cr><esc>", "escape and clear hlsearch")
+-- Clear hlsearch with <esc>
+map({ "n" }, "<esc>", "<cmd>noh<cr><esc>")
+-- Remap ' for exact postion jump
+map({ "n", "x", "o" }, "'", "`")
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 -- map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })

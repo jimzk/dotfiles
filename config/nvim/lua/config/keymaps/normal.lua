@@ -1,7 +1,7 @@
 local ignored = "which_key_ignore"
 local mappings = {
   -- Alternative Windows
-  -- ["<Tab>"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
+  ["`"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
   ["<Tab>"] = { "<C-^>", "✭ alternative buffer" },
   ["<S-Tab>"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
@@ -23,29 +23,30 @@ local mappings = {
   ["<C-q>"] = { "<cmd>up<cr><cmd>qa<cr>", ignored },
   -- Delete Buffer
   ["<C-BS>"] = { "<cmd>tabclose<cr>", "close tab" },
-  ["<M-BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
+  -- -- Replce by barbar
+  -- ["<M-BS>"] = { "<cmd>Bdelete<cr>", "delete buffer" },
   -- ["<leader><A-BS>"] = { "<cmd>Bwipeout<cr>", "delete buffer forcely" },
   -- https://www.reddit.com/r/neovim/comments/114z9ua/comment/j904vaa/
-  ["<M-S-BS>"] = { function()
-    local api = vim.api
-    local active_buffers = {}
-    for _, win in ipairs(api.nvim_list_wins()) do
-      active_buffers[api.nvim_win_get_buf(win)] = true
-    end
-    local count = 0
-    local buffers = api.nvim_list_bufs()
-    for _, buf in ipairs(buffers) do
-      local bo = vim.bo[buf]
-      if active_buffers[buf] ~= true
-          and bo.buflisted
-          and bo.modified ~= true
-      then
-        api.nvim_buf_delete(buf, {})
-        count = count + 1
-      end
-    end
-    vim.notify(string.format("%d unmodified hidden buffers deleted", count))
-  end, "delete unmodified hidden buffers" },
+  -- ["<M-S-BS>"] = { function()
+  --   local api = vim.api
+  --   local active_buffers = {}
+  --   for _, win in ipairs(api.nvim_list_wins()) do
+  --     active_buffers[api.nvim_win_get_buf(win)] = true
+  --   end
+  --   local count = 0
+  --   local buffers = api.nvim_list_bufs()
+  --   for _, buf in ipairs(buffers) do
+  --     local bo = vim.bo[buf]
+  --     if active_buffers[buf] ~= true
+  --         and bo.buflisted
+  --         and bo.modified ~= true
+  --     then
+  --       api.nvim_buf_delete(buf, {})
+  --       count = count + 1
+  --     end
+  --   end
+  --   vim.notify(string.format("%d unmodified hidden buffers deleted", count))
+  -- end, "delete unmodified hidden buffers" },
   -- Replace by smart-splits
   -- Move to window using the <ctrl> hjkl keys
   -- ["<C-h>"] = { "<cmd>wincmd h<cr>", ignored },

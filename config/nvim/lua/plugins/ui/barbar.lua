@@ -117,10 +117,14 @@ M.config = function(_, opts)
     -- Move buffers
     map("n", "_", "<CMD>BufferMovePrevious<CR>", "move buffer to previous")
     map("n", "+", "<CMD>BufferMoveNext<CR>", "move buffer to next")
-    -- map("n", "<leader><BS>", "<CMD>BufferClose<CR>", "delete buffer")
-    -- map("n", "<leader><S-BS>", "<CMD>BufferCloseAllButVisible<CR>", "delete all buffer")
-    -- map("n", "<C-0>", "<CMD>BufferPin<CR><CMD>Hbac toggle_pin<CR>", "pin buffer")
-    map("n", "<C-p>", "<CMD>BufferPin<CR>", "pin buffer")
+    -- Remove buffers
+    map("n", "<BS>", "<CMD>BufferClose<CR>", "delete buffer")
+    map("n", "<S-BS>", "<CMD>BufferCloseAllButVisible<CR>", "delete all buffer")
+    -- Restore buffer
+    map("n", "<M-S-t>", "<CMD>BufferRestore<CR>", "restore buffer")
+    -- Pin buffer
+    map("n", "<M-p>", "<CMD>BufferPin<CR>", "pin buffer")
+    -- Go to buffer
     map("n", "<M-1>", "<CMD>BufferGoto 1<CR>")
     map("n", "<M-2>", "<CMD>BufferGoto 2<CR>")
     map("n", "<M-3>", "<CMD>BufferGoto 3<CR>")

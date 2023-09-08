@@ -1,4 +1,5 @@
 return {
+  -- rainbow brackets. Deprecated.
   "p00f/nvim-ts-rainbow",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   event = "BufReadPost",
