@@ -1,3 +1,4 @@
+-- I use kitty as native terminal
 local M = {
   "akinsho/toggleterm.nvim",
   version = "*",

@@ -5,5 +5,5 @@ Util.read_specs("config.keymaps", {
   -- "table",  -- lazy load by which-key
   "misc",
   "text",
-  "terminal",
+  -- "terminal",  -- I use kitty as native terminal
 })
