@@ -4,16 +4,7 @@ return {
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   event = "VeryLazy",
   opts = {
-    patterns = {
-      default = {
-        "class",
-        "function",
-        "method",
-        "interface",
-        "struct",
-        "enum",
-      },
-    },
+    max_lines = 3,
   },
   config = function(_, opts)
     require("treesitter-context").setup(opts)
