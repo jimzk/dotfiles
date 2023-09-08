@@ -23,8 +23,8 @@ return {
         -- ib/ab is overwritten by matchup
         b = { { "%b()", "%b{}" }, "^.().*().$" },
         B = { { "%b{}" }, "^.().*().$" },
-        k = { { "%b<>" }, "^.().*().$" },
-        r = { { "%b[]" }, "^.().*().$" },
+        -- k = { { "%b<>" }, "^.().*().$" },
+        -- r = { { "%b[]" }, "^.().*().$" },
         -- O = { { "%b[]" }, "^.().*().$" },
         ["?"] = false, -- Disable prompt ask motion
         g = gen_spec.function_call({ name_pattern = "[%w_:%.]" }),
@@ -36,8 +36,8 @@ return {
     ai.setup(opts)
     local keymaps = {
       B = "{}",
-      k = "<>",
-      r = "[]",
+      -- k = "<>",
+      -- r = "[]",
       g = "all function prarameters",
     }
     for key, desc in pairs(keymaps) do

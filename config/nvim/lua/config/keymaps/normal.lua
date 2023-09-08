@@ -103,7 +103,7 @@ end
 map({ "n", "i" }, "<Home>", home)
 map({ "n", "x", "o" }, "H", home)
 map({ "n", "x", "o" }, "0", home)
-map({ "n", "x", "o" }, "L", "$")
+map({ "n", "x" }, "L", "$") -- "o" taken by nvim-various-textobjs
 map({ "n", "x", "o" }, "gH", "g^")
 map({ "n", "x", "o" }, "gL", "g$")
 map({ "n", "x", "o" }, "$", "L", "H")

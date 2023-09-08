@@ -11,37 +11,44 @@ M.opts = {
 M.config = function(_, opts)
   local t = require("various-textobjs")
   t.setup(opts)
-
   local ox = { "o", "x" }
-  -- diagnostic
-  map(ox, "ix", t.diagnostic, "diagnostic")
-  -- url
-  map(ox, "iR", t.url, "url")
+  local o = { "o" }
+  map(ox, "!", t.diagnostic, "diagnostic")
+  map(ox, "|", function() t.column() end, "column down")
+  map(o, "L", function() t.nearEoL() end)
+  map(ox, "iu", t.url, "url")
+  map(ox, "au", t.url, "url")
   -- Indentation
-  map(ox, "iI", function() t.indentation(true, true) end, "indent in current context")
-  map(ox, "aI", function() t.indentation(false, false) end, "indent in current context")
-  map(ox, "i<C-i>", function() t.restOfIndentation() end, "to indent end")
-  -- Paragraph
-  -- map(ox, "<C-}>", function() t.restOfParagraph() end, "to paragraph end (linewise)")
+  map(ox, "ii", function() t.indentation("inner", "inner") end, "indent")
+  map(ox, "ai", function() t.indentation("outer", "outer") end, "indent")
+  map(ox, "iI", function() t.restOfIndentation() end, "to indent end")
+  map(ox, "aI", function() t.restOfIndentation() end, "to indent end")
+  -- Next
+  map(ox, "}", function() t.restOfParagraph() end)
+  map(ox, "C", function() t.toNextClosingBracket() end, "to next } ) ]")
+  map(ox, "Q", function() t.toNextQuotationMark() end, "to next ' \" `")
+  -- Subword
+  map(ox, "as", function() t.subword("outer") end)
+  map(ox, "is", function() t.subword("inner") end)
   -- Key/value
-  map(ox, "iV", function() t.value(true) end, "value (KV)")
-  map(ox, "aV", function() t.value(false) end, "value (KV)")
-  map(ox, "iK", function() t.key(true) end, "key (KV)")
-  map(ox, "aK", function() t.key(false) end, "key (KV)")
-  -- entire content
-  map(ox, "ie", function() t.entireBuffer() end, "entire content")
-  map(ox, "ae", function() t.entireBuffer() end, "entire content")
-  -- column down
-  map(ox, "i|", function() t.column() end, "column down")
+  map(ox, "iv", function() t.value("inner") end, "value (KV)")
+  map(ox, "av", function() t.value("outer") end, "value (KV)")
+  map(ox, "ik", function() t.key("inner") end, "key (KV)")
+  map(ox, "ak", function() t.key("outer") end, "key (KV)")
+  -- Entire content
+  map(ox, "i<cr>", function() t.entireBuffer() end, "entire content")
+  map(ox, "a<cr>", function() t.entireBuffer() end, "entire content")
+  map(ox, "ae", function() t.visibleInWindow() end, "entire visible content")
+  map(ox, "ie", function() t.restOfWindow() end, "reset visible content")
   -- Markdown
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "markdown" },
     callback = function()
       local o = { buffer = true }
-      map(ox, "iU", function() t.mdlink(true) end, "markdown link", o)
-      map(ox, "aU", function() t.mdlink(false) end, "markdown link", o)
-      map(ox, "iC", function() t.mdFencedCodeBlock(true) end, "markdown code block", o)
-      map(ox, "aC", function() t.mdFencedCodeBlock(false) end, "markdown code block", o)
+      map(ox, "iL", function() t.mdlink("inner") end, "markdown link", o)
+      map(ox, "aL", function() t.mdlink("outer") end, "markdown link", o)
+      map(ox, "iC", function() t.mdFencedCodeBlock("inner") end, "markdown code block", o)
+      map(ox, "aC", function() t.mdFencedCodeBlock("outer") end, "markdown code block", o)
     end,
   })
 end

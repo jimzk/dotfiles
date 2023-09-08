@@ -11,6 +11,7 @@ local M = {
   },
 }
 
+---@diagnostic disable: missing-fields
 M.config = function()
   local cmp = require("cmp")
   local mapping = require("plugins.coding.cmp.mapping")

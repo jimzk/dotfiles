@@ -16,7 +16,7 @@ opt.cursorline = true -- Enable highlighting of the current line
 opt.hlsearch = true -- Highlight search text
 opt.incsearch = true -- Not jump to the first match immediately
 opt.wrap = true -- Line wrap
-opt.scrolloff = 2 -- Lines of context
+opt.scrolloff = 4 -- Lines of context
 opt.sidescrolloff = 10 -- Columns of context
 
 opt.number = true -- Print line number

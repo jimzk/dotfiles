@@ -49,7 +49,7 @@ return {
     map("o", "]x", move("conflict", "forward", { wrap = true }), "next conflict")
     -- Indent in current context.
     -- Cursor location won't affect indent scopr. That is the difference with mini-indentation.
-    map({ "n", "x", "o" }, "]I", move("indent", "forward"), "next indent end")
-    map({ "n", "x", "o" }, "[I", move("indent", "backward"), "next indent start")
+    -- map({ "n", "x", "o" }, "]I", move("indent", "forward"), "next indent end")
+    -- map({ "n", "x", "o" }, "[I", move("indent", "backward"), "next indent start")
   end
 }

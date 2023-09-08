@@ -5,6 +5,11 @@ return {
     integrations = {
       diffview = true,
     },
+    sections = {
+      untracked = {
+        folded = true,
+      },
+    }
     -- mappings = {
     --   status = {
     --     ["<space>"] = "Toggle",

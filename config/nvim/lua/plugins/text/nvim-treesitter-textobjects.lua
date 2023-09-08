@@ -15,8 +15,8 @@ M.config = function()
         keymaps = {
           ["af"] = { query = "@function.outer", desc = "[TS] method" },
           ["if"] = { query = "@function.inner", desc = "[TS] method " },
-          ["ac"] = { query = "@class.outer", desc = "[TS] class" },
-          ["ic"] = { query = "@class.inner", desc = "[TS] class" },
+          ["ao"] = { query = "@class.outer", desc = "[TS] class" },
+          ["io"] = { query = "@class.inner", desc = "[TS] class" },
           -- mini.ai has already provided aa and ia
           -- ["aa"] = "@parameter.outer",
           -- ["ia"] = "@parameter.inner",
@@ -42,22 +42,22 @@ M.config = function()
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
           ["]f"] = { query = "@function.outer", desc = "[TS] next method start" },
-          ["]c"] = { query = "@class.outer", desc = "[TS] next class start" },
+          ["]o"] = { query = "@class.outer", desc = "[TS] next class start" },
           ["]h"] = { query = "@conditional.outer", desc = "[TS] next condition start" },
         },
         goto_next_end = {
           ["]F"] = { query = "@function.outer", desc = "[TS] current or next method end" },
-          ["]C"] = { query = "@class.outer", desc = "[TS] current or next class end" },
+          ["]O"] = { query = "@class.outer", desc = "[TS] current or next class end" },
           ["]H"] = { query = "@conditional.outer", desc = "[TS] current or next condition end" },
         },
         goto_previous_start = {
           ["[f"] = { query = "@function.outer", desc = "[TS] current or prev method start" },
-          ["[c"] = { query = "@class.outer", desc = "[TS] current or prev class start" },
+          ["[o"] = { query = "@class.outer", desc = "[TS] current or prev class start" },
           ["[h"] = { query = "@conditional.outer", desc = "[TS] current or prev condition start" },
         },
         goto_previous_end = {
           ["[F"] = { query = "@function.outer", desc = "[TS] prev method end" },
-          ["[C"] = { query = "@class.outer", desc = "[TS] prev class end" },
+          ["[O"] = { query = "@class.outer", desc = "[TS] prev class end" },
           ["[H"] = { query = "@conditional.outer", desc = "[TS] prev condition end" },
         },
         -- goto_next = {
