@@ -20,12 +20,11 @@ local select_item = function(direction, behavior)
       copilot_select()
       return
     end
-
     if cmp.visible() then
       select { behavior = behavior }
-    else
-      cmp.complete()
+      return
     end
+    cmp.complete()
   end
 end
 
@@ -66,7 +65,6 @@ local tab = function(fallback)
   if line == line2 and col == col2 then
     fallback()
   end
-  vim.g.abort = false
 end
 
 local s_tab = function(fallback)
@@ -75,18 +73,6 @@ local s_tab = function(fallback)
   else
     fallback()
   end
-end
-
-local abort = function(_)
-  if cmp.visible() then
-    cmp.abort()
-    copilot.next()
-  elseif copilot.is_visible() then
-    copilot.dismiss()
-  else
-    cmp.complete()
-  end
-  vim.g.abort = not cmp.visible()
 end
 
 local sources = { "luasnip", "nvim_lsp", "buffer" }
@@ -105,8 +91,23 @@ end
 
 M.mapping = {
   ["<C-b>"] = cmp.mapping.scroll_docs(-4), -- preview up
-  ["<C-f>"] = cmp.mapping.scroll_docs(4), -- preview down
-  ["<C-c>"] = cmp.mapping(abort),
+  ["<C-f>"] = cmp.mapping.scroll_docs(4),  -- preview down
+  ["<C-c>"] = cmp.mapping(function(_)
+    if cmp.visible() then
+      vim.g.cmp_toggle = false
+      cmp.close()
+      copilot.next()
+      return
+    end
+    vim.g.cmp_toggle = true
+    copilot.dismiss()
+    cmp.complete()
+  end),
+  ["<C-d>"] = cmp.mapping(function(_)
+    vim.g.cmp_toggle = false
+    cmp.abort()
+    copilot.dismiss()
+  end),
 
   -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   ["<CR>"] = cmp.mapping.confirm({ select = false }),

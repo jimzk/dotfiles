@@ -1,6 +1,7 @@
 return {
   -- Coding with Copilot
   "zbirenbaum/copilot.lua",
+  build = ":Copilot auth",
   event = "InsertEnter",
   keys = {
     { mode = { "i" }, "<C-\\>", "<cmd>Copilot panel<CR>", desc = { "Copilot suggection list" } },
@@ -9,9 +10,6 @@ return {
     suggestion = {
       enabled = true,
       auto_trigger = true,
-      keymap = {
-        accept_word = "<M-n>",
-      },
     },
     panel = {
       enabled = true,
@@ -21,7 +19,6 @@ return {
       markdown = true,
       gitcommit = true,
       gitrebase = true,
-      svn = true,
     },
   },
   config = function(_, opts)

@@ -36,8 +36,10 @@ M.config = function()
         name = "nvim_lsp",
         entry_filter = function(entry, _)
           -- Kind enum: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/types/lsp.lua#L178-L204
-          -- if kind is Text, then filter
-          if entry:get_kind() == 1 then return false end
+          local filter_kinds = {}
+          filter_kinds[1] = true -- Text
+          -- filter_kinds[15] = true  -- Snippet
+          if filter_kinds[entry:get_kind()] then return false end
           local word = entry:get_word()
           for _, value in ipairs(lsp_ignored_words) do
             if word:find(value, 1, true) then
@@ -51,6 +53,10 @@ M.config = function()
       { name = "buffer", keyword_length = 4 },
       { name = "path" },
     }),
+    -- Sorting:
+    -- Default Config: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua#L62
+    -- Example: https://github.com/zbirenbaum/copilot-cmp#comparators
+    -- https://github.com/LazyVim//blob/main/lua/lazyvim/plugins/extras/coding/copilot.lua#L72
     window = {
       completion = {
         border = "none",

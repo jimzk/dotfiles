@@ -46,6 +46,7 @@ M.menu = {
   luasnip = "[LuaSnip]",
   calc = "[Calc]",
   path = "[Path]",
+  copilot = "[Copilot]"
 }
 
 M.maxwidth = 45
@@ -59,7 +60,7 @@ M.format = function(entry, item)
     end
     item.abbr = vim.fn.strcharpart(item.abbr, 0, maxwidth) .. "…"
   end
-  item.menu = M.menu[entry.source.name]
+  -- item.menu = M.menu[entry.source.name]
   return item
 end
 
