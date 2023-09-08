@@ -113,57 +113,78 @@
         ; [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
         [:escape :escape nil {:alone [:hs "spoon.Win.switchApp()"]}]
         ; [:##right_shift :right_shift nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
-        [:##right_command :right_command nil {:alone [:openApp "kitty"]}]
-        [:##right_shift :right_shift nil {:alone [:openApp "Obsidian"]}]
-        [:##right_option :right_option nil {:alone [:openApp "Google Chrome"]}]
-        [:##left_control :left_control nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
+        ; [:##right_command :right_command nil {:alone [:openApp "kitty"]}]
+        ; [:##right_shift :right_shift nil {:alone [:openApp "Obsidian"]}]
+        ; [:##right_option :right_option nil {:alone [:openApp "Google Chrome"]}]
+        ; [:##left_control :left_control nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
       ]
     }
     {:des "Applications"
       :rules [
         ;; Applications
-        [:!Tn [:openApp "Notion"]]
-        [:!Ti [:openApp "Discord"]]
-        [:!To [:openApp "WeChat"]]
-        [:!Tz [:openApp "Things3"]]
-        [:!Tc [:openApp "Google Chrome"]]
+        ; [:!Tn [:openApp "Notion"]]
+        [:!Tn [:openApp "Discord"]]
+        [:!Th [:openApp "WeChat"]]
+        [:!Treturn_or_enter [:openApp "Things3"]]
+        [:!TSreturn_or_enter :!!5 :browser]
+        [:!TSreturn_or_enter [:!TOC5]] ;; add Things3 task
+        [:!Tv [:openApp "Google Chrome"]]
+        [:!T1 [:openApp "Obsidian"]]
         [:!Tt [:openApp "Telegram"]]
-        [:!Tv [:openApp "Visual Studio Code"]]
+        [:!Tg [:openApp "Visual Studio Code"]]
         [:!Tm [:openApp "Music"]]
         [:!Te [:openApp "Finder"]]
         [:!Tbackslash [:openApp "Bitwarden"]]
-        [:!Tx [:openApp "flomo"]]
-        [:!Tslash :!COSf12] ;; Quick flomo
+        [:!Tk [:openApp "kitty"]]
+        [:!Tq [:openApp "flomo"]]
+        [:!Tu :!COSf12] ;; Quick flomo
         [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
         [:!Ty [:openApp "网易有道翻译"]]
+        [:!T0 [:hs "spoon.Win.activate()"]] ;; Window management
       ]
     }
     {:des "left control"
       :rules [
-        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Alfred)
-        [:!Tspacebar :!CTOSspacebar]  ;; Alfred
-        [:!Treturn_or_enter :!!5 :browser]
-        [:!Treturn_or_enter [:!TOC5]] ;; add Things3 task
+        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Raycast)
+        [:!Tspacebar :!CTOSspacebar]  ;; Raycast
         [:!Tcomma [:hs "spoon.Config:activate()"]]  ;; Config
         [:!Tb [:hs "spoon.Bookmark:activate()"]]  ;; Bookmark
-        ; ;; 1/2
-        ; [:!Tleft_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!Tdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
-        ; [:!Tright_arrow [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!Tup_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
-        ; [:!TOleft_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; [:!TOdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
-        ; [:!TOright_arrow [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; [:!TOup_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
-        ; ;; 2/3
-        ; [:!TSleft_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TSdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 })"]]
-        ; [:!TSright_arrow [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TSup_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 })"]]
-        ; [:!TSOleft_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 }, true)"]]
-        ; [:!TSOdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 }, true)"]]
-        ; [:!TSOright_arrow [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 }, true)"]]
-        ; [:!TSOup_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 }, true)"]]
+        [:!Tperiod [:hs "spoon.Win.centerCursor()"]]  ;; Center mouse
+        ;; previous / next tabs
+        [:!Ti :!CSopen_bracket :iTerm]
+        [:!To :!CSclose_bracket :iTerm]
+        [:!Ti :!TStab :Finder]
+        [:!To :!Ttab :Finder]
+        [:!Ti :!CSopen_bracket :VSCode]
+        [:!To :!CSclose_bracket :VSCode]
+        [:!Ti :!CSopen_bracket :intelliJ]
+        [:!To :!CSclose_bracket :intelliJ]
+        [:!Ti :up_arrow :WeChat]
+        [:!To :down_arrow :WeChat]
+        [:!Ti :!Oup_arrow :Discord]
+        [:!To :!Odown_arrow :Discord]
+        [:!Ti :!Oup_arrow :Telegram]
+        [:!To :!Odown_arrow :Telegram]
+        [:!Ti :!TStab]
+        [:!To :!Ttab]
+        ; 1/2: ctrl
+        [:!Ta [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
+        [:!Ts [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
+        [:!Td [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
+        [:!Tw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
+        [:!TSa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TSs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
+        [:!TSd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
+        [:!TSw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
+        ; 2/3: ctrl+cmd
+        [:!TCa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 })"]]
+        [:!TCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 })"]]
+        [:!TCd [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 })"]]
+        [:!TCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 })"]]
+        [:!TCSa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 }, true)"]]
+        [:!TCSs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 }, true)"]]
+        [:!TCSd [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 }, true)"]]
+        [:!TCSw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 }, true)"]]
         ; ;; 1/3
         ; [:!TCleft_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.34, h = 1 })"]]
         ; [:!TCdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.66, w = 1, h = 0.66 })"]]
@@ -173,40 +194,22 @@
         ; [:!TCOdown_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.66, w = 1, h = 0.34 }, true)"]]
         ; [:!TCOright_arrow [:hs "spoon.Win.resizeWindow({ x = 0.66, y = 0, w = 0.34, h = 1 }, true)"]]
         ; [:!TCOup_arrow [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.34 }, true)"]]
-        ; ;; more convenient binding
-        ; ;; 1/2
-        ; [:!Topen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!Tclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!TOopen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; [:!TOclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; ;; 2/3
-        ; [:!TSopen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TSclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TSOopen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 }, true)"]]
-        ; [:!TSOclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 }, true)"]]
-        ; ;; 1/3
-        ; [:!TCopen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.34, h = 1 })"]]
-        ; [:!TCclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.66, y = 0, w = 0.34, h = 1 })"]]
-        ; [:!TCOopen_bracket [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.34, h = 1 }, true)"]]
-        ; [:!TCOclose_bracket [:hs "spoon.Win.resizeWindow({ x = 0.66, y = 0, w = 0.34, h = 1 }, true)"]]
-        ; ; center
-        ; [:!Tsemicolon [:hs "spoon.Win.moveAndResize('fullscreen')"]]
-        ; [:!Tquote [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
+        ; fullscreen (local)
+        [:!Tf [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 1 })"]]
+        [:!TSf [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
         ;; desktop navigation
-        [:!Ta :!CTOf7] ;; Previous Space
-        [:!Td :!CTOf9] ;; Next Space
+        [:!Tz :!CTOf7] ;; Previous Space
+        [:!Tc :!CTOf9] ;; Next Space
+        [:!Tx :mission_control] ;; Mission Control
         ;; move window to space and focus
-        [:!TSa [:hs "MoveFocusedWindowToSpace('prev', true)"]]
-        [:!TSd [:hs "MoveFocusedWindowToSpace('next', true)"]]
-        [:!Tw :mission_control] ;; Mission Control
-        ; [:!Tup_arrow :!!f11] ;; Show Desktop
-        [:!Ts :!!f2] ;; Application Windows
-        ;; move window to recent display and focus
-        [:!Ttab [:hs "spoon.Win.moveToScreen('next')"]]
+        [:!TSz [:hs "MoveFocusedWindowToSpace('prev', true)"]]
+        [:!TSc [:hs "MoveFocusedWindowToSpace('next', true)"]]
+        [:!TSx :!!f2] ;; Application Windows
+        [:!Ttab [:hs "spoon.Win.moveToScreen('next')"]] ; move window to recent display and focus
         ; [:!TSdelete_or_backspace [:hs "ShowFocusedWindowInfo()"]]
-        ; Docker
-        [:!Tq :!Tf3]  ;; focus on docker
-        [:!TOq :!CTSf2]  ;; hide/show Dock
+        [:!TCdelete_or_backspace :!!f11] ;; Show Desktop
+        [:!Tdelete_or_backspace :!Tf3]  ;; focus on docker
+        [:!TSdelete_or_backspace :!CTSf2]  ;; hide/show Dock
         ;; act like fn + f1..f12
         [:!Tf1 :display_brightness_decrement]
         [:!Tf2 :display_brightness_increment]
@@ -218,34 +221,11 @@
         [:!Tf10 :mute]
         [:!Tf11 :volume_decrement]
         [:!Tf12 :volume_increment]
-        ;; arrow key
-        [:!Th [:left_arrow]]
-        [:!Tj [:down_arrow]]
-        [:!Tk [:up_arrow]]
-        [:!Tl [:right_arrow]]
-        [:!TSh [:!Sleft_arrow]]
-        [:!TSj [:!Sdown_arrow]]
-        [:!TSk [:!Sup_arrow]]
-        [:!TSl [:!Sright_arrow]]
-        [:!TOh [:!Oleft_arrow]]
-        [:!TOj [:!Odown_arrow]]
-        [:!TOk [:!Oup_arrow]]
-        [:!TOl [:!Oright_arrow]]
-        [:!TCh [:!Cleft_arrow]]
-        [:!TCj [:!Cdown_arrow]]
-        [:!TCk [:!Cup_arrow]]
-        [:!TCl [:!Cright_arrow]]
-        [:!TCSh [:!CSleft_arrow]]
-        [:!TCSj [:!CSdown_arrow]]
-        [:!TCSk [:!CSup_arrow]]
-        [:!TCSl [:!CSright_arrow]]
         ;; home / end
         [:!Thyphen [:home]]
         [:!Tequal_sign  [:end]]
         [:!TShyphen [:!Shome]]
         [:!TSequal_sign  [:!Send]]
-        ;; menu
-        [:!Tdelete_or_backspace [:hs "RightClickFocusedWindow()"]]
       ]
     }
     {:des "spacebar mode"
@@ -273,20 +253,43 @@
         ; [:!Shyphen [:!Shome]]
         ; [:!Sequal_sign  [:!Send]]
         ;; mouse move
-        [:k {:mkey {:y -1600 :speed 1.20}}]
-        [:j {:mkey {:y 1600 :speed 1.20}}]
-        [:h {:mkey {:x -1600 :speed 1.20}}]
-        [:l {:mkey {:x 1600 :speed 1.20}}]
-        [:!Sk {:mkey {:y -3200 :speed 1.10}}]
-        [:!Sj {:mkey {:y 3200 :speed 1.10}}]
-        [:!Sh {:mkey {:x -3200 :speed 1.10}}]
-        [:!Sl {:mkey {:x 3200 :speed 1.10}}]
-        [:!Ok {:mkey {:y -800 :speed 1.20}}]
-        [:!Oj {:mkey {:y 800 :speed 1.20}}]
-        [:!Oh {:mkey {:x -800 :speed 1.20}}]
-        [:!Ol {:mkey {:x 800 :speed 1.20}}]
+        [:w {:mkey {:y -1600 :speed 1.20}}]
+        [:s {:mkey {:y 1600 :speed 1.20}}]
+        [:a {:mkey {:x -1600 :speed 1.20}}]
+        [:d {:mkey {:x 1600 :speed 1.20}}]
+        [:!Sw {:mkey {:y -3200 :speed 1.10}}]
+        [:!Ss {:mkey {:y 3200 :speed 1.10}}]
+        [:!Sa {:mkey {:x -3200 :speed 1.10}}]
+        [:!Sd {:mkey {:x 3200 :speed 1.10}}]
+        [:!Ow {:mkey {:y -800 :speed 1.20}}]
+        [:!Os {:mkey {:y 800 :speed 1.20}}]
+        [:!Oa {:mkey {:x -800 :speed 1.20}}]
+        [:!Od {:mkey {:x 800 :speed 1.20}}]
         ;; center mouse on focused window
         [:m [:hs "spoon.Win.centerCursor()"]]  ;; Config
+        ;; arrow key
+        [:h [:left_arrow]]
+        [:j [:down_arrow]]
+        [:k [:up_arrow]]
+        [:l [:right_arrow]]
+        [:!Sh [:!Sleft_arrow]]
+        [:!Sj [:!Sdown_arrow]]
+        [:!Sk [:!Sup_arrow]]
+        [:!Sl [:!Sright_arrow]]
+        [:!Oh [:!Oleft_arrow]]
+        [:!Oj [:!Odown_arrow]]
+        [:!Ok [:!Oup_arrow]]
+        [:!Ol [:!Oright_arrow]]
+        [:!Ch [:!Cleft_arrow]]
+        [:!Cj [:!Cdown_arrow]]
+        [:!Ck [:!Cup_arrow]]
+        [:!Cl [:!Cright_arrow]]
+        [:!CSh [:!CSleft_arrow]]
+        [:!CSj [:!CSdown_arrow]]
+        [:!CSk [:!CSup_arrow]]
+        [:!CSl [:!CSright_arrow]]
+        ;; menu
+        [:!Ttab [:hs "RightClickFocusedWindow()"]]
         ;; scroll
         [:p {:mkey {:vwheel -32 :speed 1.30}}]
         [:n {:mkey {:vwheel 32 :speed 1.30}}]

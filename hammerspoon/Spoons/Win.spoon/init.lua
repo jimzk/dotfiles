@@ -277,7 +277,8 @@ M.modal
 M.modal
     :bind("", "return", "Fullscreen", M.toggleFullScreen)
     :bind("", "space", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
-    :bind("", "G", "Center Larger", resize({ x = 0.1, y = 0, w = 0.8, h = 1 }))
+    :bind("shift", "F", "Fullscreen (local)", resize({ x = 0, y = 0, w = 1, h = 1 }))
+    :bind("", "F", "Center Larger", resize({ x = 0.1, y = 0, w = 0.8, h = 1 }))
 local scale = 1 / 60
 local stepResize = function(u, d, l, r) return function() M.resize(u, d, l, r) end end
 M.modal
