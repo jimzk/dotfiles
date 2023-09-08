@@ -12,7 +12,7 @@ return {
     name = "catppuccin",
     opts = {
       -- latte, frappe, macchiato, mocha
-      flavour = "frappe",
+      flavour = "macchiato",
       term_colors = true, -- for neovide
       custom_highlights = function(colors)
         return {

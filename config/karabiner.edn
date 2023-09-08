@@ -24,7 +24,7 @@
   ;; Casesensitive
   :applications {
     :browser ["^com\\.microsoft\\.edgemac$" "^com\\.google\\.Chrome$" "^com\\.apple\\.Safari$"]
-    :terminal ["^com\\.googlecode\\.iterm2$" "^com.jetbrains" "^com\\.microsoft\\.VSCode$" "^com\\.apple\\.Terminal$"]
+    :terminal ["^net.kovidgoyal.kitty$" "^com\\.googlecode\\.iterm2$" "^com.jetbrains" "^com\\.microsoft\\.VSCode$" "^com\\.apple\\.Terminal$"]
     :intelliJ ["^com.jetbrains"]
 
     :IDEA ["^com\\.jetbrains\\.intellij\\.ce$"]
@@ -32,6 +32,7 @@
 
     :Edge ["^com\\.microsoft\\.edgemac$"]
     :iTerm ["^com\\.googlecode\\.iterm2$"]
+    :kitty ["^net.kovidgoyal.kitty$"]
     :VSCode ["^com\\.microsoft\\.VSCode$"]
     :intelliJ-IDEA ["^com\\.jetbrains\\.intellij$"]
     :intelliJ-GoLand ["^com\\.jetbrains\\.goland$"]
@@ -112,7 +113,7 @@
         ; [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
         [:escape :escape nil {:alone [:hs "spoon.Win.switchApp()"]}]
         ; [:##right_shift :right_shift nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
-        [:##right_command :right_command nil {:alone [:openApp "iTerm"]}]
+        [:##right_command :right_command nil {:alone [:openApp "kitty"]}]
         [:##right_shift :right_shift nil {:alone [:openApp "Obsidian"]}]
         [:##right_option :right_option nil {:alone [:openApp "Google Chrome"]}]
         [:##left_control :left_control nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management

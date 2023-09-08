@@ -46,21 +46,22 @@ local mappings = {
     end
     vim.notify(string.format("%d unmodified hidden buffers deleted", count))
   end, "delete unmodified hidden buffers" },
+  -- Replace by smart-splits
   -- Move to window using the <ctrl> hjkl keys
-  ["<C-h>"] = { "<cmd>wincmd h<cr>", ignored },
-  ["<C-j>"] = { "<cmd>wincmd j<cr>", ignored },
-  ["<C-k>"] = { "<cmd>wincmd k<cr>", ignored },
-  ["<C-l>"] = { "<cmd>wincmd l<cr>", ignored },
+  -- ["<C-h>"] = { "<cmd>wincmd h<cr>", ignored },
+  -- ["<C-j>"] = { "<cmd>wincmd j<cr>", ignored },
+  -- ["<C-k>"] = { "<cmd>wincmd k<cr>", ignored },
+  -- ["<C-l>"] = { "<cmd>wincmd l<cr>", ignored },
   -- Move window
-  ["<C-M-left>"] = { "<cmd>wincmd H<cr>", ignored },
-  ["<C-M-down>"] = { "<cmd>wincmd J<cr>", ignored },
-  ["<C-M-up>"] = { "<cmd>wincmd K<cr>", ignored },
-  ["<C-M-right>"] = { "<cmd>wincmd L<cr>", ignored },
+  -- ["<C-M-left>"] = { "<cmd>wincmd H<cr>", ignored },
+  -- ["<C-M-down>"] = { "<cmd>wincmd J<cr>", ignored },
+  -- ["<C-M-up>"] = { "<cmd>wincmd K<cr>", ignored },
+  -- ["<C-M-right>"] = { "<cmd>wincmd L<cr>", ignored },
   -- Resize window
-  ["<C-M-k>"] = { "<cmd>resize +4<cr>", "increase window height" },
-  ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
-  ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
-  ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
+  -- ["<C-M-k>"] = { "<cmd>resize +4<cr>", "increase window height" },
+  -- ["<C-M-j>"] = { "<cmd>resize -4<cr>", "decrease window height" },
+  -- ["<C-M-h>"] = { "<cmd>vertical resize -4<cr>", "decrease window width" },
+  -- ["<C-M-l>"] = { "<cmd>vertical resize +4<cr>", "increase window width" },
   ["<C-M-=>"] = { "<cmd>wincmd =<cr>", "equal window size" },
   -- ["<leader>-"] = { "<cmd>wincmd |<cr>", "max out height" },
   ["<C-M-\\>"] = { function()

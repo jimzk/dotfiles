@@ -1,3 +1,4 @@
+-- I give up using tmux
 return {
   "aserowy/tmux.nvim",
   -- Know issue in Tmux
