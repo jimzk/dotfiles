@@ -161,8 +161,8 @@ alias c="clear"
 alias h="fc -l"
 alias e="exit"
 alias n='nnn -T d -io -P v'
-alias d='_f(){ du -sh $@ | sort -h }; _f'
-alias 'd*'='_f(){ du -sh * | sort -h }; _f'
+alias du='_f(){ du -sh $@ | sort -h }; _f'
+alias 'du.'='_f(){ du -sh * | sort -h }; _f'
 alias trn='tr -d "\n"'
 # Fix neovim highlight in tmux: https://gist.github.com/gutoyr/4192af1aced7a1b555df06bd3781a722
 alias tmux='env TERM=screen-256color tmux'
@@ -207,6 +207,8 @@ alias -s md='open -a Typora'    # open *.md with Typora by default
 # Blog
 alias blog-deploy='hugo server --source $BLOG_HOME -e production --disableFastRender -F'
 alias blog-new='_f() { hugo new -s $BLOG_HOME posts/$1.md; open $BLOG_HOME/content/posts/$1.md; }; _f'
+alias diff="delta"
+alias diffcolor='colordiff'
 
 # alias loadzsh='source ~/.zshrc'
 alias loadzsh="echo 'Zsh is reloaded!'; exec zsh"
@@ -215,9 +217,6 @@ alias loadgoku="goku; echo 'Goku is reloaded!'"
 alias loadall="loadhammerspoon; loadgoku; loadzsh"
 alias "]app"='open "/Applications/$(exa /Applications | fzf)"'
 alias "]blog"='code $BLOG_HOME'
-alias "]dot"="code ~/.dotfiles"
-alias "]ssh"="code ~/.ssh"
-alias "]starship"="rich $XDG_CONFIG_HOME/starship.toml"
 
 # helper functions
 function _quick_grep {
