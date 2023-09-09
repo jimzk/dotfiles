@@ -150,16 +150,15 @@ alias wtf='_wtf'
 # more efficient
 alias vim="nvim"
 alias v="nvim"
-alias vv="neovide --frame none"
 alias 'vim$'="nvim -c \"normal '0\""  # open last file
-alias ':q'='exit'
 alias now='date +"%Y-%m-%d %T"'
 
 # Shorter
 alias o="open"
 alias c="clear"
+alias cl="clear"
 alias h="fc -l"
-alias e="exit"
+alias q="exit"
 alias n='nnn -T d -io -P v'
 alias du='_f(){ du -sh $@ | sort -h }; _f'
 alias 'du.'='_f(){ du -sh * | sort -h }; _f'
