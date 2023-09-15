@@ -121,7 +121,7 @@ M.config = function(_, opts)
   }
 
   map("n", "<C-g>", function() fzf.oldfiles({ cwd_only = true }) end, "find file in buffers")
-  local cycle_key = "tab"
+  local cycle_key = "ctrl-g"
   fzf.setup({
     files = vim.tbl_deep_extend("force", vim.deepcopy(default_file_view), {
       actions = {
@@ -231,7 +231,7 @@ M.config = function(_, opts)
       -- https://github.com/ibhagwan/fzf-lua/wiki#how-can-i-restrict-my-grep-search-to-just-certain-files
       rg_glob = true,
       actions = {
-        ["tab"] = function(_, opts)
+        ["ctrl-f"] = function(_, opts)
           -- relative path
           local path = vim.fn.expand("%:.")
           local pattern = (" -g " .. path):gsub("%-", "%%-"):gsub("%.", "%%.")
@@ -256,7 +256,7 @@ M.config = function(_, opts)
           }
         end,
         -- abort
-        ["ctrl-f"] = function() end,
+        -- ["ctrl-f"] = function() end,
       },
     },
     highlights = {

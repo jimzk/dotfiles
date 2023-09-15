@@ -36,9 +36,9 @@ return {
       map({ "n", "v" }, "<leader>u", "<cmd>Gitsigns reset_hunk<CR>", "[G] revert hunk")
       map("n", "<leader>U", gs.reset_buffer, "[G] revert buffer")
 
-      map("n", "<leader><cr>", gs.preview_hunk, "[G] preview hunk")
+      map("n", "gh", gs.preview_hunk, "[G] preview hunk")
 
-      map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "[G] line blame")
+      map("n", "gB", function() gs.blame_line({ full = true }) end, "[G] line blame")
 
       map("n", "<leader>gq", "<CMD>Gitsigns setqflist<CR>", "[G] show git changes quickfix list")
     end,

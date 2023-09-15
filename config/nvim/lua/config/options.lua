@@ -46,6 +46,7 @@ opt.inccommand     = "nosplit" -- preview incremental substitute
 opt.laststatus     = 3
 opt.mouse          = "a" -- enable mouse for all mode
 -- https://www.reddit.com/r/neovim/comments/11dmaed/keep_buffer_view_when_you_return_to_file/
+-- https://www.reddit.com/r/neovim/comments/16nead7/comment/k1e1nj5/
 opt.jumpoptions    = "stack,view" -- Make jumplist behave like web browser back / forward
 -- https://www.reddit.com/r/neovim/comments/11bppvy/neovim_using_the_spellchecker/
 opt.spelllang      = { "en_us" }

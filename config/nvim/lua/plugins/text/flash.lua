@@ -11,52 +11,39 @@ return {
   event = "VeryLazy",
   keys = {
     {
-      "sj",
+      "<c-space>",
       mode = { "n", "x", "o" },
-      function()
-        -- Jump to first by <cr>
-        require("flash").jump()
-      end,
+      function() require("flash").jump() end,
       desc = "jump (flash)",
     },
+    -- {
+    --   "so",
+    --   mode = { "n", "x", "o" },
+    --   function() require("flash").jump({ continue = true }) end,
+    --   desc = "old jump (flash)",
+    -- },
     {
-      "so",
-      mode = { "n", "x", "o" },
-      function()
-        require("flash").jump({ continue = true })
-      end,
-      desc = "old jump (flash)",
-    },
-    {
-      "<cr>",
-      mode = { "o" },
-      function()
-        require("flash").treesitter()
-      end,
+      "r",
+      mode = { "o", "x" },
+      function() require("flash").treesitter() end,
       desc = "treesitter (flash)",
     },
     {
-      "<S-cr>",
+      "R",
       mode = { "o", "x" },
-      function()
-        require("flash").treesitter_search()
-      end,
+      function() require("flash").treesitter_search() end,
       desc = "treesitter search (flash)",
     },
+    -- {
+    --   "<leader><c-space>",
+    --   mode = { "o" },
+    --   function() require("flash").remote() end,
+    --   desc = "operate remotely (flash)",
+    -- },
     {
-      "sm",
-      mode = { "o" },
-      function()
-        require("flash").remote()
-      end,
-      desc = "operate remotely (flash)",
-    },
-    {
-      "st",
+      "<leader>os",
       mode = { "n" },
-      function()
-        require("flash").toggle()
-      end,
+      function() require("flash").toggle() end,
       desc = "toggle search (flash)",
     },
   },

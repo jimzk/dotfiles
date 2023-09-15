@@ -6,12 +6,11 @@ local M = {
   },
   event = "CursorHold", -- BufReadPre, VimEnter
   keys = {
-    { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
     -- C-space to fuzzy refind
     -- See: https://www.reddit.com/r/neovim/comments/121otka/a_nice_telescope_surprise/
     { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
     { "<leader><C-/>", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-    { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+    -- { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
     -- { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
     -- { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
     -- { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },

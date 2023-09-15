@@ -21,16 +21,18 @@ return {
     vim.api.nvim_create_autocmd({ "FileType" }, {
       pattern = "*",
       callback = function()
+        local key_join = "J"
+        local key_split = "S"
         local opts = { buffer = true }
         if langs[vim.bo.filetype] then
-          map("n", "J", "<Cmd>TSJJoin<CR>", nil, opts)
-          map("n", "K", "<Cmd>TSJSplit<CR>", nil, opts)
+          map("n", key_join, "<Cmd>TSJJoin<CR>", nil, opts)
+          map("n", key_split, "<Cmd>TSJSplit<CR>", nil, opts)
         else
-          if vim.fn.maparg("J") == "" then
-            map("n", "J", "<Cmd>SplitjoinJoin<CR>", nil, opts)
+          if vim.fn.maparg(key_join) == "" then
+            map("n", key_join, "<Cmd>SplitjoinJoin<CR>", nil, opts)
           end
-          if vim.fn.maparg("K") == "" then
-            map("n", "K", "<Cmd>SplitjoinSplit<CR>", nil, opts)
+          if vim.fn.maparg(key_split) == "" then
+            map("n", key_split, "<Cmd>SplitjoinSplit<CR>", nil, opts)
           end
         end
       end,

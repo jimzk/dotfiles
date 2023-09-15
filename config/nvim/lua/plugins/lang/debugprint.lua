@@ -3,33 +3,33 @@ return {
   "andrewferrier/debugprint.nvim",
   keys = {
     {
-      "<leader>Dp",
+      "<leader>dp",
       function() return require("debugprint").debugprint() end,
       desc = "print current line below for debugging",
       expr = true
     },
     {
-      "<leader>DP",
+      "<leader>dP",
       function() return require("debugprint").debugprint({ above = true }) end,
       desc = "print current line above for debugging",
       expr = true
     },
     {
-      "<leader>Dv",
+      "<leader>dv",
       mode = { "n", "x" },
       function() return require("debugprint").debugprint({ variable = true }) end,
       desc = "print variable below for debugging",
       expr = true
     },
     {
-      "<leader>DV",
+      "<leader>dV",
       mode = { "n", "x" },
       function() return require("debugprint").debugprint({ variable = true, above = true }) end,
       desc = "print variable above for debugging",
       expr = true
     },
     {
-      "<leader>D<BS>",
+      "<leader>d<BS>",
       "<cmd>DeleteDebugPrints<cr>",
       desc = "delete all debug prints",
     },

@@ -27,13 +27,12 @@ local mappings = {
     Util.toggle("readonly")
   end, "toggle modifiable", },
   w = toggle("wrap"),
-  s = toggle("ignorecase"),
+  c = toggle("ignorecase"),
   h = toggle("hlsearch"),
   i = toggle("incsearch"),
-  c = toggle("conceallevel", false, { 0, conceallevel }),
+  C = toggle("conceallevel", false, { 0, conceallevel }),
   p = toggle("paste"), -- Paste without losing indent
   m = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
-  f = { require("plugins.lsp.format").toggle, "toggle format on save" },
   d = { Util.toggle_diagnostics, "toggle diagnostics" },
   ["<tab>"] = { function()
     vim.ui.input(
@@ -74,7 +73,7 @@ mappings = {
   c = { "<cmd>Telescope colorscheme enable_preview=true<cr>", "list colorschemes" },
   a = { "<cmd>Telescope autocommands<cr>", "list autocommands" },
   k = { "<cmd>Telescope keymaps<cr>", "list keymaps" },
-  C = { "<cmd>Telescope commands<cr>", "list commands" },
+  [":"] = { "<cmd>Telescope commands<cr>", "list commands" },
   m = { "<cmd>Telescope man_pages<cr>", "list man pages" },
   h = { "<cmd>FzfLua highlights<cr>", "list highlights" },
   v = { "<cmd>Telescope vim_options<cr>", "list vim options" },
@@ -143,6 +142,16 @@ mappings = {
   D = { function()
     vim.cmd("GDelete!")
   end, "[G] delete file forcely" },
+  n = { "<cmd>enew<cr>", "new file" },
+  N = { function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd [[tabnew %]]
+    vim.api.nvim_win_set_cursor(0, pos)
+  end, "new tab", },
+  n = { "<cmd>enew<cr>", "new file" },
+  i = { "<cmd>Telescope filetypes<cr>", "set filetype" },
+  l = { "<cmd>lopen<cr>", "open location List" },
+  q = { "<cmd>copen<cr>", "open quickfix List" },
 }
 set_mapppings(mappings, { prefix = "<leader>h" })
 
@@ -180,8 +189,7 @@ mappings = {
   s = { "<cmd>FzfLua git_stash<cr>", "stash (fzf)" },
   -- r = { "<cmd>FzfLua git_branches<cr>", "branch (fzf)" },
   r = { "<cmd>Telescope git_branches<cr>", "branch (telescope)" },
-  B = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
-  g = { "<cmd>Neogit kind=vsplit<cr>", "git operations (neogit)" },
+  b = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
   G = { "<cmd>Git<cr><cmd>wincmd L<cr><cmd>6<cr>", "git operations (fugitive)" },
   -- d = { "<cmd>Gvdiffsplit<cr>", "current file diff" },
   d = { "<cmd>Gitsigns diffthis<cr>", "current file diff (gitsigns)" },
@@ -230,18 +238,10 @@ mappings = {
   -- taken from runtime/lua/_editor.lua
   ["<cr>"] = { "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
     "redraw / clear hlsearch / diff update", },
-  l = { "<cmd>lopen<cr>", "open location List" },
-  q = { "<cmd>copen<cr>", "open quickfix List" },
-  t = { function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd [[tabnew %]]
-    vim.api.nvim_win_set_cursor(0, pos)
-  end, "new tab", },
-  m = { "<cmd>Telescope filetypes<cr>", "set filetype" },
 }
 set_mapppings(mappings, { prefix = "<leader>j" })
 
-map("n", "<leader>j\\", function()
+map("n", "<leader>h\\", function()
   local home = vim.fn.getenv("HOME")
   -- local filename = vim.fn.expand("%:p:t")
   -- local repo_root = vim.fn.system("git rev-parse --show-toplevel")
@@ -271,8 +271,6 @@ ignorecase  %s
 end, "show buffer info")
 
 mappings = {
-  -- name = "+file",
-  g = { "<cmd>FzfLua git_status<cr>", "git status file (fzf)" },
   f = { Util.telescope("find_files", {
     prompt_title = "Find Files (cwd)",
     hidden = true,
@@ -289,7 +287,7 @@ mappings = {
       no_ignore = true,
       follow = true,
     })()
-  end, "find files (cwd)" },
+  end, "find files (buf dir)" },
   ["<C-f>"] = { Util.telescope("find_files", {
     prompt_title = "Find Files (workspace)",
     find_command = { "rg", "--files",
@@ -302,13 +300,10 @@ mappings = {
     cwd = "~",
     search_dirs = { "~/workspace", "~/.dotfiles", "~/.config" },
   }), "find files (workspace)" },
-  -- https://www.reddit.com/r/neovim/comments/10qubtl/comment/j6rwly4
-  -- b = { ":buffers<CR>:buffer<Space>", "switch buffer" }
-  b = { Util.telescope("buffers", {
-    show_all_buffers = true,
-    sort_lastused = true
-  }), "buffers" },
-  -- b = {"<cmd>LeaderfBuffer<cr>", "buffers (leaderf)"},
+  b = {
+    Util.telescope("buffers", { show_all_buffers = true, sort_lastused = true }),
+    "buffers",
+  },
 
   o = { function()
     require("telescope").extensions.frecency.frecency({
@@ -321,12 +316,11 @@ mappings = {
       prompt_title = "Oldfiles (global)",
     })
   end, "old files (global)" },
-  n = { "<cmd>enew<cr>", "new file" },
-  j = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
+  p = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
 }
 set_mapppings(mappings, { prefix = "<leader>f" })
-
-map("n", "<leader>`", "<cmd>Telescope resume<cr>", "resume telescope")
+map("n", "<leader>i", "<cmd>FzfLua git_status<cr>", "git status file (fzf)")
+map("n", "<leader><tab>", "<cmd>Telescope resume<cr>", "resume telescope")
 
 mappings = {
   -- name = "+coding",

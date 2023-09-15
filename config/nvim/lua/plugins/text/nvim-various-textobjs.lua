@@ -19,8 +19,8 @@ M.config = function(_, opts)
   map(ox, "iu", t.url, "url")
   map(ox, "au", t.url, "url")
   -- Indentation
-  map(ox, "ii", function() t.indentation("inner", "inner") end, "indent")
-  map(ox, "ai", function() t.indentation("outer", "outer") end, "indent")
+  -- map(ox, "ii", function() t.indentation("inner", "inner") end, "indent")
+  -- map(ox, "ai", function() t.indentation("outer", "outer") end, "indent")
   map(ox, "iI", function() t.restOfIndentation() end, "to indent end")
   map(ox, "aI", function() t.restOfIndentation() end, "to indent end")
   -- Next

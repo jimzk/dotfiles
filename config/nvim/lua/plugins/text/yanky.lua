@@ -17,8 +17,8 @@ return {
     end, mode = "x", desc = ignored, expr = true },
     { "P", "p", mode = "x", desc = ignored, remap = true },
     -- Yank linewise
-    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = "put the yanked up linewise" },
-    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = "put the yanked down linewise" },
+    { "pp", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = "put the yanked up linewise" },
+    { "PP", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = "put the yanked down linewise" },
 
     -- Preserve cursor position on yank
     { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = ignored },

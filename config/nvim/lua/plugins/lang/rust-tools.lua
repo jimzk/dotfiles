@@ -11,7 +11,7 @@ return {
       if client.name ~= "rust_analyzer" then return end
       local opts = { buffer = bufnr }
       map("n", "J", rt.join_lines.join_lines, opts)
-      map("n", "gh", function()
+      map("n", "K", function()
         local winid = require("ufo").peekFoldedLinesUnderCursor()
         -- :h ufo.txt
         if winid then
@@ -24,7 +24,7 @@ return {
           rt.hover_actions.hover_actions()
         end
       end, "[RS] hover or peek fold", opts)
-      map("v", "gh", rt.hover_range.hover_range, "[RS] hover", opts)
+      map("v", "K", rt.hover_range.hover_range, "[RS] hover", opts)
       map("n", "gC", rt.external_docs.open_external_docs, "[RS] open external doc", opts)
       map({ "n", "v" }, "<leader>ck", rt.runnables.runnables, "[RS] run or test code", opts)
       map("n", "<leader>cm", rt.open_cargo_toml.open_cargo_toml, "[RS] open cargo.toml", opts)

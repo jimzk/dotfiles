@@ -9,17 +9,20 @@ return {
   --  ysiwi{char1}{char2}: input left and right surrounds
   opts = {
     keymaps = {
-      insert = false,
-      insert_line = false,
+      -- insert = false,
+      insert = "<C-g>s",
+      insert_line = "<C-g><C-s>",
+      visual = "S",
+      visual_line = "gS",
       -- add surrounds by s
-      normal = "sa",
-      normal_cur = "saa", -- line
-      normal_line = "sA", -- line with break
-      normal_cur_line = "sAA",
-      visual = "sa",
-      visual_line = "sA",
-      delete = "sd",
-      change = "sr",
+      -- normal = "sa",
+      -- normal_cur = "saa", -- line
+      -- normal_line = "sA", -- line with break
+      -- normal_cur_line = "sAA",
+      -- visual = "sa",
+      -- visual_line = "sA",
+      -- delete = "sd",
+      -- change = "sr",
     },
     -- alia   add    remove/replace
     -- k      <>     <>

@@ -23,7 +23,7 @@ M.config = function()
         },
         selection_modes = {
           ["@parameter.outer"] = "v", -- charwise
-          ["@function.outer"] = "V", -- linewise
+          ["@function.outer"] = "V",  -- linewise
           ["@class.outer"] = "<c-v>", -- blockwise
         },
         include_surrounding_whitespace = true,
@@ -31,10 +31,10 @@ M.config = function()
       swap = {
         enable = true,
         swap_next = {
-          ["]e"] = { query = "@parameter.inner", desc = "[TS] exchange parameter with next" },
+          ["<leader>jk"] = { query = "@parameter.inner", desc = "[TS] swap current with next" },
         },
         swap_previous = {
-          ["[e"] = { "@parameter.inner", desc = "[TS] exchange parameter with prev" },
+          ["<leader>jj"] = { query = "@parameter.inner", desc = "[TS] swap current with prev" },
         },
       },
       move = {

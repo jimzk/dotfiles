@@ -55,7 +55,7 @@ M.on_attach = function(bufnr)
   map("n", "g<C-d>", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
 
   if ft ~= "rust" then
-    map("n", "gh", function()
+    map("n", "K", function()
       local winid = require("ufo").peekFoldedLinesUnderCursor()
       -- :h ufo.txt
       if winid then
@@ -89,7 +89,7 @@ M.on_attach = function(bufnr)
   local format = require "plugins.lsp.format"
   map("n", "<leader>l", format.format, "format buffer", opts)
   map("v", "<leader>l", format.format, "format selection", opts)
-  map("n", "<leader>jl", format.toggle, "toggle auto format", opts)
+  map("n", "<leader>ol", format.toggle, "toggle format on save", opts)
 end
 
 return M

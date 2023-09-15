@@ -76,11 +76,8 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
   end,
 })
 vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
-  callback = function(opts)
-    local ft = vim.bo[opts.buf].filetype
-    if not vim.tbl_contains({ "neo-tree" }, ft) then
-      vim.wo.cursorline = false
-    end
+  callback = function()
+    vim.wo.cursorline = false
   end,
 })
 

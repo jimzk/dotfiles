@@ -4,7 +4,7 @@ return {
   keys = {
     { "%", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "which_key_ignore" },
     -- { "\\", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "%" },
-    { "gz", "<Plug>(matchup-z%)", mode = { "n", "o", "x" }, desc = "move to function start" },
+    { "<C-m>", "<Plug>(matchup-z%)", mode = { "n", "o", "x" }, desc = "move to function start" },
     { "ib", "<Plug>(matchup-i%)", mode = { "o", "x" }, desc = "{}, (), [] or syntax block" },
     { "ab", "<Plug>(matchup-a%)", mode = { "o", "x" }, desc = "{}, (), [] or syntax block" },
     { "]b", "<Plug>(matchup-]%)", mode = { "n", "o", "x" }, desc = "next unmatched } ) ]" },

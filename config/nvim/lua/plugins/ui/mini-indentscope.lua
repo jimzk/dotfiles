@@ -14,8 +14,8 @@ return {
       end,
     },
     mappings = {
-      object_scope = "",
-      object_scope_with_border = "",
+      object_scope = "ii",
+      object_scope_with_border = "ai",
       goto_top = "",
       goto_bottom = "",
     },
@@ -27,8 +27,8 @@ return {
       vim.cmd [[normal! m`]]
       indentscopt.move_cursor(...)
     end
-    -- map({ "x", "o" }, "ii", nil, "indent (mini-indentscope)")
-    -- map({ "x", "o" }, "ai", nil, "indent (mini-indentscope)")
+    map({ "x", "o" }, "ii", nil, "indent (mini-indentscope)")
+    map({ "x", "o" }, "ai", nil, "indent (mini-indentscope)")
     -- ]i and [i have different bahaivour in operation mode. Seems like a bug.
     map({ "n", "x", "o" }, "]i", function() move("bottom", true) end, "mini indent end")
     map({ "n", "x", "o" }, "[i", function() move("top", true) end, "mini indent start")

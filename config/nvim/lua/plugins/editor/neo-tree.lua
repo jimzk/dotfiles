@@ -50,16 +50,22 @@ return {
     window = {
       -- :h neo-tree-mappings
       mappings = {
-        S = "noop",
-        v = { "open_vsplit" },
-        s = { "open_split" },
+        v = "open_vsplit",
+        s = "open_split",
+        V = "vsplit_with_window_picker",
+        S = "split_with_window_picker",
         l = "noop",
         i = "focus_preview",
         o = "open_drop",
         w = "noop",
         ["<Cr>"] = "open_with_window_picker",
+        ["<space>"] = "open_with_window_picker",
         R = "noop",
         ["<C-r>"] = "refresh",
+        [">"] = "noop",
+        ["<"] = "noop",
+        ["["] = "prev_source",
+        ["]"] = "next_source",
       },
     },
     filesystem = {

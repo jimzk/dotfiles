@@ -2,9 +2,9 @@ local M = {
   "chentoast/marks.nvim",
   event = "VeryLazy",
   keys = {
-    { "<leader>mm", "<CMD>MarksListAll<CR>", desc = "show marks all" },
-    { "<leader>mb", "<CMD>MarksListBuf<CR>", desc = "show marks in current buf" },
-    { "<leader>m<space>", "<CMD>MarksListGlobal<CR>", desc = "show GLOBAL (uppercase) marks" },
+    { "<leader>fm", "<CMD>MarksListAll<CR>", desc = "show marks all" },
+    { "<leader>fM", "<CMD>MarksListBuf<CR>", desc = "show marks in current buf" },
+    { "<leader>f<C-m>", "<CMD>MarksListGlobal<CR>", desc = "show GLOBAL (uppercase) marks" },
   }
 }
 
@@ -25,7 +25,7 @@ M.opts = function()
       toggle = false,
       -- FIX: need  :q to quite preview window
       -- https://github.com/chentoast/marks.nvim/issues/86
-      preview = "'<space>",
+      preview = "<leader><cr>",
       delete_line = "dm<space>",
       delete_buf = "dm<bs>",
       annotate = false,

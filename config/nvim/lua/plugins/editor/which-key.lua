@@ -57,10 +57,10 @@ return {
           name = "+nvim",
           n = { name = "+Noice" },
         },
-        h = { name = "+file operation" },
+        h = { name = "+file" },
         g = { name = "+Git", mode = { "n", "x" } },
-        j = { name = "+edit", mode = { "n", "x" } },
-        f = { name = "+file" },
+        j = { name = "+text", mode = { "n", "x" } },
+        f = { name = "+finder" },
         p = { name = "+session" },
       },
     })

@@ -1,7 +1,7 @@
 local ignored = "which_key_ignore"
 local mappings = {
   -- Alternative Windows
-  ["`"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
+  -- ["`"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
   ["<Tab>"] = { "<C-^>", "✭ alternative buffer" },
   ["<S-Tab>"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
@@ -101,13 +101,14 @@ end
 -- map({ "n", "x", "o" }, "H", "v:count == 0 ? 'g^' : '^'", nil, { expr = true })
 -- map({ "n", "x", "o" }, "L", "v:count == 0 ? 'g$' : ':lua home()'", nil, { expr = true })
 map({ "n", "i" }, "<Home>", home)
-map({ "n", "x", "o" }, "H", home)
+-- map({ "n", "x", "o" }, "<leader>H", home)
 map({ "n", "x", "o" }, "0", home)
-map({ "n", "x" }, "L", "$") -- "o" taken by nvim-various-textobjs
-map({ "n", "x", "o" }, "gH", "g^")
-map({ "n", "x", "o" }, "gL", "g$")
-map({ "n", "x", "o" }, "$", "L", "H")
-map({ "n", "x", "o" }, "^", "H", "L")
+map({ "n", "x", "o" }, "^", home)
+-- map({ "n", "x" }, "<leader>L", "$") -- "o" taken by nvim-various-textobjs
+-- map({ "n", "x", "o" }, "gH", "g^")
+-- map({ "n", "x", "o" }, "gL", "g$")
+-- map({ "n", "x", "o" }, "$", "L", "H")
+-- map({ "n", "x", "o" }, "^", "H", "L")
 -- map({ "n", "x", "o" }, "<M-S-L>", "L", "L (bottom)")
 -- map({ "n", "x", "o" }, "<M-S-H>", "H", "H (top)")
 
