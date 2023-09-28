@@ -1,10 +1,9 @@
--- active indent guide and indent text objects
+-- show current indent scope and support indent text objects
 return {
   "echasnovski/mini.indentscope",
   event = "BufReadPost",
   opts = {
-    -- symbol = "▏",
-    symbol = "│",
+    symbol = "┃",
     options = { try_as_border = true },
     draw = {
       delay = 1,
@@ -35,7 +34,7 @@ return {
     -- map({ "n", "x" }, "[i", function() move("top", true) end, "indent start (mini-indentscope)")
     -- map("o", "[i", function() move("top", false) end, "indent line scope end")
     -- Darker highlight of IndentBlanklineChar
-    vim.cmd [[hi! MiniIndentscopeSymbol guifg=#979cb3]]
+    vim.cmd [[hi! MiniIndentscopeSymbol guifg=#b5bddd]]
     vim.api.nvim_create_autocmd("FileType", {
       pattern = Util.unlisted_filetypes,
       callback = function(opts)
