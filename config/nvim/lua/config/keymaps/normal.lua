@@ -75,8 +75,8 @@ local mappings = {
     vim.g.full_window = not vim.g.full_window
   end, "toggle full window" },
   -- Scroll
-  ["<Up>"] = { "<C-y>k", ignored },
-  ["<Down>"] = { "<C-e>j", ignored },
+  ["<Up>"] = { "<C-y>", ignored },
+  ["<Down>"] = { "<C-e>", ignored },
   -- ["<Left>"] = { "10zh", ignored },
   -- ["<Right>"] = { "10zl", ignored },
 }

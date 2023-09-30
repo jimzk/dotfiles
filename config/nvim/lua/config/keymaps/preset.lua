@@ -44,8 +44,8 @@ end
 map({ "n", "x", "o" }, "n", function() nN(true) end)
 map({ "n", "x", "o" }, "N", function() nN(false) end)
 
-map("n", "<C-E>", "2<C-E>")
-map("n", "<C-Y>", "2<C-Y>")
+map("n", "<C-E>", "<C-E>j")
+map("n", "<C-Y>", "<C-Y>k")
 
 map("n", "}", "}zz")
 map("n", "{", "{zz")
