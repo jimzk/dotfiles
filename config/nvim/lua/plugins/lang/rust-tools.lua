@@ -25,7 +25,7 @@ return {
         end
       end, "[RS] hover or peek fold", opts)
       map("v", "K", rt.hover_range.hover_range, "[RS] hover", opts)
-      map("n", "gC", rt.external_docs.open_external_docs, "[RS] open external doc", opts)
+      map("n", "gO", rt.external_docs.open_external_docs, "[RS] open documentation on cursor", opts)
       map({ "n", "v" }, "<leader>ck", rt.runnables.runnables, "[RS] run or test code", opts)
       map("n", "<leader>cm", rt.open_cargo_toml.open_cargo_toml, "[RS] open cargo.toml", opts)
       map("n", "<leader>cp", rt.parent_module.parent_module, "[RS] go parent module", opts)

@@ -20,28 +20,43 @@ return {
           name = "Cargo.toml"
         }, { prefix = "<leader>cc", buffer = bufnr })
         local opts = { buffer = bufnr }
-        map("n", "<leader>cct", [[<cmd>lua require('crates').toggle()<cr>]],
-          "toggle virtual text and diagnostics", opts)
+        map("n", "<leader>cct", function() require("crates").toggle() end, "toggle virtual text and diagnostics", opts)
         -- Info
-        map("n", "<leader>cci", [[<cmd>lua require('crates').show_popup()<cr>]],
-          "show info on cursor", opts)
-        map("n", "<leader>ccI",
-          [[<cmd>lua require('crates').show_popup()<cr><cmd>lua require('crates').focus_popup()<cr>]],
-          "show info on cursor and focus", opts)
-        -- Upgrade
-        map("n", "<leader>ccu", [[<cmd>lua require('crates').upgrade_crate()<cr>]],
-          "update crate on current line", opts)
-        map("n", "<leader>ccU", [[<cmd>lua require('crates').upgrade_all_crates()<cr>]],
-          "update all crate", opts)
+        map("n", "<leader>cci", function() require("crates").show_crate_popup() end,
+          "show crate details", opts)
+        map("n", "<leader>ccl", function() require("crates").show_dependencies_popup() end,
+          "show crates list", opts)
+        -- Edit Dependency
+        map("n", "<leader>ccv", function() require("crates").versions_popup() end,
+          "edit crate version", opts)
+        map("n", "<leader>ccf", function() require("crates").features_popup() end,
+          "edit crate features", opts)
+        map("n", "<leader>cce", function() require("crates").expand_plain_crate_to_inline_table() end,
+          "expand plain crate to inline table", opts)
+        map("n", "<leader>ccE", function() require("crates").extract_crate_into_table() end,
+          "extract crate declaration into a TOML section", opts)
+        -- Upgrade/Update
+        map("n", "<leader>ccg", function() require("crates").upgrade_crate() end,
+          "upgrade crate", opts)
+        map("x", "<leader>ccg", function() require("crates").upgrade_crates() end,
+          "upgrade selected crates", opts)
+        map("n", "<leader>ccg", function() require("crates").upgrade_all_crates() end,
+          "upgrade all crates", opts)
+        map("n", "<leader>ccu", function() require("crates").update_crate() end,
+          "update crate (minor version)", opts)
+        map("x", "<leader>ccu", function() require("crates").update_crates() end,
+          "update selected crates (minor version)", opts)
+        map("n", "<leader>ccU", function() require("crates").update_all_crates() end,
+          "update all crates (minor version)", opts)
         -- Open
-        map("n", "<leader>cco", [[<cmd>lua require('crates').open_crates_io()<cr>]],
-          "open crate page on current line", opts)
-        map("n", "<leader>cch", [[<cmd>lua require('crates').open_homepage()<cr>]],
-          "open home page on current line", opts)
-        map("n", "<leader>ccr", [[<cmd>lua require('crates').open_repository()<cr>]],
-          "open repository page on current line", opts)
-        map("n", "<leader>ccd", [[<cmd>lua require('crates').open_documentation()<cr>]],
-          "open documentation page on current line", opts)
+        map("n", "<leader>cc1", function() require("crates").open_crates_io() end,
+          "open crate page", opts)
+        map("n", "<leader>cc2", function() require("crates").open_homepage() end,
+          "open crate home page", opts)
+        map("n", "<leader>cc3", function() require("crates").open_repository() end,
+          "open crate repository", opts)
+        map("n", "<leader>cc4", function() require("crates").open_documentation() end,
+          "open crate documentation", opts)
       end,
     })
   end,
@@ -51,5 +66,8 @@ return {
       enabled = true,
       name = "crates.nvim",
     },
+    popup = {
+      autofocus = true,
+    }
   },
 }
