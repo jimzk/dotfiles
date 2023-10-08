@@ -14,6 +14,11 @@ return {
     vim.g.matchup_mappings_enabled = 0
     -- vim.g.matchup_matchparen_offscreen = { method = 'popup' }
     vim.g.matchup_matchparen_enabled = 1
+    -- highlight matching pairs
+    vim.g.matchup_matchparen_deferred = 1
+    vim.g.matchup_matchparen_hi_surround_always = 1
+    -- highlight background surrounded by matching pairs
+    vim.g.matchup_matchparen_hi_background = 1
     require("nvim-treesitter.configs").setup({
       matchup = {
         enable = true, -- mandatory, false will disable the whole extension

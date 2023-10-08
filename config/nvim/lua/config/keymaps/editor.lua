@@ -316,7 +316,7 @@ mappings = {
       prompt_title = "Oldfiles (global)",
     })
   end, "old files (global)" },
-  p = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
+  j = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
 }
 set_mapppings(mappings, { prefix = "<leader>f" })
 map("n", "<leader>i", "<cmd>FzfLua git_status<cr>", "git status file (fzf)")
