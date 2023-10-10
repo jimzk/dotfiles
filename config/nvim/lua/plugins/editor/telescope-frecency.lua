@@ -2,7 +2,6 @@ return {
   "nvim-telescope/telescope-frecency.nvim",
   dependencies = {
     "nvim-telescope/telescope.nvim",
-    "kkharji/sqlite.lua",
   },
   event = "VeryLazy",
   config = function()
@@ -19,12 +18,12 @@ return {
           },
           disable_devicons = false,
           workspaces = {
-            ["dot"] = vim.fs.normalize("~/.dotfiles"),
-            ["conf"] = vim.fs.normalize("~/.config"),
-            ["work"] = vim.fs.normalize("~/workspace"),
-            ["desk"] = vim.fs.normalize("~/Desktop"),
-            ["down"] = vim.fs.normalize("~/Downloads"),
-            ["plug"] = vim.fn.stdpath("data") .. "/site/pack/packer",
+            ["dotfile"] = vim.fs.normalize("~/.dotfiles"),
+            ["config"] = vim.fs.normalize("~/.config"),
+            ["workspace"] = vim.fs.normalize("~/workspace"),
+            ["desktop"] = vim.fs.normalize("~/Desktop"),
+            ["download"] = vim.fs.normalize("~/Downloads"),
+            ["plugins"] = vim.fn.stdpath("data") .. "/lazy",
           },
         }
       },
