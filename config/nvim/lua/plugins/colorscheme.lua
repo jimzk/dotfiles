@@ -1,10 +1,10 @@
 return {
 
   -- tokyonight
-  {
-    "folke/tokyonight.nvim",
-    opts = { style = "moon" },
-  },
+  -- {
+  --   "folke/tokyonight.nvim",
+  --   opts = { style = "moon" },
+  -- },
 
   -- catppuccin
   {
@@ -17,9 +17,9 @@ return {
       custom_highlights = function(colors)
         return {
           -- brighter highlight (frappe)
-          CursorLine = { bg = "#464a61" },
-          CursorLineNr = { fg = "#cfd0f5" },
-          LineNr = { fg = "#5c637c" },
+          -- CursorLine = { bg = "#464a61" },
+          -- CursorLineNr = { fg = "#cfd0f5" },
+          -- LineNr = { fg = "#5c637c" },
           WinSeparator = { fg = "#404556" },
           Visual = { style = {}, fg = "#e5e6ec", bg = "#505775" }, -- Remove bold
         }

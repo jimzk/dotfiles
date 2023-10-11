@@ -67,19 +67,19 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 })
 
 -- number column
-vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
-  callback = function(opts)
-    local ft = vim.bo[opts.buf].filetype
-    if not vim.tbl_contains({ "alpha" }, ft) then
-      vim.wo.cursorline = true
-    end
-  end,
-})
-vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
-  callback = function()
-    vim.wo.cursorline = false
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+--   callback = function(opts)
+--     local ft = vim.bo[opts.buf].filetype
+--     if not vim.tbl_contains({ "alpha" }, ft) then
+--       vim.wo.cursorline = true
+--     end
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+--   callback = function()
+--     vim.wo.cursorline = false
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
   callback = function()

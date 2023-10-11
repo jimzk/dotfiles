@@ -59,7 +59,8 @@ map({ "n", "x", "o" }, "k", "v:count == 0 ? 'gk' : 'k'", nil, { expr = true })
 
 -- Avoid lost visual selection
 for _, key in pairs({ "~", "u", "U" }) do
-  map("x", key, "<cmd>setlocal nocursorline<cr>" .. key .. "gv<cmd>setlocal cursorline<cr>")
+  -- map("x", key, "<cmd>setlocal nocursorline<cr>" .. key .. "gv<cmd>setlocal cursorline<cr>")
+  map("x", key, key .. "gv")
 end
 
 -- map("n", "<", "<<")

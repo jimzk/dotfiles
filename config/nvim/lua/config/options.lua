@@ -11,7 +11,7 @@ opt.cmdheight = 1
 opt.completeopt = "menu,menuone,noselect"
 opt.conceallevel = 0 -- Hide * markup for bold and italic
 -- opt.confirm = true -- confirm to save changes before exiting modified buffer
-opt.cursorline = true -- Enable highlighting of the current line
+opt.cursorline = false -- highlighting of the current line
 
 opt.hlsearch = true -- Highlight search text
 opt.incsearch = true -- Not jump to the first match immediately
