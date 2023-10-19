@@ -381,5 +381,14 @@
       "pub $0"
     ],
     "description": "pub"
+  },
+  "literal str r#": {
+    "prefix": "r#",
+    "body": [
+      "r#\"",
+      "${1:literal}",
+      "\"#"
+    ],
+    "description": "r#\"...\"# string"
   }
 }

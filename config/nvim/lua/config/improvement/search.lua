@@ -60,8 +60,7 @@ map("n", "<C-/>", function()
   local topline = vim.fn.winsaveview().topline
   local bottomline = vim.api.nvim_win_get_height(0) + topline
   local keys = string.format([[/\%%>%sl\%%<%sl]], topline - 1, bottomline)
-  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
-  vim.api.nvim_feedkeys(keys, "m", true)
+  Util.feedkeys(keys)()
 end, "search in visible range")
 
 -- List search result in telescope

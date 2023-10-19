@@ -22,7 +22,7 @@ return {
       pattern = "*",
       callback = function()
         local key_join = "J"
-        local key_split = "S"
+        local key_split = "K"
         local opts = { buffer = true }
         if langs[vim.bo.filetype] then
           map("n", key_join, "<Cmd>TSJJoin<CR>", nil, opts)

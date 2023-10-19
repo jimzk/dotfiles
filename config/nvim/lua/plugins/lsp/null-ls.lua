@@ -1,6 +1,6 @@
 -- formatters
 return {
-  "jose-elias-alvarez/null-ls.nvim",
+  "nvimtools/none-ls.nvim",
   event = "BufReadPost",
   opts = function()
     local null_ls = require("null-ls")
@@ -20,7 +20,7 @@ return {
             -- 1. npm install --save-dev prettier prettier-plugin-solidity
             -- 2. config settings.json following https://github.com/prettier-solidity/prettier-plugin-solidity#vscode
             "solidity",
-          }
+          },
         }),
       },
     }

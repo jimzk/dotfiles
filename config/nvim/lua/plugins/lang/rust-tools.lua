@@ -1,5 +1,6 @@
 return {
-  "simrat39/rust-tools.nvim",
+  -- "simrat39/rust-tools.nvim",
+  "Ciel-MC/rust-tools.nvim", -- a fork
   dependencies = {
     "nvim-lua/plenary.nvim",
     "mfussenegger/nvim-dap"
@@ -11,7 +12,7 @@ return {
       if client.name ~= "rust_analyzer" then return end
       local opts = { buffer = bufnr }
       map("n", "J", rt.join_lines.join_lines, opts)
-      map("n", "K", function()
+      map("n", "gh", function()
         local winid = require("ufo").peekFoldedLinesUnderCursor()
         -- :h ufo.txt
         if winid then
@@ -24,17 +25,18 @@ return {
           rt.hover_actions.hover_actions()
         end
       end, "[RS] hover or peek fold", opts)
-      map("v", "K", rt.hover_range.hover_range, "[RS] hover", opts)
+      map("x", "gh", rt.hover_range.hover_range, "[RS] hover types", opts)
       map("n", "gO", rt.external_docs.open_external_docs, "[RS] open documentation on cursor", opts)
-      map({ "n", "v" }, "<leader>ck", rt.runnables.runnables, "[RS] run or test code", opts)
+      map({ "n", "x" }, "<leader>ck", rt.runnables.runnables, "[RS] run or test code", opts)
       map("n", "<leader>cm", rt.open_cargo_toml.open_cargo_toml, "[RS] open cargo.toml", opts)
       map("n", "<leader>cp", rt.parent_module.parent_module, "[RS] go parent module", opts)
+      map("n", "<leader>ca", rt.expand_macro.expand_macro, "[RS] expand macro", opts)
       map("n", "<M-down>", "<cmd>RustMoveItemDown<cr>", "[RS] move item down", opts)
       map("n", "<M-up>", "<cmd>RustMoveItemUp<cr>", "[RS] move item up", opts)
       map("n", "<leader>c.", function()
         vim.cmd [[silent !open "https://rust-analyzer.github.io/manual.html\#magic-completions"]]
         vim.cmd [[silent !open "https://rust-analyzer.github.io/manual.html\#format-string-completion"]]
-      end, "open doc for postfix completion")
+      end, "[RS] open doc for postfix completion")
     end)
     rt.setup {
       server = require("plugins.lsp.servers")["rust_analyzer"],

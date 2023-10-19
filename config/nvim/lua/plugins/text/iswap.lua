@@ -4,30 +4,35 @@ return {
   event = "VeryLazy",
   keys = {
     {
-      "<leader>jK",
+      "<leader>ee",
       mode = { "n", "x" },
       "<cmd>ISwapWith<CR>",
       desc = "swap current with ...",
     },
     {
-      "<leader>j<C-k>",
+      "<leader>eE",
       mode = { "n", "x" },
       "<cmd>ISwap<CR>",
       desc = "swap any two",
     },
     {
-      "<leader>jm",
-      mode = { "n" },
+      "<leader>em",
+      mode = { "n", "x" },
       "<cmd>IMoveWith<CR>",
-      desc = "move current to..",
+      desc = "move current node to ...",
     },
     {
-      "<leader>jM",
+      "<leader>eM",
       mode = { "n" },
       "<cmd>IMove<CR>",
-      desc = "move any to ..",
+      desc = "move any to ...",
     },
   },
+  init = function()
+    require("which-key").register({
+      ["<leader>e"] = { name = "+swap", }
+    })
+  end,
   opts = {
     move_cursor = true,
     hl_snipe = "ErrorMsg",

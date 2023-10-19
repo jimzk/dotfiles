@@ -14,8 +14,8 @@ M.config = function(_, opts)
   local ox = { "o", "x" }
   local o = { "o" }
   map(ox, "!", t.diagnostic, "diagnostic")
-  map(ox, "|", function() t.column() end, "column down")
-  map(o, "L", function() t.nearEoL() end)
+  map(ox, "i<TAB>", function() t.column() end, "column")
+  map(ox, "a<TAB>", function() t.column() end, "column")
   map(ox, "iu", t.url, "url")
   map(ox, "au", t.url, "url")
   -- Indentation
@@ -30,16 +30,26 @@ M.config = function(_, opts)
   -- Subword
   map(ox, "as", function() t.subword("outer") end)
   map(ox, "is", function() t.subword("inner") end)
+  map(ox, "aS", "as", "sentence")
+  map(ox, "iS", "is", "sentence")
+  -- current line
+  map(ox, "il", function() t.lineCharacterwise("inner") end, "line")
+  map(ox, "al", function() t.lineCharacterwise("outer") end, "line")
+  map(ox, "iL", function() t.nearEoL() end, "end of line")
+  map(ox, "aL", function() t.nearEoL() end, "end of line")
+  -- chain member
+  map(ox, "iM", function() t.chainMember("inner") end, "chain member")
+  map(ox, "aM", function() t.chainMember("outer") end, "chain member")
   -- Key/value
-  map(ox, "iv", function() t.value("inner") end, "value (KV)")
-  map(ox, "av", function() t.value("outer") end, "value (KV)")
-  map(ox, "ik", function() t.key("inner") end, "key (KV)")
-  map(ox, "ak", function() t.key("outer") end, "key (KV)")
+  map(ox, "i1", function() t.key("inner") end, "key (KV)")
+  map(ox, "a1", function() t.key("outer") end, "key (KV)")
+  map(ox, "i2", function() t.value("inner") end, "value (KV)")
+  map(ox, "a2", function() t.value("outer") end, "value (KV)")
   -- Entire content
-  map(ox, "i<cr>", function() t.entireBuffer() end, "entire content")
-  map(ox, "a<cr>", function() t.entireBuffer() end, "entire content")
-  map(ox, "ae", function() t.visibleInWindow() end, "entire visible content")
-  map(ox, "ie", function() t.restOfWindow() end, "reset visible content")
+  map(ox, "ie", function() t.entireBuffer() end, "entire content")
+  map(ox, "ae", function() t.entireBuffer() end, "entire content")
+  map(ox, "a<cr>", function() t.visibleInWindow() end, "entire visible content")
+  map(ox, "i<cr>", function() t.visibleInWindow() end, "entire visible content")
   -- Markdown
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "markdown" },

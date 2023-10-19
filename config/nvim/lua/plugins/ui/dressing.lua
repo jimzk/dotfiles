@@ -29,7 +29,7 @@ return {
       win_options = {
         winblend = 0,
       },
-      start_in_insert = false
+      start_in_insert = true
     },
     select = {
       backend = { "builtin", "telescope", "fzf_lua", "fzf", "builtin", "nui" },

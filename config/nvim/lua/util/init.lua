@@ -43,9 +43,14 @@ function M.get_root()
   if path then
     for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders
-      local paths = workspace and vim.tbl_map(function(ws)
+      local paths =
+          workspace
+          and
+          vim.tbl_map(function(ws)
             return vim.uri_to_fname(ws.uri)
-          end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
+          end, workspace)
+          or
+          client.config.root_dir and { client.config.root_dir } or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then
@@ -277,9 +282,12 @@ M.focus_win = function()
   vim.api.nvim_set_current_win(picked_window_id)
 end
 
-M.feedkeys = function(keys)
-  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
-  vim.api.nvim_feedkeys(keys, "m", true)
+M.feedkeys = function(key_codes, mode)
+  return function()
+    key_codes = vim.api.nvim_replace_termcodes(key_codes, true, false, true)
+    mode = mode or "m"
+    vim.api.nvim_feedkeys(key_codes, mode, false)
+  end
 end
 
 _G.Util = M
@@ -322,4 +330,12 @@ _G.copy = function(...)
   end
   vim.fn.setreg("+", msg)
   return msg
+end
+
+_G.fg = function(name)
+  return function()
+    ---@type {foreground?:number}?
+    local hl = vim.api.nvim_get_hl_by_name(name, true)
+    return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
+  end
 end

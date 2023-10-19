@@ -15,15 +15,15 @@ M.config = function()
         keymaps = {
           ["af"] = { query = "@function.outer", desc = "[TS] method" },
           ["if"] = { query = "@function.inner", desc = "[TS] method " },
-          ["ao"] = { query = "@class.outer", desc = "[TS] class" },
-          ["io"] = { query = "@class.inner", desc = "[TS] class" },
+          ["aC"] = { query = "@class.outer", desc = "[TS] class" },
+          ["iC"] = { query = "@class.inner", desc = "[TS] class" },
           -- mini.ai has already provided aa and ia
           -- ["aa"] = "@parameter.outer",
           -- ["ia"] = "@parameter.inner",
         },
         selection_modes = {
           ["@parameter.outer"] = "v", -- charwise
-          ["@function.outer"] = "V",  -- linewise
+          ["@function.outer"] = "V", -- linewise
           ["@class.outer"] = "<c-v>", -- blockwise
         },
         include_surrounding_whitespace = true,
@@ -31,10 +31,10 @@ M.config = function()
       swap = {
         enable = true,
         swap_next = {
-          ["<leader>jk"] = { query = "@parameter.inner", desc = "[TS] swap current with next" },
+          ["]e"] = { query = "@parameter.inner", desc = "[TS] swap para with next" },
         },
         swap_previous = {
-          ["<leader>jj"] = { query = "@parameter.inner", desc = "[TS] swap current with prev" },
+          ["[e"] = { query = "@parameter.inner", desc = "[TS] swap para with prev" },
         },
       },
       move = {
@@ -42,34 +42,22 @@ M.config = function()
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
           ["]f"] = { query = "@function.outer", desc = "[TS] next method start" },
-          ["]o"] = { query = "@class.outer", desc = "[TS] next class start" },
-          ["]h"] = { query = "@conditional.outer", desc = "[TS] next condition start" },
+          ["]]"] = { query = "@class.outer", desc = "[TS] next class start" },
+          ["]s"] = { query = "@scope", query_group = "locals", desc = "[TS] next scope" },
         },
         goto_next_end = {
           ["]F"] = { query = "@function.outer", desc = "[TS] current or next method end" },
-          ["]O"] = { query = "@class.outer", desc = "[TS] current or next class end" },
-          ["]H"] = { query = "@conditional.outer", desc = "[TS] current or next condition end" },
+          ["]["] = { query = "@class.outer", desc = "[TS] current or next class end" },
         },
         goto_previous_start = {
           ["[f"] = { query = "@function.outer", desc = "[TS] current or prev method start" },
-          ["[o"] = { query = "@class.outer", desc = "[TS] current or prev class start" },
-          ["[h"] = { query = "@conditional.outer", desc = "[TS] current or prev condition start" },
+          ["[["] = { query = "@class.outer", desc = "[TS] current or prev class start" },
+          ["[s"] = { query = "@scope", query_group = "locals", desc = "[TS] prev scope" },
         },
         goto_previous_end = {
           ["[F"] = { query = "@function.outer", desc = "[TS] prev method end" },
-          ["[O"] = { query = "@class.outer", desc = "[TS] prev class end" },
-          ["[H"] = { query = "@conditional.outer", desc = "[TS] prev condition end" },
+          ["[]"] = { query = "@class.outer", desc = "[TS] prev class end" },
         },
-        -- goto_next = {
-        --   ["]<C-f>"] = { query = "@function.outer", desc = "[TS] next method start or end" },
-        --   ["]<C-c>"] = { query = "@class.outer", desc = "[TS] next class start or end" },
-        --   ["]<C-d>"] = { query = "@conditional.outer", desc = "[TS] next condition start or start" },
-        -- },
-        -- goto_previous = {
-        --   ["[<C-f>"] = { query = "@function.outer", desc = "[TS] prev method start or end" },
-        --   ["[<C-c>"] = { query = "@class.outer", desc = "[TS] prev class start or end" },
-        --   ["[<C-d>"] = { query = "@conditional.outer", desc = "[TS] prev condition start or start" },
-        -- }
       },
       lsp_interop = {
         enable = false,
@@ -82,6 +70,11 @@ M.config = function()
       },
     },
   })
+  local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+  -- Repeat movement with ; and ,
+  -- ensure ; goes forward and , goes backward regardless of the last direction
+  map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+  map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
 end
 
 return M

@@ -3,8 +3,10 @@ return {
   "mrjones2014/smart-splits.nvim",
   event = "VeryLazy",
   build = "./kitty/install-kittens.bash",
-  opts = {},
-  config = function(opts)
+  opts = {
+    default_amount = 5,
+  },
+  config = function(_, opts)
     require("smart-splits").setup(opts)
     -- resize splits
     map("n", "<C-S-h>", require("smart-splits").resize_left)

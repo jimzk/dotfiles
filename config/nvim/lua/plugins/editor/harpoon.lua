@@ -3,17 +3,10 @@ return {
   "ThePrimeagen/harpoon",
   event = "VeryLazy",
   keys = {
-    { "<leader>k", function() require("harpoon.ui").toggle_quick_menu() end, desc = "harpoon" },
-    {
-      "<leader>K",
-      function()
-        require("harpoon.mark").add_file()
-        vim.notify("Add file to harpoon", vim.log.levels.INFO, { title = "Harpoon" })
-      end,
-      desc = "harpoon add file",
-    },
-    -- { "<C-]>", function() require("harpoon.ui").nav_next() end, desc = "harpoon go next" },
-    -- { "<C-[>", function() require("harpoon.ui").nav_prev() end, desc = "harpoon go prev" },
+    { "<leader>K", function() require("harpoon.mark").toggle_file() end, desc = "harpoon toggle file", },
+    { "<leader>k", function() require("harpoon.ui").toggle_quick_menu() end, desc = "harpoon menu", },
+    -- { "-", function() require("harpoon.ui").nav_prev() end, desc = "pre harpoon file", },
+    -- { "=", function() require("harpoon.ui").nav_next() end, desc = "next harpoon file", },
     -- Navigate by file number
     { "<leader>1", function() require("harpoon.ui").nav_file(1) end, desc = "go to harpoon file 1" },
     { "<leader>2", function() require("harpoon.ui").nav_file(2) end, desc = "which_key_ignore" },

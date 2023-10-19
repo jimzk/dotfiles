@@ -21,11 +21,11 @@ return {
         vim.cmd([[normal! "qy]]) -- remember visual mark
         local url = vim.api.nvim_exec([['<,'>RustPlay]], true)
         vim.cmd("!open " .. vim.fn.substitute(url, ".*Done: ", "", ""))
-      end, "[RS] code runner in playground", opts)
+      end, "[RS] run *.rs in playground", opts)
       map("n", "<leader>c<c-cr>", function()
         local url = vim.api.nvim_exec([[RustPlay]], true)
         vim.cmd("!open " .. vim.fn.substitute(url, ".*Done: ", "", ""))
-      end, "[RS] code runner in playground", opts)
+      end, "[RS] run *.rs in playground", opts)
     end)
   end,
 }

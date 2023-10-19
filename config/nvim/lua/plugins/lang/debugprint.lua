@@ -34,6 +34,11 @@ return {
       desc = "delete all debug prints",
     },
   },
+  init = function()
+    require("which-key").register({
+      ["<leader>d"] = { name = "+debugprint", }
+    })
+  end,
   opts = {
     create_keymaps = false,
     move_to_debugline = false,

@@ -11,7 +11,7 @@ return {
   event = "VeryLazy",
   keys = {
     {
-      "<c-space>",
+      "s",
       mode = { "n", "x", "o" },
       function() require("flash").jump() end,
       desc = "jump (flash)",

@@ -10,6 +10,9 @@ return {
     suggestion = {
       enabled = true,
       auto_trigger = true,
+      keymap = {
+        accept = "<M-cr>",
+      },
     },
     panel = {
       enabled = true,

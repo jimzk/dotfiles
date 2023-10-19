@@ -28,6 +28,7 @@ return {
         enable = true,
         -- https://github.com/LuaLS/lua-language-server/wiki/Formatter
         -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config.md
+        -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
         defaultConfig = {
           -- The value should be STRING!
           indent_style = "space",

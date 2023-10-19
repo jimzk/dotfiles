@@ -21,7 +21,7 @@ return {
       dashboard.button("o", " " .. " Recent Files", ":Telescope frecency <CR>"),
       dashboard.button("g", " " .. " Find Text", ":Telescope live_grep <CR>"),
       dashboard.button("c", " " .. " Nvim Config", [[<cmd>PossessionLoad config<CR>]]),
-      dashboard.button("z", "鈴" .. " Lazy", ":Lazy<CR>"),
+      dashboard.button("z", "󰒲 " .. " Lazy", ":Lazy<CR>"),
       dashboard.button("q", " " .. " Quit", ":qa<CR>"),
 
       -- Session list
@@ -43,7 +43,7 @@ return {
         for _, file in pairs(files) do
           local basename = vim.fs.basename(file):gsub("%.json", "")
           if basename ~= "config" then
-            local button = dashboard.button(tostring(i), "勒 " .. basename, "<cmd>PossessionLoad " .. basename .. "<cr>")
+            local button = dashboard.button(tostring(i), " " .. basename, "<cmd>PossessionLoad " .. basename .. "<cr>")
             table.insert(group.val, button)
             i = i + 1
           end

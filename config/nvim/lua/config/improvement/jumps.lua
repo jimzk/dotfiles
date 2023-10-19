@@ -1,5 +1,6 @@
 -- Get back to original poistion from visual mode
 map("n", "v", "mvv")
+map("n", "vv", "mvv$o")
 map("n", "V", "mvV")
 map("n", "<C-V>", "mv<C-V>")
 -- Use ` to compatible with treesitter incremental_selection which marks v continusouly

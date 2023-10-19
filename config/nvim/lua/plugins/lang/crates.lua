@@ -27,9 +27,9 @@ return {
         map("n", "<leader>ccl", function() require("crates").show_dependencies_popup() end,
           "show crates list", opts)
         -- Edit Dependency
-        map("n", "<leader>ccv", function() require("crates").versions_popup() end,
+        map("n", "<leader>ccv", function() require("crates").show_versions_popup() end,
           "edit crate version", opts)
-        map("n", "<leader>ccf", function() require("crates").features_popup() end,
+        map("n", "<leader>ccf", function() require("crates").show_features_popup() end,
           "edit crate features", opts)
         map("n", "<leader>cce", function() require("crates").expand_plain_crate_to_inline_table() end,
           "expand plain crate to inline table", opts)

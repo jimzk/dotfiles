@@ -31,7 +31,7 @@ M.config = function(_, opts)
     if modes:match(vim.fn.mode()) then
       local keys = { "<Esc>" }
       if vim.tbl_contains(keys, vim.fn.keytrans(char)) then
-        Util.feedkeys("<Esc>")
+        Util.feedkeys("<Esc>")()
       end
     end
   end, vim.api.nvim_create_namespace("flit"))

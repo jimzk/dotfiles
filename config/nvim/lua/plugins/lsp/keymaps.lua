@@ -37,12 +37,22 @@ end
 
 M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
-  map("n", "[\\", function() vim.diagnostic.goto_prev { float = true } end, "[C] prev diagnostic", opts)
-  map("n", "]\\", function() vim.diagnostic.goto_next { float = true } end, "[C] next diagnostic", opts)
-  map("n", "g\\", function() vim.diagnostic.open_float { focusable = true, focus = true } end,
+  local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+  local next_diagnostics_repeat, prev_diagnostics_repeat = ts_repeat_move.make_repeatable_move_pair(
+    function() vim.diagnostic.goto_next { float = true } end,
+    function() vim.diagnostic.goto_prev { float = true } end)
+  map("n", "]X", next_diagnostics_repeat, "[C] next diagnostic", opts)
+  map("n", "[X", prev_diagnostics_repeat, "[C] prev diagnostic", opts)
+  map("n", "gX", function() vim.diagnostic.open_float { focusable = true, focus = true } end,
     "[C] peek diagnostic", opts)
-  map("n", "g<M-\\>", "<cmd>Trouble document_diagnostics<cr>", "[C] list diagnostics in buffer", opts)
-  map("n", "g|", "<cmd>Trouble workspace_diagnostics<cr>", "[C] list diagnostics in workspace", opts)
+  map("n", "g<M-x>", function()
+    vim.cmd("Trouble document_diagnostics")
+    vim.notify("List diagnostics in current buffer")
+  end, "[C] list diagnostics in buffer", opts)
+  map("n", "g<M-S-x>", function()
+    vim.cmd("Trouble workspace_diagnostics")
+    vim.notify("List diagnostics in workspace")
+  end, "[C] list diagnostics in workspace", opts)
 
   local ft = vim.bo[bufnr].filetype
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -55,7 +65,7 @@ M.on_attach = function(bufnr)
   map("n", "g<C-d>", "<cmd>Telescope lsp_definitions<cr>", "[C] definition list", opts)
 
   if ft ~= "rust" then
-    map("n", "K", function()
+    map("n", "gh", function()
       local winid = require("ufo").peekFoldedLinesUnderCursor()
       -- :h ufo.txt
       if winid then
@@ -76,7 +86,8 @@ M.on_attach = function(bufnr)
   map("n", "g]", vim.lsp.buf.outgoing_calls, "[C] outgoing call tree", opts)
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "[C] rename", opts)
-  map({ "n", "v", "i" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
+  -- map({ "n", "v" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
+  map({ "n", "v" }, "<M-cr>", "<cmd>CodeActionMenu<CR>", "[C] code action", opts)
 
   map("n", "<leader>cwa", function() vim.lsp.buf.add_workspace_folder() end, "add LSP workspace folder", opts)
   map("n", "<leader>cwr", function() vim.lsp.buf.remove_workspace_folder() end, "remove LSP workspace folder", opts)
@@ -87,9 +98,9 @@ M.on_attach = function(bufnr)
   -- map({ "n", "i", "v" }, "<C-space>", vim.lsp.buf.signature_help, "[C] peek signature", opts)
 
   local format = require "plugins.lsp.format"
-  map("n", "<leader>l", format.format, "format buffer", opts)
-  map("v", "<leader>l", format.format, "format selection", opts)
-  map("n", "<leader>ol", format.toggle, "toggle format on save", opts)
+  map("n", "<F12>", format.format, "format buffer", opts)
+  map("v", "<F12>", format.format, "format selection", opts)
+  map("n", "<leader><F12>", format.toggle, "toggle format on save", opts)
 end
 
 return M

@@ -50,8 +50,6 @@ return {
           mode = { "n", "x" },
           w = { name = "LSP workspace" },
         },
-        D = { name = "+print for debugging", mode = { "n", "x" } },
-        e = { name = "+neo-tree" },
         o = { name = "+options" },
         n = {
           name = "+nvim",

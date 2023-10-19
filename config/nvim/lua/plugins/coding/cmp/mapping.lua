@@ -44,6 +44,13 @@ local tab = function(fallback)
     return
   end
 
+  -- https://github.com/danymat/neogen#default-cycling-support
+  local neogen = require("neogen")
+  if neogen.jumpable() then
+    neogen.jump_next()
+    return
+  end
+
   if cmp.visible() then
     local confirmed = cmp.confirm {
       select = should_select(),
@@ -131,13 +138,15 @@ M.mapping_cmdline = {
   ["<C-p>"] = { c = select_item("prev", cmp.SelectBehavior.Insert) },
   ["<C-n>"] = { c = select_item("next", cmp.SelectBehavior.Insert) },
   ["<C-c>"] = { c = cmp.mapping.abort() },
-  ["<Tab>"] = { c = function(_)
-    if cmp.visible() then
-      cmp.confirm({ select = true })
-    else
-      cmp.complete()
+  ["<Tab>"] = {
+    c = function(_)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        cmp.complete()
+      end
     end
-  end }
+  }
   -- ["<CR>"] = { c = cmp.mapping.confirm({ select = true }) },
 }
 

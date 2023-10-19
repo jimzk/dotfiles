@@ -70,8 +70,8 @@ M.opts = function()
   end
   local opts = {}
   opts.defaults = {
-    sorting_strategy = "ascending", -- cursor starts from top result
-    layout_strategy = "flex",
+    sorting_strategy = "ascending",  -- cursor starts from top result
+    layout_strategy = "bottom_pane", -- flex, bottom_pane, curcor, center, horizontal, vertical
     layout_config = {
       prompt_position = "top",
       flex = {
@@ -84,6 +84,9 @@ M.opts = function()
         preview_height = 0.4,
       },
       horizontal = {},
+      bottom_pane = {
+        height = { 0.5, min = 25, max = 50 },
+      }
     },
     prompt_prefix = " ",
     selection_caret = " ",
@@ -92,7 +95,7 @@ M.opts = function()
     },
     results_title = false,        -- hide results title
     dynamic_preview_title = true, -- Use dynamic preview title if avaliable
-    file_ignore_patterns = { "node_modules", "/dist" },
+    file_ignore_patterns = { "node_modules", "/dist", "target" },
     wrap_results = true,
     buffer_previewer_maker = get_preview_maker(),
     mappings = {

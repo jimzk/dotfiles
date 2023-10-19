@@ -7,14 +7,6 @@ local M = {
 M.opts = function()
   local icons = require("config").icons
 
-  local function fg(name)
-    return function()
-      ---@type {foreground?:number}?
-      local hl = vim.api.nvim_get_hl_by_name(name, true)
-      return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
-    end
-  end
-
   return {
     options = {
       theme = "auto",
@@ -25,8 +17,11 @@ M.opts = function()
         winbar = {},
       },
     },
+    -- Some customized function
+    -- * https://github.com/nvim-lualine/lualine.nvim/pull/1019
+
     -- tabline = {
-    --   lualine_b = {
+    --   lualine_a = {
     --     {
     --       "buffers",
     --       max_length = vim.o.columns * 8 / 10,

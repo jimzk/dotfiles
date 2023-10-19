@@ -12,8 +12,9 @@ return {
     name = "catppuccin",
     opts = {
       -- latte, frappe, macchiato, mocha
-      flavour = "macchiato",
-      term_colors = true, -- for neovide
+      flavour = "frappe",
+      transparent_background = true,   -- disables setting the background color.
+      term_colors = true,              -- for neovide
       custom_highlights = function(colors)
         return {
           -- brighter highlight (frappe)
@@ -32,7 +33,7 @@ return {
       integrations = {
         -- aerial = true,
         gitsigns = true,
-        leap = true,
+        fidget = true,
         neotree = true,
         cmp = true,
         mini = true,
@@ -48,6 +49,9 @@ return {
         harpoon = true,
         barbecue = {
           dim_dirname = true,
+        },
+        navic = {
+          enabled = true
         },
         neogit = true,
         indent_blankline = {

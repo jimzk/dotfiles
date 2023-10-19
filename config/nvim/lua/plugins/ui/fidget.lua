@@ -1,11 +1,12 @@
 return {
   -- Lsp progress indicator
   "j-hui/fidget.nvim",
-  tag = "legacy",
   event = "BufReadPost",
   opts = {
-    window = {
-      blend = 100,
+    notification = {
+      window = {
+        winblend = 0, -- Background color opacity in the notification window
+      },
     },
   },
 }

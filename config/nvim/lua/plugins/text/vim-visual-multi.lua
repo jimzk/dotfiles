@@ -1,4 +1,6 @@
 return {
+  -- Alternative: 
+  -- - https://github.com/otavioschwanck/cool-substitute.nvim
   "mg979/vim-visual-multi",
   event = "VeryLazy",
   init = function()
@@ -11,7 +13,7 @@ return {
       -- ["VM Select h"] = "<S-left>",
       -- ["VM Select l"] = "<S-right>",
     }
-    vim.g.VM_leader = ",,"
+    vim.g.VM_leader = "\\"
     -- vim.g.VM_default_mappings = 0
 
     -- Help: :h vm-highlight

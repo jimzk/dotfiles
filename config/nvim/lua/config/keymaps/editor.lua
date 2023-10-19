@@ -32,7 +32,7 @@ local mappings = {
   i = toggle("incsearch"),
   C = toggle("conceallevel", false, { 0, conceallevel }),
   p = toggle("paste"), -- Paste without losing indent
-  m = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
+  M = { "<cmd>MarksToggleSigns<cr>", "toggle marks sign" },
   d = { Util.toggle_diagnostics, "toggle diagnostics" },
   ["<tab>"] = { function()
     vim.ui.input(
@@ -45,24 +45,8 @@ local mappings = {
       end
     )
   end, "set indent width", },
-  o = { "<cmd>Telescope vim_options<cr>", "all vim options" },
-  b = { function()
-    vim.cmd [[Gitsigns toggle_current_line_blame]]
-    vim.notify("Toggle inline Git blame", vim.log.levels.INFO, { title = "Option" })
-  end, "toggle line blame" },
-  g = { function()
-    if not vim.g.gitsigns_deleted_word_diff_enabled then
-      vim.notify([[Enable highlight on Git deletion and diffs]],
-        vim.log.levels.INFO, { title = "Option" })
-      vim.g.gitsigns_deleted_word_diff_enabled = true
-    else
-      vim.notify([[Disable highlight on Git deletion and diffs]],
-        vim.log.levels.WARN, { title = "Option" })
-      vim.g.gitsigns_deleted_word_dilff_enabled = false
-    end
-    vim.cmd [[Gitsigns toggle_deleted]]
-    vim.cmd [[Gitsigns toggle_word_diff]]
-  end, "toggle git change inline" }
+  o = { "<cmd>Telescope vim_options<cr>", "list all vim options" },
+  m = { "<cmd>Telescope filetypes<cr>", "set filetype" },
 }
 
 set_mapppings(mappings, { prefix = "<leader>o" })
@@ -94,9 +78,17 @@ mappings = {
   -- name = "+file operation",
   o = { function()
     local path = vim.fn.expand("%:p")
+    vim.cmd("silent !open " .. path)
+  end, "open file by default app" },
+  O = { function()
+      local path = vim.fn.getcwd()
+      vim.cmd("silent !open " .. path)
+    end, "open cwd by Finder" },
+  v = { function()
+    local path = vim.fn.expand("%:p")
     vim.cmd("silent !code " .. path)
   end, "open file by VSCode" },
-  O = { function()
+  V = { function()
     local path = vim.fn.getcwd()
     vim.cmd("silent !code " .. path)
   end, "open cwd by VSCode" },
@@ -142,14 +134,12 @@ mappings = {
   D = { function()
     vim.cmd("GDelete!")
   end, "[G] delete file forcely" },
-  n = { "<cmd>enew<cr>", "new file" },
   N = { function()
     local pos = vim.api.nvim_win_get_cursor(0)
     vim.cmd [[tabnew %]]
     vim.api.nvim_win_set_cursor(0, pos)
   end, "new tab", },
   n = { "<cmd>enew<cr>", "new file" },
-  i = { "<cmd>Telescope filetypes<cr>", "set filetype" },
   l = { "<cmd>lopen<cr>", "open location List" },
   q = { "<cmd>copen<cr>", "open quickfix List" },
 }
@@ -189,10 +179,6 @@ mappings = {
   s = { "<cmd>FzfLua git_stash<cr>", "stash (fzf)" },
   -- r = { "<cmd>FzfLua git_branches<cr>", "branch (fzf)" },
   r = { "<cmd>Telescope git_branches<cr>", "branch (telescope)" },
-  b = { "<cmd>Git blame<cr>", "file blame (fugitive)" },
-  G = { "<cmd>Git<cr><cmd>wincmd L<cr><cmd>6<cr>", "git operations (fugitive)" },
-  -- d = { "<cmd>Gvdiffsplit<cr>", "current file diff" },
-  d = { "<cmd>Gitsigns diffthis<cr>", "current file diff (gitsigns)" },
   -- d = { function()
   --   vim.cmd [[DiffviewOpen]]
   --   vim.cmd [[sleep 60m]] -- wait cursur to be located
@@ -231,15 +217,6 @@ mappings = {
     "Lazygit (root dir)" },
 }
 set_mapppings(mappings, { prefix = "<leader>g" })
-
-mappings = {
-  -- name = "+edit",
-  -- Clear search, diff update and redraw
-  -- taken from runtime/lua/_editor.lua
-  ["<cr>"] = { "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-    "redraw / clear hlsearch / diff update", },
-}
-set_mapppings(mappings, { prefix = "<leader>j" })
 
 map("n", "<leader>h\\", function()
   local home = vim.fn.getenv("HOME")
@@ -301,7 +278,10 @@ mappings = {
     search_dirs = { "~/workspace", "~/.dotfiles", "~/.config" },
   }), "find files (workspace)" },
   b = {
-    Util.telescope("buffers", { show_all_buffers = true, sort_lastused = true }),
+    Util.telescope("buffers", {
+      show_all_buffers = true,
+      sort_lastused = true,
+    }),
     "buffers",
   },
 
@@ -319,23 +299,39 @@ mappings = {
   j = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
 }
 set_mapppings(mappings, { prefix = "<leader>f" })
+map("n", "<C-p>", Util.telescope("find_files", {
+  prompt_title = "Find Files (cwd)",
+  hidden = true,
+  no_ignore = true,
+  follow = true,
+}), "find files (cwd)")
+map("n", "<C-M-p>", function()
+  local cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+  Util.telescope("find_files", {
+    cwd = cwd,
+    prompt_title = "Find Files (buffer dir)",
+    hidden = true,
+    no_ignore = true,
+    follow = true,
+  })()
+end, "find files (buf dir)")
+
 map("n", "<leader>i", "<cmd>FzfLua git_status<cr>", "git status file (fzf)")
 map("n", "<leader><tab>", "<cmd>Telescope resume<cr>", "resume telescope")
 
 mappings = {
   -- name = "+coding",
   I = { "<cmd>CmpStatus<cr>", "cmp status" },
-  n = { "<cmd>Neogen<cr>", "add class / function comment (neogen)" },
 }
 set_mapppings(mappings, { prefix = "<leader>c" })
 
 mappings = {
   -- Overwrite or create session
   s = { function()
-    vim.ui.select({ "Overwrite", "Save New" }, {
+    vim.ui.select({ "[Overwrite]", "[New]" }, {
       prompt = "Session",
     }, function(choice)
-      if choice == "Overwrite" then
+      if choice == "[Overwrite]" then
         local path = vim.fn.stdpath("data") .. "/possession"
         local sessions = {}
         for _, file in ipairs(vim.split(vim.fn.glob(path .. "/*.json"), "\n")) do
@@ -348,7 +344,7 @@ mappings = {
           vim.cmd("PossessionSave! " .. session)
         end)
       end
-      if choice == "Save New" then
+      if choice == "[New]" then
         vim.ui.input({
           prompt = "New session name: ",
         }, function(name)
@@ -372,7 +368,7 @@ mappings = {
       prompt_title = "Find Git Projects",
       display_type = "minimal", -- or full
     })
-  end, "git projects" },
+  end, "list git projects in workspace" },
 }
 set_mapppings(mappings, { prefix = "<leader>p" })
 

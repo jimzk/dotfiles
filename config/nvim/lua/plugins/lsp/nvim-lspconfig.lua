@@ -43,7 +43,7 @@ M.config = function()
 
   local servers = require("plugins.lsp.servers")
   require("mason").setup()
-  require("mason-lspconfig").setup({ ensure_installed = vim.tbl_keys(servers) })
+  require("mason-lspconfig").setup()
   for server, opts in pairs(servers) do
     require("lspconfig")[server].setup(opts)
   end

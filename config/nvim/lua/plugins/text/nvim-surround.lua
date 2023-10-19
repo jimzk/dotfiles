@@ -1,4 +1,5 @@
 return {
+  -- Has many fancy features, but it always fails to work, like replace/delete pairs.
   "kylechui/nvim-surround",
   event = "VeryLazy",
   -- keys = { "cs", "ds", "ys", { "Y", mode = { "x" } } },
@@ -9,11 +10,10 @@ return {
   --  ysiwi{char1}{char2}: input left and right surrounds
   opts = {
     keymaps = {
-      -- insert = false,
-      insert = "<C-g>s",
-      insert_line = "<C-g><C-s>",
-      visual = "S",
-      visual_line = "gS",
+      insert = false,
+      insert_line = false,
+      visual = "x",
+      visual_line = "X",
       -- add surrounds by s
       -- normal = "sa",
       -- normal_cur = "saa", -- line

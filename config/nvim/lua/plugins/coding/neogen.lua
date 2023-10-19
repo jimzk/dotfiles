@@ -3,5 +3,12 @@ return {
   "danymat/neogen",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   cmd = { "Neogen" },
-  config = true,
+  keys = {
+    {
+      "<leader>cn",
+      "<cmd>Neogen<cr>",
+      desc = "generate class/function comment (neogen)",
+    },
+  },
+  opts = {}
 }

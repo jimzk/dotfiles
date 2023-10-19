@@ -19,6 +19,8 @@ map({ "n", "o", "x" }, "<Esc>", "<Esc>")
 map({ "n" }, "<esc>", "<cmd>noh<cr><esc>")
 -- Remap ' for exact postion jump
 map({ "n", "x", "o" }, "'", "`")
+map({ "n", "x", "o" }, "]'", "]`")
+map({ "n", "x", "o" }, "['", "[`")
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 -- map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })
@@ -44,8 +46,8 @@ end
 map({ "n", "x", "o" }, "n", function() nN(true) end)
 map({ "n", "x", "o" }, "N", function() nN(false) end)
 
-map("n", "<C-E>", "<C-E>j")
-map("n", "<C-Y>", "<C-Y>k")
+-- map("n", "<C-E>", "<C-E>j")
+-- map("n", "<C-Y>", "<C-Y>k")
 
 map("n", "}", "}zz")
 map("n", "{", "{zz")
@@ -62,6 +64,13 @@ for _, key in pairs({ "~", "u", "U" }) do
   -- map("x", key, "<cmd>setlocal nocursorline<cr>" .. key .. "gv<cmd>setlocal cursorline<cr>")
   map("x", key, key .. "gv")
 end
+
+map({ "n", "x" }, "<M-d>", '"_d')
+map({ "n" }, "<M-d><M-d>", '"_dd')
+map({ "n", "x" }, "<M-S-d>", '"_D')
+map({ "n", "x" }, "<M-c>", '"_c')
+map({ "n" }, "<M-c><M-c>", '"_cc')
+map({ "n", "x" }, "<M-S-c>", '"_C')
 
 -- map("n", "<", "<<")
 -- map("n", ">", ">>")

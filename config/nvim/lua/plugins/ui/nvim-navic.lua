@@ -10,5 +10,9 @@ return {
       end
     end)
   end,
-  opts = { separator = " ", highlight = true, depth_limit = 5 },
+  opts = {
+    separator = " ",
+    highlight = true,
+    depth_limit = 5,
+  },
 }

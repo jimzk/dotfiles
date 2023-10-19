@@ -7,23 +7,30 @@ return {
     -- Smart put
     { "p", "<Plug>(YankyPutAfter)", desc = ignored },
     { "P", "<Plug>(YankyPutBefore)", desc = ignored },
-    -- No yank at visual put
-    { "p", function()
-      local mode = vim.fn.mode()
-      -- Respect indentation in current context if selection is linewise
-      return mode == "V"
-          and "<Plug>(YankyPutIndentAfterLinewise)"
-          or "<Plug>(YankyPutAfterCharwise)"
-    end, mode = "x", desc = ignored, expr = true },
+    -- 1) not linewise, 2) trim space
+    -- { "p", "<Plug>(YankyPutAfterCharwiseJoined)", desc = ignored },
+    -- { "P", "<Plug>(YankyPutBeforeCharwiseJoined)", desc = ignored },
+    {
+      "p", -- No yank at visual put
+      function()
+        local mode = vim.fn.mode()
+        -- Respect indentation in current context if selection is linewise
+        return mode == "V"
+            and "<Plug>(YankyPutIndentAfterLinewise)"
+            or "<Plug>(YankyPutAfterCharwise)"
+      end,
+      mode = "x",
+      desc = ignored,
+      expr = true
+    },
     { "P", "p", mode = "x", desc = ignored, remap = true },
     -- Yank linewise
-    { "pp", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = "put the yanked up linewise" },
-    { "PP", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = "put the yanked down linewise" },
+    { "]p", "<Plug>(YankyPutIndentAfterLinewise)", mode = { "n", "x" }, desc = "put the yanked up linewise" },
+    { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", mode = { "n", "x" }, desc = "put the yanked down linewise" },
 
     -- Preserve cursor position on yank
     { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = ignored },
     { "Y", "<Plug>(YankyYank)$", mode = { "n", "x" }, desc = ignored },
-
     { "]y", "<Plug>(YankyCycleForward)", desc = "put the next yanked" },
     { "[y", "<Plug>(YankyCycleBackward)", desc = "put the prev yanked" },
 

@@ -24,7 +24,19 @@ return {
         preserve_layout = false, -- do not preserse empty window
         match = {
           -- buftype = { "help" },
-          filetype = { "neo-tree", "aerial", "NeogitStatus", "NeogitCommitView", "toggleterm", "fugitiveblame" }
+          filetype = { "neo-tree", "aerial", "NeogitStatus", "NeogitCommitView", "toggleterm", "fugitiveblame", "oil" }
+        },
+      },
+    },
+    telescope = {
+      previewer = nil, -- or false to disable previewer
+      list = {
+        default_action = "load",
+        mappings = {
+          load = { n = "<cr>", i = "<cr>" },
+          save = { n = "<c-s>", i = "<c-s>" },
+          delete = { n = "<c-d>", i = "<c-d>" },
+          rename = { n = "<c-r>", i = "<c-r>" },
         },
       },
     },
