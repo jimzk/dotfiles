@@ -1,25 +1,4 @@
 {
-  "Ok": {
-    "prefix": "Ok",
-    "body": [
-      "Ok(${1})"
-    ],
-    "description": "Ok(…)"
-  },
-  "Err": {
-    "prefix": "Err",
-    "body": [
-      "Err(${1})"
-    ],
-    "description": "Err(…)"
-  },
-  "Some": {
-    "prefix": "Some",
-    "body": [
-      "Some(${1})"
-    ],
-    "description": "Some(…)"
-  },
   "const": {
     "prefix": "const",
     "body": [
@@ -83,17 +62,18 @@
     ],
     "description": "fn …(&mut self, …) { … }"
   },
-  "for": {
-    "prefix": "for",
+  "range iter": {
+    "prefix": "range iter",
     "body": [
-      "for ${2:i} in $1 {",
-      "\t${3:todo!()}",
-      "}"
+      "(${1:0}..${2:10}).map(|i| {",
+      "\t${0:todo!()}",
+      "})",
+      ".collect::<Vec<_>>();"
     ],
-    "description": "for … in … { … }"
+    "description": "(x..y).map(|i| { … }).collect::<Vec<_>>();"
   },
-  "for i": {
-    "prefix": "for i",
+  "for x..y": {
+    "prefix": "for x..y",
     "body": [
       "for i in ${1:0}..${2:10} {",
       "\t${3:todo!()}",
@@ -288,6 +268,26 @@
     ],
     "description": "struct … { … }"
   },
+  "mod tests": {
+    "prefix": "mod tests",
+    "body": [
+      "#[cfg(test)]",
+      "mod tests {",
+      "\t#[test]",
+      "\tfn ${1:name}() {",
+      "\t\t${2:todo!()}",
+      "\t}",
+      "}"
+    ],
+    "description": "mod tests"
+  },
+  "cfg test": {
+    "prefix": "#cfg test",
+    "body": [
+      "#[cfg(test)]"
+    ],
+    "description": "#[cfg(test)]"
+  },
   "test fn": {
     "prefix": "test fn",
     "body": [
@@ -297,17 +297,6 @@
       "}"
     ],
     "description": "#[test]"
-  },
-
-  "cfg test fn": {
-    "prefix": "cfg test fn",
-    "body": [
-      "#[cfg(test)]",
-      "fn ${1:name}() {",
-      "\t${2:todo!()}",
-      "}"
-    ],
-    "description": "#[cfg(test)]"
   },
   "trait": {
     "prefix": "trait",
@@ -367,20 +356,6 @@
       "async $0"
     ],
     "description": "async"
-  },
-  "pub async": {
-    "prefix": "pub async",
-    "body": [
-      "pub async $0"
-    ],
-    "description": "pub async"
-  },
-  "pub": {
-    "prefix": "pub",
-    "body": [
-      "pub $0"
-    ],
-    "description": "pub"
   },
   "literal str r#": {
     "prefix": "r#",

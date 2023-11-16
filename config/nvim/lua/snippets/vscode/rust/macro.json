@@ -87,224 +87,217 @@
     "description": "#[derive(…)]"
   },
   "cfg!": {
-    "prefix": "cfg!",
+    "prefix": "cfg",
     "body": [
       "cfg!(${1})"
     ],
     "description": "cfg!(…)"
   },
   "column": {
-    "prefix": "column!",
+    "prefix": "column",
     "body": [
       "column!()"
     ],
     "description": "column!()"
   },
   "concat": {
-    "prefix": "concat!",
+    "prefix": "concat",
     "body": [
       "concat!(${1})"
     ],
     "description": "concat!(…)"
   },
   "concat_idents": {
-    "prefix": "concat_idents!",
+    "prefix": "concat_idents",
     "body": [
       "concat_idents!(${1})"
     ],
     "description": "concat_idents!(…)"
   },
   "debug_assert": {
-    "prefix": "debug_assert!",
+    "prefix": "debug_assert",
     "body": [
       "debug_assert!(${1});"
     ],
     "description": "debug_assert!(…)"
   },
   "debug_assert_eq": {
-    "prefix": "debug_assert_eq!",
+    "prefix": "debug_assert_eq",
     "body": [
       "debug_assert_eq!(${1}, ${2});"
     ],
     "description": "debug_assert_eq!(…, …)"
   },
   "env": {
-    "prefix": "env!",
+    "prefix": "env",
     "body": [
       "env!(\"${1}\")"
     ],
     "description": "env!(\"…\")"
   },
   "file": {
-    "prefix": "file!",
+    "prefix": "file",
     "body": [
       "file!()"
     ],
     "description": "file!()"
   },
   "format": {
-    "prefix": "format!",
+    "prefix": "fmt",
     "body": [
       "format!(\"${1}\")"
     ],
     "description": "format!(…)"
   },
   "format_args": {
-    "prefix": "format_args!",
+    "prefix": "format_args",
     "body": [
       "format_args!(\"${1}\")"
     ],
     "description": "format_args!(…)"
   },
   "include": {
-    "prefix": "include!",
+    "prefix": "include",
     "body": [
       "include!(\"${1}\");"
     ],
     "description": "include!(\"…\");"
   },
   "include_bytes": {
-    "prefix": "include_bytes!",
+    "prefix": "include_bytes",
     "body": [
       "include_bytes!(\"${1}\")"
     ],
     "description": "include_bytes!(\"…\")"
   },
   "include_str": {
-    "prefix": "include_str!",
+    "prefix": "include_str",
     "body": [
       "include_str!(\"${1}\")"
     ],
     "description": "include_str!(\"…\")"
   },
   "line": {
-    "prefix": "line!",
+    "prefix": "line",
     "body": [
       "line!()"
     ],
     "description": "line!()"
   },
   "module_path": {
-    "prefix": "module_path!",
+    "prefix": "module_path",
     "body": [
       "module_path!()"
     ],
     "description": "module_path!()"
   },
   "option_env": {
-    "prefix": "option_env!",
+    "prefix": "option_env",
     "body": [
       "option_env!(\"${1}\")"
     ],
     "description": "option_env!(\"…\")"
   },
   "panic": {
-    "prefix": "panic!",
+    "prefix": "pa",
     "body": [
       "panic!(\"${1}\");"
     ],
     "description": "panic!(…);"
   },
   "print": {
-    "prefix": "print!",
+    "prefix": "pr",
     "body": [
       "print!(\"${1}\");"
     ],
     "description": "print!(…);"
   },
   "println": {
-    "prefix": "println!",
+    "prefix": "prln",
     "body": [
       "println!(\"${1}\");"
     ],
     "description": "println!(…);"
   },
   "stringify": {
-    "prefix": "stringify!",
+    "prefix": "stringify",
     "body": [
       "stringify!(${1})"
     ],
     "description": "stringify!(…)"
   },
   "thread_local": {
-    "prefix": "thread_local!",
+    "prefix": "thread_local",
     "body": [
       "thread_local!(static ${1:STATIC}: ${2:Type} = ${4:init});"
     ],
     "description": "thread_local!(static …: … = …);"
   },
   "try": {
-    "prefix": "try!",
+    "prefix": "try",
     "body": [
       "try!(${1})"
     ],
     "description": "try!(…)"
   },
   "unimplemented": {
-    "prefix": "unimplemented!",
+    "prefix": "unimplemented",
     "body": [
       "unimplemented!()"
     ],
     "description": "unimplemented!()"
   },
   "todo": {
-    "prefix": "todo!",
+    "prefix": "td",
     "body": [
       "todo!()"
     ],
     "description": "todo!()"
   },
   "unreachable": {
-    "prefix": "unreachable!",
+    "prefix": "unreachable",
     "body": [
       "unreachable!(${1})"
     ],
     "description": "unreachable!(…)"
   },
   "dbg": {
-    "prefix": "dbg!",
+    "prefix": "dbg",
     "body": [
       "dbg!(${1})"
     ],
     "description": "dbg!(…)"
   },
-  "vec": {
-    "prefix": "vec!",
-    "body": [
-      "vec![${1}]"
-    ],
-    "description": "vec![…]"
-  },
   "write": {
-    "prefix": "write!",
+    "prefix": "wr",
     "body": [
       "write!(${1}, \"${2}\")"
     ],
     "description": "write!(…)"
   },
   "writeln": {
-    "prefix": "writeln!",
+    "prefix": "wrln",
     "body": [
       "writeln!(${1}, \"${2}\")"
     ],
     "description": "writeln!(…, …)"
   },
   "assert": {
-    "prefix": "assert!",
+    "prefix": "a",
     "body": [
       "assert!(${1:true_expr});"
     ],
     "description": "assert!(…);"
   },
   "assert_eq": {
-    "prefix": "assert_eq!",
+    "prefix": "aeq",
     "body": [
       "assert_eq!(${1:expected}, ${2:actual});"
     ],
     "description": "assert_eq!(…, …);"
   },
   "assert_ne": {
-    "prefix": "assert_ne!",
+    "prefix": "ane",
     "body": [
       "assert_ne!(${1:no_expected}, ${2:actual});"
     ],
