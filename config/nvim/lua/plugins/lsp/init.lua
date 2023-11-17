@@ -4,6 +4,7 @@ return Util.read_specs("plugins.lsp",
     "mason",
     "null-ls",
     "mason-null-ls",
+    "rustaceanvim"
     -- "nvim-lightbulb",
   }
 )

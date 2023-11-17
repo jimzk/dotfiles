@@ -86,8 +86,7 @@ M.on_attach = function(bufnr)
   map("n", "g]", vim.lsp.buf.outgoing_calls, "[C] outgoing call tree", opts)
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "[C] rename", opts)
-  -- map({ "n", "v" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
-  map({ "n", "v" }, "<M-cr>", "<cmd>CodeActionMenu<CR>", "[C] code action", opts)
+  map({ "n", "v" }, "<M-cr>", "<cmd>lua vim.lsp.buf.code_action()<CR>", "[C] code action", opts)
 
   map("n", "<leader>cwa", function() vim.lsp.buf.add_workspace_folder() end, "add LSP workspace folder", opts)
   map("n", "<leader>cwr", function() vim.lsp.buf.remove_workspace_folder() end, "remove LSP workspace folder", opts)

@@ -45,7 +45,10 @@ M.config = function()
   require("mason").setup()
   require("mason-lspconfig").setup()
   for server, opts in pairs(servers) do
+    -- rustaceanvim setups rust_analyzer. Setting twice cause conflict.
+    if server == "rust_analyzer" then goto continue end
     require("lspconfig")[server].setup(opts)
+    ::continue::
   end
 end
 

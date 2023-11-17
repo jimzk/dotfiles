@@ -1,3 +1,4 @@
+-- Deprecated. Use rustaceanvim instead
 return {
   -- "simrat39/rust-tools.nvim",
   "Ciel-MC/rust-tools.nvim", -- a fork

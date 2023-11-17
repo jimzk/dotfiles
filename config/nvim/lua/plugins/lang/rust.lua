@@ -15,7 +15,7 @@ return {
     -- vim.g.rust_clip_command = 'pbcopy'
 
     Util.on_attach(function(client, bufnr)
-      if client.name ~= "rust_analyzer" then return end
+      if client.name ~= "rust-analyzer" then return end
       local opts = { noremap = true, silent = true, buffer = bufnr }
       map("v", "<leader>c<c-cr>", function()
         vim.cmd([[normal! "qy]]) -- remember visual mark
