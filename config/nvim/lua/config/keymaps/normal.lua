@@ -3,8 +3,8 @@ local mappings = {
   -- Alternative Windows
   -- ["`"] = { "<cmd>wincmd p<cr>", "✭ go last accessed win" },
   -- Alternative buffer
-  ["<Tab>"] = { "<C-^>", "✭ alternative buffer" },
-  ["<S-Tab>"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
+  ["`"] = { "<C-^>", "✭ alternative buffer" },
+  ["~"] = { "<cmd>vs #<cr>", "✭ split alternative buffer" },
   -- Buffers
   -- ["-"] = { "<cmd>bp<cr>", "prev buffer" },
   -- ["="] = { "<cmd>bn<cr>", "next buffer" },

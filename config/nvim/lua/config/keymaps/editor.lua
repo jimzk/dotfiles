@@ -317,7 +317,7 @@ map("n", "<C-M-p>", function()
 end, "find files (buf dir)")
 
 map("n", "<leader>i", "<cmd>FzfLua git_status<cr>", "git status file (fzf)")
-map("n", "<leader><tab>", "<cmd>Telescope resume<cr>", "resume telescope")
+map("n", "<leader><esc>", "<cmd>Telescope resume<cr>", "resume telescope")
 
 mappings = {
   -- name = "+coding",

@@ -11,7 +11,7 @@ return {
   event = "VeryLazy",
   keys = {
     {
-      "s",
+      "<Tab>",
       mode = { "n", "x", "o" },
       function() require("flash").jump() end,
       desc = "jump (flash)",
@@ -23,13 +23,13 @@ return {
     --   desc = "old jump (flash)",
     -- },
     {
-      "r",
+      "R",
       mode = { "o", "x" },
       function() require("flash").treesitter() end,
       desc = "treesitter (flash)",
     },
     {
-      "R",
+      "r",
       mode = { "o", "x" },
       function() require("flash").treesitter_search() end,
       desc = "treesitter search (flash)",
@@ -85,7 +85,7 @@ return {
           rainbow = {
             enabled = false,
           },
-        }
+        },
       },
     },
   },

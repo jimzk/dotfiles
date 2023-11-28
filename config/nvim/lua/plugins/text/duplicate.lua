@@ -4,9 +4,9 @@ return {
   event = "VeryLazy",
   opts = {
     operator = {
-      normal_mode = "<M-d>",
-      visual_mode = "<M-d>",
-      line = "<M-d><M-d>",
+      normal_mode = "s",
+      visual_mode = "s",
+      line = "ss",
     },
   }
 }
