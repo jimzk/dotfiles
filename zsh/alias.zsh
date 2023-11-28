@@ -78,8 +78,8 @@ alias 'zstyle?'='_quick_grep "zstyle -L" $@'
 # git
 git_current_branch () {
     local ref
-    ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null) 
-    local ret=$? 
+    ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
+    local ret=$?
     if [[ $ret != 0 ]]
     then
         [[ $ret == 128 ]] && return
@@ -90,19 +90,21 @@ git_current_branch () {
 alias gs='git status'
 alias gss='git status -sb'
 alias gsh='git stash'
-alias gshp='git stash pop'
-alias gshname='git stash push -m'
+alias gshp='git stash push -m'
+alias gshP='git stash pop'
 alias ga='git add'
 alias gaa='git add -A'
-alias gab='_f(){ git add $@ && git absorb }; _f'
-alias gabr='_f(){ git add $@ && git absorb --and-rebase }; _f'
+alias gab="git absorb"
+alias gabr="git absorb --and-rebase"
+# alias gab='_f(){ git add $@ && git absorb }; _f'
+# alias gabr='_f(){ git add $@ && git absorb --and-rebase }; _f'
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gcf='git commit --fixup'
 alias gc!='git commit --amend -v'
 alias gc!!='git commit --amend -v -C HEAD'
 alias 'gc-'='git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) -v'
-alias gcl='git clone'
+alias gC='git clone'
 alias gk='git checkout'
 alias gk-='git checkout -'
 # checkout branch
@@ -110,7 +112,7 @@ alias gkb='git checkout $(git branch --sort=-committerdate --color=always -a | f
 alias gp='git push'
 alias gp!='git push -f'
 alias gpb='git push --set-upstream origin $(git_current_branch)'
-alias gpl='git pull'
+alias gP='git pull'
 alias gb='git branch'
 alias gbv='git branch -vv'
 alias gbd='git branch -d'
@@ -121,18 +123,28 @@ alias glg='git lg'
 alias glgs='git lg --stat'  # show changed files
 alias glgv='git lgv'
 alias glgvv='git lgvv'
-alias gre='git restore'
-alias gres='git restore --staged'
-alias gr='git remote'
-alias grv='git remote -v'
-alias grb='git rebase'
-alias grbi='git rebase -i --autosquash --autostash'
-alias grba='git rebase --abort'
-alias grbc='git rebase --continue'
+alias gt='git restore'
+alias gts='git restore --staged'
+alias ge='git remote'
+alias gev='git remote -v'
+alias gr='git rebase'
+alias gri='git rebase -i --autosquash --autostash'
+alias gra='git rebase --abort'
+alias grc='git rebase --continue'
 alias gac='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return 1; git add $@ && git commit -t <(sed "1 i\### Last commit\n$(git log --format=%B -n 1 HEAD)\n" ~/.dotfiles/git/gitmessage) }; _f'
 alias gac.='gac .'
 alias gac!='_f(){ [[ "$#" == 0 ]] && echo "Error: nothing to add and commit" && return 1; git add $@ && gc! }; _f'
 alias g='git'
+# cargo
+alias c='cargo'
+alias cb='cargo build'
+alias cr='cargo run'
+alias ce='cargo run --example'
+alias ct='cargo nextest'
+alias cc='cargo clean'
+alias ca='cargo add'
+alias co='cargo doc --open'
+alias ci='cargo init'
 
 # show information
 alias @shell-pid='echo $$'
@@ -155,7 +167,6 @@ alias now='date +"%Y-%m-%d %T"'
 
 # Shorter
 alias o="open"
-alias c="clear"
 alias cl="clear"
 alias h="fc -l"
 alias q="exit"
