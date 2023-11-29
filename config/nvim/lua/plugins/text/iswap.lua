@@ -28,13 +28,9 @@ return {
       desc = "move any to ...",
     },
   },
-  init = function()
-    require("which-key").register({
-      ["<leader>e"] = { name = "+swap", }
-    })
-  end,
+  init = function() require("which-key").register({ ["<leader>e"] = { name = "+swap" } }) end,
   opts = {
     move_cursor = true,
     hl_snipe = "ErrorMsg",
-  }
+  },
 }

@@ -284,18 +284,6 @@ mappings = {
     }),
     "buffers",
   },
-
-  o = { function()
-    require("telescope").extensions.frecency.frecency({
-      prompt_title = "Oldfiles (cwd)",
-      workspace = "CWD",
-    })
-  end, "old files (cwd)" },
-  O = { function()
-    require("telescope").extensions.frecency.frecency({
-      prompt_title = "Oldfiles (global)",
-    })
-  end, "old files (global)" },
   j = { "<cmd>Telescope jumplist show_line=false<cr>", "jumplist" },
 }
 set_mapppings(mappings, { prefix = "<leader>f" })

@@ -13,5 +13,8 @@ return {
     { "<leader>sp", "<Plug>RestNvimPreview", desc = "preview http request (rest)" },
     { "<leader>sl", "<Plug>RestNvimLast", desc = "run last http request (rest)" },
   },
+  init = function()
+    require("which-key").register({ ["<leader>s"] = { name = "+rest" } })
+  end,
   opts = {}
 }

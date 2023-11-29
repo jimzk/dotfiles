@@ -4,6 +4,28 @@ return {
     "nvim-telescope/telescope.nvim",
   },
   event = "VeryLazy",
+  enabled = false,
+  keys = {
+    {
+      "<leader>fo",
+      function()
+        require("telescope").extensions.frecency.frecency({
+          prompt_title = "Oldfiles (cwd)",
+          workspace = "CWD",
+        })
+      end,
+      "old files (cwd)",
+    },
+    {
+      "<leader>fO",
+      function()
+        require("telescope").extensions.frecency.frecency({
+          prompt_title = "Oldfiles (global)",
+        })
+      end,
+      "old files (global)",
+    },
+  },
   config = function()
     local ts = require("telescope")
     ts.setup {

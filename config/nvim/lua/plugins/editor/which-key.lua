@@ -48,13 +48,10 @@ return {
         c = {
           name = "+code",
           mode = { "n", "x" },
-          w = { name = "LSP workspace" },
         },
         o = { name = "+options" },
-        n = {
-          name = "+nvim",
-          n = { name = "+Noice" },
-        },
+        n = { name = "+nvim", },
+        m = { name = "+jump/mark"},
         h = { name = "+file" },
         g = { name = "+Git", mode = { "n", "x" } },
         j = { name = "+text", mode = { "n", "x" } },

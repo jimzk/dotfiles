@@ -2,10 +2,11 @@ local M = {
   "chentoast/marks.nvim",
   event = "VeryLazy",
   keys = {
-    { "<leader>mm", "<CMD>MarksListAll<CR>", desc = "show marks all" },
-    { "<leader>mb", "<CMD>MarksListBuf<CR>", desc = "show marks in current buf" },
-    { "<leader>mg", "<CMD>MarksListGlobal<CR>", desc = "show GLOBAL (uppercase) marks" },
-    { "<leader>mo", "<CMD>MarksToggleSign<CR>", desc = "toggle marks sign" },
+    { "<leader>mm", "<CMD>MarksListAll<CR>", desc = "list all marks" },
+    { "<leader>mb", "<CMD>MarksListBuf<CR>", desc = "list marks in current buf" },
+    { "<leader>mg", "<CMD>MarksListGlobal<CR>", desc = "list GLOBAL (uppercase) marks" },
+    -- { "<leader>mo", "<CMD>MarksToggleSign<CR>", desc = "toggle marks sign" },
+    { "<leader>oM", "<CMD>MarksToggleSign<CR>", desc = "toggle marks sign" },
   }
 }
 
