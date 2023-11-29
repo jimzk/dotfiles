@@ -114,21 +114,35 @@ M.opts = function()
           separator = "",
         },
         {
+          -- List Formatter / Linter
+          function()
+            local formatters = {}
+            local excluded_formatters = { "injected", "codespell", "trim_whitespace" }
+            for _, formatter in pairs(require("conform").list_formatters()) do
+              if formatter.available then
+                local name = formatter.name
+                if not vim.tbl_contains(excluded_formatters, name) then
+                  formatters[name] = true
+                end
+              end
+            end
+            formatters = vim.tbl_keys(formatters)
+            return table.concat(formatters, " ")
+          end,
+          icon = { "󰁨", align = "left" }, -- alternative: 
+          padding = { left = 1, right = 0 },
+          separator = "",
+        },
+        {
           -- List active lsp
           function()
             local clients = {}
             local bufnr = vim.api.nvim_get_current_buf()
             for _, client in ipairs(vim.lsp.get_active_clients()) do
-              if client.name ~= "null-ls" and client.name ~= "copilot" then
+              if client.name ~= "copilot" then
                 if client.attached_buffers[bufnr] then
                   clients[client.name] = true
                 end
-              end
-            end
-            local ft = vim.bo.filetype
-            for _, client in pairs(require("null-ls").get_sources()) do
-              if client.filetypes[ft] then
-                clients[client.name] = true
               end
             end
             clients = vim.tbl_keys(clients)

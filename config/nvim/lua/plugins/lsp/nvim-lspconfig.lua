@@ -35,7 +35,6 @@ end
 M.config = function()
   -- setup formatting and keymaps
   Util.on_attach(function(client, buffer)
-    require("plugins.lsp.format").on_attach(client, buffer)
     require("plugins.lsp.keymaps").on_attach(buffer)
   end)
 
