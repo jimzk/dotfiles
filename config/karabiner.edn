@@ -40,6 +40,7 @@
     :WeChat ["^com\\.tencent\\.xinWeChat$"]
     :Discord ["^com\\.hnc\\.Discord$"]
     :Telegram ["^ru\\.keepcoder\\.Telegram$"]
+    :Slack ["^com\\.tinyspeck\\.slackmacgap$"]
 
     :Karabiner-Elements ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
     :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
@@ -123,21 +124,27 @@
       :rules [
         ;; Applications
         ; [:!Tn [:openApp "Notion"]]
-        [:!Tn [:openApp "Discord"]]
-        [:!Th [:openApp "WeChat"]]
-        [:!Treturn_or_enter [:openApp "Things3"]]
-        [:!TSreturn_or_enter :!!5 :browser]
-        [:!TSreturn_or_enter [:!TOC5]] ;; add Things3 task
-        [:!Tv [:openApp "Google Chrome"]]
-        [:!T1 [:openApp "Obsidian"]]
+        [:!Th :!CTOf11] ;; switch WeChat (need to set shortcut in Wechat)
         [:!Tt [:openApp "Telegram"]]
-        [:!Tg [:openApp "Visual Studio Code"]]
-        [:!Tm [:openApp "Music"]]
+        [:!Tm [:openApp "Discord"]]
+        [:!Tj [:openApp "Slack"]]
+
+        [:!TCx [:openApp "Music"]]
+
+        [:!TCc [:openApp "Things3"]]
+        [:!Treturn_or_enter :!!5 :browser]
+        [:!Treturn_or_enter [:!TOC5]] ;; add Things3 task
+
+        [:!T1 [:openApp "Obsidian"]]
+        [:!T2 [:openApp "Google Chrome"]]
+        [:!T3 [:openApp "Visual Studio Code"]]
         [:!Te [:openApp "Finder"]]
-        [:!Tbackslash [:openApp "Bitwarden"]]
         [:!Tk [:openApp "kitty"]]
-        [:!Tq [:openApp "flomo"]]
-        [:!Tu :!COSf12] ;; Quick flomo
+        [:!Tbackslash [:openApp "Bitwarden"]]
+
+        [:!Tp :!COSf12] ;; Quick flomo
+        [:!Tq :!CTOf12] ;; switch flomo (need to set shortcut in flomo)
+
         [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
         [:!Ty [:openApp "网易有道翻译"]]
         [:!T0 [:hs "spoon.Win.activate()"]] ;; Window management
@@ -145,11 +152,11 @@
     }
     {:des "left control"
       :rules [
-        [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Raycast)
+        ; [:!Tgrave_accent_and_tilde :!OSv]  ; show clipboard (supported by Raycast)
         [:!Tspacebar :!CTOSspacebar]  ;; Raycast
         [:!Tcomma [:hs "spoon.Config:activate()"]]  ;; Config
         [:!Tb [:hs "spoon.Bookmark:activate()"]]  ;; Bookmark
-        [:!Tperiod [:hs "spoon.Win.centerCursor()"]]  ;; Center mouse
+        [:!Tgrave_accent_and_tilde [:hs "spoon.Win.centerCursor()"]]  ;; Center mouse
         ;; previous / next tabs
         [:!Ti :!CSopen_bracket :iTerm]
         [:!To :!CSclose_bracket :iTerm]
