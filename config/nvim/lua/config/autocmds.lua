@@ -18,9 +18,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
+  callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
 -- Set files under certain directories unmodifiable
@@ -60,41 +58,43 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
     local bo = vim.bo[bufnr]
     -- OverseerFrom file's buflisted will be reset to true. Handle specially.
     if bo.filetype == "OverseerForm" then return end
-    if bo.modifiable and bo.buflisted and vim.api.nvim_buf_get_name(0) ~= "" then
-      vim.cmd [[up]]
+    if bo.modifiable and bo.buflisted and vim.api.nvim_buf_get_name(0) ~= "" then vim.cmd([[up]]) end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function(opts)
+    local ft = vim.bo[opts.buf].filetype
+    local listed = vim.bo[opts.buf].buflisted
+    if ft == "help" or listed then
+      vim.wo.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s%C"
+    else
+      vim.wo.statuscolumn = ""
     end
   end,
 })
 
--- number column
--- vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
---   callback = function(opts)
---     local ft = vim.bo[opts.buf].filetype
---     if not vim.tbl_contains({ "alpha" }, ft) then
---       vim.wo.cursorline = true
---     end
---   end,
--- })
--- vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
---   callback = function()
---     vim.wo.cursorline = false
---   end,
--- })
+vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+  callback = function(opts)
+    local ft = vim.bo[opts.buf].filetype
+    if not vim.tbl_contains({ "alpha" }, ft) then vim.wo.cursorline = true end
+  end,
+})
+vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+  callback = function(opts) vim.wo.cursorline = false end,
+})
 
 vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
-  callback = function()
+  callback = function(opts)
     -- local height = vim.api.nvim_win_get_height(0)
     -- vim.wo.scrolloff = height < 30 and 3 or 8
-    --
-    -- if vim.wo.number then vim.wo.relativenumber = true end
-    -- vim.wo.wrap = true
+    if vim.wo.number then vim.wo.relativenumber = true end
   end,
 })
 vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
   pattern = "*",
   callback = function()
-    -- if vim.wo.number then vim.wo.relativenumber = false end
-    -- vim.wo.wrap = false
+    if vim.wo.number then vim.wo.relativenumber = false end
   end,
 })
 

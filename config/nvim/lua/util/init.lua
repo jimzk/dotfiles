@@ -274,6 +274,7 @@ M.unlisted_filetypes = {
   "NeogitCommitView",
   "octo",
   "OverseerForm",
+  "aerial",
 }
 
 M.focus_win = function()

@@ -20,11 +20,12 @@ opt.scrolloff = 4 -- Lines of context
 opt.sidescrolloff = 10 -- Columns of context
 
 opt.number = true -- Print line number
--- opt.relativenumber = true -- Relative line numbers
+opt.relativenumber = true -- Relative line numbers
 opt.signcolumn = "yes:1"
 opt.numberwidth = 3
 -- NOTE: number is not right aligned.
-opt.statuscolumn = "%=%l%= %s"
+-- Switch between number and relativenumber cause a little move of layout, making me feel uncomfortable. So I disable statuscolumn.
+-- opt.statuscolumn = "%=%l%= %s%C"
 
 opt.tabstop = 4 -- Number of spaces tabs count for
 opt.shiftwidth = 4 -- Size of an indent
