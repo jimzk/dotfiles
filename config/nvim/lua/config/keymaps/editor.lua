@@ -248,12 +248,21 @@ ignorecase  %s
 end, "show buffer info")
 
 mappings = {
-  f = { Util.telescope("find_files", {
-    prompt_title = "Find Files (cwd)",
-    hidden = true,
-    no_ignore = true,
-    follow = true,
-  }), "find files (cwd)" },
+  -- f = { Util.telescope("find_files", {
+  --   prompt_title = "Find Files (cwd)",
+  --   hidden = true,
+  --   no_ignore = true,
+  --   follow = true,
+  -- }), "find files (cwd)" },
+  f = {
+    function()
+      require("telescope").extensions.frecency.frecency({
+        -- prompt_title = "Oldfiles (cwd)",
+        workspace = "CWD",
+      })
+    end,
+    "find files (cwd)",
+  },
   -- f = {"<cmd>LeaderfFile<cr>", "find files (leaderf)", mode = {"n", "x"}},
   F = { function()
     local cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0))

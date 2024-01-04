@@ -15,11 +15,12 @@ return {
 
     dashboard.section.header.val = vim.split(logo, "\n")
     dashboard.section.buttons.val = {
-      dashboard.button("f", " " .. " Find Files",
-        [[<cmd>lua Util.telescope("find_files", { prompt_title = "Find Files (cwd)", })() <CR>]]),
+      -- dashboard.button("f", " " .. " Find Files",
+      --   [[<cmd>lua Util.telescope("find_files", { prompt_title = "Find Files (cwd)", })() <CR>]]),
+      dashboard.button("f", " " .. " Find Files", [[<cmd>Telescope frecency workspace=CWD<CR>]]),
       dashboard.button("e", " " .. " New Files", ":ene <BAR> startinsert <CR>"),
-      dashboard.button("o", " " .. " Recent Files", ":Telescope frecency <CR>"),
-      dashboard.button("g", " " .. " Find Text", ":Telescope live_grep <CR>"),
+      -- dashboard.button("o", " " .. " Recent Files", ":Telescope frecency <CR>"),
+      dashboard.button("g", " " .. " Search Text", ":Telescope live_grep <CR>"),
       dashboard.button("c", " " .. " Nvim Config", [[<cmd>PossessionLoad config<CR>]]),
       dashboard.button("z", "󰒲 " .. " Lazy", ":Lazy<CR>"),
       dashboard.button("q", " " .. " Quit", ":qa<CR>"),
