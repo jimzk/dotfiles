@@ -62,6 +62,15 @@
     ],
     "description": "fn …(&mut self, …) { … }"
   },
+  "fn (generic)": {
+    "prefix": "fn (generic)",
+    "body": [
+      "fn ${1:name}<${2:T: Into<String>}>(${3:t: T}) $4{",
+      "\t${0:todo!()}",
+      "}"
+    ],
+    "description": "fn …<…>(…) { … }"
+  },
   "range iter": {
     "prefix": "range iter",
     "body": [
@@ -296,7 +305,16 @@
       "\t${2:todo!()}",
       "}"
     ],
-    "description": "#[test]"
+    "description": "test fn"
+  },
+  "test fn (anyhow)": {
+    "prefix": "test fn (anyhow)",
+    "body": [
+      "#[test]",
+      "fn ${1:name}() -> anyhow::Result<()> {",
+      "\t${2:todo!()}",
+      "}"
+    ]
   },
   "trait": {
     "prefix": "trait",
