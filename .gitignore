@@ -22,6 +22,7 @@ config/nnn
 config/clash
 config/dlv
 config/oh-my-zsh
+config/raycast
 
 config/nvim/.luarc.json
 
