@@ -10,8 +10,7 @@ return {
   config = function(_, opts)
     require("illuminate").configure(opts)
 
-    local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-    local next_ref_repeat, prev_ref_repeat = ts_repeat_move.make_repeatable_move_pair(
+    local next_ref_repeat, prev_ref_repeat = Util.make_repeatable_move_pair(
       function() require("illuminate").goto_next_reference(true) end,
       function() require("illuminate").goto_prev_reference(true) end)
     map("n", "]v", next_ref_repeat, "[C] next reference")

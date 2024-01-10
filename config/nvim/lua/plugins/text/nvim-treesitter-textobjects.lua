@@ -73,8 +73,15 @@ M.config = function()
   local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
   -- Repeat movement with ; and ,
   -- ensure ; goes forward and , goes backward regardless of the last direction
-  map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-  map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+  local keys = vim.api.nvim_replace_termcodes("zz", true, false, true)
+  map({ "n", "x", "o" }, ";", function()
+    ts_repeat_move.repeat_last_move_next()
+    vim.api.nvim_feedkeys(keys, "m", true)
+  end)
+  map({ "n", "x", "o" }, ",", function()
+    ts_repeat_move.repeat_last_move_previous()
+    vim.api.nvim_feedkeys(keys, "m", true)
+  end)
 end
 
 return M

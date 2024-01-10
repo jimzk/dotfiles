@@ -48,9 +48,7 @@ return {
 
       local gs = require("gitsigns")
 
-      -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
-      local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-      local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
+      local next_hunk_repeat, prev_hunk_repeat = Util.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
       map({ "n", "x", "o" }, ")", next_hunk_repeat, "[G] next git change")
       map({ "n", "x", "o" }, "(", prev_hunk_repeat, "[G] prev git change")
       -- map({ "n", "x", "o" }, ")", gs.next_hunk, "[G] next git change")

@@ -27,30 +27,31 @@ return {
       end
     end
     local map_move = function(mode, key, next_fn, prev_fn, desc, wrap)
-      local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+      local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+      local next_fn_proxy, prev_fn_proxy
       if wrap then
-        next_fn, prev_fn = ts_repeat_move.make_repeatable_move_pair(next_fn, prev_fn)
+        next_fn_proxy, prev_fn_proxy = Util.make_repeatable_move_pair(next_fn, prev_fn)
       else
-        local _next_fn = next_fn
-        next_fn = function()
-          _next_fn()
+        -- local keys = vim.api.nvim_replace_termcodes("zz", true, false, true)
+        next_fn_proxy = function()
+          next_fn()
+          -- vim.api.nvim_feedkeys(keys, "m", true)
           ts_repeat_move.clear_last_move()
         end
-        local _prev_fn = prev_fn
-        prev_fn = function()
-          _prev_fn()
+        prev_fn_proxy = function()
+          prev_fn()
+          -- vim.api.nvim_feedkeys(keys, "m", true)
           ts_repeat_move.clear_last_move()
         end
       end
-      if type(desc) == "string" then
-        desc = {
-          "next " .. desc,
-          "prev " .. desc,
-        }
-      end
-      map(mode, "]" .. key, next_fn, desc[1])
-      map(mode, "[" .. key, prev_fn, desc[2])
+      if type(desc) == "string" then desc = {
+        "next " .. desc,
+        "prev " .. desc,
+      } end
+      map(mode, "]" .. key, next_fn_proxy, desc[1])
+      map(mode, "[" .. key, prev_fn_proxy, desc[2])
     end
+
     -- Quickfix
     map("n", "]q", move("quickfix", "forward"), "next quickfix item")
     map("n", "[q", move("quickfix", "backward"), "prev quickfix item")

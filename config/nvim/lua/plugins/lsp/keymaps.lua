@@ -35,8 +35,7 @@ end
 
 M.on_attach = function(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
-  local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-  local next_diagnostics_repeat, prev_diagnostics_repeat = ts_repeat_move.make_repeatable_move_pair(
+  local next_diagnostics_repeat, prev_diagnostics_repeat = Util.make_repeatable_move_pair(
     function() vim.diagnostic.goto_next({ float = true }) end,
     function() vim.diagnostic.goto_prev({ float = true }) end
   )

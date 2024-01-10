@@ -291,6 +291,22 @@ M.feedkeys = function(key_codes, mode)
   end
 end
 
+-- Wrap make_repeatable_move_pair
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
+-- local keys = vim.api.nvim_replace_termcodes("zz", true, false, true)
+M.make_repeatable_move_pair = function(forward_move_fn, backward_move_fn)
+  local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+  local forward_move_fn_proxy = function(...)
+    forward_move_fn(...)
+    -- vim.api.nvim_feedkeys(keys, "m", true)
+  end
+  local backward_move_fn_proxy = function(...)
+    backward_move_fn(...)
+    -- vim.api.nvim_feedkeys(keys, "m", true)
+  end
+  return ts_repeat_move.make_repeatable_move_pair(forward_move_fn_proxy, backward_move_fn_proxy)
+end
+
 _G.Util = M
 
 _G.map = function(mode, lhs, rhs, desc, opts)
