@@ -1,0 +1,10 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#default
+
+os:
+  # editPreset: "nvim"
+  # https://github.com/mhinz/neovim-remote
+  # edit: 'nvim --server $NVIM_LISTEN_ADDRESS_ --remote-tab "$(pwd)/{{filename}}"'
+
+# os:
+  editCommand: 'nvim'
+  editCommandTemplate: '{{editor}} --server $NVIM_LISTEN_ADDRESS_ --remote-tab "$(pwd)/{{filename}}"'

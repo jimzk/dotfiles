@@ -1,0 +1,146 @@
+{
+  "String": {
+    "prefix": "str",
+    "body": [
+      "String"
+    ],
+    "description": "String"
+  },
+  "Result": {
+    "prefix": "r",
+    "body": [
+      "Result<$1, ${2:Error}>$0"
+    ],
+    "description": "Result<…, …>"
+  },
+  "Ok": {
+    "prefix": [
+      "ok",
+      "Ok"
+    ],
+    "body": [
+      "Ok($1)$0"
+    ],
+    "description": "Ok(…)"
+  },
+  "Some": {
+    "prefix": [
+      "so",
+      "Some"
+    ],
+    "body": [
+      "Some($1)$0"
+    ],
+    "description": "Some(…)"
+  },
+  "Default::default()": {
+    "prefix": [
+      "Default::default()",
+      "def"
+    ],
+    "body": [
+      "Default::default()$0"
+    ],
+    "description": "Default::default()"
+  },
+  "impl From": {
+    "prefix": "impl From",
+    "body": [
+      "impl From<${1:FromType}> for ${2:ToType} {",
+      "\tfn from(value: ${1:FromType}) -> Self {",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ],
+    "description": "impl From<…> for … { … }"
+  },
+  "impl TryFrom": {
+    "prefix": "impl TryFrom",
+    "body": [
+      "impl TryFrom<${1:FromType}> for ${2:ToType} {",
+      "\ttype Error = ${3:Error};",
+      "",
+      "\tfn try_from(value: ${1:FromType}) -> Result<Self, Self::Error> {",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ],
+    "description": "impl TryFrom<…> for … { … }"
+  },
+  "impl FromStr": {
+    "prefix": "impl FromStr",
+    "body": [
+      "impl FromStr for ${1:Type} {",
+      "\ttype Err = ${2:Error};",
+      "",
+      "\tfn from_str(s: &str) -> Result<Self, Self::Err> {",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ],
+    "description": "impl FromStr for … { … }"
+  },
+  "impl Default": {
+    "prefix": "impl Default",
+    "body": [
+      "impl Default for ${1:Type} {",
+      "\tfn default() -> Self {",
+      "\t\tSelf {",
+      "\t\t\t${2:foo}: ${3:Default::default()},",
+      "\t\t\t$0todo!();",
+      "\t\t}",
+      "\t}",
+      "}"
+    ],
+    "description": "impl Default for … { … }"
+  },
+  "impl Display": {
+    "prefix": "impl Display",
+    "body": [
+      "impl fmt::Display for ${1:Type} {",
+      "\tfn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {",
+      "\t\t// write!(f, \"({}, {})\", self.x, self.y)",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ],
+    "description": "impl Display for … { … }"
+  },
+  "impl ToString": {
+    "prefix": "impl ToString",
+    "body": [
+      "impl ToString for ${1:Type} {",
+      "\tfn to_string(&self) -> String {",
+      "\t\t// write!(f, \"({}, {})\", self.x, self.y)",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ]
+  },
+  "impl Serialize": {
+    "prefix": "impl Serialize",
+    "body": [
+      "impl Serialize for ${1:Type} {",
+      "\tfn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>",
+      "\twhere",
+      "\t\tS: serde::Serializer,",
+      "\t{",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ]
+  },
+  "impl Deserialize": {
+    "prefix": "impl Deserialize",
+    "body": [
+      "impl<'de> Deserialize<'de> for ${1:Type} {",
+      "\tfn deserialize<D>(deserializer: D) -> Result<Self, D::Error>",
+      "\twhere",
+      "\t\tD: serde::Deserializer<'de>,",
+      "\t{",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ]
+  }
+}

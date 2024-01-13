@@ -1,0 +1,43 @@
+{
+  "vim": {
+    "prefix": [
+      "v"
+    ],
+    "body": [
+      "vim.$0"
+    ],
+    "description": "vim."
+  },
+  "vim.api": {
+    "prefix": [
+      "va"
+    ],
+    "body": [
+      "vim.api.$0"
+    ],
+    "description": "vim.api."
+  },
+  "vim.cmd": {
+    "prefix": [
+      "vc"
+    ],
+    "body": [
+      "vim.cmd(\"$0\")"
+    ],
+    "description": "vim.api.cmd()"
+  },
+  "vim.notify": {
+    "prefix": "vn",
+    "body": [
+      "vim.notify(\"$0\", vim.log.levels.${1:INFO}, { title = \"$2\" })"
+    ],
+    "description": "vim.notify"
+  },
+  "copy": {
+    "prefix": "c",
+    "body": [
+      "copy($1)$0"
+    ],
+    "description": "copy something for debug"
+  }
+}

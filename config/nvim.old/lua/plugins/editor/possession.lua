@@ -11,7 +11,7 @@ return {
     },
     hooks = {
       before_save = function(_)
-        vim.cmd [[wincmd =]] -- Turn off full windows
+        vim.cmd([[wincmd =]]) -- Turn off full windows
         return {}
       end,
     },
@@ -20,11 +20,11 @@ return {
         hooks = {}, -- Do not delete buffers at saving
       },
       close_windows = {
-        hooks = { "before_save" },
+        hooks = { "before_load" },
         preserve_layout = false, -- do not preserse empty window
         match = {
           -- buftype = { "help" },
-          filetype = { "neo-tree", "aerial", "NeogitStatus", "NeogitCommitView", "toggleterm", "fugitiveblame", "oil" }
+          filetype = { "neo-tree", "aerial", "NeogitStatus", "NeogitCommitView", "toggleterm", "fugitiveblame", "oil" },
         },
       },
     },

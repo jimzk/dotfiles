@@ -1,0 +1,11 @@
+{
+  "main": {
+    "prefix": "main",
+    "body": [
+      "fn main() {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn main() { … }"
+  }
+}

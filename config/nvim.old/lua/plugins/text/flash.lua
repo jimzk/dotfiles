@@ -16,12 +16,34 @@ return {
       function() require("flash").jump() end,
       desc = "jump (flash)",
     },
-    -- {
-    --   "so",
+    -- { -- TODO: implement
+    --   "f<Tab>",
     --   mode = { "n", "x", "o" },
-    --   function() require("flash").jump({ continue = true }) end,
-    --   desc = "old jump (flash)",
+    --   function()
+    --     require("flash").jump({
+    --       search = {
+    --         mode = function(str) return "\\<" .. str end,
+    --       },
+    --     })
+    --   end,
+    --   desc = "jump to ( { [ (",
     -- },
+    {
+      "so",
+      mode = { "n", "x", "o" },
+      function()
+        require("flash").jump({
+          action = function(match, state)
+            vim.api.nvim_win_call(match.win, function()
+              vim.api.nvim_win_set_cursor(match.win, match.pos)
+              vim.diagnostic.open_float()
+            end)
+            state:restore()
+          end,
+        })
+      end,
+      desc = "old jump (flash)",
+    },
     {
       "R",
       mode = { "o", "x" },

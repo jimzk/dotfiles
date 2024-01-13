@@ -22,6 +22,7 @@ return {
       callback = function()
         local cmd = string.format("<cmd>h %s<cr>", help_tags[vim.bo.filetype])
         vim.keymap.set("n", "?", cmd, { buffer = true, silent = true })
+        vim.keymap.set("n", "<Tab>", "dp", { remap = true, buffer = true, silent = true })
       end,
     })
   end,
