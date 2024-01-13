@@ -1,0 +1,290 @@
+{
+  "pub": {
+    "prefix": "p",
+    "body": [
+      "pub $0"
+    ],
+    "description": "pub …"
+  },
+  "let": {
+    "prefix": [
+      "let",
+      "l"
+    ],
+    "body": [
+      "let $1 = $0;"
+    ],
+    "description": "let … = …;"
+  },
+  "let if": {
+    "prefix": [
+      "let if "
+    ],
+    "body": [
+      "let $1 = if $2 {",
+      "\t$0todo!();",
+      "} else {",
+      "\t$todo!();;",
+      "};"
+    ]
+  },
+  "fn": {
+    "prefix": "fn",
+    "body": [
+      "fn $1(self$2) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(…) { … }"
+  },
+  "fn &self": {
+    "prefix": [
+      "fn &self",
+      "fn&"
+    ],
+    "body": [
+      "fn $1(&self$2) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(&self, …) { … }"
+  },
+  "fn &mut self": {
+    "prefix": [
+      "fn &mut self",
+      "fn&m"
+    ],
+    "body": [
+      "fn $1(&mut self$2) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(&mut self, …) { … }"
+  },
+  "struct tuple": {
+    "prefix": "struct tuple",
+    "body": [
+      "struct ${1:Name}(${2:Type});"
+    ],
+    "description": "struct …(…);"
+  },
+  "struct": {
+    "prefix": [
+      "struct",
+      "st"
+    ],
+    "body": [
+      "#[derive(Debug)]",
+      "struct ${1:Type} {",
+      "\t${2:field}: ${3:Type},$0",
+      "}"
+    ],
+    "description": "struct … { … }"
+  },
+  "enum": {
+    "prefix": "enum",
+    "body": [
+      "#[derive(Debug)]",
+      "enum ${1:EnumName} {",
+      "\t${2:Var1},",
+      "\t${3:Var2},",
+      "}"
+    ],
+    "description": "enum … { … }"
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "for {$1:i} in {$2:1..10} {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "for … in … { … }"
+  },
+  "for iter": {
+    "prefix": [
+      "for iter",
+      "fori"
+    ],
+    "body": [
+      "for ${3:item} in $1.$2iter() {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "for i in vec.iter().enumerate() { … }"
+  },
+  "for iter enumerate": {
+    "prefix": [
+      "for iter enumerate",
+      "forie"
+    ],
+    "body": [
+      "for (i, item) in $1.iter().enumerate() {",
+      "\t0todo!();",
+      "}"
+    ],
+    "description": "for i in vec.iter().enumerate() { … }"
+  },
+  "while let": {
+    "prefix": [
+      "while let",
+      "wl"
+    ],
+    "body": [
+      "while let $1 = $2 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "while let … = … { … }"
+  },
+  "while let Some": {
+    "prefix": [
+      "while let Some",
+      "wls"
+    ],
+    "body": [
+      "while let Some($1) = $2 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "while let … = … { … }"
+  },
+  "while": {
+    "prefix": [
+      "while",
+      "w"
+    ],
+    "body": [
+      "while ${1:true} {",
+      "\t${2:todo!()}",
+      "}"
+    ],
+    "description": "while … { … }"
+  },
+  "if let": {
+    "prefix": [
+      "if let"
+    ],
+    "body": [
+      "if let Some($1) = ${2} {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "if let … = … { … }"
+  },
+  "if let Some": {
+    "prefix": "if let Some",
+    "body": [
+      "if let Some($1) = $2 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "if let Some(…) = … { … }"
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "if $1 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "if … { … }"
+  },
+  "else if": {
+    "prefix": [
+      "else if",
+      "eif"
+    ],
+    "body": [
+      "else if $1 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "else if … { … }"
+  },
+  "else": {
+    "prefix": "else",
+    "body": [
+      "else {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "else { … }"
+  },
+  "impl": {
+    "prefix": [
+      "impl",
+      "i"
+    ],
+    "body": [
+      "impl ${1:Type} {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "impl … { … }"
+  },
+  "impl for": {
+    "prefix": "impl for",
+    "body": [
+      "impl ${1:Trait} for ${2:Type} {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "impl … for … { … }"
+  },
+  "const": {
+    "prefix": [
+      "c",
+      "const"
+    ],
+    "body": [
+      "const ${1:VAR}: ${2:Type} = ${4:init};"
+    ],
+    "description": "const …: … = …;"
+  },
+  "'static": {
+    "prefix": [
+      "'static",
+      "'s"
+    ],
+    "body": [
+      "'static"
+    ],
+    "description": "'static"
+  },
+  "trait": {
+    "prefix": "trait",
+    "body": [
+      "trait $1 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "trait … { … }"
+  },
+  "type": {
+    "prefix": "type",
+    "body": [
+      "type ${1:Alias} = ${2:Type};"
+    ],
+    "description": "type … = …;"
+  },
+  "mod": {
+    "prefix": [
+      "mod",
+      "md"
+    ],
+    "body": [
+      "mod $0;"
+    ],
+    "description": "mod …;"
+  },
+  "literal str r#": {
+    "prefix": "r#",
+    "body": [
+      "r#\"",
+      "${0:literal string}",
+      "\"#"
+    ],
+    "description": "r#\"...\"# string"
+  }
+}

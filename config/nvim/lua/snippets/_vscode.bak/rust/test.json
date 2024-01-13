@@ -1,0 +1,42 @@
+{
+  "cfg test": {
+    "prefix": "#cfg test",
+    "body": [
+      "#[cfg(test)]"
+    ],
+    "description": "#[cfg(test)]"
+  },
+  "mod tests": {
+    "prefix": "test mod",
+    "body": [
+      "#[cfg(test)]",
+      "mod tests {",
+      "\t#[test]",
+      "\tfn ${1:name}() {",
+      "\t\t$0todo!();",
+      "\t}",
+      "}"
+    ],
+    "description": "mod tests"
+  },
+  "test fn": {
+    "prefix": "test fn",
+    "body": [
+      "#[test]",
+      "fn ${1:name}() {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "test fn"
+  },
+  "test fn (anyhow)": {
+    "prefix": "test fn (anyhow)",
+    "body": [
+      "#[test]",
+      "fn ${1:name}() -> anyhow::Result<()> {",
+      "$0",
+      "\tOk(())",
+      "}"
+    ]
+  }
+}

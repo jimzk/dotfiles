@@ -7,7 +7,7 @@ local M = {
     { "<leader>mg", "<CMD>MarksListGlobal<CR>", desc = "list GLOBAL (uppercase) marks" },
     -- { "<leader>mo", "<CMD>MarksToggleSign<CR>", desc = "toggle marks sign" },
     { "<leader>oM", "<CMD>MarksToggleSign<CR>", desc = "toggle marks sign" },
-  }
+  },
 }
 
 M.opts = function()

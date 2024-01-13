@@ -1,0 +1,61 @@
+{
+  "todo": {
+    "prefix": "td",
+    "body": [
+      "todo!()$0"
+    ],
+    "description": "todo!()"
+  },
+  "panic": {
+    "prefix": [
+      "pa",
+      "panic"
+    ],
+    "body": [
+      "panic!(\"${1}\");"
+    ],
+    "description": "panic!(…);"
+  },
+  "println": {
+    "prefix": "prl",
+    "body": [
+      "println!(\"${1}\", $0);"
+    ],
+    "description": "println!(…);"
+  },
+  "format": {
+    "prefix": "fmt",
+    "body": [
+      "format!(\"${1}\")"
+    ],
+    "description": "format!(…)"
+  },
+  "derive ...": {
+    "prefix": "der",
+    "body": [
+      "#[derive(Debug, Clone$0)]"
+    ],
+    "description": "#[derive(…)]"
+  },
+  "assert": {
+    "prefix": "a",
+    "body": [
+      "assert!(${0:true_expr});"
+    ],
+    "description": "assert!(…);"
+  },
+  "assert_eq": {
+    "prefix": "aeq",
+    "body": [
+      "assert_eq!(${1:expected}, ${2:actual});"
+    ],
+    "description": "assert_eq!(…, …);"
+  },
+  "assert_ne": {
+    "prefix": "ane",
+    "body": [
+      "assert_ne!(${1:unexpected}, ${2:actual});"
+    ],
+    "description": "assert_ne!(…, …);"
+  }
+}

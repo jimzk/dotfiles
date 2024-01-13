@@ -31,12 +31,35 @@ export BLOG_HOME=$WORKSPACE/blog
 export WORDCHARS=$'!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~'
 
 # editor
-if [[ -n $(command -v nvim) ]]; then
-    EDITOR='nvim'
+# if [[ -n $(command -v nvim) ]]; then
+#     EDITOR='nvim'
+# else
+#     EDITOR='vim'
+# fi
+# export EDITOR
+
+# https://github.com/kdheepak/lazygit.nvim#usage
+
+# NVIM_LISTEN_ADDRESS is deprecated but I still use it.
+# https://neovim.io/doc/user/deprecated.html#_environment-variables
+if [ -n "$NVIM_LISTEN_ADDRESS_" ]; then
+    alias nvim="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+    export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 else
-    EDITOR='vim'
+    # function _nvim() {
+    #     export NVIM_LISTEN_ADDRESS_=/tmp/nvimsocket-`date +%s`
+    #     /opt/homebrew/bin/nvim --listen ${NVIM_LISTEN_ADDRESS_} "$@"
+    # }
+    # alias nvim=_nvim
+    # alias vim=_nvim
+    # export VISUAL=_nvim
+    # export EDITOR=_nvim
+    alias nvim="export NVIM_LISTEN_ADDRESS_=/tmp/nvimsocket-`date +%s`; /opt/homebrew/bin/nvim --listen /tmp/nvimsocket-`date +%s`"
+    alias vim=nvim
+    export VISUAL=nvim
+    export EDITOR=nvim
 fi
-export EDITOR
 
 # fzf
 FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \

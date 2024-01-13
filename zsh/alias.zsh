@@ -160,9 +160,6 @@ alias @ip='curl -s "cip.cc"'
 alias wtf='_wtf'
 
 # more efficient
-alias vim="nvim"
-alias v="nvim"
-alias 'vim$'="nvim -c \"normal '0\""  # open last file
 alias now='date +"%Y-%m-%d %T"'
 
 # Shorter

@@ -1,0 +1,62 @@
+{
+  "fn": {
+    "prefix": "pfn",
+    "body": [
+      "pub fn $1(${2:self}) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(…) { … }"
+  },
+  "fn &self": {
+    "prefix": [
+      "pub fn &self",
+      "pfn&"
+    ],
+    "body": [
+      "pub fn $1(&self$2) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(&self, …) { … }"
+  },
+  "fn &mut self": {
+    "prefix": [
+      "pub fn &mut self",
+      "pfn&m"
+    ],
+    "body": [
+      "pub fn $1(&mut self$2) -> $3 {",
+      "\t$0todo!();",
+      "}"
+    ],
+    "description": "fn …(&mut self, …) { … }"
+  },
+  "struct": {
+    "prefix": [
+      "pub struct",
+      "pst"
+    ],
+    "body": [
+      "#[derive(Debug)]",
+      "pub struct ${1:Type} {",
+      "\t${2:field}: ${3:Type},$0",
+      "}"
+    ],
+    "description": "struct … { … }"
+  },
+  "enum": {
+    "prefix": [
+      "pub enum",
+      "penum"
+    ],
+    "body": [
+      "#[derive(Debug)]",
+      "pub enum ${1:EnumName} {",
+      "\t${2:Var1},",
+      "\t${3:Var2},",
+      "}"
+    ],
+    "description": "enum … { … }"
+  }
+}
