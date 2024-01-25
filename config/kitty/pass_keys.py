@@ -101,6 +101,9 @@ def handle_result(args, result, target_window_id, boss):
             encoded = encode_key_mapping(window, keymap)
             window.write_to_child(encoded)
     elif action == 'neighboring_window':
+        # Disable moving to page if kitty layout is stack, as there is only one visiable window
+        if boss.active_tab.current_layout.name == "stack":
+            return
         boss.active_tab.neighboring_window(direction)
     elif action == 'relative_resize':
         relative_resize_window(direction, amount, target_window_id, boss)
