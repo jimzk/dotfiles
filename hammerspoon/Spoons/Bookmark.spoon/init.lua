@@ -13,5 +13,6 @@ M.modal
     :bind("", "g", "GitHub Notification", open("https://github.com/notifications"))
     :bind("", "l", "Bilibili Watch List", open("https://www.bilibili.com/watchlater"))
     :bind("", "m", "Gmail", open("https://mail.google.com/mail"))
+    :bind("", "i", "Instapaper", open("https://www.instapaper.com/"))
 
 return M

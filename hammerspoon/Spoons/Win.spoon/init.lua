@@ -190,6 +190,54 @@ function M.toggleFullScreen()
     cwin:toggleFullScreen()
 end
 
+function M.direction(ratio)
+    local cwin = hs.window.focusedWindow()
+    if not cwin then return end
+    local sf = cwin:screen():frame()
+    local wf = cwin:frame()
+    if sf == wf then
+        return "fullscreen", true
+    end
+    ratio = ratio or 0.5
+    if wf.h == sf.h then
+        local is_w_equal = math.floor(wf.w) == math.floor(ratio * sf.w)
+        if wf.x + wf.w <= ratio * sf.w then
+            return "left", is_w_equal
+        elseif wf.x >= ratio * sf.w then
+            return  "right", is_w_equal
+        end
+    elseif wf.w == wf.w then
+        local is_h_equal = math.floor(wf.h) == math.floor(ratio * sf.h)
+        -- Height does not start with 0
+        if (wf.y - sf.y) + wf.h <= ratio * sf.h then
+            return "top", is_h_equal
+        elseif wf.y >= ratio * sf.h then
+            return "bottom", is_h_equal
+        end
+    end
+    return "unkown"
+end
+
+function M.resizeWindowAuto(ratio, fill)
+    local direction, exact = M.direction()
+    local target = "left"
+    local directions = { "left", "right", "top", "bottom" }
+    for idx, _ in ipairs(directions) do
+        if direction == directions[idx] then
+            local next_direction = directions[idx % #directions + 1]
+            target = exact and next_direction or direction
+            break
+        end
+    end
+    local size = {
+        left = hs.geometry.new({ x = 0, y = 0, w = ratio, h = 1 }),
+        right = hs.geometry.new({ x = 1 - ratio, y = 0, w = ratio, h = 1 }),
+        top = hs.geometry.new({ x = 0, y = 0, w = 1, h = ratio }),
+        bottom = hs.geometry.new({ x = 0, y = 1 - ratio, w = 1, h = ratio }),
+    }
+    M.resizeWindow(size[target], fill)  -- Left
+end
+
 function M.resizeWindow(size1, fill)
     M.deactivate()
     local w1 = hs.window.focusedWindow()
@@ -353,6 +401,25 @@ function M.openOrHideApp(name)
     -- hs.timer.delayed.new(0.01, function()
     --     M.centerCursor()
     -- end):start()
+end
+
+-- local filter = hs.window.filter.new(({"Obsidian"}))
+-- local switcher = hs.window.switcher.new(filter)
+function M.openOrHideObsidian(valut)
+    local frontmostApp = hs.application.frontmostApplication()
+    -- hs.alert.show(frontmostApp:name())
+    if frontmostApp:name() == "Obsidian" then
+        local focusedWin = frontmostApp:focusedWindow()
+        local focusWinTitle = focusedWin:title()
+        if string.find(focusWinTitle, valut) then
+            frontmostApp:hide()
+            -- FIX: fail to hide only window
+            -- hs.eventtap.keyStroke({ "cmd" }, "tab", 0)
+            -- hs.eventtap.keyStroke({}, "space", 300000)
+            return
+        end
+    end
+    hs.execute(string.format("open 'obsidian://open?vault=%s'", valut))
 end
 
 -- local apps = {
