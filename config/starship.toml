@@ -1,10 +1,16 @@
 # https://starship.rs/config
 add_newline = false
 # continuation_prompt = "[▶▶ ](bold green)"
+# format = '$time$all$character'
 
 [character]
-success_symbol = "[▶](bold green)"
+success_symbol = "[➜](bold green)"
+# success_symbol = "[▶](bold green)"
 error_symbol = "[✘](bold red)"
+
+[time]
+disabled = true
+format = '[$time]($style) '
 
 [directory]
 truncation_length = 4
