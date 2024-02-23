@@ -403,6 +403,25 @@ function M.openOrHideApp(name)
     -- end):start()
 end
 
+-- local filter = hs.window.filter.new(({"Obsidian"}))
+-- local switcher = hs.window.switcher.new(filter)
+function M.openOrHideObsidian(valut)
+    local frontmostApp = hs.application.frontmostApplication()
+    -- hs.alert.show(frontmostApp:name())
+    if frontmostApp:name() == "Obsidian" then
+        local focusedWin = frontmostApp:focusedWindow()
+        local focusWinTitle = focusedWin:title()
+        if string.find(focusWinTitle, valut) then
+            frontmostApp:hide()
+            -- FIX: fail to hide only window
+            -- hs.eventtap.keyStroke({ "cmd" }, "tab", 0)
+            -- hs.eventtap.keyStroke({}, "space", 300000)
+            return
+        end
+    end
+    hs.execute(string.format("open 'obsidian://open?vault=%s'", valut))
+end
+
 -- local apps = {
 --     E = "WeChat",
 --     T = "Telegram",

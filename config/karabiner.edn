@@ -46,6 +46,7 @@
     :Karabiner-EventViewer ["^org\\.pqrs\\.Karabiner-EventViewer$"]
     :Hammerspoon ["^org\\.hammerspoon\\.Hammerspoon$"]
 
+    :OpenCat ["^tech\\.baye\\.OpenCat$"]
     :Obsidian ["^md\\.obsidian$"]
     :Notion ["^notion\\.id$"]
     :Things3 ["^com\\.culturedcode\\.ThingsMac$"]
@@ -89,6 +90,8 @@
     :alfred-flow "osascript -e 'tell application \"Alfred 4\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"
     :hs "/usr/local/bin/hs -c \"%s\""
     :script "/usr/local/bin/bash ~/.dotfiles/karabiner/scripts/%s"
+
+    :openObsidian "/usr/local/bin/hs -c \"spoon.Win.openOrHideObsidian('%s')\""
   }
 
   ;;; helper function to generate things little bit quicker
@@ -130,14 +133,20 @@
         [:!Tj [:openApp "Slack"]]
 
         [:!Tq [:openApp "Music"]]
+        [:!Tslash [:openApp "OpenCat"]]
 
         [:!Treturn_or_enter [:openApp "Things3"]]
         [:!TCreturn_or_enter :!!5 :browser]
         [:!TCreturn_or_enter [:!TOC5]] ;; add Things3 task
 
-        [:!Tw [:openApp "Obsidian"]]
+        [:!T1 [:openObsidian "Main"]]
+        [:!T2 [:openObsidian "Coding"]]
+        [:!T3 [:openObsidian "Rust"]]
+        [:!T4 [:openObsidian "Web"]]
+        [:!T0 [:openObsidian "Web3"]]
+
         [:!Tgrave_accent_and_tilde [:openApp "Google Chrome"]]
-        [:!Ts [:openApp "Visual Studio Code"]]
+        [:!Tv [:openApp "Visual Studio Code"]]
         [:!Te [:openApp "Finder"]]
         [:!Tk [:openApp "kitty"]]
         [:!Tbackslash [:openApp "Bitwarden"]]
@@ -178,27 +187,27 @@
         [:!Tf [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 1 })"]]
         ; [:!TSf [:hs "spoon.Win.resizeWindow({ x = 0.1, y = 0, w = 0.8, h = 1 })"]]
         ; 1/2: ctrl (auto resize)
-        [:!Tslash [:hs "spoon.Win.resizeWindowAuto(0.5)"]]
-        [:!TOslash [:hs "spoon.Win.resizeWindowAuto(0.5, true)"]]
+        ; [:!Tslash [:hs "spoon.Win.resizeWindowAuto(0.5)"]]
+        ; [:!TOslash [:hs "spoon.Win.resizeWindowAuto(0.5, true)"]]
         ; 2/3: ctrl + cmd (auto resize)
         [:!TCslash [:hs "spoon.Win.resizeWindowAuto(0.66)"]]
         [:!TCOslash [:hs "spoon.Win.resizeWindowAuto(0.66, true)"]]
         ; ; 1/2: ctrl
         [:!Ta [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!Ts [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
+        [:!Ts [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 })"]]
         [:!Td [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 })"]]
-        ; [:!Tw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
+        [:!Tw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 })"]]
         [:!TOa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; [:!TOs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
+        [:!TOs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.5, w = 1, h = 0.5 }, true)"]]
         [:!TOd [:hs "spoon.Win.resizeWindow({ x = 0.5, y = 0, w = 0.5, h = 1 }, true)"]]
-        ; [:!TOw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
+        [:!TOw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.5 }, true)"]]
         ; ; 2/3: ctrl+cmd
         [:!TCa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 })"]]
+        [:!TCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 })"]]
         [:!TCd [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 })"]]
-        ; [:!TOCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 })"]]
+        [:!TOCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 })"]]
         [:!TOCa [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 0.66, h = 1 }, true)"]]
-        ; [:!TOCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 }, true)"]]
+        [:!TOCs [:hs "spoon.Win.resizeWindow({ x = 0, y = 0.34, w = 1, h = 0.66 }, true)"]]
         [:!TOCd [:hs "spoon.Win.resizeWindow({ x = 0.34, y = 0, w = 0.66, h = 1 }, true)"]]
         ; [:!TOCw [:hs "spoon.Win.resizeWindow({ x = 0, y = 0, w = 1, h = 0.66 }, true)"]]
         ; ;; 1/3
