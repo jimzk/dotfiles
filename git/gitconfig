@@ -3,18 +3,32 @@
     ignorecase = false
     # pager = diff-so-fancy --colors | less --tab=4 -RF
     excludesfile = ~/.gitignore
-	editor = nvim
-    autocrlf = input
+    editor = nvim
+    # on Windows, to work well with folks using Unix
+    autocrlf = false
     fileMode = false
     symlinks=true
     # git speed up. http://t.ly/0Nhe
     preloadindex = true
     fscache = true
     quotepath = off
+[init]
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#init-defaultbranch-main
+    defaultBranch = main
 [diff]
-    # colorMoved = default
+    tool = difftastic
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#diff-algorithm-histogram
+    algorithm = histogram
+    # uses different colours to highlight lines in diffs that have been “moved”
+    colorMoved = default
+    # include more context in diffs
+    context = 10
 [push]
-    default = simple
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#push-default-simple-push-default-current
+    default = current
+    # push new tags along with commits being pushed
+    followtags = true
+    autoSetupRemote = true
 [alias]
     # I do not load zsh plugin "git" (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git) and only add those I need from it
     lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -60,8 +74,9 @@
     # https://stackoverflow.com/a/28562712/10134408
     helper = store
 [log]
-    # --date format: https://strftime.org/
-    date = format:%Y %m-%d %H:%M:%S %a %z
+    # display dates as 2023-05-25 13:54:51 instead of Thu May 25 13:54:51 2023
+    # https://strftime.org/
+    date = iso
 
 # Inclucde local config
 [include]
@@ -69,12 +84,44 @@
     path = ~/.dotfiles/git/delta.gitconfig
 [commit]
     template = ~/.dotfiles/git/gitmessage
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#commit-verbose-true
+    verbose = true
 [rebase]
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#rebase-autosquash-true
     autoSquash = true
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#rebase-autostash-true
     autoStash = true
+    # not allow deleting commits during a rebase
+    missingCommitsCheck = error
+    # makes it much easier to rebase multiple stacked branches at a time.
+    # https://andrewlock.net/working-with-stacked-branches-in-git-is-easier-with-update-refs/
+    updateRefs = true
 [gc]
     # https://donatstudios.com/yagni-git-gc
     auto = 0
 [pull]
     # use fast forward only mode when pulling (avoid merge commit)
     ff = only
+[merge]
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#merge-conflictstyle-zdiff3
+    conflictstyle = zdiff3
+    # get rid of the .orig files git creates during a merge conflict
+    keepbackup = false
+    # use git mergetool to help resolve merge conflicts
+    tool = meld
+[rerere]
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options/#rerere-enabled-true
+    enabled = true
+[url "git@github.com:"]
+    # https://jvns.ca/blog/2024/02/16/popular-git-config-options
+    insteadOf = "https://github.com/"
+[branch]
+    # makes git branch sort by most recently used branches instead of alphabetical
+    sort = -committerdate
+[tag]
+    # makes git tag sort by most recently used tags instead of alphabetical
+    sort = taggerdate
+[fetch]
+    # automatically delete remote tracking branches/tags that have been deleted
+    prune = true
+    prunetags = true
