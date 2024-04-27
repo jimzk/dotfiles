@@ -37,7 +37,7 @@ require("util").is_neo_tree_shown = is_neo_tree_shown
 M.keys = function()
   return {
     {
-      "<C-r>r",
+      "<C-r>p",
       function()
         if is_neo_tree_shown() then
           if vim.bo.ft == "neo-tree" then

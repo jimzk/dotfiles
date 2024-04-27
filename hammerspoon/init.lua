@@ -23,7 +23,7 @@ hs.window.animationDuration = 0
 
 -- ModalMgr Spoon must be loaded explicitly, because this repository heavily relies upon it.
 hs.loadSpoon("EmmyLua")
-hs.loadSpoon("IME")
+-- hs.loadSpoon("IME")
 hs.loadSpoon("ModalMgr")
 hs.loadSpoon("Win")
 hs.loadSpoon("Config")
