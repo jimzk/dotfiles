@@ -32,12 +32,12 @@ local is_neo_tree_shown = function()
   return window_exists
 end
 
-require("util").is_neo_tree_shown = is_neo_tree_shown
+Util.is_neo_tree_shown = is_neo_tree_shown
 
 M.keys = function()
   return {
     {
-      "<C-r>p",
+      "<C-r>r",
       function()
         if is_neo_tree_shown() then
           if vim.bo.ft == "neo-tree" then
@@ -50,6 +50,16 @@ M.keys = function()
         end
       end,
       desc = "Open NeoTree or Focus",
+    },
+    {
+      "<C-r>h",
+      "<CMD>Neotree left<CR>",
+      desc = "Open NeoTree on Left",
+    },
+    {
+      "<C-r>l",
+      "<CMD>Neotree right<CR>",
+      desc = "Open NeoTree on Right",
     },
     {
       "<C-r>q",
@@ -78,7 +88,7 @@ M.keys = function()
       desc = "Git NeoTree",
     },
     {
-      "<leader>ggu",
+      "<leader>gge",
       "<C-r>u",
       remap = true,
       desc = "Git NeoTree",
@@ -195,7 +205,7 @@ M.opts.window = {
     ["c"] = "toggle_node_smart",
     C = "toggle_node",
     A = "noop",
-    R = "noop",
+    -- R = "noop",
     Y = "noop",
     ["<M-r>"] = "refresh",
     ["R"] = "spectre_replace",
@@ -238,8 +248,8 @@ M.opts.filesystem = {
       F = { "clear_filter" },
       ["]g"] = "noop",
       ["[g"] = "noop",
-      ["]"] = "next_git_modified",
-      ["["] = "prev_git_modified",
+      [")"] = "next_git_modified",
+      ["("] = "prev_git_modified",
       ["-"] = "navigate_up",
       ["="] = "set_root",
       ["<bs>"] = "noop",

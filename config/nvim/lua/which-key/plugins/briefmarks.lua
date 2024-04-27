@@ -2,7 +2,7 @@
 -- Ref: https://www.reddit.com/r/neovim/comments/19aoa2y/i_extended_which_keyvim_to_make_it_more_useful/
 local M = {}
 
---[[ 
+--[[
 ~/.config/nvim/lua/which-key/plugins/briefmarks.lua
 This extends which-key/plugins/marks.lua with these changes:
 * Only show subset of marks

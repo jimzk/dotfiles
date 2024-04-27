@@ -1,6 +1,8 @@
 return {
   "rainbowhxch/accelerated-jk.nvim",
-  opts = {},
+  opts = {
+    acceleration_table = { 7, 10, 14, 17, 20, 23, 26, 30 },
+  },
   config = function(_, opts)
     require("accelerated-jk").setup(opts)
     vim.defer_fn(function()

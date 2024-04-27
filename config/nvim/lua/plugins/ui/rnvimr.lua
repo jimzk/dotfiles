@@ -1,16 +1,18 @@
 return {
   "kevinhwang91/rnvimr",
   event = "VeryLazy",
+  enabled = false,
   keys = {
-    { "<C-r>r", "<CMD>RnvimrToggle<CR>", desc = "Ranger" },
+    { "<C-r>r", "<CMD>RnvimrToggle<CR><M-l>", desc = "Ranger" },
   },
   config = function()
-    local map = require("util").map
+    local map = Util.map
     vim.api.nvim_create_autocmd({ "FileType" }, {
       pattern = "rnvimr",
       callback = function(options)
         local bufnr = options.buf
         local opts = { buffer = bufnr }
+        -- TODO: remember the buffer before open and jump back to it after close
         map("t", "<C-r>", "<C-\\><C-n><CMD>RnvimrToggle<CR>", "Close Ranger", opts)
         map("t", "q", "<C-\\><C-n><CMD>RnvimrToggle<CR>", "Close Ranger", opts)
         map("t", "<C-o>", "<C-\\><C-n><CMD>RnvimrResize<CR>", "Change Ranger Layout", opts)
@@ -30,18 +32,18 @@ return {
     -- vim.g.rnvimr_hide_gitignore = 1
     vim.g.rnvimr_layout = {
       ["relative"] = "editor",
-      ["width"] = vim.fn.float2nr(vim.fn.round(0.8 * vim.o.columns)),
-      ["height"] = vim.fn.float2nr(vim.fn.round(0.8 * vim.o.lines)),
-      ["col"] = vim.fn.float2nr(vim.fn.round(0.1 * vim.o.columns)),
-      ["row"] = vim.fn.float2nr(vim.fn.round(0.1 * vim.o.lines)),
+      ["width"] = vim.fn.float2nr(vim.fn.round(0.6 * vim.o.columns)),
+      ["height"] = vim.fn.float2nr(vim.fn.round(0.6 * vim.o.lines)),
+      ["col"] = vim.fn.float2nr(vim.fn.round(0.2 * vim.o.columns)),
+      ["row"] = vim.fn.float2nr(vim.fn.round(0.2 * vim.o.lines)),
       ["style"] = "minimal",
     }
 
     vim.cmd([[
     let g:rnvimr_presets = [
-              \ {'width': 0.600, 'height': 0.600},
-              \ {'width': 0.700, 'height': 0.700},
               \ {},
+              \ {'width': 0.700, 'height': 0.700},
+              \ {'width': 0.800, 'height': 0.800},
               \ {'width': 0.950, 'height': 0.950},
               \ {'width': 0.500, 'height': 0.500, 'col': 0, 'row': 0},
               \ {'width': 0.500, 'height': 0.500, 'col': 0, 'row': 0.5},
@@ -64,5 +66,6 @@ return {
       ["s"] = "NvimEdit split",
       ["v"] = "NvimEdit vsplit",
     }
+    vim.cmd("RnvimrStartBackground")
   end,
 }

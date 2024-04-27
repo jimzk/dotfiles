@@ -86,6 +86,9 @@ end
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
 -- local keys = vim.api.nvim_replace_termcodes("zz", true, false, true)
 M.make_repeatable_move_pair = function(forward_move_fn, backward_move_fn)
+  if vim.g.vscode then
+    return forward_move_fn, backward_move_fn
+  end
   local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
   local forward_move_fn_proxy = function(...)
     forward_move_fn(...)
@@ -111,6 +114,7 @@ M.toggle = function(enabled, fn, desc, title)
   elseif type(fn) == "table" then
     enable_fn, disable_fn = fn[1], fn[2]
   end
+  title = title and title or "Option"
   local opts = { title = title }
   local level
   if type(enabled) == "function" then
@@ -127,6 +131,40 @@ M.toggle = function(enabled, fn, desc, title)
   end
   require("notify").dismiss({ silent = true, pending = false })
   require("notify")(desc, level, opts)
+end
+
+_G.copy = function(...)
+  local msg = "empty params"
+  local params = {}
+  if next({ ... }) then
+    -- get the count of the params
+    for i = 1, select("#", ...) do
+      -- select the param
+      local param = select(i, ...)
+      table.insert(params, vim.inspect(param))
+    end
+  else
+  end
+  if #params > 0 then
+    msg = table.concat(params, "\n")
+  end
+  vim.fn.setreg("+", msg)
+  return msg
+end
+
+_G.info = function(msg)
+  vim.notify(msg, vim.log.levels.INFO, { title = "DEBUG" })
+end
+
+_G.Util = M
+
+_G.WhichKey = {}
+
+_G.WhichKey.register = function(mappings, opts)
+  local ok, which_key = pcall(require, "which-key")
+  if ok then
+    which_key.register(mappings, opts)
+  end
 end
 
 return M

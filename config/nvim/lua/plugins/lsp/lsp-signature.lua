@@ -14,7 +14,7 @@ return {
     hi_parameter = "Cursor",
     floating_window = false, -- Automatically show signature on cursor
     floating_window_above_cur_line = false,
-    toggle_key = "<M-s>",
+    toggle_key = "<C-space>",
     hint_prefix = "",
   },
 }

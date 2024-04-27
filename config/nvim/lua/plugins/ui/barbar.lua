@@ -1,5 +1,3 @@
--- local map = require("util").map
-
 local M = {
   "romgrk/barbar.nvim",
   event = "BufReadPost",
@@ -48,7 +46,7 @@ M.opts = {
 
 M.config = function(_, opts)
   require("bufferline").setup(opts)
-  local map = require("util").map
+  local map = Util.map
   -- override default mapping
   vim.defer_fn(function()
     -- Buffers

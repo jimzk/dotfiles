@@ -7,16 +7,13 @@ local M = {
   },
 }
 
-local lazy_util = require("lazyvim.util")
-local load_component = function(name, opts)
-  return vim.tbl_extend("force", require("plugins.ui.lualine.components")[name], opts or {})
-end
-
 M.opts = function()
   local lualine_require = require("lualine_require")
   lualine_require.require = require
   local icons = require("lazyvim.config").icons
   vim.o.laststatus = vim.g.lualine_laststatus
+
+  local components = require("plugins.ui.lualine.components")
   local opts = {
     options = {
       theme = "auto",
@@ -38,25 +35,8 @@ M.opts = function()
     },
   }
   opts.tabline = {
-    lualine_a = {
-      vim.tbl_extend(
-        "force",
-        lazy_util.lualine.root_dir({
-          cwd = true,
-          icon = "󱉭",
-        }),
-        {
-          separator = "",
-          padding = { left = 1, right = 1 },
-          color = {
-            fg = "#292c3d",
-            bg = "#8caaef",
-          },
-        }
-      ),
-    },
-
-    lualine_b = {
+    lualine_a = {},
+    lualine_x = {
       {
         "branch",
         icon = "",
@@ -65,11 +45,39 @@ M.opts = function()
           bg = "#6e69a7",
         },
       },
-      load_component("grapple", {}),
-      -- { lazy_util.lualine.pretty_path() },
+      vim.tbl_extend(
+        "force",
+        LazyVim.lualine.root_dir({
+          cwd = true,
+          icon = "󱉭",
+        }),
+        {
+          separator = "",
+          padding = { left = 1, right = 1 },
+          color = {
+            bg = "#8caaef",
+            fg = "#292c3d",
+          },
+        }
+      ),
     },
-    lualine_c = {},
-    lualine_y = {},
+
+    lualine_b = {
+      {
+        "tabs",
+        padding = { left = 1, right = 1 },
+        max_length = vim.o.columns,
+        mode = 0,
+        path = 1,
+        show_modified_status = false,
+      },
+      components.arrow({
+        padding = { left = 0, right = 0 },
+      }),
+      -- { LazyVim.lualine.pretty_path() },
+    },
+    -- lualine_c = {},
+    -- lualine_y = {},
   }
 
   local get_winbar = function(color)
@@ -86,9 +94,18 @@ M.opts = function()
           "filename",
           newfile_status = true,
           path = 1,
-          padding = { left = 0, right = 1 },
+          padding = { left = 0, right = 0 },
           color = color,
         },
+        components.progress({
+          separator = "",
+          icon = "󰛗",
+          color = {
+            bg = color.bg,
+            fg = "#9db7f1",
+          },
+          padding = { left = 1, right = 1 },
+        }),
         {
           "diff",
           symbols = {
@@ -128,6 +145,9 @@ M.opts = function()
           function()
             return " "
           end,
+          color = {
+            bg = "Normal",
+          },
         },
       },
     }
@@ -135,30 +155,41 @@ M.opts = function()
   end
 
   opts.winbar = get_winbar({ bg = "#6369a7", fg = "#c6d0f6" })
-  opts.inactive_winbar = get_winbar({ bg = "#44406e", fg = "#c6d0f6" })
+  opts.inactive_winbar = get_winbar({ bg = "Normal", fg = "#c6d0f6" })
 
   opts.sections = {
     lualine_a = {
       {
         "mode",
+        fmt = function(str)
+          return str:sub(1, 6)
+        end,
       },
     },
     lualine_b = {
-      {
-        "tabs",
-        show_modified_status = false,
-        tabs_color = {
-          active = {
-            fg = "#292c3d",
-            bg = "#8e8ebd",
-          },
-          inactive = {
-            bg = "#292c3d",
-            fg = "#8e8ebd",
-          },
-        },
-      },
-      -- { require("lazyvim.util").lualine.pretty_path() },
+      -- {
+      --   function()
+      --     -- return vim.g.cut_clipboard_enabled and "󰅇" or ""
+      --     return vim.g.cut_clipboard_enabled and "✅" or "❌"
+      --   end,
+      --   padding = { left = 1, right = 1 },
+      -- },
+
+      -- {
+      --   "tabs",
+      --   show_modified_status = false,
+      --   tabs_color = {
+      --     active = {
+      --       fg = "#292c3d",
+      --       bg = "#8e8ebd",
+      --     },
+      --     inactive = {
+      --       bg = "#292c3d",
+      --       fg = "#8e8ebd",
+      --     },
+      --   },
+      -- },
+      -- { LazyVim.lualine.pretty_path() },
     },
     lualine_c = {
       {
@@ -173,19 +204,17 @@ M.opts = function()
       {
         function() return "  " .. require("dap").status() end,
         cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-        color = lazy_util.ui.fg("Debug"),
+        color = LazyVim.ui.fg("Debug"),
       },
       {
         require("lazy.status").updates,
         cond = require("lazy.status").has_updates,
-        color = lazy_util.ui.fg("Special"),
+        color = LazyVim.ui.fg("Special"),
       },
-      load_component("progress"), -- Customized progress to avoid spacing change
     },
     lualine_y = {
       -- require("plugins.ui.lualine.visual-line"),
-      -- require("plugins.ui.lualine.indent-with"),
-      load_component("copilot", {
+      components.copilot({
         -- separator = "",
         padding = { left = 1, right = 0 },
         color = {
@@ -193,24 +222,26 @@ M.opts = function()
           fg = "#8caaef",
         },
       }),
-      load_component("conform", {
+      components.conform({
         -- separator = "",
         padding = { left = 1, right = 0 },
         color = {
           fg = "#8caaef",
         },
       }),
-      load_component("lsp_clients", {
+      components.lsp_clients({
         separator = "",
-        padding = { left = 1, right = 1 },
+        padding = { left = 1, right = 0 },
         color = {
           fg = "#8caaef",
         },
       }),
+      components.indent_width({
+        padding = { left = 1, right = 1 },
+      }),
     },
     lualine_z = {
       {
-
         function()
           return " " .. os.date("%R")
         end,
@@ -223,17 +254,22 @@ end
 M.config = function(_, opts)
   require("lualine").setup(opts)
 
-  vim.cmd([[
-  hi lualine_b_inactive guibg=#303447
-  hi lualine_b_normal guibg=#303447
-  hi lualine_b_command guibg=#303447
-  hi lualine_b_visual guibg=#303447
-  hi lualine_b_terminal guibg=#303447
-  hi lualine_b_replace guibg=#303447
-  hi lualine_b_insert guibg=#303447
-
-  hi lualine_a_inactive guibg=#303447
-  ]])
+  -- local normal = vim.api.nvim_get_hl_by_name("normal", true)
+  -- local postfixs = { "inactive", "normal", "command", "visual", "terminal", "replace", "insert" }
+  -- for _, postfix in ipairs(postfixs) do
+  --   local sections = { "b" }
+  --   for _, section in ipairs(sections) do
+  --     name = "lualine_" .. section .. "_" .. postfix
+  --     local ok, hl = pcall(vim.api.nvim_get_hl_by_name, name, true)
+  --     if ok and hl then
+  --       local new_hl = {
+  --         bg = normal.background,
+  --         fg = hl.foreground,
+  --       }
+  --       vim.api.nvim_set_hl(0, name, new_hl)
+  --     end
+  --   end
+  -- end
 end
 
 return M

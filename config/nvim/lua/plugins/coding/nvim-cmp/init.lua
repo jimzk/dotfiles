@@ -16,8 +16,10 @@ M.dependencies = {
   "hrsh7th/cmp-buffer",
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-cmdline",
-  { "jimzk/cmp-luasnip-choice", opts = {} },
   "saadparwaiz1/cmp_luasnip",
+  "zbirenbaum/copilot.lua",
+  { "jimzk/cmp-luasnip-choice", opts = {} },
+
   "abecodes/tabout.nvim",
   "altermo/ultimate-autopair.nvim",
   "windwp/nvim-autopairs",
@@ -28,16 +30,12 @@ local keymaps = require("plugins.coding.nvim-cmp.keymaps")
 local format = require("plugins.coding.nvim-cmp.format")
 
 M.opts = function(_, opts)
-  -- table.remove(opts.sources, 1)  -- Remove copilot
   table.insert(opts.sources, 1, {
     name = "luasnip_choice",
     group_index = 1,
     priority = 1000,
   })
-  -- crates.nvim
-  table.insert(opts.sources, 1, {
-    name = "crates",
-  })
+
   -- for i, source in pairs(opts.sources) do
   --   if source.name == "luasnip" then
   --     table.remove(opts.sources, i)
@@ -45,13 +43,7 @@ M.opts = function(_, opts)
   --     break
   --   end
   -- end
-  --
-  for i, source in pairs(opts.sources) do
-    if source.name == "copilot" then
-      table.remove(opts.sources, i)
-      break
-    end
-  end
+
   for i, source in ipairs(opts.sources) do
     opts.sources[i] =
       vim.tbl_deep_extend("force", source, require("plugins.coding.nvim-cmp.sources")[source.name] or {})
@@ -83,6 +75,7 @@ M.opts = function(_, opts)
     --   throttle = 0, -- default is 30
     -- },
     formatting = {
+      expandable_indicator = false, -- Do not show ~ indicator
       format = format.format,
     },
     window = {
@@ -98,6 +91,7 @@ M.opts = function(_, opts)
       comparators = require("plugins.coding.nvim-cmp.comparators"),
     },
   }
+
   opts = vim.tbl_deep_extend("force", opts or {}, override)
   return opts
 end
@@ -141,9 +135,6 @@ M.config = function(_, opts)
       },
     })
   )
-  -- History in cmdline
-  vim.cmd("cnoremap <special> <M-p> <Up>")
-  vim.cmd("cnoremap <special> <M-n> <Down>")
 end
 
 return M

@@ -1,4 +1,4 @@
-local specs = require("util").load_specs("lsp")
+local specs = Util.load_specs("lsp")
 
 vim.list_extend(specs, {
   -- Delete buffer without messing up layout

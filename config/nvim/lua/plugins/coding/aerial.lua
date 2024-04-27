@@ -1,18 +1,19 @@
 local M = {
   "stevearc/aerial.nvim",
-  event = "BufReadPost",
+  event = "LazyFile",
 }
 
 M.keys = function()
-  local next_fn, prev_fn = require("util").make_repeatable_move_pair(function()
+  local next_fn, prev_fn = Util.make_repeatable_move_pair(function()
     vim.cmd("AerialNext")
   end, function()
     vim.cmd("AerialPrev")
   end)
   return {
-    -- { "go", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
+    -- { "<leader>ii", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
+    { "t", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
     {
-      "<leader>yo",
+      "<leader>iO",
       function()
         if vim.bo.ft == "aerial" then
           vim.cmd("q")
@@ -20,11 +21,23 @@ M.keys = function()
           vim.cmd("AerialOpen right")
         end
       end,
-      desc = "Symbols (Aerial)",
+      desc = "Symbols Left (Aerial)",
     },
-    { "<leader>yy", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
-    { "]y", next_fn, desc = "Next Symbol (Aerial)" },
-    { "[y", prev_fn, desc = "Prev Symbol (Aerial)" },
+    {
+      "<leader>io",
+      function()
+        if vim.bo.ft == "aerial" then
+          vim.cmd("q")
+        else
+          vim.cmd("AerialOpen left")
+        end
+      end,
+      desc = "Symbols Right (Aerial)",
+    },
+    { "<leader>in", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
+    -- { "<leader>`", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
+    -- { "]o", next_fn, desc = "Next Symbol (Aerial)" },
+    -- { "[o", prev_fn, desc = "Prev Symbol (Aerial)" },
   }
 end
 
@@ -60,18 +73,17 @@ M.opts = function(_, opts)
     keymaps = {
       ["g?"] = false,
       ["<esc>"] = "actions.close",
-      ["i"] = "actions.scroll",
-      -- ["<M-k>"] = "actions.prev",
-      -- ["<M-j>"] = "actions.next",
+      ["p"] = "actions.scroll",
 
       ["<C-k>"] = false,
       ["<C-j>"] = false,
       ["J"] = "actions.down_and_scroll",
       ["K"] = "actions.up_and_scroll",
+      -- ["K"] = "actions.prev",
+      -- ["J"] = "actions.next",
     },
     float = {
       relative = "cursor", -- cursor, editor, win
-      -- ISSUE: override not work
     },
     nav = {
       min_height = { 10, 0.5 },

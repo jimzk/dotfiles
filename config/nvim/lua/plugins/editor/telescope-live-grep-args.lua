@@ -3,49 +3,38 @@ local M = {
   dependencies = {
     "nvim-telescope/telescope.nvim",
   },
-  event = "VeryLazy",
 }
-local util = require("util")
-local get_prompt = function()
-  -- Convert escape char to plain text
-  local prompt = vim.fn.mode() == "v" and util.get_selected():gsub("[%'%\"%.%(%)%[%{]", "\\%1")
-    or _G.telescope_live_grep_args_prompt
-  return prompt
-end
 
-local search = function(opts)
-  local default_opts = {
-    default_text = get_prompt(),
+M.keys = function()
+  local get_prompt = function()
+    -- Convert escape char to plain text
+    local prompt = vim.fn.mode() == "v" and Util.get_selected():gsub("[%'%\"%.%(%)%[%{]", "\\%1")
+      or _G.telescope_live_grep_args_prompt
+    return prompt
+  end
+
+  local search = function(opts)
+    local default_opts = {
+      default_text = get_prompt(),
+    }
+    opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+    require("telescope").extensions.live_grep_args.live_grep_args(opts)
+  end
+
+  local search_in_buf = function()
+    local path = vim.fn.fnameescape(vim.fn.expand("%:p:."))
+    LazyVim.telescope("current_buffer_fuzzy_find", {
+      prompt_title = "Fuzzy Search in Buffer (" .. path:gsub("^" .. vim.env.HOME, "~") .. ")",
+      default_text = get_prompt(),
+      sorting_strategy = "ascending",
+    })()
+  end
+  return {
+    { mode = { "v", "n" }, "<C-f>", search, desc = "Search" },
+    { "<C-M-f>", search, desc = "Search Cursor Word" },
+    { mode = { "v", "n" }, "<leader>rs", search_in_buf, desc = "Search in Buffer (Telescope)" },
   }
-  opts = vim.tbl_deep_extend("force", default_opts, opts or {})
-  require("telescope").extensions.live_grep_args.live_grep_args(opts)
 end
-
--- local search_in_buf = function()
---   local path = vim.fn.fnameescape(vim.fn.expand("%:p:."))
---   require("telescope.builtin").live_grep({
---     prompt_title = "Live Grep in Buffer (" .. path:gsub("^" .. vim.env.HOME, "~") .. ")",
---     search_dirs = { path },
---     default_text = get_prompt(),
---     path_display = { "hidden" },
---   })
--- end
-
-local search_in_buf = function()
-  local lazy_util = require("lazyvim.util")
-  local path = vim.fn.fnameescape(vim.fn.expand("%:p:."))
-  lazy_util.telescope("current_buffer_fuzzy_find", {
-    prompt_title = "Fuzzy Search in Buffer (" .. path:gsub("^" .. vim.env.HOME, "~") .. ")",
-    default_text = get_prompt(),
-    sorting_strategy = "ascending",
-  })()
-end
-
-M.keys = {
-  { mode = { "v", "n" }, "<C-f>", search, desc = "Search" },
-  { "<C-M-f>", search, desc = "Search Cursor Word" },
-  { mode = { "v", "n" }, "<leader>/", search_in_buf, desc = "Search in Buffer (Telescope)" },
-}
 
 M.config = function()
   local telescope = require("telescope")

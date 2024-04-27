@@ -40,12 +40,20 @@ return {
       },
     }
   end,
+  opts = {
+    keywords = {
+      TODO = { color = "#8caaef" },
+    },
+    highlight = {
+      keyword = "bg",
+    },
+  },
   config = function(_, opts)
     local todo_comments = require("todo-comments")
     todo_comments.setup(opts)
     local next_todo_repeat, prev_todo_repeat =
-      require("util").make_repeatable_move_pair(todo_comments.jump_next, todo_comments.jump_prev)
-    local map = require("util").map
+      Util.make_repeatable_move_pair(todo_comments.jump_next, todo_comments.jump_prev)
+    local map = Util.map
     map({ "n", "x", "o" }, "]t", next_todo_repeat, "Next TODO")
     map({ "n", "x", "o" }, "[t", prev_todo_repeat, "Prev TODO")
     require("which-key").register({

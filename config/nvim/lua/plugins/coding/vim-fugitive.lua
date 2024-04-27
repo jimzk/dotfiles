@@ -3,7 +3,7 @@ return {
   dependencies = {
     "tpope/vim-rhubarb", -- Support :Browse of fugitive
   },
-  event = "VeryLazy",
+  cmd = { "Git" },
   keys = {
     {
       "<leader>ggf",
@@ -54,10 +54,11 @@ return {
     }
     vim.api.nvim_create_autocmd("FileType", {
       pattern = { "fugitiveblame", "fugitive" },
-      callback = function()
+      callback = function(opts)
         local cmd = string.format("<cmd>h %s<cr>", help_tags[vim.bo.filetype])
         vim.keymap.set("n", "?", cmd, { buffer = true, silent = true })
         vim.keymap.set("n", "<Tab>", "dv", { remap = true, buffer = true, silent = true }) -- Diff
+        vim.bo[opts.buf].buflisted = false
       end,
     })
   end,

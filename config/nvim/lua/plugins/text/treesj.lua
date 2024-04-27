@@ -1,3 +1,6 @@
+local key_join = "J"
+local key_split = "S"
+
 return {
   -- Split and join
   "Wansmer/treesj",
@@ -10,7 +13,8 @@ return {
       end,
     },
   },
-  event = "VeryLazy",
+  -- cmd = { "TSJJoin", "TSJSplit" },
+  event = "BufReadPost",
   opts = {
     use_default_keymaps = false,
   },
@@ -24,9 +28,7 @@ return {
         if not vim.bo[event.buf].buflisted then
           return
         end
-        local map = require("util").map
-        local key_join = "J"
-        local key_split = "S"
+        local map = Util.map
         local callback_opts = { buffer = true }
         if langs[vim.bo.filetype] then
           map("n", key_join, "<Cmd>TSJJoin<CR>", nil, callback_opts)

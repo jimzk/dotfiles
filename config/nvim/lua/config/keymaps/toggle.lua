@@ -1,13 +1,11 @@
-local lazy_util = require("lazyvim.util")
-local util = require("util")
-local map = util.map
+local map = Util.map
 local del = vim.keymap.del
 
 local toggle = function(option, ...)
-  if lazy_util.toggle[option] then
-    lazy_util.toggle[option](...)
+  if LazyVim.toggle[option] then
+    LazyVim.toggle[option](...)
   else
-    lazy_util.toggle(option, ...)
+    LazyVim.toggle(option, ...)
   end
 end
 
@@ -17,26 +15,25 @@ del("n", "<leader>ub")
 del("n", "<leader>uf")
 del("n", "<leader>uF")
 vim.g.autoformat = true
-map("n", "<leader>of", function() lazy_util.format.toggle(true) end,   "Toggle Autoformat (Buffer)" )
-map("n", "<leader>oF", function() lazy_util.format.toggle() end,   "Toggle Autoformat (Global)" )
+map("n", "<leader>of", function() LazyVim.format.toggle(true) end,   "Toggle Autoformat (Buffer)" )
+map("n", "<leader>oF", function() LazyVim.format.toggle() end,   "Toggle Autoformat (Global)" )
 del("n", "<leader>us")
 map("n", "<leader>os", function() toggle("spell") end, "Toggle Spelling" )
 del("n", "<leader>uw")
 map("n", "<leader>ow", function() toggle("wrap") end, "Toggle Word Wrap" )
 del("n", "<leader>uL")
-map("n", "<leader>oN", function() toggle("relativenumber") end, "Toggle Relative Line Numbers" )
+map("n", "<leader>or", function() toggle("relativenumber") end, "Toggle Relative Line Numbers" )
 del("n", "<leader>ul")
+map("n", "<leader>ol", function() toggle("cursorline") end, "Toggle Cursorline" )
 map("n", "<leader>on", function() toggle("number") end, "Toggle Line Numbers" )
 del("n", "<leader>ud")
 map("n", "<leader>od", function() toggle("diagnostics") end, "Toggle Diagnostics" )
-map("n", "<leader>do", function() toggle("diagnostics") end, "Toggle Diagnostics" )
-map("n", "<leader>oC", function() toggle("ignorecase") end, "Toggle Case Ignore" )
+map("n", "<leader>oc", function() toggle("ignorecase") end, "Toggle Case Ignore" )
 del("n", "<leader>uc")
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>oc", function() toggle("conceallevel", false, {0, conceallevel}) end, "Toggle Conceal" )
+map("n", "<leader>oC", function() toggle("conceallevel", false, {0, conceallevel}) end, "Toggle Conceal" )
 del("n", "<leader>uh")
-map("n", "<leader>oi", function()
-  -- FIX: LazyVim not catch up neovim 10.0 changes in vim.lsp.inlay_hint.enable()
+map("n", "<leader>oI", function()
   toggle("inlay_hints")
   vim.cmd("NvimContextVtToggle")
 end, "Toggle Inlay Hints")
@@ -44,32 +41,30 @@ end, "Toggle Inlay Hints")
 
 del("n", "<leader>uT")
 map("n", "<leader>oh", function()
-  require("util").toggle(
-    vim.b.ts_highlight,
-    { vim.treesitter.start, vim.treesitter.stop },
-    "Treesitter Highlight",
-    "Option"
-  )
+  Util.toggle(vim.b.ts_highlight, {
+    vim.treesitter.start,
+    vim.treesitter.stop,
+  }, "Treesitter Highlight")
 end, "Toggle Treesitter Highlight")
 
 map("n", "<leader>oD", function()
-  require("util").toggle(function()
+  Util.toggle(function()
     return vim.diagnostic.config().virtual_text
   end, function()
     vim.cmd("Corn toggle")
-  end, "Inline Diagnostics", "Option")
-end, "Toggle Diagnostics inline")
+  end, "Inline Diagnostics")
+end, "Toggle Inline Diagnostics")
 
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L135C1-L136C1
 del("n", "<leader>ui")
-map("n", "<leader>np", vim.show_pos, "Inspect Position")
+map("n", "<leader>np", vim.show_pos, "Inspect Treesitter")
 
 map("n", "<leader>om", function()
   local bo = vim.bo[0]
-  require("util").toggle(vim.bo[0].modifiable, function()
+  Util.toggle(vim.bo[0].modifiable, function()
     bo.readonly = not bo.readonly
     bo.modifiable = not bo.modifiable
-  end, "File Modifiable", "Option")
+  end, "File Modifiable")
 end, "Toggle Modifiable")
 
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L47
@@ -124,12 +119,12 @@ Working Dir: %s
   )
   require("notify")(msg, vim.log.levels.INFO, { title = "File Info", timeout = 3000 })
 end
-map("n", "<leader>?", file_detail, "File Info")
-map("n", "<leader>n?", "<leader>?", "File Info", { remap = true })
+map("n", "<leader>ni", file_detail, "File Info")
+map("n", "<leader>hi", file_detail, "File Info")
 
 -- Lazy
 del("n", "<leader>l")
 map("n", "<leader>nz", "<cmd>Lazy<cr>", "Lazy")
 map("n", "<leader>nZ", function()
-  require("lazyvim.util").news.changelog()
+  LazyVim.news.changelog()
 end, "LazyVim Changelog")

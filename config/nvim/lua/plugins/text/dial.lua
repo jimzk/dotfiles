@@ -1,7 +1,6 @@
 local M = {
   -- increment and decrement value
   "monaqa/dial.nvim",
-  event = "VeryLazy",
 }
 
 M.keys = function()
@@ -10,19 +9,21 @@ M.keys = function()
       require("dial.map").manipulate(direction, mode, group_name, count)
     end
   end
+  local inc_key = "<C-a>"
+  local dec_key = "<C-x>"
   return {
-    { mode = "n", "t", manipulate("increment", "normal"), desc = "Increment Number/Date..." },
-    { mode = "x", "t", manipulate("increment", "visual"), desc = "Increment Number/Date..." },
-    { mode = "n", "T", manipulate("decrement", "normal"), desc = "Decrement Number/Date..." },
-    { mode = "x", "T", manipulate("decrement", "visual"), desc = "Decrement Number/Date..." },
+    { mode = "n", inc_key, manipulate("increment", "normal"), desc = "Increment Number/Date..." },
+    { mode = "x", inc_key, manipulate("increment", "visual"), desc = "Increment Number/Date..." },
+    { mode = "n", dec_key, manipulate("decrement", "normal"), desc = "Decrement Number/Date..." },
+    { mode = "x", dec_key, manipulate("decrement", "visual"), desc = "Decrement Number/Date..." },
     -- Select below lines and press t and gt to see differences
     -- 1.
     -- 1.
     -- 1.
-    { mode = "n", "gt", manipulate("increment", "gnormal"), desc = "Increment Number/Date... with Offset" },
-    { mode = "x", "gt", manipulate("increment", "gvisual"), desc = "Increment Number/Date... with Offset" },
-    { mode = "n", "gT", manipulate("decrement", "gnormal"), desc = "Decrement Number/Date... with Offset" },
-    { mode = "x", "gT", manipulate("decrement", "gvisual"), desc = "Decrement Number/Date... with Offset" },
+    { mode = "n", "g" .. inc_key, manipulate("increment", "gnormal"), desc = "Increment Number/Date... with Offset" },
+    { mode = "x", "g" .. inc_key, manipulate("increment", "gvisual"), desc = "Increment Number/Date... with Offset" },
+    { mode = "n", "g" .. dec_key, manipulate("decrement", "gnormal"), desc = "Decrement Number/Date... with Offset" },
+    { mode = "x", "g" .. dec_key, manipulate("decrement", "gvisual"), desc = "Decrement Number/Date... with Offset" },
   }
 end
 

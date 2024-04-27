@@ -3,8 +3,6 @@ local M = {
 }
 
 M.keys = function()
-  local methods = require("plugins.text.flash.methods")
-
   return {
     -- { "<Tab>", mode = { "n", "x", "o" }, methods.two_char_jump, desc = "Jump (Flash)" },
     {
@@ -12,15 +10,13 @@ M.keys = function()
       mode = { "n", "x", "o" },
       function()
         require("flash").jump({
-          -- jump = {
-          -- autojump = true,
-          -- },
+          autojump = false,
         })
       end,
       desc = "Jump (Flash)",
     },
     {
-      "r",
+      "R",
       mode = { "o" },
       function()
         require("flash").remote()
@@ -28,7 +24,7 @@ M.keys = function()
       desc = "Remote (Flash)",
     },
     {
-      "R",
+      "r",
       mode = { "o", "x" },
       function()
         require("flash").treesitter_search({
@@ -47,6 +43,7 @@ M.keys = function()
       end,
       desc = "Treesitter Scope (Flash)",
     },
+
     -- {
     --   "<CR>",
     --   mode = { "n", "o", "x" },
@@ -57,6 +54,7 @@ M.keys = function()
     --   end,
     --   desc = "Treesitter Remote (Flash)",
     -- },
+
     {
       "<leader>o/",
       mode = { "n" },
@@ -68,13 +66,17 @@ M.keys = function()
     {
       "g<C-d>",
       mode = { "n" },
-      methods.peek_definition,
+      function()
+        local methods = require("plugins.text.flash.methods")
+        methods.peek_definition()
+      end,
       desc = "Peek Definition Remotely (Flash)",
     },
     {
       "<leader>d<Tab>",
       mode = { "n", "x" },
       function()
+        local methods = require("plugins.text.flash.methods")
         methods.peek_diagnostics({
           label = {
             after = false,

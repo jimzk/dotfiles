@@ -11,7 +11,7 @@ M.opts = {
 M.config = function(_, opts)
   local t = require("various-textobjs")
   t.setup(opts)
-  local map = require("util").map
+  local map = Util.map
   local ox = { "o", "x" }
   -- map(ox, "id", t.diagnostic, "Diagnostic")
   -- map(ox, "ad", t.diagnostic, "Diagnostic")
@@ -47,10 +47,10 @@ M.config = function(_, opts)
   map(ox, "iM", function() t.chainMember("inner") end, "Chain Function")
   map(ox, "aM", function() t.chainMember("outer") end, "Chain Function")
   -- Key/value
-  map(ox, "i1", function() t.key("inner") end, "Key (KV)")
-  map(ox, "a1", function() t.key("outer") end, "Key (KV)")
-  map(ox, "i2", function() t.value("inner") end, "Value (KV)")
-  map(ox, "a2", function() t.value("outer") end, "Value (KV)")
+  map(ox, "ik", function() t.key("inner") end, "Key (KV)")
+  map(ox, "ak", function() t.key("outer") end, "Key (KV)")
+  map(ox, "iv", function() t.value("inner") end, "Value (KV)")
+  map(ox, "av", function() t.value("outer") end, "Value (KV)")
   -- Entire content
   map(ox, "ie", function() t.entireBuffer() end, "Entire Content")
   map(ox, "ae", function() t.entireBuffer() end, "Entire Content")

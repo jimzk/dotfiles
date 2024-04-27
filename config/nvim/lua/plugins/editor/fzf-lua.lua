@@ -13,9 +13,9 @@ M.keys = {
   { "<leader>gS", "<cmd>FzfLua git_stash<CR>", desc = "Git Stash (FZF)" },
   { "<leader>gh", "<cmd>FzfLua git_branches<CR>", desc = "Git Branch (FZF)" },
   -- Jumps/Location
-  { "m<C-j>", "<cmd>FzfLua jumps<CR>", desc = "List jumps (FZF)" },
-  { "m<C-t>", "<cmd>FzfLua tagstack<CR>", desc = "List tagstack (FZF)" },
-  { "m<C-g>", "<cmd>FzfLua changes<CR>", desc = "List changes (FZF)" },
+  { "<leader>m<C-j>", "<cmd>FzfLua jumps<CR>", desc = "List jumps (FZF)" },
+  { "<leader>m<C-t>", "<cmd>FzfLua tagstack<CR>", desc = "List tagstack (FZF)" },
+  { "<leader>m<C-g>", "<cmd>FzfLua changes<CR>", desc = "List changes (FZF)" },
 }
 
 M.opts = {
@@ -32,8 +32,8 @@ M.opts = {
       ["<F6>"] = "toggle-preview-cw",
 
       -- ["<S-left>"] = "preview-page-reset",
-      ["<M-f>"] = "preview-page-down",
-      ["<M-b>"] = "preview-page-up",
+      ["<M-j>"] = "preview-page-down",
+      ["<M-k>"] = "preview-page-up",
 
       ["<C-M-n>"] = "half-page-down",
       ["<C-M-p>"] = "half-page-up",
@@ -43,14 +43,14 @@ M.opts = {
       ["ctrl-u"] = "unix-line-discard",
       ["ctrl-a"] = "beginning-of-line",
       ["ctrl-e"] = "end-of-line",
-      ["alt-a"] = "toggle-all",
+      -- ["alt-a"] = "toggle-all",
 
       -- Only valid with fzf previewers (bat/cat/git/etc)
       ["f3"] = "toggle-preview-wrap",
       ["f4"] = "toggle-preview",
 
-      ["alt-f"] = "preview-page-down",
-      ["alt-b"] = "preview-page-up",
+      ["alt-j"] = "preview-page-down",
+      ["alt-k"] = "preview-page-up",
 
       ["ctrl-alt-n"] = "half-page-down",
       ["ctrl-alt-p"] = "half-page-up",

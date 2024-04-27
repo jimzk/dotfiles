@@ -63,7 +63,7 @@ M.keys = {
 M.config = function(_, opts)
   local harpoon = require("harpoon")
   harpoon:setup(opts)
-  local map = require("util").map
+  local map = Util.map
   for i = 0, 9, 1 do
     local is_1 = i == 1
     map("n", "<space>" .. tostring(i), function()

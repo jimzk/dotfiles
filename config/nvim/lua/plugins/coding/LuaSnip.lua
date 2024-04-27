@@ -40,6 +40,6 @@ return {
     -- require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./lua/snippets/vscode" } })
     require("snippets")
     -- Fix can't jump to next when using <BS> to delete selection
-    require("util").map("s", "<BS>", "<BS>i")
+    Util.map("s", "<BS>", "<BS>i")
   end,
 }

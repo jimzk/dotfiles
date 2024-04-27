@@ -13,12 +13,12 @@ M.opts = {
     openc = "",
     prevfile = "K",
     nextfile = "J",
-    -- prevhist = "K",
-    -- nexthist = "J",
+    prevhist = "<M-h>",
+    nexthist = "<M-l>",
     split = "s",
     vsplit = "v",
-    pscrollup = "<M-b>",
-    pscrolldown = "<M-f>",
+    pscrollup = "<M-k>",
+    pscrolldown = "<M-j>",
     ptogglemode = "<C-p>",
     -- ptogglemode = "=", -- toggle preview window size
     -- pscrollorig = "-", -- scroll back original position in preview window
@@ -39,7 +39,7 @@ M.config = function(_, opts)
   -- vim.cmd([[hi QuickFixLine cterm=bold ctermfg=none ctermbg=none guibg=none]])
 
   -- vim.cmd([[hi! link BqfPreviewCursor BqfPreviewRange]])
-  local map = require("util").map
+  local map = Util.map
   vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = "qf",
     callback = function(options)

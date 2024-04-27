@@ -15,7 +15,7 @@ M.opts = {
 M.config = function(_, opts)
   require("harpoon").setup(opts)
 
-  local map = require("util").map
+  local map = Util.map
   map("n", "<M-i>", require("harpoon.ui").nav_next, "Prev Harpoon")
   map("n", "<M-o>", require("harpoon.ui").nav_prev, "Next Harpoon")
 

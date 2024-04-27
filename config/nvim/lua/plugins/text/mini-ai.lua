@@ -29,14 +29,28 @@ return {
         x = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
         t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
         A = gen_spec.function_call({ name_pattern = "[%w_:%.]" }),
-        k = { { "%b<>" }, "^.().*().$" },
+        -- k = { { "%b<>" }, "^.().*().$" },
       },
     }
   end,
   config = function(_, opts)
     require("mini.ai").setup(opts)
+    -- ]a and [a move to start at parameter. Defaults stay at end.
+    local next_para_repeat, prev_para_repeat = Util.make_repeatable_move_pair(function()
+      require("mini.ai").move_cursor("right", "i", "a", { search_method = "next" })
+    end, function()
+      require("mini.ai").move_cursor("left", "i", "a", { search_method = "prev" })
+    end)
+    local map = Util.map
+    map({ "n", "x", "o" }, "]a", next_para_repeat, "Next Parameter")
+    map({ "n", "x", "o" }, "[a", prev_para_repeat, "Prev Parameter")
+
+    if vim.g.vscode then
+      return
+    end
+
     -- register all text objects with which-key
-    require("lazyvim.util").on_load("which-key.nvim", function()
+    LazyVim.on_load("which-key.nvim", function()
       local i = {
         [" "] = "Whitespace",
         -- ['"'] = '"..."',
@@ -55,7 +69,7 @@ return {
         a = "Argument",
         b = "(...), [...], {...}",
         B = "{...}",
-        k = "<...>",
+        -- k = "<...>",
         x = "Class Body",
         f = "Function Body",
         A = "All Arguments",
@@ -84,15 +98,5 @@ return {
         a = a,
       })
     end)
-
-    -- ]a and [a move to start at parameter. Defaults stay at end.
-    local next_para_repeat, prev_para_repeat = require("util").make_repeatable_move_pair(function()
-      require("mini.ai").move_cursor("right", "i", "a", { search_method = "next" })
-    end, function()
-      require("mini.ai").move_cursor("left", "i", "a", { search_method = "prev" })
-    end)
-    local map = require("util").map
-    map({ "n", "x", "o" }, "]a", next_para_repeat, "Next Parameter")
-    map({ "n", "x", "o" }, "[a", prev_para_repeat, "Prev Parameter")
   end,
 }

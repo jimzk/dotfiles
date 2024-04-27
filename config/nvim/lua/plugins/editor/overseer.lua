@@ -2,8 +2,8 @@ return {
   -- Run frequently-used tasks in background
   "stevearc/overseer.nvim",
   keys = {
-    { "<leader>co", "<cmd>OverseerRun<cr><cmd>OverseerOpen<cr>", desc = "build/run (Overseer)" },
-    { "<leader>cO", "<cmd>OverseerToggle<cr>", desc = "toggle build/run result (Overseer)" },
+    { "<leader>co", "<cmd>OverseerRun<cr><cmd>OverseerOpen<cr>", desc = "Build / Run (Overseer)" },
+    { "<leader>cO", "<cmd>OverseerToggle<cr>", desc = "Toggle build / Run Result (Overseer)" },
   },
   opts = {
     task_list = {

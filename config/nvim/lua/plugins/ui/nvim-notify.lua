@@ -1,5 +1,6 @@
 return {
   "rcarriga/nvim-notify",
+  event = "VeryLazy",
   keys = function()
     return {
       {

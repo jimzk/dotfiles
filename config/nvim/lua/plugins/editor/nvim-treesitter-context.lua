@@ -8,24 +8,16 @@ return {
       {
         "<leader>ox",
         function()
-          local lazy_util = require("lazyvim.util")
           local tsc = require("treesitter-context")
           tsc.toggle()
           require("notify").dismiss({ silent = true, pending = false })
-          if lazy_util.inject.get_upvalue(tsc.toggle, "enabled") then
-            lazy_util.info("Enable Treesitter Context", { title = "Treesitter" })
+          if LazyVim.inject.get_upvalue(tsc.toggle, "enabled") then
+            LazyVim.info("Enable Treesitter Context", { title = "Treesitter" })
           else
-            lazy_util.warn("Disable Treesitter Context", { title = "Treesitter" })
+            LazyVim.warn("Disable Treesitter Context", { title = "Treesitter" })
           end
         end,
         desc = "Toggle Treesitter Context",
-      },
-      {
-        "<M-p>",
-        function()
-          require("treesitter-context").go_to_context(vim.v.count1)
-        end,
-        desc = "Go To Parent Context",
       },
     }
   end,

@@ -25,13 +25,13 @@ return {
       -- del({ "v" }, ">")
       -- del({ "v" }, "<")
 
-      local map = require("util").map
+      local map = Util.map
       map({ "n" }, ">>", "<Cmd>lua MiniMove.move_line('right')<cr>", "Move Line Right")
       map({ "n" }, "<<", "<cmd>lua MiniMove.move_line('left')<cr>", "Move Line Left")
       map({ "v" }, ">", "<Cmd>lua MiniMove.move_selection('right')<cr>", "Move Selection Right")
       map({ "v" }, "<", "<cmd>lua MiniMove.move_selection('left')<cr>", "Move Selection Left")
 
-      -- local map_repeatable_move = require("util").map_repeatable_move
+      -- local map_repeatable_move = Util.map_repeatable_move
       -- local move_fn = function(type, direction, opts)
       --   return function()
       --     MiniMove["move_" .. type](direction, opts)

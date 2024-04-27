@@ -4,7 +4,8 @@ local M = {
     "nvim-lua/plenary.nvim",
     { "folk/persistence.nvim", enabled = false },
   },
-  event = "VimEnter",
+  -- event = "VimEnter",
+  cmd = { "PossessionLoad" },
 }
 
 M.init = function()
@@ -54,17 +55,6 @@ M.keys = {
       }))
     end,
     desc = "List Session",
-  },
-  {
-    "<leader>pp",
-    function()
-      -- https://github.com/nvim-telescope/telescope-project.nvim
-      require("telescope").extensions.project.project({
-        prompt_title = "Find Git Projects",
-        display_type = "minimal", -- or full
-      })
-    end,
-    desc = "List Git Project in Workspace",
   },
 }
 

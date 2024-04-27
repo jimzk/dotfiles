@@ -81,10 +81,10 @@ local line_self = conds.make_condition(function(line_to_cursor, matched_trigger)
 end)
 
 return {
-  s({ trig = "s", desc = "self" }, fmt("self", {}), { condition = line_self }),
-  s({ trig = "s&", desc = "&self", priority = 3000 }, fmt("&self", {}), { condition = line_self }),
-  s({ trig = "s&m", desc = "&mut self", priority = 3000 }, fmt("&mut self", {}), { condition = line_self }),
-  s({ trig = "s.", desc = "self." }, fmt("self.{}", { i(1) }), { condition = line_self }),
+  -- s({ trig = "self", desc = "self" }, fmt("self", {}), { condition = line_self }),
+  s({ trig = "self&", desc = "&self", priority = 3000 }, fmt("&self", {}), { condition = line_self }),
+  s({ trig = "self&m", desc = "&mut self", priority = 3000 }, fmt("&mut self", {}), { condition = line_self }),
+  -- s({ trig = "self.", desc = "self." }, fmt("self.{}", { i(1) }), { condition = line_self }),
 
   -- s(
   --   "t",
@@ -96,18 +96,24 @@ return {
   --   })
   -- ),
   s(
-    "t",
+    "type",
     fmt("type {} = {};{}", {
       i(1, "Foo"),
       i(2, "i32"),
       i(0),
-    })
+    }),
+    {
+      condition = conds_expand.rust_definition,
+    }
   ),
   s(
     "mod",
     fmt("mod {};", {
       i(1),
-    })
+    }),
+    {
+      condition = conds_expand.rust_definition,
+    }
   ),
   -- s({ trig = "struct", desc = "struct {...}" }, {
   --   t({ "#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]", "" }),
@@ -130,7 +136,7 @@ return {
   --   i(0),
   --   t({ "", "}" }),
   -- }),
-  s({ trig = "st", desc = "struct {...}" }, {
+  s({ trig = "struct", desc = "struct {...}" }, {
     t("struct "),
     i(1, "Foo"),
     -- generic
@@ -144,8 +150,10 @@ return {
     t({ "," }),
     i(0),
     t({ "", "}" }),
+  }, {
+    condition = conds_expand.rust_definition,
   }),
-  s({ trig = "tuple", desc = "struct(..)" }, {
+  s({ trig = "struct(…)", desc = "struct(…)" }, {
     t("struct "),
     i(1, "Foo"),
     -- generic
@@ -155,6 +163,8 @@ return {
     t("("),
     i(3, "i32"),
     t(");"),
+  }, {
+    condition = conds_expand.rust_definition,
   }),
   s("enum", {
     t("enum "),
@@ -164,6 +174,8 @@ return {
     t({ ",", "\t" }),
     i(3, "Foo2(uint)"),
     t({ ",", "}" }),
+  }, {
+    condition = conds_expand.rust_definition,
   }),
   -- s("fn", {
   --   util.rust.modifier(1),
@@ -204,6 +216,8 @@ return {
     t({ "{", "\t" }),
     i(0, "todo!()"),
     t({ "", "}" }),
+  }, {
+    condition = conds_expand.rust_definition,
   }),
   s("impl", {
     t("impl"),
@@ -222,6 +236,8 @@ return {
     i(0),
     t({ "", "}" }),
     -- }, { condition = conds_expand.line_begin * conds_expand.line_end }),
+  }, {
+    condition = conds_expand.line_begin,
   }),
   s("impl for", {
     t("impl"),
@@ -254,6 +270,8 @@ return {
     t({ "{", "\t" }),
     i(0),
     t({ "", "}" }),
+  }, {
+    condition = conds_expand.line_begin,
   }),
   s("trait", {
     t("trait "),
@@ -283,6 +301,8 @@ return {
     i(7, "usize"), -- return type
     t(";"),
     t({ "", "}" }),
+  }, {
+    condition = conds_expand.rust_definition,
   }),
   s(
     { trig = "const", desc = "const ...: ... = ...;" },

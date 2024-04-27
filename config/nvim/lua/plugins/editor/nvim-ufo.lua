@@ -69,7 +69,7 @@ M.config = function(_, opts)
   -- More clear foled line
   vim.cmd([[hi Folded guifg=#949cbb guibg=#3b3f52]]) -- link to Highlight of Pmenu
 
-  local map = require("util").map
+  local map = Util.map
   map("n", "zR", ufo.openAllFolds)
   map("n", "zM", ufo.closeAllFolds)
   map("n", "zr", ufo.openFoldsExceptKinds)
@@ -83,7 +83,7 @@ M.config = function(_, opts)
     ufo.goPreviousClosedFold()
     ufo.peekFoldedLinesUnderCursor()
   end
-  local next_fold_proxy, prev_fold_proxy = require("util").make_repeatable_move_pair(next_fold, prev_fold)
+  local next_fold_proxy, prev_fold_proxy = Util.make_repeatable_move_pair(next_fold, prev_fold)
   map({ "n", "x", "o" }, "]z", next_fold_proxy, "Next Fold")
   map({ "n", "x", "o" }, "[z", prev_fold_proxy, "Prev Fold")
 end

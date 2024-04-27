@@ -1,2 +1,2 @@
-local specs = require("util").load_specs("utility")
+local specs = Util.load_specs("utility")
 return specs

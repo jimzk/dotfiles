@@ -13,7 +13,7 @@ end
 
 M.init = function()
   require("which-key").register({ ["g<leader>"] = { name = "+native lsp method" } })
-  local keys = require("lazyvim.plugins.lsp.keymaps").get()
+
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local keymaps = {
     { "<leader>nl", "<cmd>LspInfo<cr>", desc = "Print LSP Info" },
@@ -100,8 +100,11 @@ M.init = function()
       desc = "Source Action",
       has = "codeAction",
     },
+
+    { "<F2>", "<leader>cr", desc = "Rename", remap = true },
   }
 
+  local keys = require("lazyvim.plugins.lsp.keymaps").get()
   for _, keymap in ipairs(keymaps) do
     keys[#keys + 1] = keymap
   end
@@ -120,8 +123,9 @@ M.opts = {
   inlay_hints = {
     enabled = true,
   },
+  -- FIX: taplo has bug.
   codelens = {
-    enabled = true,
+    enabled = false,
   },
 }
 

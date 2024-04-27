@@ -10,7 +10,6 @@ return {
   config = function(opts)
     local before = require("before")
     before.setup(opts)
-    local util = require("util")
 
     -- local map = util.map
     -- local jump_to_next_edit, jump_to_last_edit =
@@ -19,7 +18,7 @@ return {
     -- map("n", "[\\", jump_to_last_edit, "Prev changelist in Buffer")
 
     vim.defer_fn(function()
-      local map = util.map
+      local map = Util.map
       -- local del = vim.keymap.del
       -- del({ "n", "i", "v" }, "<M-j>")
       -- del({ "n", "i", "v" }, "<M-k>")

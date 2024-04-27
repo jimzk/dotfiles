@@ -1,1 +1,1 @@
-return require("util").load_specs("coding")
+return Util.load_specs("coding")

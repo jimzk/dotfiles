@@ -17,6 +17,8 @@ M.keys = function()
     { "<leader>dw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
     { "<leader>dF", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "File Diagnostics (Telescope)" },
     { "<leader>dW", "<cmd>Telescope diagnostics<cr>", desc = "Workspace Diagnostics (Telescope)" },
+    { "<leader>dw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
+    { "<leader>d<C-w>", vim.diagnostic.setqflist, desc = "Workspace Diagnostics (Quickfix)" },
   }
 end
 
@@ -45,7 +47,7 @@ M.config = function(_, opts)
     pattern = { "Trouble" },
     callback = function()
       local map_opts = { noremap = true, buffer = true, silent = true }
-      local map = require("util").map
+      local map = Util.map
       -- stylua: ignore start
       map("n", "k", function() trouble.previous({ skip_groups = true, jump = false }) end, "Prev Item", map_opts)
       map("n", "j", function() trouble.next({ skip_groups = true, jump = false }) end, "Next Item", map_opts)

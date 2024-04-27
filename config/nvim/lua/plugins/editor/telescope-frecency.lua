@@ -1,6 +1,5 @@
 return {
   "nvim-telescope/telescope-frecency.nvim",
-  event = "VeryLazy",
   enabled = false,
   keys = {
     {

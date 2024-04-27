@@ -2,21 +2,35 @@ return {
   "zbirenbaum/copilot.lua",
   cmd = "Copilot",
   build = ":Copilot auth",
+  keys = {
+    { mode = "i", "<M-i>", "<CMD>Copilot panel<CR>", desc = "[copilot] open panel" },
+  },
   opts = {
     suggestion = {
       enabled = true,
       auto_trigger = true,
       keymap = {
-        -- accept = "<C-g>",
-        -- next = "<M-n>",
-        -- prev = "<M-p>",
-        -- dismiss = "<M-c>",
+        accept = "<C-CR>",
+        accept_word = "<C-M-CR>",
+        accept_line = false,
+        next = "<M-n>",
+        prev = "<M-p>",
+        dismiss = "<M-c>",
       },
     },
-    panel = { enabled = false },
+    panel = {
+      enabled = true,
+      keymap = {
+        jump_next = "<M-n>",
+        jump_prev = "<M-p>",
+        accept = "<CR>",
+        refresh = "r",
+        open = false,
+      },
+    },
     filetypes = {
       markdown = true,
-      help = false,
+      help = true,
     },
   },
   config = function(_, opts)

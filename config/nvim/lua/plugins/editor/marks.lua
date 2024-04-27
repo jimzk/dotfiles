@@ -10,7 +10,7 @@ local M = {
     --     else
     --       vim.cmd("MarksListAll")
     --       -- Go to Last selected item in quickfix window
-    --       require("util").feedkeys("'\"")()
+    --       Util.feedkeys("'\"")()
     --     end
     --   end,
     --   desc = "List All Marks",
@@ -18,7 +18,7 @@ local M = {
     { "m<CR>a", "<CMD>MarksListAll<CR>", desc = "List All Marks" },
     { "m<CR>g", "<CMD>MarksListGlobal<CR>", desc = "List Global Marks" },
     { "m<CR>b", "<CMD>MarksListBuf<CR>", desc = "List Marks in Buffer" },
-    { "m<CR>o", "<CMD>BookmarksListAll<CR>", desc = "List Bookmarks" },
+    -- { "m<CR>o", "<CMD>BookmarksListAll<CR>", desc = "List Bookmarks" },
     -- { "<leader>oM", "<CMD>MarksToggleSign<CR>", desc = "Toggle Marks Sign" },
   },
 }
@@ -69,19 +69,18 @@ M.config = function(_, opts)
     },
   })
 
-  local map = require("util").map
-
-  local map_repeat = require("util").map_repeatable_move
+  local map_repeat = Util.map_repeatable_move
   map_repeat("n", { "]m", "[m" }, { marks.next, marks.prev }, { "Next Mark", "Prev Mark" })
   map_repeat("n", { "m;", "m," }, { marks.next, marks.prev }, { "Next Mark (]m)", "Prev Mark ([m)" })
 
+  -- local map = Util.map
   -- for i = 0, 9, 1 do
   --   local n = tostring(i)
   --   local is_1 = i == 1
   --   map("n", "m" .. n, marks["set_bookmark" .. n], is_1 and "Set Bookmark 1" or nil)
   --   map("n", "dm" .. n, marks["delete_bookmark" .. n], is_1 and "Delete Bookmark 1" or nil)
   --   local next_bookmark, _ =
-  --     require("util").make_repeatable_move_pair(marks["next_bookmark" .. n], marks["prev_bookmark" .. n])
+  --     Util.make_repeatable_move_pair(marks["next_bookmark" .. n], marks["prev_bookmark" .. n])
   --
   --   -- Tips: m1 to mark several position, <leader>1 to move and ,/; to repeat
   --   map("n", "<leader>" .. n, function()

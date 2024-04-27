@@ -2,7 +2,6 @@
 return {
   -- Smooth scroll
   "karb94/neoscroll.nvim",
-  event = "VeryLazy",
   enabled = not vim.g.neovide,
   opts = {
     mappings = {

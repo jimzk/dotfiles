@@ -1,7 +1,19 @@
 return {
   "nvim-telescope/telescope-project.nvim",
-  event = "VeryLazy",
   enabled = true,
+  keys = {
+    {
+      "<leader>pp",
+      function()
+        -- https://github.com/nvim-telescope/telescope-project.nvim
+        require("telescope").extensions.project.project({
+          prompt_title = "Find Git Projects",
+          display_type = "minimal", -- or full
+        })
+      end,
+      desc = "List Git Project in Workspace",
+    },
+  },
   config = function()
     require("telescope").setup({
       extensions = {

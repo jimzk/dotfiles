@@ -90,64 +90,77 @@ end
 -- end
 
 local M = {
-  s({ trig = "op", desc = "Option<…>" }, fmt("Option<{}>", { i(1, "T") })),
+  s({ trig = "option", desc = "Option<…>" }, fmt("Option<{}>", { i(1, "T") })),
   s({ trig = "some", desc = "Some(…)" }, fmt("Some({})", { i(1, "()") })),
   s({ trig = "ok", desc = "Ok(…)" }, fmt("Ok({})", { i(1, "()") })),
-  s({ trig = "re", desc = "Result<…, …>" }, fmt("Result<{}, {}>", { i(1, "()"), i(2, "()") })),
+  s({ trig = "result", desc = "Result<…, …>" }, fmt("Result<{}, {}>", { i(1, "()"), i(2, "()") })),
   s({ trig = "err", desc = "Err(…)" }, fmt("Err({})", { i(1, "()") })),
-  s({ trig = "dd", desc = "Default::default()" }, fmt("Default::default()", {})),
-  s({ trig = "str", desc = "String" }, fmt("String", {})),
+  s({ trig = "default", desc = "Default::default()" }, fmt("Default::default()", {})),
+  s({ trig = "string", desc = "String" }, fmt("String", {})),
 
-  s("p", { t("pub ") }, { condition = conds_expand.line_begin }),
+  s("p", { t("pub ") }, {
+    condition = conds_expand.line_begin,
+    show_condition = conds_expand.always_false,
+  }),
+  -- s("pub", { t("pub ") }, { condition = conds_expand.line_begin }),
   -- s("pub(crate)", { t("pub(crate) ") }, { condition = conds_expand.line_begin }),
   -- s("pub(super)", { t("pub(super) ") }, { condition = conds_expand.line_begin }),
-  s({ trig = "pub", desc = "pub" }, {
-    util.rust.modifier(1),
-    n(1, " "),
+  -- s({ trig = "pub", desc = "pub" }, {
+  --   util.rust.modifier(1),
+  --   n(1, " "),
+  -- }),
+  -- s("let", {
+  --   t("let "),
+  --   c(1, {
+  --     util.empty_sn(),
+  --     t("mut "),
+  --   }),
+  --   i(2, "foo"),
+  --   t(" = "),
+  --   c(3, {
+  --     sn(nil, {
+  --       i(1, "bar"),
+  --     }, nil, "bar"),
+  --     sn(nil, {
+  --       util.rust.body(1, true),
+  --     }, nil, "{..}"),
+  --     sn(nil, {
+  --       t({ "if {", "\t" }),
+  --       i(1),
+  --       t({ "", "else {", "\ttodo()" }),
+  --       -- i(2, "todo!()"),
+  --       t({ "\t", "}" }),
+  --     }, nil, "if { … } else { … }"),
+  --   }),
+  --   t(";"),
+  -- }),
+  s("return", fmt("return {};", { i(1) })),
+  s({ trig = "l", desc = "let" }, fmt("let {} = {};{}", { i(1), i(2), i(0) }), {
+    condition = conds_expand.line_begin,
+    show_condition = conds_expand.always_false,
   }),
-  s("let", {
-    t("let "),
-    c(1, {
-      util.empty_sn(),
-      t("mut "),
-    }),
-    i(2, "foo"),
-    t(" = "),
-    c(3, {
-      sn(nil, {
-        i(1, "bar"),
-      }, nil, "bar"),
-      sn(nil, {
-        util.rust.body(1, true),
-      }, nil, "{..}"),
-      sn(nil, {
-        t({ "if {", "\t" }),
-        i(1),
-        t({ "", "else {", "\ttodo()" }),
-        -- i(2, "todo!()"),
-        t({ "\t", "}" }),
-      }, nil, "if { … } else { … }"),
-    }),
-    t(";"),
+  s({ trig = "lm", desc = "let mut" }, fmt("let mut {} = {};{}", { i(1), i(2), i(0) }), {
+    condition = conds_expand.line_begin,
+    show_condition = conds_expand.always_false,
   }),
-  s("r", fmt("return {};", { i(1) })),
   s(
-    { trig = "l", desc = "let" },
-    fmt("let {} = {};{}", {
-      i(1),
-      i(2),
-      i(0),
-    }),
+    { trig = "let", desc = "let" },
+    fmt("let {} = {};{}", { i(1), i(2), i(0) }),
     { condition = conds_expand.line_begin }
   ),
   s(
-    { trig = "lm", desc = "let mut" },
-    fmt("let mut {} = {};{}", {
-      i(1),
-      i(2),
-      i(0),
-    }),
+    { trig = "let mut", desc = "let mut" },
+    fmt("let mut {} = {};{}", { i(1), i(2), i(0) }),
     { condition = conds_expand.line_begin }
+    --     {
+    --   condition = conds.make_condition(function(line_to_cursor, matched_trigger)
+    --     -- typing            line_to_cursor
+    --     -- xx let mut<tab>    xx let mut?
+    --     -- xx.let mut<tab>    xx.let mut?
+    --     vim.notify(line_to_cursor .. "?\ntrig: " .. matched_trigger, vim.log.levels.INFO, { title = "" })
+    --     return true
+    --   end),
+    -- }
   ),
   s("for", {
     t("for "),
@@ -188,7 +201,7 @@ local M = {
     )
   ),
   s(
-    { trig = "e", desc = "else" },
+    { trig = "else", desc = "else" },
     fmt(
       [[
     else {{
@@ -198,7 +211,7 @@ local M = {
     )
   ),
   s(
-    { trig = "eif", desc = "else if" },
+    { trig = "else if", desc = "else if" },
     fmt(
       [[
     else if {} {{
@@ -208,7 +221,7 @@ local M = {
     )
   ),
   s(
-    { trig = "ife", desc = "if else" },
+    { trig = "if else", desc = "if else" },
     fmt(
       [[
     if {} {{
@@ -219,26 +232,26 @@ local M = {
       { i(1, "true"), i(2, "todo!()"), i(3, "todo!()") }
     )
   ),
-  s({ trig = "ifl", desc = "if let" }, {
+  s({ trig = "if let", desc = "if let" }, {
     t("if let "),
     for_choice_c(1),
     t(" "),
     util.rust.body(0, true),
   }),
-  s({ trig = "w", desc = "while" }, {
+  s({ trig = "while", desc = "while" }, {
     t("while "),
     i(1, "true"),
     t(" "),
     util.rust.body(0, true),
   }),
-  s({ trig = "wl", desc = "while let" }, {
+  s({ trig = "while let", desc = "while let" }, {
     t("while let "),
     for_choice_c(1),
     t(" "),
     util.rust.body(0, true),
   }),
   s(
-    { trig = "m", desc = "match" },
+    { trig = "match", desc = "match" },
     fmt(
       [[
   match {} {{

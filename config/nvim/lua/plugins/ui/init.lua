@@ -1,4 +1,4 @@
-local specs = require("util").load_specs("ui")
+local specs = Util.load_specs("ui")
 
 vim.list_extend(specs, {
   { "folke/noice.nvim", enabled = false },
@@ -24,7 +24,8 @@ vim.list_extend(specs, {
         -- Brighter highlight
         -- LineNr = { fg = "#5c637c" },
         -- Visual = { fg = "#e5e6ec", bg = "#505775" }, -- Remove bold
-        CursorLineNr = { fg = "#FFD400" }, -- #CFD0F5
+        CursorLineNr = { fg = "#FFD400", style = { "bold" } }, -- #CFD0F5
+        -- CursorLineNr = { style = { "bold" }, fg = "#303447" },
         CursorLine = { bg = "#555555" }, -- #4E5264
         Visual = { bg = "#555555", style = {} },
       },

@@ -1,4 +1,4 @@
-local specs = require("util").load_specs("editor")
+local specs = Util.load_specs("editor")
 
 vim.list_extend(specs, {
   -- Delete buffer without messing up layout

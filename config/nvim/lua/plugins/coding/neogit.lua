@@ -2,6 +2,9 @@ return {
   "NeogitOrg/neogit",
   event = "BufReadPost",
   branch = "nightly",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+  },
   keys = {
     {
       "<leader>ggg",

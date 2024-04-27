@@ -44,14 +44,14 @@ return {
       vim.cmd([[normal! m`]])
       indentscopt.move_cursor(...)
     end
-    local map = require("util").map
+    local map = Util.map
     map({ "x", "o" }, "ii", nil, "Indent Scope")
     map({ "x", "o" }, "ai", nil, "Indent Scope")
     -- stylua: ignore start
-    local next_indent_inner, prev_indent_inner = require("util").make_repeatable_move_pair(
+    local next_indent_inner, prev_indent_inner = Util.make_repeatable_move_pair(
       function() move("bottom", false) end,
       function() move("top", false) end)
-    local next_indent_outer, prev_indent_outer = require("util").make_repeatable_move_pair(
+    local next_indent_outer, prev_indent_outer = Util.make_repeatable_move_pair(
       function() move("bottom", true) end,
       function() move("top", true) end)
     -- stylua: ignore end

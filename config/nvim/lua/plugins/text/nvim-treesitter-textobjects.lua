@@ -35,22 +35,28 @@ M.opts = {
     },
     move = {
       enable = true,
-      set_jumps = false, -- whether to set jumps in the jumplist
+      set_jumps = true, -- whether to set jumps in the jumplist
       goto_next_start = {
-        ["]f"] = { query = "@function.outer", desc = "Next Method Start" },
+        ["]]"] = { query = "@function.outer", desc = "Next Method Start" },
         ["]x"] = { query = "@class.outer", desc = "Next Class Start" },
       },
       goto_next_end = {
-        ["]F"] = { query = "@function.outer", desc = "Next Method End" },
+        ["]["] = { query = "@function.outer", desc = "Next Method End" },
         ["]X"] = { query = "@class.outer", desc = "Next Class End" },
       },
       goto_previous_start = {
-        ["[f"] = { query = "@function.outer", desc = "Prev Method Start" },
+        ["[["] = { query = "@function.outer", desc = "Prev Method Start" },
         ["[x"] = { query = "@class.outer", desc = "Prev class Start" },
       },
       goto_previous_end = {
-        ["[F"] = { query = "@function.outer", desc = "Prev Method End" },
+        ["[]"] = { query = "@function.outer", desc = "Prev Method End" },
         ["[X"] = { query = "@class.outer", desc = "Prev Class End" },
+      },
+      goto_next = {
+        ["]O"] = { "@conditional.outer", desc = "Condition" },
+      },
+      goto_previous = {
+        ["[O"] = { "@conditional.outer", desc = "Condition" },
       },
     },
     lsp_interop = {

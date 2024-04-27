@@ -3,8 +3,7 @@
 -- I previously set * stay at original position and not change jumplist:
 -- map("n", "*", [[mv"vyiw/\V<C-R>=escape(@v,'/\')<CR><CR>g`v<cmd>delm v<cr>]])
 -- But it is invalided by the following configurtion
-local util = require("util")
-local map = util.map
+local map = Util.map
 local ns = vim.api.nvim_create_namespace("toggle_hlsearch")
 local function toggle_hlsearch(char)
   if vim.fn.mode() == "n" then

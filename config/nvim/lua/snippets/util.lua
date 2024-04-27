@@ -5,6 +5,7 @@ local i = ls.insert_node
 local t = ls.text_node
 local sn = ls.snippet_node
 local c = ls.choice_node
+local _c = ls._choice_node
 local f = ls.function_node
 local n = require("luasnip.extras").nonempty
 
@@ -21,7 +22,7 @@ RUST.body = function(pos, without_todo)
 end
 
 RUST.modifier = function(jump_index)
-  return c(jump_index, { -- modifier
+  return _c(jump_index, { -- modifier
     -- M.empty_sn(),
     t("pub"),
     t("pub(crate)"),

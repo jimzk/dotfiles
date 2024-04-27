@@ -4,7 +4,7 @@ return {
   --   - https://www.reddit.com/r/neovim/comments/1bg73sv/grapplenvim_100_commits_and_10_point_releases/
   "cbochs/grapple.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },
-  enabled = true,
+  enabled = false,
   event = "VeryLazy",
   keys = {
     {

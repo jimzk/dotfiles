@@ -1,4 +1,4 @@
-local map = require("util").map
+local map = Util.map
 local del = vim.keymap.del
 
 -- To use CSIu mapping:
@@ -39,39 +39,6 @@ map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr>", "Save File")
 -- map("n", "<C-u>", "<C-u>zz")
 -- map("n", "}", "}zz")
 -- map("n", "{", "{zz")
-
--- Press key twice to jump fist blank char of link
--- https://luyuhuang.tech/2023/03/21/nvim.html#跳转到行开头
-local function home()
-  local head = (vim.api.nvim_get_current_line():find("[^%s]") or 1) - 1
-  local cursor = vim.api.nvim_win_get_cursor(0)
-  cursor[2] = cursor[2] == head and 0 or head
-  vim.api.nvim_win_set_cursor(0, cursor)
-end
-map({ "n", "x", "o" }, "<Home>", home)
-map({ "n", "x", "o" }, "0", home)
--- map({ "n", "x", "o" }, "0", home)
--- map({ "n", "x", "o" }, "0", function()
---   local _, y = unpack(vim.api.nvim_win_get_cursor(0))
---   vim.cmd("normal! m`")
---   if y == 0 then
---     vim.cmd("normal! H")
---   else
---     home()
---   end
--- end)
--- map({ "n", "x", "o" }, "$", function()
---   local _, y = unpack(vim.api.nvim_win_get_cursor(0))
---   local line_len = #vim.api.nvim_get_current_line()
---   vim.cmd("normal! m`")
---   if y + 1 >= line_len then
---     vim.cmd("normal! L")
---   else
---     vim.cmd("normal! $")
---   end
--- end)
-del("n", "L")
-del("n", "H")
 
 -- https://www.reddit.com/r/neovim/comments/1abd2cq/comment/kjn1kww
 map("x", ".", ":norm .<CR>", "Repeat in Selection")
@@ -115,14 +82,15 @@ map("x", "~", "~gv")
 map("x", "u", "ugv")
 map("x", "U", "Ugv")
 
-map({ "n", "x" }, "X", '"_d')
-map({ "n" }, "XX", '"_dd')
-
--- blackhole register: cut without copying to register
--- map({ "n", "x" }, "<leader>xd", '"_d', "Blackhole d")
--- map({ "n" }, "<leader>xdd", '"_dd')
--- map({ "n", "x" }, "<leader>xD", '"_D', "Blackhole D")
---
--- map({ "n", "x" }, "<leader>xc", '"_c', "Blackhole c")
--- map({ "n" }, "<leader>xcc", '"_cc')
--- map({ "n", "x" }, "<leader>xC", '"_C', "Blackhole C")
+-- See :h cmdline-window (invoke by :<C-f>, q:, q?, q/)
+-- Fix conflict with my <CR> and <C-c> mapping
+map("t", "<C-f>", "<C-f><CR>:set filetype=vim<CR>", "cmdline-window")
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "vim" },
+  callback = function(opts)
+    local bufnr = opts.buf
+    local filepath = opts.file
+    map("n", "<CR>", "<CR>", "Execute Command", { buffer = bufnr })
+    map("n", "<C-c>", "<C-c><End>", "Edite Command in Command Line", { buffer = bufnr })
+  end,
+})

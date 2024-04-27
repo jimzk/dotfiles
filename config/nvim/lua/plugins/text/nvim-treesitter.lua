@@ -4,7 +4,7 @@ local M = {
   "nvim-treesitter/nvim-treesitter",
 }
 
-local highlight_disabled_langs = { "rust", "lua" }
+local highlight_disabled_langs = { "rust", "lua", "python" }
 local opts = {
   -- ensure_installed = "all",
   indent = { enable = true },

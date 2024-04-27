@@ -2,26 +2,27 @@ local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
-local c = ls.choice_node
+-- local c = ls.choice_node
+local _c = ls._choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 return {
   s({ trig = "vim.api", desc = "vim.api." }, fmt("vim.api.{}", { i(1) })),
   s({ trig = "vim.cmd", desc = "vim.cmd." }, fmt('vim.api.cmd("{}")', { i(1) })),
-  s({ trig = "vn", desc = "vim.notify(..)" }, fmt('vim.notify("{}")', i(1))),
+  -- s({ trig = "vn", desc = "vim.notify(..)" }, fmt('vim.notify("{}")', i(1))),
   s(
     { trig = "vim.notify", desc = "vim.notify(..)" },
     fmt('vim.notify("{}", vim.log.levels.{level}, {{ title = "{title}" }})', {
       i(3),
-      level = c(1, {
+      level = _c(1, {
+        t("INFO"),
         t("DEBUG"),
         t("ERROR"),
-        t("INFO"),
         t("TRACE"),
         t("WARN"),
         t("OFF"),
       }),
-      title = i(2),
+      title = i(2, "Notification"),
     })
   ),
 

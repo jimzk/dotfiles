@@ -2,91 +2,80 @@
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/coding/yanky.lua
 return {
   "gbprod/yanky.nvim",
-  dependencies = { { "kkharji/sqlite.lua", enabled = not jit.os:find("Windows") } },
+  dependencies = { "kkharji/sqlite.lua" },
   opts = {
-    ring = { storage = jit.os:find("Windows") and "shada" or "sqlite" },
-    preserve_cursor_position = {
-      enabled = true,
-    },
-    textobj = {
-      enabled = true,
-    },
     -- yanky highlight is very laggy
     highlight = {
       on_put = false,
       on_yank = false,
-      timer = 500,
+    },
+    textobj = {
+      enabled = true,
     },
   },
   keys = function()
     local yanky = require("yanky")
-    -- stylua: ignore
-    local next_yank, _ = require("util").make_repeatable_move_pair(
-      -- call :map <Plug>(YankyPreviousEntry) and check doc to see what the inner lua code is
-      function() yanky.cycle(1) end,
-      function() yanky.cycle(-1) end
-    )
-    local set_last_move = function()
-      local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-      ts_repeat_move.set_last_move(next_yank, { forward = true })
-    end
+    -- -- stylua: ignore
+    -- local next_yank, prev_yank = Util.make_repeatable_move_pair(
+    --   -- call :map <Plug>(YankyPreviousEntry) and check doc to see what the inner lua code is
+    --   function() yanky.cycle(1) end,
+    --   function() yanky.cycle(-1) end
+    -- )
+    --
+    -- local _put = yanky.put
+    -- yanky.put = function(...)
+    --   local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+    --   ts_repeat_move.set_last_move(next_yank, { forward = true })
+    --   _put(...)
+    -- end
+
     return {
-      {
-        "iy",
-        function()
-          require("yanky.textobj").last_put()
-        end,
-        mode = { "o", "x" },
-        desc = "Last Put Text",
-      },
+      { "iy", mode = { "o", "x" }, require("yanky.textobj").last_put, desc = "Last Put Text" },
       { "ay", "iy", mode = { "o", "x" }, desc = "Last Put Text", remap = true },
+
+      -- stylua: ignore start
+      { "<M-h>", function() yanky.cycle(1) end, "Cycle Prev Yank", },
+      { "<M-l>", function() yanky.cycle(-1) end, "Cycle Next Yank", },
+      -- stylua: ignore end
+      -- { "]k", next_yank },
+      -- { "[k", prev_yank },
+
+      {
+        "<leader>y",
+        mode = { "n", "x" },
+        function()
+          local themes = require("telescope.themes")
+          require("telescope").extensions.yank_history.yank_history(themes.get_cursor({
+            previewer = false,
+            -- layout_strategy = "vertical",
+            layout_config = {
+              -- preview_height = 0.1,
+              width = { 0.35, min = 80 },
+              height = 0.5,
+            },
+          }))
+        end,
+        desc = "Open Yank History",
+      },
+
       { "y", "<Plug>(YankyYank)", mode = { "n", "x" } },
       { "Y", "<Plug>(YankyYank)$", mode = { "n", "x" } },
 
-      -- {
-      --   "<leader>P",
-      --   function()
-      --     require("telescope").extensions.yank_history.yank_history({})
-      --   end,
-      --   desc = "Open Yank History",
-      -- },
-
+      { "p", "<Plug>(YankyPutAfter)", desc = "which_key_ignore" },
       {
-        mode = "n",
         "p",
-        function()
-          set_last_move()
-          return "<Plug>(YankyPutAfter)"
-        end,
-        expr = true,
-        desc = "which_key_ignore",
-      },
-      {
         mode = "x",
-        "p", -- No yank at visual put
         function()
-          set_last_move()
-          -- Respect indentation in current context if selection is linewise
           local mode = vim.fn.mode()
           return mode == "V" and "<Plug>(YankyPutIndentAfterLinewise)" or "<Plug>(YankyPutAfterCharwise)"
         end,
         expr = true,
       },
+      { "P", "<Plug>(YankyPutBefore)", desc = "which_key_ignore" },
       {
-        mode = "n",
         "P",
-        function()
-          set_last_move()
-          return "<Plug>(YankyPutBefore)"
-        end,
-        expr = true,
-        desc = "which_key_ignore",
-      },
-      {
         mode = "x",
-        "P",
         function()
-          set_last_move()
           local mode = vim.fn.mode()
           return mode == "V" and "<Plug>(YankyPutIndentBeforeLinewise)" or "<Plug>(YankyPutBeforeCharwise)"
         end,
@@ -115,30 +104,13 @@ return {
       --   expr = true,
       -- },
 
-      -- I change behaviors of gp/gP - put linewise
-      {
-        "gp",
-        function()
-          set_last_move()
-          return "<Plug>(YankyPutIndentAfterLinewise)"
-        end,
-        desc = "Put After Cursor (Linewise)",
-        expr = true,
-      },
-      {
-        "gP",
-        function()
-          set_last_move()
-          return "<Plug>(YankyPutIndentBeforeLinewise)"
-        end,
-        desc = "Put Before Cursor (Linewise)",
-        expr = true,
-      },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put After Cursor (Linewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Before Cursor (Linewise)" },
 
-      -- { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and Indent Right" },
-      -- { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and Indent Left" },
-      -- { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and Indent Right" },
-      -- { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and Indent Left" },
+      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and Indent Right" },
+      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and Indent Left" },
+      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and Indent Right" },
+      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and Indent Left" },
       -- { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
       -- { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
     }

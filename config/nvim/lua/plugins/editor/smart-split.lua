@@ -37,10 +37,17 @@ return {
     { mode = { "x" }, "<C-k>", fn("move_cursor_up", true) },
     { mode = { "x" }, "<C-l>", fn("move_cursor_right", true) },
 
-    { mode = { "n", "x" }, "<C-M-h>", "<CMD>wincmd H<CR>", desc = "Move Window to Left (HJKL)" },
-    { mode = { "n", "x" }, "<C-M-j>", "<CMD>wincmd J<CR>", desc = ignored },
-    { mode = { "n", "x" }, "<C-M-k>", "<CMD>wincmd K<CR>", desc = ignored },
-    { mode = { "n", "x" }, "<C-M-l>", "<CMD>wincmd L<CR>", desc = ignored },
+    { mode = { "n" }, "<C-M-h>", "<CMD>wincmd H<CR>", desc = "Move Window to Left (HJKL)" },
+    { mode = { "n" }, "<C-M-j>", "<CMD>wincmd J<CR>", desc = ignored },
+    { mode = { "n" }, "<C-M-k>", "<CMD>wincmd K<CR>", desc = ignored },
+    { mode = { "n" }, "<C-M-l>", "<CMD>wincmd L<CR>", desc = ignored },
+
+    -- { mode = { "n" }, "<C-w>h", "<CMD>wincmd H<CR>", desc = "Move Window to the Very Left (HJKL)" },
+    -- { mode = { "n" }, "<C-w>j", "<CMD>wincmd J<CR>", desc = ignored },
+    -- { mode = { "n" }, "<C-w>k", "<CMD>wincmd K<CR>", desc = ignored },
+    -- { mode = { "n" }, "<C-w>l", "<CMD>wincmd L<CR>", desc = ignored },
+
+    { mode = { "n" }, "<C-w>H", "", desc = ignored },
   },
   opts = {
     default_amount = 5,

@@ -11,7 +11,7 @@ return {
     -- need vim-textobj-comment
     { "gcu", "gcic", remap = true, desc = "Uncomment" },
     -- { "gcd", "dax", remap = true, desc = "Delete Comment" },
-    { "dgc", "dac", remap = true, desc = "Delete Comment" },
+    { "gcd", "dac", remap = true, desc = "Delete Comment" },
     { "gcv", "gvgc<C-o>", remap = true, desc = "Comment Last Visual" },
     { "gcf", "gcoFIX: ", desc = "Add FIX below", remap = true },
     { "gcF", "gcOFIX: ", desc = "Add FIX above", remap = true },

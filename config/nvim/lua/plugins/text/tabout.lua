@@ -7,7 +7,7 @@ return {
   event = "InsertEnter",
   opts = {
     backwards_tabkey = "",
-    act_as_tab = true,
+    act_as_tab = false,
     enable_backwards = false,
     ignore_beginning = false,
   },

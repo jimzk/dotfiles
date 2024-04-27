@@ -8,23 +8,50 @@ local M = {
 }
 
 M.init = function()
-  require("which-key").register({
+  WhichKey.register({
     ["s"] = {
       name = "+surrounding",
-      a = { mode = { "n", "x" }, desc = "Surrounding Add" },
-      A = { mode = { "n", "x" }, desc = "Surrounding Add in New Line" },
-      d = { desc = "Surrounding Delete" },
-      r = { desc = "Surrounding Replace" },
-      R = { desc = "Surrounding Replace in New Line" },
+      a = { mode = { "n", "x" }, desc = "Bracket Add" },
+      A = { mode = { "n", "x" }, desc = "Bracket Add in New Line" },
+      d = { desc = "Bracket Delete" },
+      r = { desc = "Bracket Replace" },
+      R = { desc = "Bracket Replace in New Line" },
     },
   })
 end
 
-M.keys = {
-  { mode = "v", "sq", "sqq", remap = true },
-  { "s<BS>", "sdd", remap = true, desc = "Surrounding Delete Quick (sdd)" },
-  { "s<space>", "srr", remap = true, desc = "Surrounding Change Quick (srr)" },
-}
+M.keys = function()
+  local M = {
+    -- { "s<BS>", "sdd", remap = true, desc = "Bracket Delete Quick (sdd)" },
+    -- { "s<space>", "srr", remap = true, desc = "Bracket Change Quick (srr)" },
+  }
+
+  local add_bracket_alias = function(alias, open, close)
+    table.insert(M, {
+      mode = "x",
+      "s" .. alias,
+      "sa" .. alias,
+      remap = true,
+      desc = "Add " .. open .. ".." .. close,
+    })
+  end
+
+  add_bracket_alias("q", '"', '"')
+  add_bracket_alias("'", "'", "'")
+  add_bracket_alias('"', "'", "'")
+  add_bracket_alias("`", "`", "`")
+  add_bracket_alias("(", "( ", " )")
+  add_bracket_alias("{", "{ ", " }")
+  add_bracket_alias("[", "[ ", " ]")
+  add_bracket_alias("<", "< ", " >")
+  add_bracket_alias(")", "(", ")")
+  add_bracket_alias("}", "{", "}")
+  add_bracket_alias("]", "[", "]")
+  add_bracket_alias(">", "<", ">")
+  add_bracket_alias("f", "fn(", ")")
+
+  return M
+end
 
 -- Extra Tips (:h nvim-surround.default_pairs)
 --  sdd: remove any surrounding

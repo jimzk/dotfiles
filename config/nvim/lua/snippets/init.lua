@@ -2,6 +2,25 @@
 -- * https://github.com/L3MON4D3/LuaSnip/blob/master/Examples/snippets
 -- * Examples: https://github.com/molleweide/LuaSnip-snippets.nvim
 local ls = require("luasnip")
+local conds = require("luasnip.extras.conditions")
+local conds_expand = require("luasnip.extras.conditions.expand")
+
+conds_expand.always_false = function()
+  return false
+end
+
+conds_expand.line_after_space = conds.make_condition(function(line_to_cursor, matched_trigger)
+  line_to_cursor = line_to_cursor:sub(1, -(#matched_trigger + 1)) -- line before cursor without trigger
+  local lastChar = string.sub(line_to_cursor, -1)
+  return lastChar == " "
+end)
+
+conds_expand.line_contains_pub = conds.make_condition(function(line_to_cursor, matched_trigger)
+  line_to_cursor = line_to_cursor:sub(1, -(#matched_trigger + 1)) -- line before cursor without trigger
+  return line_to_cursor:match("%s*pub")
+end)
+
+conds_expand.rust_definition = conds_expand.line_begin + conds_expand.line_contains_pub
 
 -- NOTE: Using jimzk/cmp-luasnip-choice to complete choice node by cmp requires the nested snippet node has
 -- the field docstring, otherwise a error will be thrown. And we can't customized what is shown in completion menu either..
@@ -15,6 +34,7 @@ ls.snippet_node = function(pos, nodes, opts, docstring)
 end
 
 local _c = ls.choice_node
+ls._choice_node = _c
 ls.choice_node = function(jump_index, choices, node_opts)
   -- Need to append a t otherwise choice menu won't show up
   table.insert(choices, 1, ls.t(""))
@@ -34,12 +54,21 @@ end
 local _s = ls.snippet
 ls.snippet = function(context, nodes, opts)
   opts = opts or {}
-  -- NOTE: experimental.
-  if not opts.show_condition and opts.condition then
+  if not opts.condition then
+    opts.condition = conds_expand.line_begin + conds_expand.line_after_space
+  end
+  if not opts.show_condition then
+    local condition = opts.condition
     opts.show_condition = function(line_to_cursor)
-      -- NOTE: Get the real line_to_cursor before trigger text. Seems like a BUG.
       line_to_cursor = string.sub(line_to_cursor, 1, -2)
-      return opts.condition(line_to_cursor .. context.trig, context.trig)
+      -- if context.trig == "unsafe" then
+      --   vim.notify(line_to_cursor .. "$\ntrig: " .. context.trig, vim.log.levels.INFO, { title = "" })
+      -- end
+      if condition then
+        return condition(line_to_cursor .. context.trig, context.trig)
+      else
+        return line_to_cursor:sub(-1) == " " or line_to_cursor == ""
+      end
     end
   end
   context, nodes, opts = wrap(context, nodes, opts)
@@ -56,10 +85,16 @@ postfix.postfix = function(context, nodes, opts)
     context.trig = postfix_trigger .. context.trig -- add prefix
   end
   if context.match_pattern == nil then
-    -- match pattern: start with alphanum , _ ( ) : < >
+    -- local pattern = [[['"%w%.%_%-%(%)?&!*:<>]*]]
+    local pattern = [[['"%w%._%-%(%)?&!%*:<>]*]]
+    local match_pattern_postfix = context.match_pattern_postfix
+    if not match_pattern_postfix then
+      match_pattern_postfix = [[[%w%)?>'"]+$]]
+    end
     -- default is [%w%.%_%-]+$
     -- See https://zjp-cn.github.io/neovim0.6-blogs/nvim/luasnip/doc1.html#postfix
-    context.match_pattern = "[%w%.%_%(%):<>]+$"
+    context.match_pattern = pattern .. match_pattern_postfix
+    -- context.match_pattern = [[['"%w%.%_%-%(%)?&!*:<>]*[%w%)?>'"]+$]]
   end
   -- Default is 1000. Make sure postfix is the highest priority.
   context.priority = 2000
@@ -71,8 +106,15 @@ postfix.postfix = function(context, nodes, opts)
       end
     else
       opts.show_condition = function(line_to_cursor)
-        -- Show only after trigger
-        return line_to_cursor:match("[%w_-]+.[%w_-]*$") ~= nil
+        local pattern = context.match_pattern
+        if pattern:sub(-1) == "$" then
+          pattern = pattern:sub(1, -2)
+        end
+        if context.trig:sub(1, 1) == "." then
+          pattern = pattern .. "%."
+        end
+        pattern = pattern .. "[%w_-]*$"
+        return line_to_cursor:match(pattern) ~= nil
       end
     end
   end

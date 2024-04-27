@@ -13,10 +13,10 @@ return {
     require("hardtime").setup(opts)
     vim.g.hardtime_disabled = false
     vim.keymap.set("n", "<leader>oH", function()
-      require("util").toggle(not vim.g.hardtime_disabled, function()
+      Util.toggle(not vim.g.hardtime_disabled, function()
         vim.cmd("Hardtime toggle")
         vim.g.hardtime_disabled = not vim.g.hardtime_disabled
-      end, "Haradtime", "Option")
+      end, "Haradtime")
     end, { desc = "Toggle Hardtime" })
   end,
 }

@@ -1,4 +1,4 @@
-local map = require("util").map
+local map = Util.map
 local M = {
   -- add more [ and ] navigations
   "echasnovski/mini.bracketed",
@@ -55,7 +55,7 @@ local map_move_internal = function(mode, keys, next_fn, prev_fn, desc, disable_r
       ts_repeat_move.clear_last_move()
     end
   else
-    next_fn_proxy, prev_fn_proxy = require("util").make_repeatable_move_pair(next_fn_zz, prev_fn_zz)
+    next_fn_proxy, prev_fn_proxy = Util.make_repeatable_move_pair(next_fn_zz, prev_fn_zz)
   end
   if type(keys) == "string" then
     keys = { "]" .. keys, "[" .. keys }
@@ -83,7 +83,7 @@ M.config = function(_, opts)
     -- map_move({ "n" }, "j", "jump", "jumplist in Buffer")
     map_move({ "n" }, { "s;", "s," }, "file", nil, {
       post_hook = function()
-        if require("util").is_neo_tree_shown() then
+        if Util.is_neo_tree_shown() then
           vim.cmd("Neotree reveal action=show")
         end
       end,
@@ -111,13 +111,12 @@ local _prev_qf_or_trouble = function()
     MiniBracketed["quickfix"]("backward")
   end
 end
-local next_qf_or_trouble, prev_qf_or_trouble =
-  require("util").make_repeatable_move_pair(_next_qf_or_trouble, _prev_qf_or_trouble)
+local next_qf_or_trouble, prev_qf_or_trouble = Util.make_repeatable_move_pair(_next_qf_or_trouble, _prev_qf_or_trouble)
 
 M.keys = {
   -- Only configure in keys can overwrite defaults in LazyVim
-  { "[q", prev_qf_or_trouble, desc = "Prev Trouble/Quickfix Item" },
-  { "]q", next_qf_or_trouble, desc = "Next Trouble/Quickfix Item" },
+  { "[q", prev_qf_or_trouble, desc = "Prev Trouble / Quickfix Item" },
+  { "]q", next_qf_or_trouble, desc = "Next Trouble / Quickfix Item" },
 }
 
 return M

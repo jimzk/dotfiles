@@ -8,7 +8,7 @@ local postfix = require("luasnip.extras.postfix").postfix
 
 return {
   postfix({
-    trig = "l",
+    trig = "local",
     desc = "local $1 = x",
   }, { t("local "), i(1), l(" = " .. l.POSTFIX_MATCH) }),
   postfix({
@@ -33,7 +33,7 @@ return {
     trig = "concat",
     desc = "concat list by separator",
     docstring = "table.concat(x, sep)",
-  }, { t("table.concat("), l(l.POSTFIX_MATCH), t(", "), i(1, " "), t(")") }),
+  }, { t("table.concat("), l(l.POSTFIX_MATCH), t(', "'), i(1, " "), t('")') }),
   postfix(
     {
       trig = "if",

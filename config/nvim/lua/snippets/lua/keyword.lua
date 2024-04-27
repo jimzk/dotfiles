@@ -55,7 +55,21 @@ local util = require("snippets.util")
 
 local M = {
   s(
-    "f",
+    "fn",
+    fmt(
+      [[
+  function({})
+    {}
+  end{}
+  ]],
+      { i(2), i(0), i(1) }
+    ),
+    {
+      show_condition = conds_expand.always_false,
+    }
+  ),
+  s(
+    "function",
     fmt(
       [[
   function({})
@@ -103,9 +117,12 @@ local M = {
     i(0),
     t({ "", "end" }),
   }),
-  s("rq", fmt('require("{}")', { i(1) })),
-  s("r", fmt("return {}", { i(1) })),
-  s("l", fmt("local {} = {}", { i(1), i(2) })),
+  s("rq", fmt('require("{}")', { i(1) }), { show_condition = conds_expand.always_false }),
+  s("r", fmt("return {}", { i(1) }), { show_condition = conds_expand.always_false }),
+  s("l", fmt("local {} = {}", { i(1), i(2) }), { show_condition = conds_expand.always_false }),
+  s("require", fmt('require("{}")', { i(1) })),
+  s("return", fmt("return {}", { i(1) })),
+  s("local", fmt("local {} = {}", { i(1), i(2) })),
   s(
     { trig = "if", desc = "if then" },
     fmt(
@@ -118,7 +135,16 @@ local M = {
     { condition = conds_expand.line_begin }
   ),
   s(
-    "eif",
+    "else",
+    fmt(
+      [[
+else
+  {}]],
+      { i(2) }
+    )
+  ),
+  s(
+    "elseif",
     fmt(
       [[
 elseif {} then

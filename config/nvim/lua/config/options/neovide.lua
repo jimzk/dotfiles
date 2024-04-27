@@ -7,7 +7,7 @@ vim.g.neovide_remember_window_size = true
 vim.g.neovide_input_macos_alt_is_meta = true
 vim.g.neovide_input_use_logo = true
 
-local map = require("util").map
+local map = Util.map
 
 -- https://github.com/neovide/neovide/issues/270#issuecomment-1221006358
 -- Copy paste

@@ -1,6 +1,5 @@
 local actions = require("telescope.actions")
 local state = require("telescope.actions.state")
-local lazy_util = require("lazyvim.util")
 local previewers = require("telescope.previewers")
 
 local M = {}
@@ -42,7 +41,7 @@ M.current_buffer_fuzzy_find = {
 local toggle_hidden_and_ignored = function(prompt_bufnr)
   local action_state = require("telescope.actions.state")
   local line = action_state.get_current_line()
-  lazy_util.telescope("find_files", {
+  LazyVim.telescope("find_files", {
     no_ignore = true,
     hidden = true,
     follow = true,
@@ -217,6 +216,28 @@ local pickers = {
   "git_stash",
   "git_status",
 }
+for _, picker in ipairs(pickers) do
+  M[picker] = vim.tbl_extend("force", M[picker] or {}, defaults)
+end
+
+local defaults = {
+  layout_strategy = "vertical",
+  layout_config = {
+    -- prompt_position = "bottom",
+    mirror = true,
+    height = 0.6,
+    -- width = { 0.5, min = 80, max = 100 },
+    width = 80,
+  },
+  previewer = false,
+}
+
+local pickers = {
+  "find_files",
+  "buffers",
+  "git_files",
+}
+
 for _, picker in ipairs(pickers) do
   M[picker] = vim.tbl_extend("force", M[picker] or {}, defaults)
 end

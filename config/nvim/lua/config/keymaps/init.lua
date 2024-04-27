@@ -15,10 +15,11 @@ for _, p in ipairs(packages) do
   require("config.keymaps." .. p)
 end
 
-local map = vim.keymap.set
+local map = Util.map
 local del = vim.keymap.del
 
 del("n", "<leader>K")
+del("n", "<leader>L")
 
 -- Remap diagnostic
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L94-L108
@@ -29,10 +30,10 @@ local map_diagnostic = function(key, severity)
   local prev_diagnostic = function()
     vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity[severity] })
   end
-  local go_next_proxy, go_prev_proxy = require("util").make_repeatable_move_pair(next_diagnostic, prev_diagnostic)
+  local go_next_proxy, go_prev_proxy = Util.make_repeatable_move_pair(next_diagnostic, prev_diagnostic)
   local severity_desc = severity and " (" .. severity .. ") " or ""
-  map("n", "]" .. key, go_next_proxy, { desc = "Next Diagnostic" .. severity_desc })
-  map("n", "[" .. key, go_prev_proxy, { desc = "Prev Diagnostic" .. severity_desc })
+  map("n", "]" .. key, go_next_proxy, "Next Diagnostic" .. severity_desc)
+  map("n", "[" .. key, go_prev_proxy, "Prev Diagnostic" .. severity_desc)
 end
 map_diagnostic("D")
 map_diagnostic("d", "ERROR")
@@ -51,4 +52,4 @@ del("n", "<leader>xq")
 -- map_diagnostic("e", "ERROR")
 -- map_diagnostic("w", "WARN")
 del("n", "<leader>cd")
-map("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Peek Diagnostics" })
+map("n", "<leader>dd", vim.diagnostic.open_float, "Peek Diagnostics")

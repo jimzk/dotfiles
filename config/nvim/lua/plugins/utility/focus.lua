@@ -2,31 +2,30 @@ local M = {
   -- Auto resize focused window
   "nvim-focus/focus.nvim",
   enabled = true,
-  event = "VeryLazy",
   keys = {
     {
-      "<leader>o\\",
+      "<C-w>\\",
       function()
-        require("util").toggle(not vim.g.focus_disable, function()
+        Util.toggle(not vim.g.focus_disable, function()
           vim.cmd("FocusToggle")
         end, "Windows Autoresize (Focus)", "Option")
       end,
       desc = "Toggle Windows Autoresize (Focus)",
     },
-    {
-      "<leader>o=",
-      function()
-        vim.cmd("FocusEnable")
-        -- ISSUE:in autoresize mode the first will equalize
-        vim.cmd("FocusMaxOrEqual")
-        -- if is_win_maximize() then
-        --   vim.cmd("FocusEqualise")
-        -- else
-        --   vim.cmd("FocusMaximise")
-        -- end
-      end,
-      desc = "Toggle Full Window (Focus)",
-    },
+    -- {
+    --   "<C-w>a",
+    --   function()
+    --     vim.cmd("FocusEnable")
+    --     -- ISSUE:in autoresize mode the first will equalize
+    --     vim.cmd("FocusMaxOrEqual")
+    --     -- if is_win_maximize() then
+    --     --   vim.cmd("FocusEqualise")
+    --     -- else
+    --     --   vim.cmd("FocusMaximise")
+    --     -- end
+    --   end,
+    --   desc = "Toggle Full Window (Focus)",
+    -- },
   },
 }
 
@@ -63,9 +62,9 @@ end
 
 M.opts = {
   autoresize = {
-    -- enable = false,
-    -- fix posession error: 'winwidth' cannot be smaller than 'winminwidth': winwidth=1
-    minwidth = 1, -- Force minimum width for the unfocused window
+    enable = true,
+    minwidth = 40,
+    minheight = 30,
   },
   ui = {
     signcolumn = false, -- Display signcolumn in the focussed window only

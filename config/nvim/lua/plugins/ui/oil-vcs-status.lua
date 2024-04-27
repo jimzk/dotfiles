@@ -1,6 +1,7 @@
 return {
   -- https://www.reddit.com/r/neovim/s/KrWuH4McDW
   "SirZenith/oil-vcs-status",
+  enabled = false,
   opts = function()
     local status_const = require("oil-vcs-status.constant.status")
     local StatusType = status_const.StatusType

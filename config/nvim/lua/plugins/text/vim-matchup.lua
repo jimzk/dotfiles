@@ -4,7 +4,7 @@ return {
   keys = function()
     -- Get command from :map <Plug>(matchup-[%)
     -- See: https://www.reddit.com/r/neovim/comments/17x8tso/comment/k9ly2e4
-    local next_bracket_repeat, prev_bracket_repeat = require("util").make_repeatable_move_pair(function()
+    local next_bracket_repeat, prev_bracket_repeat = Util.make_repeatable_move_pair(function()
       vim.fn["matchup#motion#find_unmatched"](0, 1)
     end, function()
       vim.fn["matchup#motion#find_unmatched"](0, 0)

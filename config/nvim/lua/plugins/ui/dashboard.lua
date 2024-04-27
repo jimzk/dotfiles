@@ -5,6 +5,13 @@ local load_session = function()
   }))
 end
 
+local open_config = function()
+  -- Set winminwidth and winminwidth to 1 to avoid error
+  vim.opt.winminheight = 1
+  vim.opt.winminwidth = 1
+  vim.cmd("PossessionLoad config")
+end
+
 local frecency = function()
   require("telescope").extensions.frecency.frecency({
     workspace = "CWD",
@@ -43,7 +50,7 @@ return {
       -- { action = "Telescope live_grep",       desc = " Find text",       icon = " ", key = "g" },
       { action = "Telescope live_grep_args",  desc = " Search Text",     icon = " ", key = "s" },
       { action = "Telescope project",         desc = " Git Project",     icon = " ", key = "g" },
-      { action = "PossessionLoad config",     desc = " Config",          icon = " ", key = "c" },
+      { action = open_config,     desc = " Config",          icon = " ", key = "c" },
       { action = "Lazy",                      desc = " Lazy",            icon = "󰒲 ", key = "z" },
       { action = "qa",                        desc = " Quit",            icon = " ", key = "q" },
     }

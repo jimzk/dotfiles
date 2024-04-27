@@ -18,23 +18,22 @@ local rust_keyword_filters = {
   "struct",
   "impl",
   "trait",
-  "pub",
-  "pub(crate)",
-  "pub(super)",
+  -- "pub",
+  -- "pub(crate)",
+  -- "pub(super)",
 }
 
 local rust_enum_filters = {
-  "Ok(…)",
-  "Some(…)",
-  "Err(…)",
+  -- "Ok(…)",
+  -- "Some(…)",
+  -- "Err(…)",
 }
 
 local rust_snippet_filters = {
   -- https://rust-analyzer.github.io/manual.html#format-string-completion
-  "println",
-  "print",
-  "format",
-  "panic",
+  -- "println",
+  -- "format",
+  -- "panic",
   "logd",
   "logt",
   "logi",
@@ -65,28 +64,29 @@ local rust_snippet_filters = {
   "ok",
   "err",
   "some",
+  "unsafe",
 }
 local M = {
   luasnip = {
     max_item_count = 100,
-    entry_filter = function(entry, ctx)
-      local label = entry.completion_item.label
-      local cursor_before_line = ctx.cursor_before_line
-      -- Do not show postfix
-      return label:sub(1, 1) ~= "."
-
-      -- -- Do not show snip after .
-      -- if label:sub(1, 1) ~= "." and cursor_before_line:match("%.[%w_-]*$") then
-      --   return false
-      -- end
-
-      -- Show postfix only after @ (prefix)
-      -- if entry.completion_item.label:sub(1, 1) == "@" then
-      --   return ctx.cursor_before_line:sub(-1) == "@"
-      -- end
-
-      -- return true
-    end,
+    -- entry_filter = function(entry, ctx)
+    --   local label = entry.completion_item.label
+    --   local cursor_before_line = ctx.cursor_before_line
+    --   -- Do not show postfix
+    --   return label:sub(1, 1) ~= "."
+    --
+    --   -- -- Do not show snip after .
+    --   -- if label:sub(1, 1) ~= "." and cursor_before_line:match("%.[%w_-]*$") then
+    --   --   return false
+    --   -- end
+    --
+    --   -- Show postfix only after @ (prefix)
+    --   -- if entry.completion_item.label:sub(1, 1) == "@" then
+    --   --   return ctx.cursor_before_line:sub(-1) == "@"
+    --   -- end
+    --
+    --   -- return true
+    -- end,
     option = {
       use_show_condition = true,
       show_autosnippets = true,
@@ -98,7 +98,7 @@ local M = {
       local kind = entry:get_kind()
       local label = entry.completion_item.label
       if ft == "lua" then
-        return not vim.tbl_contains(lua_filters, kind)
+        return kind ~= CompletionItemKind.Text and not vim.tbl_contains(lua_filters, kind)
       elseif ft == "rust" then
         if kind == CompletionItemKind.Keyword then
           return not vim.tbl_contains(rust_keyword_filters, label)
