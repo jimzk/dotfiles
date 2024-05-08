@@ -40,26 +40,19 @@ export WORDCHARS=$'!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~'
 
 # https://github.com/kdheepak/lazygit.nvim#usage
 
-# NVIM_LISTEN_ADDRESS is deprecated but I still use it.
+# NVIM_LISTEN_ADDRESS is deprecated. Use NVIM instead.
 # https://neovim.io/doc/user/deprecated.html#_environment-variables
-if [ -n "$NVIM_LISTEN_ADDRESS_" ]; then
-    alias nvim="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-else
-    # function _nvim() {
-    #     export NVIM_LISTEN_ADDRESS_=/tmp/nvimsocket-`date +%s`
-    #     /opt/homebrew/bin/nvim --listen ${NVIM_LISTEN_ADDRESS_} "$@"
-    # }
-    # alias nvim=_nvim
-    # alias vim=_nvim
-    # export VISUAL=_nvim
-    # export EDITOR=_nvim
-    alias nvim="export NVIM_LISTEN_ADDRESS_=/tmp/nvimsocket-`date +%s`; /opt/homebrew/bin/nvim --listen /tmp/nvimsocket-`date +%s`"
-    alias vim=nvim
-    export VISUAL=nvim
-    export EDITOR=nvim
-fi
+# if [ -n "$NVIM" ]; then
+#     alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe --servername $NVIM'
+#     export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe' --servername $NVIM"
+#     export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe' --servername $NVIM"
+# else
+#     export VISUAL="nvim"
+#     export EDITOR="nvim"
+# fi
+export VISUAL="nvim"
+export EDITOR="nvim"
+alias vim=nvim
 
 # fzf
 FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --ansi --tabstop=4 --info=inline --layout=reverse --cycle \
@@ -67,14 +60,11 @@ FZF_BASE_OPTS="--no-sort --extended --multi --color=16,hl:green,header:bold --an
 --bind='ctrl-p:up' \
 --bind='ctrl-alt-n:page-down' \
 --bind='ctrl-alt-p:page-up' \
---bind='alt-a:toggle-all' \
---bind='alt-n:toggle+down' \
---bind='alt-p:toggle+up' \
+--bind='shift-up:page-up' \
+--bind='shift-down:page-down' \
 --bind='ctrl-space:toggle' \
---bind='alt-f:preview-half-page-down' \
---bind='alt-b:preview-half-page-up' \
---bind='shift-up:preview-page-up' \
---bind='shift-down:preview-page-down' \
+--bind='alt-n:preview-half-page-down' \
+--bind='alt-p:preview-half-page-up' \
 --bind 'ctrl-\:toggle-preview' \
 --bind 'alt-enter:print-query'"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -86,7 +76,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 
 # appearance
-export TERM="xterm-256color"
+# export TERM="xterm-256color"
 export LSCOLORS=ExFxCxDxBxegedabagacad  # for FreeBSD/macOS
 export LS_COLORS=${LS_COLORS:-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'}  # for linux (https://github.com/
 export ZLS_COLORS=$LS_COLORS

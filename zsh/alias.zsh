@@ -1,26 +1,17 @@
-case "$OSTYPE" in
-    darwin* )
-        alias pc='tee >(pbcopy)' # copy + stdout
-        alias pp=pbpaste
-        alias proxy_clash="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
-        alias unproxy="unset http_proxy https_proxy all_proxy"
-        alias proxy_proxyman="export https_proxy=http://172.20.10.2:9090 http_proxy=http://172.20.10.2:9090 all_proxy=socks5://172.20.10.2:9090"
-        alias 'proxy?'="_is_proxy"
-        _is_proxy() {
-            r=$(curl -sL -vv https://www.google.com --max-time 3 2>/dev/null)
-            if [[ -z "$r" ]]; then
-                echo "❗️ $(tput setaf 1)"No Proxy!"$(tput sgr0)"
-            else
-                echo "✅ $(tput setaf 2)"In Proxy!"$(tput sgr0)"
-            fi
-        }
-        ;;
-    linux* )
-        alias open="_f(){ open_command ${@:-.} }; _f" # `open_command` is zsh builtin functions
-        ;;
-    * )
-        ;;
-esac
+alias pc='tee >(pbcopy)' # copy + stdout
+alias pp=pbpaste
+alias proxy_clash="export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897"
+alias unproxy="unset http_proxy https_proxy all_proxy"
+alias proxy_proxyman="export https_proxy=http://172.20.10.2:9090 http_proxy=http://172.20.10.2:9090 all_proxy=socks5://172.20.10.2:9090"
+alias 'proxy?'="_is_proxy"
+_is_proxy() {
+    r=$(curl -sL -vv https://www.google.com --max-time 3 2>/dev/null)
+    if [[ -z "$r" ]]; then
+        echo "❗️ $(tput setaf 1)"No Proxy!"$(tput sgr0)"
+    else
+        echo "✅ $(tput setaf 2)"In Proxy!"$(tput sgr0)"
+    fi
+}
 
 export ZSH_PLUGINS_ALIAS_TIPS_EXCLUDES="l gti g"
 
@@ -123,10 +114,10 @@ alias glg='git lg'
 alias glgs='git lg --stat'  # show changed files
 alias glgv='git lgv'
 alias glgvv='git lgvv'
-alias gt='git restore'
-alias gts='git restore --staged'
-alias ge='git remote'
-alias gev='git remote -v'
+alias ge='git restore'
+alias ges='git restore --staged'
+alias gt='git remote'
+alias gtv='git remote -v'
 alias gr='git rebase'
 alias gri='git rebase -i --autosquash --autostash'
 alias gra='git rebase --abort'
@@ -139,12 +130,16 @@ alias g='git'
 alias c='cargo'
 alias cb='cargo build'
 alias cr='cargo run'
-alias ce='cargo run --example'
+alias cre='cargo run --example'
 alias ct='cargo nextest'
+alias ctr='cargo nextest run --run-ignored all'
+alias ctr!='cargo nextest run --no-capture --run-ignored all'
 alias cc='cargo clean'
 alias ca='cargo add'
 alias co='cargo doc --open'
 alias ci='cargo init'
+alias cu='cargo update'
+alias cU='cargo upgrade'
 
 # show information
 alias @shell-pid='echo $$'
@@ -172,10 +167,16 @@ alias du='_f(){ du -sh $@ | sort -h }; _f'
 alias 'du.'='_f(){ du -sh * | sort -h }; _f'
 alias trn='tr -d "\n"'
 # Fix neovim highlight in tmux: https://gist.github.com/gutoyr/4192af1aced7a1b555df06bd3781a722
-alias tmux='env TERM=screen-256color tmux'
-alias tn='tmux new -A -s main'
-alias ta='tmux attach'
-alias tl='tmux list-session'
+# alias tmux='env TERM=screen-256color tmux'
+# alias tn='tmux new -A -s main'
+# alias ta='tmux attach'
+# alias tl='tmux list-session'
+# Copilot CLI
+# https://docs.github.com/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli#setting-up-aliases-for-copilot-in-the-cli
+# eval "$(gh copilot alias -- zsh)"
+alias ghc="gh copilot"
+alias ghcs="gh copilot suggest"
+alias ghce="gh copilot explain"
 
 # Replace default
 alias rg='rg -L'

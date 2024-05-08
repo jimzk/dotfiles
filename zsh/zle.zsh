@@ -288,7 +288,29 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
+# command zle -al can list all builtin widgets
+
 # https://stackoverflow.com/questions/12382499/looking-for-altleftarrowkey-solution-in-zsh
 # Alt + left / right move word
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
+
+bindkey "^[h" backward-delete-char
+bindkey -s "^[l" "ls -al^J"  # Alt+l: list all files
+bindkey -s "^[p" "cd .. && pwd^J"  # Alt+p: cd parent directory
+
+_j() {
+    local input=$(__trim_string $LBUFFER)
+    LBUFFER="j $input"
+    zle accept-line
+}
+zle -N _j
+bindkey '^[j' _j # Alt+j: jump to directory
+
+_exit() {
+    LBUFFER="exit"
+    zle accept-line
+}
+zle -N _exit
+bindkey "^[q" _exit  # Alt+q: exit shell
+

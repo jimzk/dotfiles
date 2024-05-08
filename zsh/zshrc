@@ -35,19 +35,26 @@ setopt PUSHD_SILENT         # do not print the directory stack after pushd or po
 # tmux https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 source $DOTFILES_ZSH_HOME/appearance.zsh
 plugins=(
-    autoupdate  # https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
-    macos
+    # autoupdate  # https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
+    macos # https://github.com/zshzoo/macos
     autojump
-    timer
+    # timer
     # fancy-ctrl-Z
     # colored-man-pages
-    alias-tips
+    globalias
+    # alias-tips
     extract
     rust
     zsh-completions
 )
+plugins+=(globalias)
+GLOBALIAS_FILTER_VALUES=(grep vim rm \\rm du
+    l ls ll la lla ls\? ll\?
+    brew\?
+    rg ping mv cp
+)
 source $ZSH/oh-my-zsh.sh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # +------------+
 # | completion |
@@ -60,12 +67,12 @@ source $DOTFILES_ZSH_HOME/complete.fzf.zsh
 # autoload loads script as function by searching $fpath.
 # ref: https://coderwall.com/p/ktv3hq/zsh-autoloading-functions-i
 # initialize autocomplete
-autoload -U compinit
+# autoload -U compinit
 # -u avoid security check
 # -d <dumpfile> specify dump file location
-compinit -u
+# compinit -u
 # _gnu_generic can create completions for gnu commands that list option help (when --help is used) in a standardized way.
-compdef _gnu_generic fzf curl
+# compdef _gnu_generic fzf curl
 source $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.zsh
 source $DOTFILES_ZSH_HOME/complete.zsh
 # load plugins by manual
@@ -80,7 +87,9 @@ bindkey -r '^['  # [Esc] (Default: vi-cmd-mode)
 bindkey '^Z' undo         # [Ctrl-Z]
 bindkey '^Y' redo         # [Ctrl-Y]
 bindkey '^Q' push-line    # [Ctrl-Q]
-bindkey ' '  magic-space  # [Space] Do history expansion. !! will print command at first but not execute directly
+# [Space] Do history expansion. !! will print command at first but not execute directly
+# Conflict with globalias
+# bindkey ' '  magic-space
 
 # +----------------+
 # | other settings |
@@ -89,13 +98,11 @@ bindkey ' '  magic-space  # [Space] Do history expansion. !! will print command 
 export HOMEBREW_NO_AUTO_UPDATE=1
 # thefuck
 eval $(thefuck --alias)
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Load zshenv again to reoder PATH order messed by /etc/zprofile
 source $DOTFILES_ZSH_HOME/zshenv
 source $DOTFILES_ZSH_HOME/zle.zsh
 source $DOTFILES_ZSH_HOME/alias.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
-eval "$(github-copilot-cli alias -- "$0")"
 
 eval "$(atuin init zsh --disable-up-arrow)"
