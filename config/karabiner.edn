@@ -115,7 +115,10 @@
         [:##caps_lock {:key :right_control} nil {:alone :escape}]
         ; super key
         ; [:##right_command {:key :right_command :modi [:right_control :right_option :right_shift]} nil {:alone :right_command}]
-        [:escape :escape nil {:alone [:hs "spoon.Win.switchApp()"]}]
+        ; [:escape :escape nil {:alone [:hs "spoon.Win.switchApp()"]}]
+        [:escape nil nil {:alone :dashboard}]
+        ; [:##right_shift :right_shift nil {:alone :!Cspacebar}]
+        [:##right_shift :right_shift nil {:alone [:openApp "OpenCat"]}]
         ; [:##right_shift :right_shift nil {:alone [:hs "spoon.Win.activate()"]}] ;; Window management
         ; [:##right_command :right_command nil {:alone [:openApp "kitty"]}]
         ; [:##right_shift :right_shift nil {:alone [:openApp "Obsidian"]}]
@@ -127,13 +130,14 @@
       :rules [
         ;; Applications
         ; [:!Tn [:openApp "Notion"]]
-        [:!Th :!CTOf11] ;; switch WeChat (need to set shortcut in Wechat)
+        ; [:!Th :!CTOf11] ;; switch WeChat (need to set shortcut in Wechat)
+        [:!Th [:openApp "WeChat"]]
         [:!Tt [:openApp "Telegram"]]
         [:!Tm [:openApp "Discord"]]
         [:!Tj [:openApp "Slack"]]
 
         [:!Tq [:openApp "Music"]]
-        [:!Tu [:openApp "OpenCat"]]
+        ; [:!Tu [:openApp "OpenCat"]]
 
         [:!Treturn_or_enter [:openApp "Things3"]]
         [:!TCreturn_or_enter :!!5 :browser]
@@ -146,6 +150,7 @@
         [:!T5 [:openObsidian "Photography"]]
         [:!T0 [:openObsidian "Web3"]]
 
+        [:!Tl [:openApp "Arc"]]
         [:!Tgrave_accent_and_tilde [:openApp "Google Chrome"]]
         [:!Tv [:openApp "Visual Studio Code"]]
         [:!Te [:openApp "Finder"]]
@@ -155,7 +160,7 @@
         ; [:!Tp :!COSf12] ;; Quick flomo
         ; [:!Tq :!CTOf12] ;; switch flomo (need to set shortcut in flomo)
         [:!Tn [:openApp "Notes"]]
-        [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
+        ; [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
         [:!Ty [:openApp "网易有道翻译"]]
         [:!T0 [:hs "spoon.Win.activate()"]] ;; Window management
       ]
