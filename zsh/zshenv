@@ -133,6 +133,6 @@ export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='f:finder;o:fzopen;c:fzcd;d:diffs;i:imgview;p:fzplug;v:preview-tui'
 
 [[ -e $DOTFILES_ZSH_HOME/zshenv.local ]] && source $DOTFILES_ZSH_HOME/zshenv.local
-[[ -e $XDG_CONFIG_HOME/kitty/kitty.zsh ]] && source $XDG_CONFIG_HOME/kitty/kitty.zsh
+[[ -n $KITTY_PID ]] && [[ -e $XDG_CONFIG_HOME/kitty/kitty.zsh ]] && source $XDG_CONFIG_HOME/kitty/kitty.zsh
 
 export RANGER_LOAD_DEFAULT_RC=FALSE
