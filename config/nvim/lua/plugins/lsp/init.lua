@@ -12,11 +12,4 @@ vim.list_extend(specs, {
   },
 })
 
--- Temporary remove
-for i, spec in ipairs(specs) do
-  if spec[1] == "jimzk/rust-tools.nvim" then
-    table.remove(specs, i)
-  end
-end
-
 return specs

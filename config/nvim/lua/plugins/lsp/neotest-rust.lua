@@ -1,6 +1,7 @@
 return {
   "rouge8/neotest-rust",
   ft = "rust",
+  enabled = false,
   dependencies = {
     "nvim-neotest/neotest",
   },

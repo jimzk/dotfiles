@@ -10,7 +10,7 @@ local opts = {
   indent = { enable = true },
   -- NOTE: highlight affects performance significantly
   highlight = {
-    enable = true,
+    enable = false,
     disable = function(lang, buf)
       if vim.tbl_contains(highlight_disabled_langs, lang) then
         return true

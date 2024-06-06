@@ -77,11 +77,11 @@ M.config = function(_, opts)
   vim.defer_fn(function()
     -- Comment (exclusive comment in operation mode)
     -- map_move({ "o" }, "\\", "comment", { wrap = true })
-    map_move({ "n", "x", "o" }, "c", "comment")
-    map_move({ "n", "x", "o" }, "C", "conflict")
+    map_move({ "n", "x", "o" }, "\\", "comment")
+    map_move({ "n", "x", "o" }, "x", "conflict")
     -- map_move({ "n", "x", "o" }, "\\", "treesitter")
     -- map_move({ "n" }, "j", "jump", "jumplist in Buffer")
-    map_move({ "n" }, { "s;", "s," }, "file", nil, {
+    map_move({ "n" }, { "]f", "[f" }, "file", nil, {
       post_hook = function()
         if Util.is_neo_tree_shown() then
           vim.cmd("Neotree reveal action=show")
@@ -93,30 +93,5 @@ M.config = function(_, opts)
     -- map("n", "<m-l>", "<Cmd>lua MiniBracketed.jump('forward')<CR>", "Next jumplist in Buffer")
   end, 500)
 end
-
--- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/plugins/editor.lua#L449-L475
-local _next_qf_or_trouble = function()
-  if require("trouble").is_open() then
-    require("trouble").next({ skip_groups = true, jump = true })
-  else
-    vim.cmd([[normal! m`]])
-    MiniBracketed["quickfix"]("forward")
-  end
-end
-local _prev_qf_or_trouble = function()
-  if require("trouble").is_open() then
-    require("trouble").previous({ skip_groups = true, jump = true })
-  else
-    vim.cmd([[normal! m`]])
-    MiniBracketed["quickfix"]("backward")
-  end
-end
-local next_qf_or_trouble, prev_qf_or_trouble = Util.make_repeatable_move_pair(_next_qf_or_trouble, _prev_qf_or_trouble)
-
-M.keys = {
-  -- Only configure in keys can overwrite defaults in LazyVim
-  { "[q", prev_qf_or_trouble, desc = "Prev Trouble / Quickfix Item" },
-  { "]q", next_qf_or_trouble, desc = "Next Trouble / Quickfix Item" },
-}
 
 return M

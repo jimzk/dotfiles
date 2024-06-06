@@ -1,14 +1,14 @@
 return {
   "NeogitOrg/neogit",
   event = "BufReadPost",
-  branch = "nightly",
   dependencies = {
     "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope.nvim",
   },
   keys = {
     {
       "<leader>ggg",
-      "<cmd>Neogit kind=vsplit<cr>",
+      "<cmd>Neogit kind=auto<cr>",
       desc = "Git (neogit)",
     },
   },

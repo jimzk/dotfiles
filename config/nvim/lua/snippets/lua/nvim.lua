@@ -7,8 +7,8 @@ local _c = ls._choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 return {
-  s({ trig = "vim.api", desc = "vim.api." }, fmt("vim.api.{}", { i(1) })),
-  s({ trig = "vim.cmd", desc = "vim.cmd." }, fmt('vim.api.cmd("{}")', { i(1) })),
+  -- s({ trig = "vim.api", desc = "vim.api." }, fmt("vim.api.{}", { i(1) })),
+  -- s({ trig = "vim.cmd", desc = "vim.cmd." }, fmt('vim.api.cmd("{}")', { i(1) })),
   -- s({ trig = "vn", desc = "vim.notify(..)" }, fmt('vim.notify("{}")', i(1))),
   s(
     { trig = "vim.notify", desc = "vim.notify(..)" },

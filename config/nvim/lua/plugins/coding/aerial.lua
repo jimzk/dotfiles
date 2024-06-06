@@ -11,33 +11,22 @@ M.keys = function()
   end)
   return {
     -- { "<leader>ii", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
-    { "t", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
+    -- { "t", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
+    -- { "<leader>ii", "m`<CMD>AerialToggle float<CR>", desc = "Symbols Popup (Aerial)" },
     {
-      "<leader>iO",
+      "go",
       function()
         if vim.bo.ft == "aerial" then
-          vim.cmd("q")
+          vim.cmd("wincmd p")
         else
-          vim.cmd("AerialOpen right")
+          vim.cmd("AerialOpen")
         end
       end,
-      desc = "Symbols Left (Aerial)",
+      desc = "Symbols (Aerial)",
     },
-    {
-      "<leader>io",
-      function()
-        if vim.bo.ft == "aerial" then
-          vim.cmd("q")
-        else
-          vim.cmd("AerialOpen left")
-        end
-      end,
-      desc = "Symbols Right (Aerial)",
-    },
-    { "<leader>in", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
-    -- { "<leader>`", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
-    -- { "]o", next_fn, desc = "Next Symbol (Aerial)" },
-    -- { "[o", prev_fn, desc = "Prev Symbol (Aerial)" },
+    { "gO", "<CMD>AerialNavToggle<CR>", desc = "Navigate Symbols (Aerial)" },
+    { "]r", next_fn, desc = "Next Symbol (Aerial)" },
+    { "[r", prev_fn, desc = "Prev Symbol (Aerial)" },
   }
 end
 
@@ -64,12 +53,15 @@ M.opts = function(_, opts)
       max_width = { 80, 0.6 },
       min_width = 40,
     },
-    highlight_mode = "split_width",
+    highlight_mode = "full_width",
     highlight_on_hover = true,
     highlight_on_jump = false,
     show_guides = false,
     autojump = false,
     -- post_jump_cmd = false,
+    ignore = {
+      unlisted_buffers = true,
+    },
     keymaps = {
       ["g?"] = false,
       ["<esc>"] = "actions.close",
@@ -101,7 +93,7 @@ M.config = function(_, opts)
   require("aerial").setup(opts)
   -- Highlight on hover
   vim.cmd("hi! AerialLine gui=bold")
-  vim.cmd("hi! link AerialLine QuickFixLine")
+  -- vim.cmd("hi! link AerialLine QuickFixLine")
   require("telescope").load_extension("aerial")
 end
 

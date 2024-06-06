@@ -3,17 +3,39 @@ local M = {
 }
 
 M.keys = function()
+  local methods = require("plugins.text.flash.methods")
   return {
-    -- { "<Tab>", mode = { "n", "x", "o" }, methods.two_char_jump, desc = "Jump (Flash)" },
+    -- {
+    --   "<Tab>",
+    --   mode = { "n", "x", "o" },
+    --   function()
+    --     require("flash").jump({
+    --       label = {
+    --         before = true,
+    --         after = false,
+    --       },
+    --       jump = {
+    --         autojump = false,
+    --       },
+    --     })
+    --   end,
+    --   desc = "Jump (Flash)",
+    -- },
+    -- {
+    --   "f",
+    --   mode = { "n", "x", "o" },
+    --   function()
+    --     methods.two_char_jump()
+    --   end,
+    --   desc = "Jump (Flash)",
+    -- },
     {
-      "<Tab>",
+      "<C-;>",
       mode = { "n", "x", "o" },
       function()
-        require("flash").jump({
-          autojump = false,
-        })
+        methods.two_char_jump([[\(^ *\)\@<=\S]])
       end,
-      desc = "Jump (Flash)",
+      desc = "Jump to Line",
     },
     {
       "R",
@@ -43,7 +65,6 @@ M.keys = function()
       end,
       desc = "Treesitter Scope (Flash)",
     },
-
     -- {
     --   "<CR>",
     --   mode = { "n", "o", "x" },
@@ -54,7 +75,6 @@ M.keys = function()
     --   end,
     --   desc = "Treesitter Remote (Flash)",
     -- },
-
     {
       "<leader>o/",
       mode = { "n" },
@@ -64,10 +84,9 @@ M.keys = function()
       desc = "Toggle Search (Flash)",
     },
     {
-      "g<C-d>",
+      "g<space>",
       mode = { "n" },
       function()
-        local methods = require("plugins.text.flash.methods")
         methods.peek_definition()
       end,
       desc = "Peek Definition Remotely (Flash)",
@@ -76,7 +95,6 @@ M.keys = function()
       "<leader>d<Tab>",
       mode = { "n", "x" },
       function()
-        local methods = require("plugins.text.flash.methods")
         methods.peek_diagnostics({
           label = {
             after = false,
@@ -112,20 +130,31 @@ M.opts = {
   jump = {
     inclusive = false,
   },
+  search = {
+    exclude = {
+      "notify",
+      "cmp_menu",
+      "noice",
+      "flash_prompt",
+      "neo-tree",
+      "aerial",
+      function(win)
+        -- exclude non-focusable windows
+        return not vim.api.nvim_win_get_config(win).focusable
+      end,
+    },
+  },
   modes = {
     search = {
       enabled = true,
     },
     char = {
+      enabled = true,
       keys = { "f", "F" },
-      -- autohide = false,
-      config = function(opts)
-        -- autohide flash when in operator-pending mode
-        opts.autohide = opts.autohide or (vim.fn.mode(true):find("no") and vim.v.operator == "y")
-        -- Show jump labels only in operator-pending mode
-        opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
-      end,
+      -- autohide = true,
+      jump_labels = true,
       label = {
+        exclude = "hjkliardcAZTU",
         rainbow = {
           enabled = false,
         },

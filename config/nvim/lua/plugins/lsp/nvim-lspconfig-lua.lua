@@ -51,11 +51,25 @@ M.opts = {
         -- Call vim.lsp.definition under `local foo = function() end` shows
         -- two results in the same line. Seems like a lua_ls bug. Fix it.
         -- https://www.reddit.com/r/neovim/comments/19cvgtp/comment/kj1yevl
-        ["textDocument/definition"] = function(err, result, ctx, config)
-          if result and #result == 2 and type(result) == "table" then
-            result = { result[2] }
+        ["textDocument/definition"] = function(err, results, ctx, config)
+          if results then
+            if #results >= 2 and type(results) == "table" then
+              if results[1].targetRange.start.line == results[2].targetRange.start.line then
+                table.remove(results, 1)
+              end
+            end
+            local uri = vim.uri_from_bufnr(0)
+            local cursor = vim.api.nvim_win_get_cursor(0)
+            for idx, result in pairs(results) do
+              if result.targetUri == uri and result.targetRange.start.line == cursor[1] - 1 then
+                table.remove(results, idx)
+                -- break
+                -- return
+              end
+            end
+            results = { results[1] }
           end
-          vim.lsp.handlers["textDocument/definition"](err, result, ctx, config)
+          vim.lsp.handlers["textDocument/definition"](err, results, ctx, config)
         end,
       },
     },

@@ -3,7 +3,8 @@ return {
   dependencies = {
     "tpope/vim-rhubarb", -- Support :Browse of fugitive
   },
-  cmd = { "Git" },
+  event = "VeryLazy",
+  cmd = { "Git", "GDelete" },
   keys = {
     {
       "<leader>ggf",
@@ -13,7 +14,7 @@ return {
     },
     -- { "<leader>gB", "<cmd>Git blame --date=relative<cr>", desc = "File Blame (fugitive)" },
     {
-      "<leader>gB",
+      "<leader>g<C-b>",
       "<cmd>Git blame --date=format:'%Y-%m-%d %H:%M'<cr>",
       desc = "File Blame (fugitive)",
     },
@@ -31,6 +32,7 @@ return {
       end,
       desc = "Open File's GitHub URL",
     },
+    { mode = "n", "<leader>g<C-o>", LazyVim.lazygit.browse, desc = "Open Repo's GitHub URL" },
     {
       mode = "n",
       "<leader>gO",

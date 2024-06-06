@@ -1,41 +1,60 @@
--- Override:
--- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/plugins/editor.lua#L374
 return {
   "RRethy/vim-illuminate",
   event = "BufReadPost",
-  -- Remove keymaps ]] and [[ from lazyVim
-  -- https://github.com/LazyVim/LazyVim/blob/fe72424e77cb9c953084bbcaaa0eb7fe8056dc70/lua/lazyvim/plugins/editor.lua#L410-L413
-  keys = function()
-    return {}
-  end,
+  dependencies = {
+    "neovim/nvim-lspconfig",
+    opts = { document_highlight = { enabled = false } },
+  },
 
   opts = {
-    -- modes_allowlist = { "n" },
-    min_count_to_highlight = 1,
-    filetypes_denylist = {
-      "dirbuf",
-      "dirvish",
-      "fugitive",
-      "Trouble",
-      "dropbar_menu",
-      "markdown",
-      "",
-    },
+    modes_allowlist = { "n" },
+    min_count_to_highlight = 2,
+    providers_regex_syntax_denylist = { "vim" },
+    should_enable = function(bufnr)
+      return vim.bo[bufnr].buflisted
+    end,
   },
   config = function(_, opts)
     local il = require("illuminate")
     il.configure(opts)
 
+    -- Remove predefined keymaps
+    vim.keymap.del("n", "<M-p>")
+    vim.keymap.del("n", "<M-n>")
+
     local map_ref = function(key_next, key_prev, buffer)
-      -- stylua: ignore
+      local find_matching_pair = function()
+        local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local line = vim.api.nvim_get_current_line()
+        local char = line:sub(col + 1, col + 1)
+        local mode = vim.fn.mode("no")
+        if vim.tbl_contains({ "{", "(", "[", "<", "}", ")", "]", "}" }, char) then
+          -- Execute <Plug>(matchup-%)
+          if mode == "n" or mode == "v" then
+            vim.fn["matchup#motion#find_matching_pair"](0, 1)
+          elseif mode == "no" then
+            vim.fn["matchup#motion#op"]("%")
+          end
+          return true
+        else
+          return false
+        end
+      end
+
+      -- stylua: ignore start
       local next_ref_repeat, prev_ref_repeat = Util.make_repeatable_move_pair(
-        function() il.goto_next_reference(false) end,
-        function() il.goto_prev_reference(false) end
-      )
-      vim.keymap.set("n", key_next, next_ref_repeat, { desc = "Next Reference (<M-n>)", buffer = buffer })
-      vim.keymap.set("n", key_prev, prev_ref_repeat, { desc = "Prev Reference (<M-p>)", buffer = buffer })
+        function()
+          if not find_matching_pair() then il.goto_next_reference(true) end
+        end,
+        function()
+          if not find_matching_pair() then il.goto_prev_reference(true) end
+        end)
+      -- stylua: ignore end
+      local mode = { "n", "o", "x" }
+      vim.keymap.set(mode, key_next, next_ref_repeat, { desc = "Next Reference / Bracket", buffer = buffer })
+      vim.keymap.set(mode, key_prev, prev_ref_repeat, { desc = "Prev Reference / Bracket", buffer = buffer })
     end
-    map_ref("]v", "[v")
+    map_ref("<C-n>", "<C-p>")
 
     vim.g.illuminate_enabled = true
 
@@ -47,8 +66,15 @@ return {
       end, "Illuminate")
     end, "Toggle Illuminate")
 
-    -- vim.cmd([[hi! IlluminatedWordText gui=underline guibg=none]])
-    -- vim.cmd([[hi! IlluminatedWordRead gui=underline guibg=none]])
-    -- vim.cmd([[hi! IlluminatedWordWrite gui=underline guibg=none]])
+    -- vim.cmd([[
+    --   hi! IlluminatedWordText guibg=#626787
+    --   hi! IlluminatedWordRead guibg=#626787
+    --   hi! IlluminatedWordWrite guibg=#626787
+    -- ]])
+    vim.cmd([[
+      hi! IlluminatedWordText gui=underline
+      hi! IlluminatedWordRead gui=underline
+      hi! IlluminatedWordWrite gui=underline
+    ]])
   end,
 }

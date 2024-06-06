@@ -41,7 +41,7 @@ M.current_buffer_fuzzy_find = {
 local toggle_hidden_and_ignored = function(prompt_bufnr)
   local action_state = require("telescope.actions.state")
   local line = action_state.get_current_line()
-  LazyVim.telescope("find_files", {
+  LazyVim.pick("find_files", {
     no_ignore = true,
     hidden = true,
     follow = true,
@@ -59,12 +59,46 @@ local cd_to_file_dir = function(prompt_bufnr)
   vim.notify(string.format("cd to %s", dir:gsub(vim.fn.getenv("HOME"), "~")))
 end
 
+actions.overwrite_select_default = function(prompt_bufnr)
+  local picker = state.get_current_picker(prompt_bufnr)
+  local original_winnr = picker.original_win_id
+  local bufnr = vim.api.nvim_win_get_buf(original_winnr)
+  actions.select_default(prompt_bufnr)
+  actions.center(prompt_bufnr)
+
+  if require("barbar.state").is_pinned(bufnr) then
+    return
+  end
+  local windows = vim.api.nvim_list_wins()
+  for _, winnr in pairs(windows) do
+    if winnr ~= original_winnr and vim.api.nvim_win_get_buf(winnr) == bufnr then
+      return
+    end
+  end
+
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  local diff = vim.fn.system("git diff --name-only " .. bufname)
+  if #diff > 0 then
+    return
+  end
+  local stage_diff = vim.fn.system("git diff --cached --name-only " .. bufname)
+  if #stage_diff > 0 then
+    return
+  end
+
+  require("mini.bufremove").delete(bufnr)
+
+  Util.update_tabline()
+end
+
 M.find_files = {
   -- find_command = { "rg", "--files", "--no-binary", "--glob", "!{**/.git/*,**/node_modules/*,target/*,**/.DS_Store}" },
   mappings = {
     i = {
       ["<M-h>"] = toggle_hidden_and_ignored,
       ["<M-=>"] = cd_to_file_dir,
+      ["<C-cr>"] = actions.select_default + actions.center,
+      ["<cr>"] = actions.overwrite_select_default,
     },
   },
 }
@@ -81,9 +115,9 @@ M.buffers = {
 local yank_highlight = function(prompt_bufnr)
   local selection = state.get_selected_entry()
   local value = selection.value
-  copy(value)
+  vim.fn.setreg("+", value)
   vim.notify("Highlight " .. value .. " copied", vim.log.levels.INFO, { title = "Highlights" })
-  actions.close(prompt_bufnr)
+  -- actions.close(prompt_bufnr)
 end
 
 M.highlights = {
@@ -107,7 +141,7 @@ actions.git_copy_revision = function(prompt_bufnr)
   local entry = state.get_selected_entry()
   actions.close(prompt_bufnr)
   local revision = entry.name or entry.value -- name for git_branches and value for git_commits
-  copy(revision)
+  vim.fn.setreg("+", revision)
   vim.notify("Git revision " .. revision .. " is copied", vim.log.levels.INFO, { title = "Telescope" })
 end
 
@@ -201,11 +235,11 @@ M.git_status = {
 }
 
 local defaults = {
-  layout_strategy = "vertical",
+  layout_strategy = "horizontal",
   layout_config = {
     height = 0.90,
-    preview_height = 0.6,
-    width = 145,
+    preview_width = 0.6,
+    width = { 0.8, min = 140 },
   },
 }
 

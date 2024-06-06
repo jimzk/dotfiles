@@ -27,18 +27,6 @@ local for_choice_c = function(pos)
     -- sn(nil, { i(1, "true") }, nil, "true"),
     sn(
       nil,
-      fmt("Ok({}) = {}", {
-        d(2, function(args)
-          return sn(nil, { i(1, args[1][1]) })
-        end, { 1 }),
-        i(1, "foo"),
-      }),
-      nil,
-      "Ok(…) = …",
-      true
-    ),
-    sn(
-      nil,
       fmt("Some({}) = {}", {
         d(2, function(args)
           return sn(nil, { i(1, args[1][1]) })
@@ -47,6 +35,18 @@ local for_choice_c = function(pos)
       }),
       nil,
       "Some(…) = …",
+      true
+    ),
+    sn(
+      nil,
+      fmt("Ok({}) = {}", {
+        d(2, function(args)
+          return sn(nil, { i(1, args[1][1]) })
+        end, { 1 }),
+        i(1, "foo"),
+      }),
+      nil,
+      "Ok(…) = …",
       true
     ),
     sn(
@@ -90,21 +90,32 @@ end
 -- end
 
 local M = {
-  s({ trig = "option", desc = "Option<…>" }, fmt("Option<{}>", { i(1, "T") })),
+  s({
+    trig = "(op|option)",
+    trigEngine = "ecma",
+    name = "Option<…>",
+    desc = "Option<…>",
+  }, fmt("Option<{}>", { i(1, "T") })),
   s({ trig = "some", desc = "Some(…)" }, fmt("Some({})", { i(1, "()") })),
   s({ trig = "ok", desc = "Ok(…)" }, fmt("Ok({})", { i(1, "()") })),
-  s({ trig = "result", desc = "Result<…, …>" }, fmt("Result<{}, {}>", { i(1, "()"), i(2, "()") })),
+  s({
+    trig = "(res|result)",
+    trigEngine = "ecma",
+    name = "Result<…, …>",
+    desc = "Result<…, …>",
+  }, fmt("Result<{}, {}>", { i(1, "()"), i(2, "()") })),
   s({ trig = "err", desc = "Err(…)" }, fmt("Err({})", { i(1, "()") })),
-  s({ trig = "default", desc = "Default::default()" }, fmt("Default::default()", {})),
+  s({
+    trig = "(dd|default)",
+    trigEngine = "ecma",
+    name = "Default::default()",
+    desc = "Default::default()",
+  }, fmt("Default::default()", {})),
   s({ trig = "string", desc = "String" }, fmt("String", {})),
 
-  s("p", { t("pub ") }, {
-    condition = conds_expand.line_begin,
-    show_condition = conds_expand.always_false,
-  }),
-  -- s("pub", { t("pub ") }, { condition = conds_expand.line_begin }),
-  -- s("pub(crate)", { t("pub(crate) ") }, { condition = conds_expand.line_begin }),
-  -- s("pub(super)", { t("pub(super) ") }, { condition = conds_expand.line_begin }),
+  s("pub", { t("pub ") }, { condition = conds_expand.line_begin }),
+  s("pub(crate)", { t("pub(crate) ") }, { condition = conds_expand.line_begin }),
+  s("pub(super)", { t("pub(super) ") }, { condition = conds_expand.line_begin }),
   -- s({ trig = "pub", desc = "pub" }, {
   --   util.rust.modifier(1),
   --   n(1, " "),
@@ -134,35 +145,29 @@ local M = {
   --   }),
   --   t(";"),
   -- }),
-  s("return", fmt("return {};", { i(1) })),
-  s({ trig = "l", desc = "let" }, fmt("let {} = {};{}", { i(1), i(2), i(0) }), {
-    condition = conds_expand.line_begin,
-    show_condition = conds_expand.always_false,
-  }),
-  s({ trig = "lm", desc = "let mut" }, fmt("let mut {} = {};{}", { i(1), i(2), i(0) }), {
-    condition = conds_expand.line_begin,
-    show_condition = conds_expand.always_false,
-  }),
-  s(
-    { trig = "let", desc = "let" },
-    fmt("let {} = {};{}", { i(1), i(2), i(0) }),
-    { condition = conds_expand.line_begin }
-  ),
-  s(
-    { trig = "let mut", desc = "let mut" },
-    fmt("let mut {} = {};{}", { i(1), i(2), i(0) }),
-    { condition = conds_expand.line_begin }
-    --     {
-    --   condition = conds.make_condition(function(line_to_cursor, matched_trigger)
-    --     -- typing            line_to_cursor
-    --     -- xx let mut<tab>    xx let mut?
-    --     -- xx.let mut<tab>    xx.let mut?
-    --     vim.notify(line_to_cursor .. "?\ntrig: " .. matched_trigger, vim.log.levels.INFO, { title = "" })
-    --     return true
-    --   end),
-    -- }
-  ),
-  s("for", {
+  s({
+    trig = "(r|return)",
+    trigEngine = "ecma",
+    name = "return …;",
+    desc = "return …;",
+  }, fmt("return {};", { i(1) }), { condition = conds_expand.line_begin }),
+  s({
+    trig = "(lm|letm|let mut)",
+    trigEngine = "ecma",
+    name = "let mut … = …;",
+    desc = "let mut … = …;",
+  }, fmt("let mut {} = {};{}", { i(1), i(2), i(0) }), { condition = conds_expand.line_begin }),
+  s({
+    trig = "(l|let)",
+    trigEngine = "ecma",
+    name = "let … = …;",
+    desc = "let … = …;",
+  }, fmt("let {} = {};{}", { i(1), i(2), i(0) }), { condition = conds_expand.line_begin }),
+  s({
+    trig = "for",
+    name = "for … in … { … }",
+    desc = "for … in … { … }",
+  }, {
     t("for "),
     d(2, function(args, snip, old_state)
       if string.find(args[1][1], "enumerate") then
@@ -173,7 +178,6 @@ local M = {
     end, { 1 }),
     t(" in "),
     c(1, {
-      sn(nil, { i(1, "1"), t(".."), i(2, "10") }, nil, "x..y"),
       sn(nil, {
         i(1),
         t(".iter()"),
@@ -186,42 +190,59 @@ local M = {
         i(1),
         t(".iter().enumerate()"),
       }, nil, ".iter().enumerate()"),
+      sn(nil, { i(1, "1"), t(".."), i(2, "10") }, nil, "x..y"),
     }, {}),
     t(" "),
     util.rust.body(0, true),
   }),
   s(
-    "if",
+    {
+      trig = "if",
+      name = "if … { … }",
+      desc = "if … { … }",
+    },
     fmt(
       [[
     if {} {{
         {}
-    }}]],
-      { i(1, "true"), i(0, "todo!()") }
+    }}{}]],
+      { i(1, "true"), i(1, "todo!()"), i(0) }
     )
   ),
   s(
-    { trig = "else", desc = "else" },
+    {
+      trig = "else",
+      name = "else { … }",
+      desc = "else { … }",
+    },
     fmt(
       [[
     else {{
         {}
-    }}]],
-      { i(0) }
+    }}{}]],
+      { i(1, "todo!()"), i(0) }
     )
   ),
   s(
-    { trig = "else if", desc = "else if" },
+    {
+      trig = "else if",
+      name = "else if … { … }",
+      desc = "else if … { … }",
+    },
     fmt(
       [[
     else if {} {{
         {}
-    }}]],
-      { i(1, "true"), i(0, "todo!()") }
+    }}{}]],
+      { i(1, "true"), i(2, "todo!()"), i(0) }
     )
   ),
   s(
-    { trig = "if else", desc = "if else" },
+    {
+      trig = "if else",
+      name = "if … { … } else { … }",
+      desc = "if … { … } else { … }",
+    },
     fmt(
       [[
     if {} {{
@@ -232,26 +253,45 @@ local M = {
       { i(1, "true"), i(2, "todo!()"), i(3, "todo!()") }
     )
   ),
-  s({ trig = "if let", desc = "if let" }, {
+  s({
+    trig = "if let",
+    name = "if let … = … { … }",
+    desc = "if let … = … { … }",
+  }, {
     t("if let "),
     for_choice_c(1),
     t(" "),
     util.rust.body(0, true),
   }),
-  s({ trig = "while", desc = "while" }, {
+  s({
+    trig = "(w|while)",
+    trigEngine = "ecma",
+    name = "while … { … }",
+    desc = "while … { … }",
+  }, {
     t("while "),
     i(1, "true"),
     t(" "),
     util.rust.body(0, true),
   }),
-  s({ trig = "while let", desc = "while let" }, {
+  s({
+    trig = "(wl|while let)",
+    trigEngine = "ecma",
+    name = "while let … = … { … }",
+    desc = "while let … = … { … }",
+  }, {
     t("while let "),
     for_choice_c(1),
     t(" "),
     util.rust.body(0, true),
   }),
   s(
-    { trig = "match", desc = "match" },
+    {
+      trig = "(m|match)",
+      trigEngine = "ecma",
+      name = "match … { … }",
+      desc = "match … { … }",
+    },
     fmt(
       [[
   match {} {{
@@ -261,7 +301,7 @@ local M = {
     )
   ),
   s(
-    { trig = "main", desc = "fn main" },
+    { trig = "fn main", desc = "fn main" },
     fmt(
       [[
   fn main() {arrow}{return_type}{space}{{

@@ -4,6 +4,18 @@ local M = {
   dependencies = {
     "neovim/nvim-lspconfig",
   },
+  -- keys = {
+  -- {
+  --   "<M-LeftMouse>",
+  --   "<LeftMouse>:lua require('goto-preview').goto_preview_definition()<CR>",
+  --   desc = "Go Definition in Float",
+  -- },
+  -- {
+  --   "<M-RightMouse>",
+  --   "<cmd>lua require('goto-preview').close_all_win()<CR>",
+  --   desc = "Close All Float Definition Window",
+  -- },
+  -- },
   opts = {
     height = 30,
     references = {

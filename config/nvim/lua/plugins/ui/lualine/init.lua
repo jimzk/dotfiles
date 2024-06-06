@@ -1,10 +1,6 @@
 local M = {
   "nvim-lualine/lualine.nvim",
   event = "VimEnter",
-  dependencies = {
-    { "akinsho/bufferline.nvim", enabled = false },
-    { "romgrk/barbar.nvim", enabled = false },
-  },
 }
 
 M.opts = function()
@@ -20,65 +16,55 @@ M.opts = function()
       globalstatus = true,
       disabled_filetypes = {
         statusline = { "dashboard", "alpha", "starter" },
-        winbar = { "neo-tree", "aerial", "dashboard" },
+        winbar = {
+          "",
+          "neo-tree",
+          "aerial",
+          "dashboard",
+          "trouble",
+          "lazyterm",
+          "spectre_panel",
+          "copilot-chat",
+          "OverseerList",
+          "toggleterm",
+          "neotest-output-panel",
+          "neotest-summary",
+        },
       },
       section_separators = "",
       component_separators = "",
     },
     extensions = {
-      "aerial",
+      -- "aerial",
       "lazy",
-      "neo-tree",
+      -- "neo-tree",
       "nvim-dap-ui",
       "quickfix",
       "trouble",
     },
   }
-  opts.tabline = {
-    lualine_a = {},
-    lualine_x = {
-      {
-        "branch",
-        icon = "",
-        color = {
-          fg = "#c6d0f6",
-          bg = "#6e69a7",
-        },
-      },
-      vim.tbl_extend(
-        "force",
-        LazyVim.lualine.root_dir({
-          cwd = true,
-          icon = "󱉭",
-        }),
-        {
-          separator = "",
-          padding = { left = 1, right = 1 },
-          color = {
-            bg = "#8caaef",
-            fg = "#292c3d",
-          },
-        }
-      ),
-    },
-
-    lualine_b = {
-      {
-        "tabs",
-        padding = { left = 1, right = 1 },
-        max_length = vim.o.columns,
-        mode = 0,
-        path = 1,
-        show_modified_status = false,
-      },
-      components.arrow({
-        padding = { left = 0, right = 0 },
-      }),
-      -- { LazyVim.lualine.pretty_path() },
-    },
-    -- lualine_c = {},
-    -- lualine_y = {},
-  }
+  -- opts.tabline = {
+  --   lualine_a = {},
+  --   lualine_x = {
+  --   },
+  --
+  --   lualine_b = {
+  --     {
+  --       "tabs",
+  --       padding = { left = 1, right = 1 },
+  --       max_length = vim.o.columns,
+  --       mode = 0,
+  --       path = 1,
+  --       show_modified_status = false,
+  --     },
+  --     components.arrow({
+  --       padding = { left = 0, right = 0 },
+  --     }),
+  --     -- { LazyVim.lualine.pretty_path() },
+  --   },
+  --   -- lualine_c = {},
+  --   -- lualine_y = {},
+  -- }
 
   local get_winbar = function(color)
     local winbnar = {
@@ -93,16 +79,29 @@ M.opts = function()
         {
           "filename",
           newfile_status = true,
+          file_status = false,
           path = 1,
           padding = { left = 0, right = 0 },
           color = color,
         },
+        {
+          function()
+            local bufnr = vim.api.nvim_get_current_buf()
+            if not vim.bo[bufnr].modifiable then
+              return " "
+            else
+              return ""
+            end
+          end,
+          color = color,
+          padding = { left = 0, right = 0 },
+        },
         components.progress({
           separator = "",
-          icon = "󰛗",
+          -- icon = { "|", color = { fg = "#6983a7" } },
           color = {
             bg = color.bg,
-            fg = "#9db7f1",
+            fg = "#eeeeee",
           },
           padding = { left = 1, right = 1 },
         }),
@@ -154,16 +153,62 @@ M.opts = function()
     return winbnar
   end
 
-  opts.winbar = get_winbar({ bg = "#6369a7", fg = "#c6d0f6" })
+  -- #6369a7
+  opts.winbar = get_winbar({ bg = "#6e69a7", fg = "#c6d0f6" })
   opts.inactive_winbar = get_winbar({ bg = "Normal", fg = "#c6d0f6" })
 
   opts.sections = {
     lualine_a = {
+      -- {
+      --   function()
+      --     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      --       local bufnr = vim.api.nvim_win_get_buf(win)
+      --       if vim.api.nvim_get_option_value("ft", { buf = bufnr }) == "neo-tree" then
+      --         local manager = require("neo-tree.sources.manager")
+      --         local state = manager.get_state("filesystem")
+      --         local path = state.path:gsub(vim.fn.getenv("HOME"), "~")
+      --         local offset = vim.api.nvim_win_get_width(win)
+      --         if #path > offset - 2 then
+      --           return "…" .. path:sub(#path - offset + 4)
+      --         end
+      --         return path .. string.rep(" ", offset - 2 - #path)
+      --       end
+      --     end
+      --     return ""
+      --   end,
+      --   color = "Normal",
+      -- },
       {
         "mode",
         fmt = function(str)
           return str:sub(1, 6)
         end,
+        color = {
+          gui = "none",
+        },
+      },
+      vim.tbl_extend(
+        "force",
+        LazyVim.lualine.root_dir({
+          cwd = true,
+          icon = "󱉭",
+        }),
+        {
+          separator = "",
+          padding = { left = 1, right = 1 },
+          color = {
+            bg = "#6e69a7",
+            fg = "#c6d0f6",
+          },
+        }
+      ),
+      {
+        "branch",
+        icon = "",
+        color = {
+          bg = "#83b7c4",
+          fg = "#292c3d",
+        },
       },
     },
     lualine_b = {

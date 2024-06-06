@@ -25,12 +25,12 @@ map({ "n", "o", "x" }, "<C-i>", "<C-i>")
 --     require("notify")("Cannot close last window", vim.log.levels.WARN, { title = "Close" })
 --   end
 -- end)
-map("n", "q", "<CMD>close<CR>")
+-- map("n", "q", "<CMD>close<CR>")
 -- map("n", "<C-q>", "<CMD>silent! bufdo up<CR><CMD>qa<cr>")
 map("n", "<C-q>", "<CMD>qa<cr>")
 map("n", "U", "<C-r>", "Redo")
 
-map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr>", "Save File")
+map("i", "<C-s>", "<cmd>w<cr>", "Save File")
 
 -- Scroll
 -- map("n", "<Up>", "<C-y>")
@@ -44,12 +44,38 @@ map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr>", "Save File")
 map("x", ".", ":norm .<CR>", "Repeat in Selection")
 map("x", "@", ":norm @q<CR>", "Execute Macro in Selection")
 
-map(
-  "n",
-  "<C-Cr>",
-  [[<cmd>silent! exec "normal! \<C-]>zz"<cr><cmd>lua require("lualine").refresh()<cr>]],
-  "Jump to Definition"
-)
+-- Tips: <C-]> and <C-LeftMouse> jump to definition
+--       <C-[> and <C-RightMouse> jump back
+map("n", "<C-]>", [[<cmd>silent! exec "normal! \<C-]>"<cr>]], "Jump to Tag")
+map("n", "<C-[>", [[<cmd>silent! exec "normal! \<C-t>"<cr>]], "Jump Back")
+
+-- map("n", "<C-LeftMouse>", "<LeftMouse><C-]>", "Jump to Definition", { remap = true })
+-- map("n", "<C-RightMouse>", [[<cmd>silent! exec "normal! \<C-t>"<cr>]], "Jump Back")
+local definition_or_tag = function()
+  local can_jump_definition = false
+  local bufnr = vim.api.nvim_get_current_buf()
+  local attached_clients = vim.lsp.get_clients({ bufnr = bufnr })
+  for _, client in ipairs(attached_clients) do
+    if client.name ~= "copilot" then
+      if client.capabilities.textDocument.definition then
+        -- vim.notify(client.name, vim.log.levels.INFO, { title = "Notification" })
+        can_jump_definition = true
+        break
+      end
+    end
+  end
+
+  if can_jump_definition then
+    return "<LeftMouse>:lua vim.lsp.buf.definition()<CR>"
+  else
+    return "<LeftMouse><C-]>"
+  end
+end
+map("n", "<C-LeftMouse>", definition_or_tag, "Jump to Definition", { remap = true, expr = true })
+map("n", "<C-RightMouse>", "<C-o>", "Older History")
+
+-- map("n", "<C-ScrollWheelDown>", "<C-o>", "Older History")
+-- map("n", "<C-ScrollWheelUp>", "<C-i>", "Newer History")
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 -- map({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", nil, { expr = true })

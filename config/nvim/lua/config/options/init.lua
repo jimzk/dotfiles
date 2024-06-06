@@ -4,9 +4,15 @@
 local opt = vim.opt
 
 -- Always center cursor
-opt.scrolloff = 0
+opt.scrolloff = 7
 opt.sidescrolloff = 0
-opt.cursorline = false
+-- preview %s command in split window
+-- https://www.reddit.com/r/neovim/comments/1cytkbq/comment/l5bxr3v
+opt.inccommand = "split"
+-- Only highlight cursor line number
+-- opt.cursorline = true
+-- opt.cursorlineopt = "number"
+
 opt.relativenumber = false
 opt.wrap = false
 
@@ -17,10 +23,13 @@ opt.clipboard = "unnamedplus" -- sync with system clipboard
 opt.swapfile = false
 opt.backup = false -- Don't backup file while overwriting file
 
+opt.conceallevel = 3
+opt.incsearch = true
+
 -- stack:  -- Make jumplist behave like web browser back / forward
 -- https://www.reddit.com/r/neovim/comments/11dmaed/keep_buffer_view_when_you_return_to_file/
 -- https://www.reddit.com/r/neovim/comments/16nead7/comment/k1e1nj5/
-opt.jumpoptions = "stack" -- "stack,view"
+opt.jumpoptions = "stack,view" -- view: keep view of the buffer
 
 opt.showtabline = 2 -- Always show tabline
 
@@ -69,4 +78,5 @@ opt.sessionoptions = {
 require("config.options.abbr")
 require("config.options.search")
 require("config.options.qf")
+require("config.options.commands")
 require("config.options.neovide")

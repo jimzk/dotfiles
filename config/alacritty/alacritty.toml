@@ -1,0 +1,71 @@
+# Doc: https://alacritty.org/config-alacritty.html
+# Example: https://github.com/azigler/dotfiles/blob/main/alacritty/alacritty.toml
+
+# https://github.com/alacritty/alacritty-theme/tree/master?tab=readme-ov-file#color-schemes
+import = ["~/.config/alacritty/themes/catppuccin_mocha.toml"]
+
+# Environment variables
+[env]
+TERM = "alacritty" # https://github.com/alacritty/alacritty/issues/3529
+
+[window]
+opacity = 0.8
+blur = true
+dynamic_padding = true
+# startup_mode = "SimpleFullscreen"
+decorations = "Full"   # "Full" | "None" | "Transparent" | "Buttonless"
+dynamic_title = true
+option_as_alt = "Both"
+
+[font]
+normal = { family = "MonaspiceNe Nerd Font", style = "Regular" }
+size = 16.0
+
+[colors]
+
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+vi_mode_style = { shape = "Block", blinking = "Off" }
+
+[hints]
+[[hints.enabled]]
+command = "open"                                                                                                                                          # On Linux/BSD
+hyperlinks = true
+post_processing = true
+persist = false
+mouse.enabled = true
+binding = { key = "U", mods = "Control|Shift" }
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+
+[mouse]
+bindings = [
+  { mouse = "Left", mods = "Command", action = "ExpandSelection" },
+  { mouse = "Right", action = "Copy" },
+]
+
+[keyboard]
+# Default bindings: https://alacritty.org/config-alacritty-bindings.html
+bindings = [
+  { key = "f", mods = "Control | Command", action = "ToggleMaximized" },
+  { key = "Enter", mods = "Command", action = "ToggleViMode" },
+
+  { key = "Enter", mode = "Search", action = "SearchFocusNext" },
+  { key = "Enter", mods = "Shift", mode = "Search", action = "SearchFocusPrevious" },
+  { key = "Escape", mode = "Search", action = "SearchCancel" },
+  { key = "Backspace", mods = "Shift", mode = "Search", action = "SearchClear" },
+  { key = "ArrowDown", mode = "Search", action = "SearchHistoryNext" },
+  { key = "ArrowUp", mode = "Search", action = "SearchHistoryPrevious" },
+
+  { key = "n", mods = "Command", action = "CreateNewWindow" },
+  { key = "t", mods = "Command", action = "CreateNewTab" },
+  { key = "]", mods = "Command|Shift", action = "SelectNextTab" },
+  { key = "[", mods = "Command|Shift", action = "SelectPreviousTab" },
+  { key = "0", mods = "Command", action = "SelectLastTab" },
+
+  { key = "0", mods = "Command", action = "ResetFontSize" },
+  { key = "=", mods = "Command", action = "IncreaseFontSize" },
+  { key = "-", mods = "Command", action = "DecreaseFontSize" },
+
+  # { key = "ArrowDown", mods = "Shift", action = "ScrollHalfPageDown" },
+  # { key = "ArrowUp", mods = "Shift", action = "ScrollHalfPageUp" },
+]

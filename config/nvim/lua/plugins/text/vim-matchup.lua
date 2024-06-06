@@ -11,18 +11,15 @@ return {
     end)
     return {
       -- NOTE: % keymaps work only when disabling matchit
-      { "%", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "Bracket" },
-      { "<M-b>", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "Bracket" },
-      -- { "\\", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "%" },
-      -- { "i<Tab>", "<Plug>(matchup-z%)", mode = { "o", "x" }, desc = "move to function start" },
+      { "%", "<Plug>(matchup-%)", mode = { "n", "o", "x" } },
+      -- { "'", "<Plug>(matchup-%)", mode = { "n", "o", "x" }, desc = "%" },
+      -- { "i`", "<Plug>(matchup-z%)", mode = { "o", "x" }, desc = "Select to Function Call End" },
       { "ib", "<Plug>(matchup-i%)", mode = { "o", "x" }, desc = "(...), [...], {...}" },
       { "ab", "<Plug>(matchup-a%)", mode = { "o", "x" }, desc = "(...), [...], {...}" },
-      { "i%", "<Plug>(matchup-i%)", mode = { "o", "x" }, desc = "which_key_ignore" },
-      { "a%", "<Plug>(matchup-a%)", mode = { "o", "x" }, desc = "which_key_ignore" },
       -- { "]b", next_bracket_repeat, mode = { "n", "x", "o" }, desc = "Next Unmatched Bracket" },
       -- { "[b", prev_bracket_repeat, mode = { "n", "x", "o" }, desc = "Prev Unmatched Bracket" },
-      { "+", "<Plug>(matchup-]%)", mode = { "n", "x" }, desc = "Next Unmatched Bracket" },
-      { "_", "<plug>(matchup-[%)", mode = { "n", "x" }, desc = "Next Unmatched Bracket" },
+      { "]%", "<Plug>(matchup-]%)", mode = { "n", "x" }, desc = "Next Unmatched Bracket" },
+      { "[%", "<plug>(matchup-[%)", mode = { "n", "x" }, desc = "Next Unmatched Bracket" },
     }
   end,
   init = function()
@@ -46,11 +43,10 @@ return {
     vim.defer_fn(function()
       vim.cmd([[
         hi! link MatchBackground DiffText
-        " Close color of Normal bg (#303447)
-        hi! MatchParen guibg=#505676 guifg=none gui=none
+        hi! MatchParen guibg=#626787
         hi! MatchParenCur gui=none
-        hi! MatchWord guibg=#505676 guifg=none gui=none
-        hi! MatchWordCur gui=none
+        hi! MatchWord guibg=#626787
+        " hi! MatchWordCur gui=none
       ]])
     end, 1000)
   end,

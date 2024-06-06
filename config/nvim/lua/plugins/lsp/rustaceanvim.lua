@@ -4,14 +4,14 @@ local M = {
   version = "^4",
   ft = { "rust" },
   dependencies = {
-    {
-      "neovim/nvim-lspconfig",
-      opts = {
-        setup = {
-          rust_analyzer = function()
-            return true
-          end,
-        },
+    "neovim/nvim-lspconfig",
+    opts = {
+      setup = {
+        -- https://github.com/LazyVim/LazyVim/pull/3389
+        -- See :h rustaceanvim.mason
+        rust_analyzer = function()
+          return true
+        end,
       },
     },
   },
@@ -157,22 +157,5 @@ M.opts = {
   },
   server = rust_analyzer_server,
 }
-
-M.config = function(_, opts)
-  vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
-end
-
--- M.config = function()
---   -- local server_opts = {}
---   -- https://github.com/mrcjkb/rustaceanvim/blob/master/lua/rustaceanvim/config/internal.lua
---   vim.g.rustaceanvim = {
---     tools = {
---       hover_actions = {
---         auto_focus = false,
---       },
---     },
---     server = require("plugins.lsp.rustaceanvim.rust-analyzer-opts"),
---   }
--- end
 
 return M

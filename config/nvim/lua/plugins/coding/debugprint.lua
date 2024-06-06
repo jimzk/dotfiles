@@ -4,44 +4,38 @@ return {
   "andrewferrier/debugprint.nvim",
   keys = {
     {
-      "<leader>cdp",
+      "<leader>el",
       function() return require("debugprint").debugprint() end,
-      desc = "Print Line below",
+      desc = "Debug Print Line Below",
       expr = true
     },
     {
-      "<leader>cdP",
+      "<leader>eL",
       function() return require("debugprint").debugprint({ above = true }) end,
-      desc = "Print Line above",
+      desc = "Debug Print Line Above",
       expr = true
     },
     {
-      "<leader>cdl",
+      "<leader>ev",
       mode = { "n", "x" },
       function() return require("debugprint").debugprint({ variable = true }) end,
-      desc = "Print Variable below",
+      desc = "Debug Print Variable Below",
       expr = true
     },
     {
-      "<leader>cdL",
+      "<leader>eV",
       mode = { "n", "x" },
       function() return require("debugprint").debugprint({ variable = true, above = true }) end,
-      desc = "Print Variable above",
+      desc = "Debug Print Variable Above",
       expr = true
     },
     {
-      "<leader>cd<BS>",
+      "<leader>ed",
       "<cmd>DeleteDebugPrints<cr>",
-      desc = "Delete All Debug Prints",
+      desc = "Debug Print Clean",
     },
   },
-  init = function()
-    require("which-key").register({
-      ["<leader>cd"] = { name = "+debugprint", }
-    })
-  end,
   opts = {
-    create_keymaps = false,
     move_to_debugline = false,
     display_counter = false,
     print_tag = "DEBUG",

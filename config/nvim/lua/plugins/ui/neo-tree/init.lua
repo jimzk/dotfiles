@@ -14,8 +14,19 @@ M.dependencies = {
       filter_rules = {
         include_current_win = false,
         bo = {
-          filetype = { "incline", "NvimTree", "neo-tree", "notify", "aerial", "fidget", "edgy", "help" },
-          buftype = { "terminal", "quickfix" },
+          filetype = {
+            "incline",
+            "NvimTree",
+            "neo-tree",
+            "notify",
+            "aerial",
+            "fidget",
+            "edgy",
+            "help",
+            -- https://github.com/nvim-zh/colorful-winsep.nvim/blob/alpha/lua/colorful-winsep/line.lua#L10
+            "NvimSeparator",
+          },
+          buftype = { "terminal", "quickfix", "nofile" },
         },
       },
     },
@@ -27,7 +38,10 @@ local is_neo_tree_shown = function()
   -- https://github.com/nvim-neo-tree/neo-tree.nvim/discussions/826#discussioncomment-5429747
   local manager = require("neo-tree.sources.manager")
   local renderer = require("neo-tree.ui.renderer")
-  local state = manager.get_state("filesystem")
+  local ok, state = pcall(manager.get_state, "filesystem")
+  if not ok then
+    return false
+  end
   local window_exists = renderer.window_exists(state)
   return window_exists
 end
@@ -39,32 +53,18 @@ M.keys = function()
     {
       "<C-r>r",
       function()
-        if is_neo_tree_shown() then
-          if vim.bo.ft == "neo-tree" then
-            vim.cmd("wincmd p")
-          else
-            vim.cmd("Neotree")
-          end
+        -- if is_neo_tree_shown() then
+        if vim.bo.ft == "neo-tree" then
+          vim.cmd("wincmd p")
         else
-          require("neo-tree.command").execute({ toggle = true, action = "show", dir = vim.loop.cwd() })
+          vim.cmd("Neotree position=top filesystem")
         end
+        -- else
+        --   vim.cmd("Neotree reveal action=focus")
+        --   -- require("neo-tree.command").execute({ toggle = true, action = "show", dir = vim.loop.cwd() })
+        -- end
       end,
       desc = "Open NeoTree or Focus",
-    },
-    {
-      "<C-r>h",
-      "<CMD>Neotree left<CR>",
-      desc = "Open NeoTree on Left",
-    },
-    {
-      "<C-r>l",
-      "<CMD>Neotree right<CR>",
-      desc = "Open NeoTree on Right",
-    },
-    {
-      "<C-r>q",
-      "<CMD>Neotree close<CR>",
-      desc = "Close NeoTree",
     },
     -- {
     --   "<leader>fE",
@@ -75,40 +75,35 @@ M.keys = function()
     --   end,
     --   desc = "NeoTree (File Directory)",
     -- },
-    {
-      "<C-r>u",
-      function()
-        require("neo-tree.command").execute({
-          source = "git_status",
-          position = "float",
-          action = "focus",
-          reveal = true,
-        })
-      end,
-      desc = "Git NeoTree",
-    },
-    {
-      "<leader>gge",
-      "<C-r>u",
-      remap = true,
-      desc = "Git NeoTree",
-    },
+    -- {
+    --   "<C-r>u",
+    --   function()
+    --     require("neo-tree.command").execute({
+    --       source = "git_status",
+    --       position = "float",
+    --       action = "focus",
+    --       reveal = true,
+    --     })
+    --   end,
+    --   desc = "Git NeoTree",
+    -- },
+    -- {
+    --   "<leader>gge",
+    --   "<C-r>u",
+    --   remap = true,
+    --   desc = "Git NeoTree",
+    -- },
     {
       "<C-r>g",
-      function()
-        require("neo-tree.command").execute({ source = "git_status", position = "left", action = "focus" })
-      end,
+      "<cmd>Neotree position=bottom git_status<cr>",
       desc = "Git NeoTree",
     },
 
     {
       "<C-r>b",
-      function()
-        require("neo-tree.command").execute({ source = "buffers", action = "focus" })
-      end,
+      "<cmd>Neotree position=right buffers<cr>",
       desc = "Buffer NeoTree",
     },
-
     {
       "<C-r>f",
       function()
@@ -130,38 +125,41 @@ M.keys = function()
 end
 
 M.opts = {
-  commands = require("plugins.ui.neo-tree.commands"),
-  close_if_last_window = true,
-  sources = {
-    "filesystem",
-    "git_status",
-    "buffers",
-    "netman.ui.neo-tree",
-  },
-  source_selector = {
-    winbar = true, -- toggle to show selector on winbar
-    statusline = true, -- toggle to show selector on statusline
-    show_scrolled_off_parent_node = false, -- boolean
-    tabs_layout = "center",
-    sources = { -- table
-      {
-        source = "filesystem", -- string
-        display_name = "󰉓 Files", -- string | nil
-      },
-      {
-        source = "git_status", -- string
-        display_name = "󰊢 Git", -- string | nil
-      },
-      {
-        source = "buffers", -- string
-        display_name = "󰈚 Buffers", -- string | nil
-      },
-      {
-        source = "remote", -- string
-        display_name = "󰈚 Remote", -- string | nil
-      },
+  default_component_configs = {
+    indent = {
+      with_markers = false,
+      indent_size = 2,
     },
   },
+  enable_git_status = true,
+  enable_diagnostics = false,
+  commands = require("plugins.ui.neo-tree.commands"),
+  close_if_last_window = true,
+  sources = { "filesystem", "buffers", "git_status", "document_symbols", "netman.ui.neo-tree" },
+  -- source_selector = {
+  --   winbar = false, -- toggle to show selector on winbar
+  --   statusline = true, -- toggle to show selector on statusline
+  --   show_scrolled_off_parent_node = false, -- boolean
+  --   tabs_layout = "center",
+  --   sources = { -- table
+  --     {
+  --       source = "filesystem", -- string
+  --       display_name = "󰉓 Files", -- string | nil
+  --     },
+  --     {
+  --       source = "git_status", -- string
+  --       display_name = "󰊢 Git", -- string | nil
+  --     },
+  --     {
+  --       source = "buffers", -- string
+  --       display_name = "󰈚 Buffers", -- string | nil
+  --     },
+  --     {
+  --       source = "remote", -- string
+  --       display_name = "󰈚 Remote", -- string | nil
+  --     },
+  --   },
+  -- },
 }
 
 M.opts.window = {
@@ -169,24 +167,26 @@ M.opts.window = {
   mappings = {
     -- Switch between filesystem, buffers and git_status
     -- https://github.com/nvim-neo-tree/neo-tree.nvim/wiki/Recipes#switch-between-filesystem-buffers-and-git_status
-    ["1"] = "view_filesystem",
-    ["2"] = "view_git_status",
-    ["3"] = "view_buffers",
-    ["4"] = "view_remote",
-    -- Disable prev/next_source
+    -- ["1"] = "view_filesystem",
+    -- ["2"] = "view_git_status",
+    -- ["3"] = "view_buffers",
+    -- ["4"] = "view_remote",
+
+    -- prev/next_source
     [">"] = "noop",
     ["<"] = "noop",
+    ["-"] = "prev_source",
+    ["="] = "next_source",
     -- Open
     -- open_drop: If file is already opened in one window, jump to that window instead of opening it in current window
-    ["<CR>"] = "open_drop",
-    ["<S-CR>"] = "open_drop_and_close",
-    o = "open_with_window_picker",
-    O = "open_with_window_picker_and_close",
-    ["<C-o>"] = "open_with_window_picker_and_close",
+    -- ["<CR>"] = "open_drop",
+    -- ["<S-CR>"] = "open_drop_and_close",
+    ["<CR>"] = "open_with_window_picker",
+    ["<M-CR>"] = "open_with_window_picker_and_close",
     v = "vsplit_with_window_picker",
-    V = "vsplit_with_window_picker_and_close",
+    ["<M-v>"] = "vsplit_with_window_picker_and_close",
     s = "split_with_window_picker",
-    S = "split_with_window_picker_and_close",
+    ["<M-s>"] = "split_with_window_picker_and_close",
     t = "open_tabnew",
 
     ["<space>"] = "noop",
@@ -209,26 +209,17 @@ M.opts.window = {
     Y = "noop",
     ["<M-r>"] = "refresh",
     ["R"] = "spectre_replace",
-    -- ["<M-space>"] = "reveal_file",
+    ["<M-space>"] = "reveal_file",
     -- Utilities
     ["<C-y>"] = "copy_filename",
     ["<leader>/"] = "telescope_grep",
-    ["."] = "open_with_vscode",
-
-    ["<C-s>c"] = "order_by_created",
-    ["<C-s>d"] = "order_by_diagnostics",
-    ["<C-s>g"] = "order_by_git_status",
-    ["<C-s>m"] = "order_by_modified",
-    ["<C-s>n"] = "order_by_name",
-    ["<C-s>s"] = "order_by_size",
-    ["<C-s>t"] = "order_by_type",
-    ["oc"] = "noop",
-    ["od"] = "noop",
-    ["og"] = "noop",
-    ["om"] = "noop",
-    ["on"] = "noop",
-    ["os"] = "noop",
-    ["ot"] = "noop",
+    ["<M-o>"] = "open_with_vscode",
+    -- ["<tab>"] = "fuzzy_finder",
+    ["/"] = "noop",
+    ["<C-f>"] = "noop",
+    ["<C-b>"] = "noop",
+    ["<M-n>"] = { "scroll_preview", config = { direction = -10 } },
+    ["<M-p>"] = { "scroll_preview", config = { direction = 10 } },
   },
 }
 
@@ -241,7 +232,7 @@ M.opts.filesystem = {
     "thumbs.db",
   },
   window = {
-    width = 40,
+    width = 35,
     mappings = {
       ["<M-h>"] = "toggle_hidden",
       ["<C-x>"] = "noop",
@@ -250,10 +241,34 @@ M.opts.filesystem = {
       ["[g"] = "noop",
       [")"] = "next_git_modified",
       ["("] = "prev_git_modified",
-      ["-"] = "navigate_up",
-      ["="] = "set_root",
+      [";"] = "navigate_up",
+      ["."] = "set_root",
       ["<bs>"] = "noop",
       -- ["."] = "noop",
+
+      -- ["<C-s>"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "<C-s>" } },
+      -- ["<C-s>c"] = { "order_by_created", nowait = false },
+      -- ["<C-s>d"] = { "order_by_diagnostics", nowait = false },
+      -- ["<C-s>g"] = { "order_by_git_status", nowait = false },
+      -- ["<C-s>m"] = { "order_by_modified", nowait = false },
+      -- ["<C-s>n"] = { "order_by_name", nowait = false },
+      -- ["<C-s>s"] = { "order_by_size", nowait = false },
+      -- ["<C-s>t"] = { "order_by_type", nowait = false },
+      -- ["oc"] = "noop",
+      -- ["od"] = "noop",
+      -- ["og"] = "noop",
+      -- ["om"] = "noop",
+      -- ["on"] = "noop",
+      -- ["os"] = "noop",
+      -- ["ot"] = "noop",
+    },
+  },
+}
+
+M.opts.git_status = {
+  window = {
+    mappings = {
+      ["g"] = { "show_help", nowait = false, config = { title = "Git Operation", prefix_key = "g" } },
     },
   },
 }
@@ -262,14 +277,6 @@ M.config = function(_, opts)
   require("neo-tree").setup(opts)
   -- Highlight
   -- vim.cmd("hi! link NeoTreeCursorLine QuickFixLine")
-
-  -- vim.api.nvim_create_autocmd("TabNew", {
-  --   pattern = { "*" },
-  --   callback = function()
-  --     vim.cmd("Neotree reveal action=show")
-  --   end,
-  -- })
-
   vim.api.nvim_create_autocmd("FileType", {
     pattern = { "neo-tree" },
     callback = function(opts)

@@ -18,9 +18,10 @@ local rust_keyword_filters = {
   "struct",
   "impl",
   "trait",
-  -- "pub",
-  -- "pub(crate)",
-  -- "pub(super)",
+  "unsafe",
+  "pub",
+  "pub(crate)",
+  "pub(super)",
 }
 
 local rust_enum_filters = {
@@ -64,11 +65,9 @@ local rust_snippet_filters = {
   "ok",
   "err",
   "some",
-  "unsafe",
 }
 local M = {
   luasnip = {
-    max_item_count = 100,
     -- entry_filter = function(entry, ctx)
     --   local label = entry.completion_item.label
     --   local cursor_before_line = ctx.cursor_before_line
@@ -113,7 +112,7 @@ local M = {
   },
   buffer = {
     keyword_length = 3,
-    max_item_count = 10,
+    max_item_count = 8,
     entry_filter = function(entry, ctx)
       return not entry.exact -- Filter out if it is exactly match
     end,

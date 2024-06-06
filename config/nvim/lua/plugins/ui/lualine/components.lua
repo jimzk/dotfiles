@@ -210,18 +210,16 @@ M.indent_width = function(opts)
 end
 
 M.lsp_clients = function(opts)
-  local filter_clients = { "copilot", "null-ls" }
-
+  local excluded_clients = { "copilot" }
   local component = {
     -- List active lsp
     function()
       local clients = {}
       local bufnr = vim.api.nvim_get_current_buf()
-      for _, client in ipairs(vim.lsp.get_active_clients()) do
-        if not vim.tbl_contains(filter_clients, client.name) then
-          if client.attached_buffers[bufnr] then
-            clients[client.name] = true
-          end
+      local attached_clients = vim.lsp.get_clients({ bufnr = bufnr })
+      for _, client in ipairs(attached_clients) do
+        if not vim.tbl_contains(excluded_clients, client.name) then
+          clients[client.name] = true
         end
       end
       clients = vim.tbl_keys(clients)
@@ -240,10 +238,10 @@ end
 M.progress = function(opts)
   local component = {
     function()
-      return [[%l(%p%%) %LL]]
+      -- return [[%l(%p%%) %LL]]
       -- return [[%l:%c (%p%%)]]
       -- return [[%3l:%c (%LL)]]
-      -- return [[%l:%c (%LL)]]
+      return [[%l:%c (%LL)]]
     end,
     separator = "",
   }

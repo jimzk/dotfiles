@@ -2,15 +2,15 @@
 local ignored_fts = {
   "",
   "neo-tree",
-  "aerial",
+  -- "aerial",
   "dashboard",
   "TelescopePrompt",
   -- "TelescopeResults",
-  "help",
+  -- "help",
   "fugitiveblame",
   "NeogitStatus",
   "NeogitPopup",
-  "lazy",
+  -- "lazy",
   "lazyterm",
   "lazygit",
   "mason",
@@ -19,43 +19,57 @@ local ignored_fts = {
   "notify",
   "kitty-scrollback",
   -- "zsh",
-  "Trouble", -- v2
-  "trouble", -- v3
+  "trouble",
   "markdown", -- for rust hover
   "oil",
   "oil_preview",
   "grapple",
   "rnvimr",
   "Navbuddy",
+  "spectre_panel",
   "qf",
+  "PlenaryTestPopup",
+  "lspinfo",
+  "startuptime",
+  "tsplayground",
+  "neotest-output",
+  "checkhealth",
+  "neotest-summary",
+  "neotest-output-panel",
 }
 
 vim.api.nvim_create_autocmd({
-  -- "FocusGained",
-  -- "WinEnter",
-  -- "BufWinEnter",
+  "FocusGained",
+  "WinEnter",
+  "BufWinEnter",
   "InsertLeave",
 }, {
   callback = function(opts)
     local ft = vim.bo[opts.buf].filetype
-    if not vim.tbl_contains(ignored_fts, ft) then
-      vim.o.cursorline = true
+    local bt = vim.bo[opts.buf].buftype
+    -- if not (bt == "nofile" or bt == "") then
+    if bt == "" or bt == "help" then
+      -- if not vim.tbl_contains(ignored_fts, ft) then
+      vim.wo.cursorline = true
       -- vim.wo.relativenumber = true
+      -- end
     end
   end,
 })
 
 vim.api.nvim_create_autocmd({
-  -- "FocusLost",
-  -- "WinLeave",
+  "FocusLost",
+  "WinLeave",
   "InsertEnter",
 }, {
   callback = function(opts)
     local ft = vim.bo[opts.buf].filetype
-    if not vim.tbl_contains(ignored_fts, ft) then
+    local bt = vim.bo[opts.buf].buftype
+    -- if not (bt == "nofile" or bt == "") then
+    if bt == "" or bt == "help" then
+      -- if not vim.tbl_contains(ignored_fts, ft) then
       vim.wo.cursorline = false
-      -- vim.wo.number = true
-      -- vim.wo.relativenumber = false
+      -- end
     end
   end,
 })

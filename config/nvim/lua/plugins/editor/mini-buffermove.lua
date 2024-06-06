@@ -3,31 +3,58 @@
 return {
   "echasnovski/mini.bufremove",
   event = "BufReadPost",
-  -- enabled = true,
-
   keys = function()
     return {
       {
-        "<BS>",
+        "q",
         function()
-          -- _G.remove_harpoon()
+          local bufnr = vim.api.nvim_get_current_buf()
+          local current_winnr = vim.api.nvim_get_current_win()
+
+          local win_floated = vim.api.nvim_win_get_config(current_winnr).relative ~= ""
+          local buflisted = vim.bo[bufnr].buflisted
+          local is_normal_file = vim.bo.bufhidden == ""
+          if win_floated or not buflisted or not is_normal_file then
+            vim.cmd([[close]])
+            return
+          end
+
+          local windows = vim.api.nvim_list_wins()
+          for _, winnr in pairs(windows) do
+            if winnr ~= current_winnr and vim.api.nvim_win_get_buf(winnr) == bufnr then
+              vim.notify("Buffer in other window. Can't delete.", vim.log.levels.WARN, { title = "Buffer" })
+              return
+            end
+          end
+          -- vim.cmd("BufferLineCyclePrev")
+          vim.cmd("BufferPrevious")
           local bd = require("mini.bufremove").delete
           if vim.bo.modified then
             local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
             if choice == 1 then -- Yes
               vim.cmd.write()
-              bd(0)
+              bd(bufnr)
             elseif choice == 2 then -- No
-              bd(0, true)
+              bd(bufnr, true)
             end
           else
-            bd(0)
+            bd(bufnr)
           end
+          Util.update_tabline()
         end,
         desc = "Delete Buffer",
       },
-      -- stylua: ignore
-      { "<C-BS>", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+      { "<BS>", "q", remap = true, desc = "Delete Buffer" },
+      {
+        "<C-BS>",
+        function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          vim.cmd("BufferPrevious")
+          require("mini.bufremove").delete(bufnr, true)
+          Util.update_tabline()
+        end,
+        desc = "Delete Buffer (Force)",
+      },
     }
   end,
 }

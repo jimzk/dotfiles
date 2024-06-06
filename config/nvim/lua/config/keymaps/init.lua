@@ -23,20 +23,28 @@ del("n", "<leader>L")
 
 -- Remap diagnostic
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L94-L108
-local map_diagnostic = function(key, severity)
+local map_diagnostic = function(key)
+  local get_severity = function()
+    local items = vim.diagnostic.get(0)
+    local severity = vim.diagnostic.severity.HINT
+    for _, item in ipairs(items) do
+      severity = math.min(severity, item.severity)
+    end
+    return severity
+  end
   local next_diagnostic = function()
+    local severity = get_severity()
     vim.diagnostic.goto_next({ severity = vim.diagnostic.severity[severity] })
   end
   local prev_diagnostic = function()
+    local severity = get_severity()
     vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity[severity] })
   end
   local go_next_proxy, go_prev_proxy = Util.make_repeatable_move_pair(next_diagnostic, prev_diagnostic)
-  local severity_desc = severity and " (" .. severity .. ") " or ""
-  map("n", "]" .. key, go_next_proxy, "Next Diagnostic" .. severity_desc)
-  map("n", "[" .. key, go_prev_proxy, "Prev Diagnostic" .. severity_desc)
+  map("n", "]" .. key, go_next_proxy, "Next Diagnostic")
+  map("n", "[" .. key, go_prev_proxy, "Prev Diagnostic")
 end
-map_diagnostic("D")
-map_diagnostic("d", "ERROR")
+map_diagnostic("d")
 -- map("n", "<leader>dl", "]d", { desc = "Next Diagnostic ERROR (]d)", remap = true })
 -- map("n", "<leader>dh", "[d", { desc = "Prev Diagnostic ERROR ([d)", remap = true })
 -- map("n", "<leader>dL", "]D", { desc = "Next Diagnostic (]D)", remap = true })

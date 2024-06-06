@@ -11,29 +11,29 @@ M.keys = function()
     { "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Find Buffers" },
     {
       "<leader>ff",
-      LazyVim.telescope("find_files", {
-        cwd = false,
+      LazyVim.pick("find_files", {
+        cwd = nil,
         hidden = false,
         no_ignore = false,
         follow = true,
       }),
       desc = "Find Files",
     },
-    -- { "<leader>fF", LazyVim.telescope("files"), desc = "Find Files (Root)" },
+    -- { "<leader>fF", LazyVim.pick("files"), desc = "Find Files (Root)" },
     {
       "<leader>fg",
-      LazyVim.telescope("git_files", {
+      LazyVim.pick("git_files", {
         show_untracked = true,
       }),
       desc = "Find Files (Git Files)",
     },
     {
-      "<leader>f<C-f>",
+      "<leader>fF",
       function()
         local path = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
         local home = os.getenv("HOME")
         local shorter_path = string.gsub(path, "^" .. home, "~")
-        LazyVim.telescope("find_files", {
+        LazyVim.pick("find_files", {
           cwd = path,
           prompt_title = "Find Files (" .. shorter_path .. "/)",
           hidden = true,
@@ -50,7 +50,7 @@ M.keys = function()
         local path = vim.loop.cwd()
         local home = os.getenv("HOME")
         local shorter_path = string.gsub(path, "^" .. home, "~")
-        LazyVim.telescope("oldfiles", {
+        LazyVim.pick("oldfiles", {
           cwd = path,
           prompt_title = "Oldfiles (" .. shorter_path .. "/)",
         })()
@@ -63,18 +63,18 @@ M.keys = function()
       desc = "Find Recent Files (Global)",
     },
     -- git
-    { "<leader>gc", "<cmd>Telescope git_bcommits<CR>", desc = "Git File Commit" },
-    { "<leader>gC", "<cmd>Telescope git_commits<CR>", desc = "Git Commit" },
+    -- { "<leader>gf", "<cmd>Telescope git_bcommits<CR>", desc = "Show File Commits" },
+    -- { "<leader>gF", "<cmd>Telescope git_commits<CR>", desc = "Project Commits" },
     { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git Status" },
-    { "<leader>gS", "<cmd>Telescope git_stash<CR>", desc = "Git Stash" },
-    { "<leader>gh", "<cmd>Telescope git_branches<CR>", desc = "Git Branch" },
+    { "<leader>gh", "<cmd>Telescope git_stash<CR>", desc = "Git Stashes" },
+    { "<leader>gr", "<cmd>Telescope git_branches<CR>", desc = "Branches" },
     -- search
     { '<leader>"', "<cmd>Telescope registers<cr>", desc = "Registers" },
 
     -- Not use
     -- { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
 
-    -- { "<leader>mj", "<cmd>Telescope marks<cr>", desc = "Jump to Mark (Telescope)" },
+    -- { "<leader>qj", "<cmd>Telescope marks<cr>", desc = "Jump to Mark (Telescope)" },
 
     -- Configurations
     { "<F1>", "<CMD>Telescope help_tags<CR>", desc = "List Helps" },
@@ -86,21 +86,21 @@ M.keys = function()
     { "<leader>no", "<cmd>Telescope vim_options<cr>", desc = "List Vim Options" },
     { "<leader>n:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
     -- { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-    { "<leader>nc", LazyVim.telescope("colorscheme", { enable_preview = true }), desc = "List Colorschemes" },
+    { "<leader>nc", LazyVim.pick("colorscheme", { enable_preview = true }), desc = "List Colorschemes" },
 
     { "<leader>nm", "<cmd>norm! K<cr>", desc = "Man Page under Cursor Word" },
     { "<leader>nM", "<cmd>Telescope man_pages<cr>", desc = "List Man Pages" },
 
     -- Search Text
-    -- { "<leader>/", LazyVim.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-    -- { "<C-f>", LazyVim.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-    -- { "<C-f>", LazyVim.telescope("grep_string", { cwd = false }), mode = "v", desc = "Grep (cwd)" },
-    -- { "<C-M-f>", LazyVim.telescope("live_grep"), desc = "Grep (root dir)" },
-    -- { "<C-M-f>", LazyVim.telescope("grep_string"), mode = "v", desc = "Grep (root dir)" },
+    -- { "<leader>/", LazyVim.pick("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+    -- { "<C-f>", LazyVim.pick("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+    -- { "<C-f>", LazyVim.pick("grep_string", { cwd = false }), mode = "v", desc = "Grep (cwd)" },
+    -- { "<C-M-f>", LazyVim.pick("live_grep"), desc = "Grep (root dir)" },
+    -- { "<C-M-f>", LazyVim.pick("grep_string"), mode = "v", desc = "Grep (root dir)" },
 
     -- stylua: ignore start
-    -- { "<leader><C-f>", LazyVim.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Grep Word under Cursor (cwd)", },
-    -- { "<leader><C-M-f>", LazyVim.telescope("grep_string", { word_match = "-w" }), desc = "Grep Word under Cursor (root dir)" },
+    -- { "<leader><C-f>", LazyVim.pick("grep_string", { cwd = false, word_match = "-w" }), desc = "Grep Word under Cursor (cwd)", },
+    -- { "<leader><C-M-f>", LazyVim.pick("grep_string", { word_match = "-w" }), desc = "Grep Word under Cursor (root dir)" },
     -- stylua: ignore end
 
     -- Symbols
@@ -182,12 +182,8 @@ end
 M.opts = function()
   local actions = require("telescope.actions")
 
-  local open_with_trouble = function(...)
-    return require("trouble.providers.telescope").open_with_trouble(...)
-  end
-  local open_selected_with_trouble = function(...)
-    return require("trouble.providers.telescope").open_selected_with_trouble(...)
-  end
+  local open_with_trouble = require("trouble.sources.telescope").open
+  local add_to_trouble = require("trouble.sources.telescope").add
 
   return {
     defaults = {
@@ -198,7 +194,7 @@ M.opts = function()
       -- },
       results_title = false, -- hide results title
       dynamic_preview_title = true, -- Use dynamic preview title if avaliable
-      wrap_results = true,
+      wrap_results = false,
       sorting_strategy = "ascending", -- cursor starts from top result
       layout_strategy = "vertical", -- flex, bottom_pane, curcor, center, horizontal, vertical
       layout_config = {
@@ -249,7 +245,7 @@ M.opts = function()
           ["<C-\\>"] = require("telescope.actions.layout").toggle_preview,
           -- qflist / loclist
           -- ["<C-t>"] = open_with_trouble,
-          ["<M-t>"] = open_selected_with_trouble,
+          -- ["<M-t>"] = add_to_trouble,
           -- ["<M-q>"] = open_selected_with_qflist,
           ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           ["<M-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
@@ -262,8 +258,8 @@ M.opts = function()
           ["<C-k>"] = actions.cycle_history_prev,
           ["<C-S-n>"] = actions.results_scrolling_down,
           ["<C-S-p>"] = actions.results_scrolling_up,
-          ["<M-j>"] = actions.preview_scrolling_down,
-          ["<M-k>"] = actions.preview_scrolling_up,
+          ["<M-n>"] = actions.preview_scrolling_down,
+          ["<M-p>"] = actions.preview_scrolling_up,
           -- Disable defaults
           ["<C-x>"] = false, -- select_horizontal
           ["<PageUp>"] = false, -- results_scrolling_up

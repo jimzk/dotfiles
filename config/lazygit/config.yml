@@ -1,9 +1,10 @@
 # https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#default
 # https://github.com/mhinz/neovim-remote
 os:
-  editPreset: "nvim"
+  editPreset: "nvim-remote"
   # I don't know why it not work when I set:
   # export EDITOR="nvr -cc \"split| wincmd p\" --remote-wait +\"set bufhidden=wipe\" --servername $NVIM"
   # edit: "$EDITOR --remote {{filename}}"
 
   edit: 'nvr -cc "wincmd p" --remote-wait +"set bufhidden=wipe" --servername $NVIM --remote {{filename}}'
+  nerdFontsVersion: 3

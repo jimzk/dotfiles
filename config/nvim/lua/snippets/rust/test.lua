@@ -25,7 +25,7 @@ local util = require("snippets.util")
 return {
   s(
     {
-      trig = "test mod",
+      trig = "mod tests",
       desc = "mod tests",
     },
     fmt(
@@ -50,7 +50,7 @@ return {
   ),
   s(
     {
-      trig = "test fn",
+      trig = "fn test",
       desc = "fn test()",
     },
     fmt(

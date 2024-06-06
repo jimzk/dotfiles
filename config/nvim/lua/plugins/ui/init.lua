@@ -11,7 +11,7 @@ vim.list_extend(specs, {
     name = "catppuccin",
     opts = {
       -- latte, frappe, macchiato, mocha
-      flavour = "frappe",
+      flavour = "macchiato",
       -- transparent_background = true, -- disables setting the background color.
       term_colors = true, -- for neovide
       styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
@@ -26,8 +26,9 @@ vim.list_extend(specs, {
         -- Visual = { fg = "#e5e6ec", bg = "#505775" }, -- Remove bold
         CursorLineNr = { fg = "#FFD400", style = { "bold" } }, -- #CFD0F5
         -- CursorLineNr = { style = { "bold" }, fg = "#303447" },
-        CursorLine = { bg = "#555555" }, -- #4E5264
+        -- CursorLine = { bg = "#555555" }, -- #4E5264
         Visual = { bg = "#555555", style = {} },
+        IncSearch = { fg = "#cad3f6", bg = "#455c6e" }, -- link to Search
       },
       dim_inactive = {
         enabled = false, -- dims the background color of inactive window
@@ -36,6 +37,18 @@ vim.list_extend(specs, {
       },
       integrations = {
         harpoon = true,
+        aerial = true,
+        barbar = true,
+        dashboard = true,
+        colorful_winsep = {
+          enabled = true,
+          color = "red",
+        },
+        fidget = true,
+        neotree = true,
+        notify = true,
+        which_key = true,
+        beacon = true,
       },
     },
   },
@@ -44,6 +57,7 @@ vim.list_extend(specs, {
     "LazyVim/LazyVim",
     opts = {
       -- The default is tokyonight
+      -- colorscheme = "tokyonight-storm",
       colorscheme = "catppuccin",
     },
   },

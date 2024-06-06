@@ -1,3 +1,4 @@
+-- Indicate where the cursor is
 return {
   "edluffy/specs.nvim",
   enabled = false,

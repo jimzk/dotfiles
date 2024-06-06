@@ -3,6 +3,11 @@
 return {
   "echasnovski/mini.indentscope",
   opts = {
+    symbol = "┃",
+    draw = {
+      delay = 50,
+      animation = require("mini.indentscope").gen_animation.none(),
+    },
     mappings = {
       object_scope = "ii",
       object_scope_with_border = "ai",
@@ -18,7 +23,6 @@ return {
         "aerial",
         "dashboard",
         "neo-tree",
-        "Trouble",
         "trouble",
         "lazy",
         "oil",
@@ -29,10 +33,13 @@ return {
         "lazyterm",
         "dropbar_menu",
         "rnvimr",
+        "neo-tree-popup",
+        "neotest-summary",
+        "neotest-output",
+        "neotest-output-panel",
       },
       callback = function(opts)
         vim.b[opts.buf].miniindentscope_disable = true
-        -- vim.b.miniindentscope_disable = true
       end,
     })
   end,
@@ -55,10 +62,10 @@ return {
       function() move("bottom", true) end,
       function() move("top", true) end)
     -- stylua: ignore end
-    map({ "n", "x", "o" }, "]I", next_indent_inner, "Indent End")
-    map({ "n", "x", "o" }, "[I", prev_indent_inner, "Indent Start")
-    map({ "n", "x", "o" }, "]i", next_indent_outer, "Indent End (Outer)")
-    map({ "n", "x", "o" }, "[i", prev_indent_outer, "Indent Start (Outer)")
+    map({ "n", "x", "o" }, "]i", next_indent_inner, "Indent End")
+    map({ "n", "x", "o" }, "[i", prev_indent_inner, "Indent Start")
+    map({ "n", "x", "o" }, "]I", next_indent_outer, "Indent End (Outer)")
+    map({ "n", "x", "o" }, "[I", prev_indent_outer, "Indent Start (Outer)")
 
     -- Darker highlight of IndentBlanklineChar
     vim.cmd([[hi! MiniIndentscopeSymbol guifg=#b5bddd]])

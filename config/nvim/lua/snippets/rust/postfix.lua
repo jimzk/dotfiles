@@ -102,11 +102,26 @@ local M = {
   postfix({ trig = "some", desc = "Some(…)" }, fmt("Some({}){}", { l(l.POSTFIX_MATCH), i(0) })),
   postfix({ trig = "string", desc = "String::from(…)" }, fmt("String::from({}){}", { l(l.POSTFIX_MATCH), i(0) })),
 
-  --
   -- Type postfix
-  -- postfix_type("option", "Option"), -- foo@option<tab> -> Option<Foo>
-  -- postfix_type("vec", "Vec"),
-  --
+  postfix({
+    trig = "(op|option)",
+    trigEngine = "ecma",
+    name = "Option<…>",
+    desc = "Option<…>",
+  }, fmt([[Option<{}>{}]], { l(l.POSTFIX_MATCH), i(0) })),
+  postfix({
+    trig = "(v|vec)",
+    trigEngine = "ecma",
+    name = "Vec<…>",
+    desc = "Vec<…>",
+  }, fmt([[Vec<{}>{}]], { l(l.POSTFIX_MATCH), i(0) })),
+  postfix({
+    trig = "(res|result)",
+    trigEngine = "ecma",
+    name = "Result<…, …>",
+    desc = "Result<…, …>",
+  }, fmt([[Result<{}, {}>{}]], { l(l.POSTFIX_MATCH), i(1, "Err"), i(0) })),
+
   -- Rust analyzer Format string completion
   -- https://rust-analyzer.github.io/manual.html#format-string-completion
   -- postfix_format("println", "println!"), -- "foo {bar}"@println<tab> -> println!("foo {}", bar)
@@ -120,15 +135,21 @@ local M = {
   -- postfix_format("loge", "log::error!"),
 
   postfix({
-    trig = "println",
+    trig = "(prl|println)",
+    trigEngine = "ecma",
+    name = "println!",
     desc = 'println!("x = {}", x);',
   }, fmt([[println!("{} = {{}}", {});{}]], { dl(1, l.POSTFIX_MATCH, {}), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
-    trig = "panic",
+    trig = "(pc|panic)",
+    trigEngine = "ecma",
+    name = "panic!",
     desc = 'panic!("x = {}", x);',
   }, fmt([[panic!("{} = {{}}", {});{}]], { dl(1, l.POSTFIX_MATCH, {}), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
-    trig = "format",
+    trig = "(fmt|format)",
+    trigEngine = "ecma",
+    name = "format!",
     desc = 'format!("x = {}", x);',
   }, fmt([[format!("{} = {{}}", {});{}]], { dl(1, l.POSTFIX_MATCH, {}), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
@@ -147,11 +168,26 @@ local M = {
   }, fmt([[unsafe {{ {} }}{}]], { l(l.POSTFIX_MATCH), i(0) })),
 
   -- https://rust-analyzer.github.io/manual.html#magic-completions
-  postfix({ trig = "let", desc = "let … = expr;" }, fmt("let {} = {};", { i(1), l(l.POSTFIX_MATCH) })),
-  postfix({ trig = "letm", desc = "let mut … = expr;" }, fmt("let mut {} = {};", { i(1), l(l.POSTFIX_MATCH) })),
-  postfix({ trig = "return", desc = "return expr;" }, fmt("return {};", { l(l.POSTFIX_MATCH) })),
   postfix({ trig = "dbg", desc = "dbg!(expr);" }, fmt("dbg!({});", { l(l.POSTFIX_MATCH) })),
   postfix({ trig = "dbgr", desc = "dbg!(&expr);" }, fmt("dbg!(&{});", { l(l.POSTFIX_MATCH) })),
+  postfix({
+    trig = "(l|let)",
+    trigEngine = "ecma",
+    name = "let",
+    desc = "let … = expr;",
+  }, fmt("let {} = {};", { i(1), l(l.POSTFIX_MATCH) })),
+  postfix({
+    trig = "(lm|letm)",
+    trigEngine = "ecma",
+    name = "letm",
+    desc = "let mut … = expr;",
+  }, fmt("let mut {} = {};", { i(1), l(l.POSTFIX_MATCH) })),
+  postfix({
+    trig = "(r|return)",
+    trigEngine = "ecma",
+    name = "return",
+    desc = "return expr;",
+  }, fmt("return {};", { l(l.POSTFIX_MATCH) })),
   postfix(
     { trig = "if", desc = "if expr {}" },
     fmt(
@@ -163,7 +199,12 @@ local M = {
     )
   ),
   postfix(
-    { trig = "while", desc = "while expr {}" },
+    {
+      trig = "(w|while)",
+      trigEngine = "ecma",
+      name = "while",
+      desc = "while expr {}",
+    },
     fmt(
       [[
     while {} {{
@@ -173,7 +214,12 @@ local M = {
     )
   ),
   postfix(
-    { trig = "if let", desc = "if let … = expr { … }" },
+    {
+      trig = "(il|iflet)",
+      trigEngine = "ecma",
+      name = "if let",
+      desc = "if let … = expr { … }",
+    },
     fmt(
       [[
     if let {} {{
@@ -183,7 +229,12 @@ local M = {
     )
   ),
   postfix(
-    { trig = "while let", desc = "while let … = expr { … }" },
+    {
+      trig = "(wl|while let)",
+      trigEngine = "ecma",
+      name = "while let",
+      desc = "while let … = expr { … }",
+    },
     fmt(
       [[
     while let {} {{
@@ -193,7 +244,12 @@ local M = {
     )
   ),
   postfix(
-    { trig = "match", desc = "match expr {}" },
+    {
+      trig = "(m|match)",
+      trigEngine = "ecma",
+      name = "match",
+      desc = "match expr {}",
+    },
     fmt(
       [[
     match {} {{
@@ -202,30 +258,26 @@ local M = {
       { l(l.POSTFIX_MATCH), i(0) }
     )
   ),
-  s(
-    {
-      trig = ":",
-      desc = "i: i32",
-    },
-    fmt("{}: {}{}", { i(2, "i"), i(1, "i32"), i(0) }),
-    {
-      condition = conds_expand.line_after_space,
-      show_condition = conds_expand.always_false,
-    }
-  ),
+  s({
+    trig = ":",
+    desc = "i: i32",
+    hidden = true,
+  }, fmt("{}: {}{}", { i(2, "i"), i(1, "i32"), i(0) }), { condition = conds_expand.line_after_space }),
   postfix({
     trig = ":",
     desc = "i : usize",
     disabled_prefix = true,
     match_pattern_postfix = "[%w>]+$",
     -- match_pattern = "[%w%.%_%(%):<>]+$",
-  }, fmt("{} : {}{}", { i(1), l(l.POSTFIX_MATCH), i(0) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("{} : {}{}", { i(1), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
     trig = ")",
     desc = "…(expr)",
     disabled_prefix = true,
     -- match_pattern = "[%w%.%_%(%):<>]+$",
-  }, fmt("{}({})", { i(1), l(l.POSTFIX_MATCH) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("{}({})", { i(1), l(l.POSTFIX_MATCH) })),
 }
 
 vim.list_extend(M, {
@@ -235,28 +287,32 @@ vim.list_extend(M, {
     disabled_prefix = true,
     priority = 3000,
     match_pattern = "['%w_:,]+$",
-  }, fmt("{}<{}>{}", { i(1), l(l.POSTFIX_MATCH), i(0) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("{}<{}>{}", { i(1), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
     trig = ",",
     desc = "(T, …)",
     disabled_prefix = true,
     priority = 3000,
     match_pattern = "['%w_:,]+$",
-  }, fmt("({}, {}){}", { l(l.POSTFIX_MATCH), i(1), i(0) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("({}, {}){}", { l(l.POSTFIX_MATCH), i(1), i(0) })),
   postfix({
     trig = ">",
     desc = "…<T>",
     disabled_prefix = true,
     -- NOTE: limit: fail to complete (usize, usize><tab>), which expands to |<(usize, usize>)
     match_pattern = "[^ %)>,%-]['%w_%(%):<>, &]*[_%w>%)]$",
-  }, fmt("{}<{}>{}", { i(1), l(l.POSTFIX_MATCH), i(0) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("{}<{}>{}", { i(1), l(l.POSTFIX_MATCH), i(0) })),
   postfix({
     trig = ",",
     desc = "(T, …)",
     disabled_prefix = true,
     -- NOTE: limit: fail to complete (usize, usize,<tab>), which expands to ((usize, usize, |))
     match_pattern = "[^ %)>,%-]['%w_%(%):<>, &]*[_%w>%)]$",
-  }, fmt("({}, {}){}", { l(l.POSTFIX_MATCH), i(1), i(0) }), { show_condition = conds_expand.always_false }),
+    hidden = true,
+  }, fmt("({}, {}){}", { l(l.POSTFIX_MATCH), i(1), i(0) })),
 })
 
 -- not, ref, refm, deref

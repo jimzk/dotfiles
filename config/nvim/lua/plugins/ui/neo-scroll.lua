@@ -2,7 +2,7 @@
 return {
   -- Smooth scroll
   "karb94/neoscroll.nvim",
-  enabled = not vim.g.neovide,
+  enabled = false,
   opts = {
     mappings = {
       "<C-u>",

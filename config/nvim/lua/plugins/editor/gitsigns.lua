@@ -5,7 +5,6 @@ return {
   -- event = "LazyFile",
   event = "VeryLazy",
   keys = {
-    { "<leader>gd", "<cmd>Gitsigns diffthis<cr>", "diff current file (gitsigns)" },
     {
       "<leader>ob",
       function()
@@ -65,14 +64,14 @@ return {
       map("n", "<leader><C-a>", gitsigns.undo_stage_hunk, "[G] Undo Stage Hunk")
 
       map("n", "<leader>u", gitsigns.reset_hunk, "[G] Reset Hunk")
-      map("v", "<leader>u", function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, "[G] Reset Hunk")
+      map("v", "<leader>u", function() gitsigns.reset_hunk ({ vim.fn.line('.'), vim.fn.line('v') }) end, "[G] Reset Hunk")
       map("n", "<leader>U", gitsigns.reset_buffer, "[G] Reset Buffer")
 
       map("n", "g<CR>", gitsigns.preview_hunk, "[G] Preview Hunk")
 
-      map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end, "Git Blame Line")
-      map("n", "<leader>gd", gitsigns.diffthis, "Diff This")
-      map("n", "<leader>gD", function() gitsigns.diffthis("~") end, "Diff This ~")
+      map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end, "Git Blame Line (Gitsigns)")
+      map("n", "<leader>gd", gitsigns.diffthis, "Diff With Staging Area")
+      map("n", "<leader>gD", function() gitsigns.diffthis("~1") end, "Diff With Last Commit")
 
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "[G] Git Hunk")
     end,

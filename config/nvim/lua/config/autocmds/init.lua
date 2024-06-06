@@ -3,7 +3,7 @@
 -- Add any additional autocmds here
 
 require("config.autocmds.auto-save")
--- require("config.autocmds.cursorline")
+require("config.autocmds.cursorline")
 
 -- Jump to last visited place when entering a bufer
 -- * https://this-week-in-neovim.org/2023/Jan/02#tips
@@ -29,9 +29,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   },
   callback = function(opts)
     local bufnr = opts.buf
-    vim.bo[bufnr].readonly = true
     vim.bo[bufnr].modifiable = false
-    vim.bo[bufnr].buflisted = false
-    vim.bo[bufnr].swapfile = false
+    -- vim.bo[bufnr].readonly = true
+    -- vim.bo[bufnr].buflisted = false
+    -- vim.bo[bufnr].swapfile = false
   end,
 })

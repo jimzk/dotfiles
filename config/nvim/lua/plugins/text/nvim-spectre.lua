@@ -6,7 +6,7 @@ local M = {
 M.keys = function()
   return {
     {
-      "<leader>rr",
+      "<leader>sr",
       function()
         local spectre = require("spectre")
         local query = require("spectre.actions").get_state().query
@@ -19,7 +19,7 @@ M.keys = function()
       desc = "Replace (Spectre)",
     },
     {
-      "<leader>rr",
+      "<leader>sr",
       function()
         vim.cmd('noau normal! "vy"')
         local content = vim.fn.getreg("v")
@@ -31,7 +31,7 @@ M.keys = function()
       mode = "v",
     },
     {
-      "<leader>rb",
+      "<leader>sb",
       function()
         local spectre = require("spectre")
         local query = require("spectre.actions").get_state().query
@@ -45,7 +45,7 @@ M.keys = function()
       desc = "Replace in Buffer (Spectre)",
     },
     {
-      "<leader>rb",
+      "<leader>sb",
       function()
         vim.cmd('noau normal! "vy"')
         local content = vim.fn.getreg("v")

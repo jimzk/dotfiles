@@ -1,6 +1,3 @@
-local key_join = "J"
-local key_split = "S"
-
 return {
   -- Split and join
   "Wansmer/treesj",
@@ -28,6 +25,8 @@ return {
         if not vim.bo[event.buf].buflisted then
           return
         end
+        local key_join = "J"
+        local key_split = "S"
         local map = Util.map
         local callback_opts = { buffer = true }
         if langs[vim.bo.filetype] then

@@ -1,7 +1,13 @@
 return {
   "numToStr/Comment.nvim",
   dependencies = {
-    { "echasnovski/mini.comment", enabled = false },
+    {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      lazy = true,
+      opts = {
+        enable_autocmd = false,
+      },
+    },
   },
   event = "BufReadPost",
   init = function()
@@ -18,24 +24,27 @@ return {
     { "gct", "gcoTODO: ", desc = "Add TODO below", remap = true },
     { "gcT", "gcOTODO: ", desc = "Add TODO above", remap = true },
   },
-  opts = {
-    toggler = {
-      line = "gcc",
-      block = "gCC",
-    },
-    opleader = {
-      line = "gc",
-      block = "gC",
-    },
-    extra = {
-      above = "gcO",
-      below = "gco",
-      eol = "gcA",
-    },
-    mappings = {
-      basic = true,
-      extra = true,
-    },
-    pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-  },
+  config = function(_, opts)
+    local opts = {
+      toggler = {
+        line = "gcc",
+        block = "gCC",
+      },
+      opleader = {
+        line = "gc",
+        block = "gC",
+      },
+      extra = {
+        above = "gcO",
+        below = "gco",
+        eol = "gcA",
+      },
+      mappings = {
+        basic = true,
+        extra = true,
+      },
+      pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+    }
+    require("Comment").setup(opts)
+  end,
 }

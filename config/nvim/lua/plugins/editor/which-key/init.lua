@@ -8,7 +8,7 @@ M.opts = function()
   return {
     plugins = {
       marks = false,
-      briefmarks = true, -- my which-key plugins
+      briefmarks = false, -- my which-key plugins
       spelling = true,
       presets = {
         -- text_objects = false,
@@ -31,11 +31,11 @@ M.config = function(_, opts)
   wk.register({
     mode = { "n", "v" },
     ["g"] = { mode = { "n", "o" }, name = "+goto" },
+    ["s"] = { mode = { "n", "x" }, name = "+misc" },
     ["]"] = { mode = { "n", "o" }, name = "+next" },
     ["["] = { mode = { "n", "o" }, name = "+prev" },
     -- ["<leader><tab>"] = { name = "+tabs" },
     ["<C-t>"] = { name = "+tab" },
-    -- ["<C-b>"] = { name = "+buffer" },
     ["<C-r>"] = { name = "+neo-tree" },
     ["<leader>"] = { name = "+leader" },
     ["<leader>c"] = { name = "+code" },
@@ -47,15 +47,17 @@ M.config = function(_, opts)
       },
     },
     ["<leader>h"] = { name = "+file operation" },
-    ["<leader>d"] = { name = "+diagnostic" },
+    ["<leader>d"] = { name = "+diagnostic/todos" },
     -- ["<leader>q"] = { name = "+quit/session" },
     -- ["<leader>u"] = { name = "+ui" },
     ["<leader>o"] = { name = "+toggle option" },
-    ["<leader>m"] = { name = "+quickfix/trouble" },
-    ["<leader>t"] = { name = "+test/debug" },
+    ["<leader>q"] = { name = "+quickfix/trouble" },
+    ["<leader>e"] = { name = "+debug" },
+    ["<leader>r"] = { name = "+refactor" },
+    ["<leader>t"] = { name = "+test/run" },
     ["<leader>i"] = { name = "+symbols" },
     ["<leader>p"] = { name = "+session" },
-    ["<leader>r"] = { name = "+replace / search" },
+    ["<leader>s"] = { name = "+search/replace" },
     ["<leader>n"] = { name = "+nvim config" },
     ["<leader>x"] = {
       name = ignored,
@@ -66,26 +68,6 @@ M.config = function(_, opts)
     ["{"] = "Prev Blank Line",
     ["}"] = "Next Blank Line",
     ["<C-Left>"] = "Decrease Window Width (←↑→↓)",
-
-    -- <C-t>t: alternative tab
-    -- <C-b>b: alternative buffer (<M-S-b>: split alternative buffer)
-    -- <C-w>w: alternative win
-    --
-    -- <C-b>r: Ranger
-    -- <C-b>o/<C-b>O: Oil
-    -- <M-space>: locate file in neo-tree
-    --
-    -- <M-Esc>: go parent context
-    -- _/+: go prev/next unmatch synatx
-    -- <M-i>: navbuddy
-    --
-    -- <F3>: bookmarks
-    -- <S-F3>: list bookmarks
-    -- <M-j>/<M-k>,: next/prev mark (bookmarks.nvim)
-    --
-    -- <M-s>: signature
-    -- <M-y>: gp (ChatGPT)
-    -- <M-g>: Git status
   }, {})
 
   vim.defer_fn(function()
@@ -104,6 +86,16 @@ M.config = function(_, opts)
   end, 1000)
 
   require("plugins.editor.which-key.presets")
+
+  -- Get back to original poistion from visual mode
+  -- Use case: after vib to select and <esc> to cancel the visual, <C-o> can jump back
+  local map = Util.map
+  map("n", "v", "m`v")
+  map("n", "vv", "m`v$o")
+  map("n", "V", "m`V")
+  map("n", "<C-V>", "m`<C-V>")
+  -- Use ` to compatible with treesitter incremental_selection which marks v continusouly
+  map("n", "gv", "m`gv")
 end
 
 return M

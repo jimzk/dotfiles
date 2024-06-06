@@ -32,7 +32,8 @@
 
     :Edge ["^com\\.microsoft\\.edgemac$"]
     :iTerm ["^com\\.googlecode\\.iterm2$"]
-    :kitty ["^net.kovidgoyal.kitty$"]
+    :Kitty ["^net.kovidgoyal.kitty$"]
+    :Alacritty ["^org.alacritty$"]
     :VSCode ["^com\\.microsoft\\.VSCode$"]
     :intelliJ-IDEA ["^com\\.jetbrains\\.intellij$"]
     :intelliJ-GoLand ["^com\\.jetbrains\\.goland$"]
@@ -155,7 +156,7 @@
         [:!Tgrave_accent_and_tilde [:openApp "Google Chrome"]]
         [:!Tv [:openApp "Visual Studio Code"]]
         [:!Te [:openApp "Finder"]]
-        [:!Tk [:openApp "kitty"]]
+        [:!Tk [:openApp "Alacritty"]]
         [:!Tbackslash [:openApp "Bitwarden"]]
 
         ; [:!Tp :!COSf12] ;; Quick flomo

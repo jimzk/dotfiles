@@ -1,6 +1,7 @@
 return {
   -- Run frequently-used tasks in background
   "stevearc/overseer.nvim",
+  event = "VeryLazy",
   keys = {
     { "<leader>co", "<cmd>OverseerRun<cr><cmd>OverseerOpen<cr>", desc = "Build / Run (Overseer)" },
     { "<leader>cO", "<cmd>OverseerToggle<cr>", desc = "Toggle build / Run Result (Overseer)" },
@@ -34,4 +35,12 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("overseer").setup(opts)
+    -- require("neotest").setup({
+    --   consumers = {
+    --     overseer = require("neotest.consumers.overseer"),
+    --   },
+    -- })
+  end,
 }

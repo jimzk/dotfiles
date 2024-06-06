@@ -102,18 +102,14 @@ return {
       i(2, "i32"),
       i(0),
     }),
-    {
-      condition = conds_expand.rust_definition,
-    }
+    { condition = conds_expand.rust_definition }
   ),
   s(
     "mod",
     fmt("mod {};", {
       i(1),
     }),
-    {
-      condition = conds_expand.rust_definition,
-    }
+    { condition = conds_expand.rust_definition }
   ),
   -- s({ trig = "struct", desc = "struct {...}" }, {
   --   t({ "#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]", "" }),

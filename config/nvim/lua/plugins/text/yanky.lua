@@ -3,6 +3,7 @@
 return {
   "gbprod/yanky.nvim",
   dependencies = { "kkharji/sqlite.lua" },
+  event = "VeryLazy",
   opts = {
     -- yanky highlight is very laggy
     highlight = {
@@ -34,22 +35,22 @@ return {
       { "ay", "iy", mode = { "o", "x" }, desc = "Last Put Text", remap = true },
 
       -- stylua: ignore start
-      { "<M-h>", function() yanky.cycle(1) end, "Cycle Prev Yank", },
-      { "<M-l>", function() yanky.cycle(-1) end, "Cycle Next Yank", },
+      -- { "<M-h>", function() yanky.cycle(1) end, "Cycle Prev Yank", },
+      -- { "<M-l>", function() yanky.cycle(-1) end, "Cycle Next Yank", },
       -- stylua: ignore end
       -- { "]k", next_yank },
       -- { "[k", prev_yank },
 
       {
-        "<leader>y",
-        mode = { "n", "x" },
+        "<M-y>",
+        mode = { "n", "x", "i" },
         function()
           local themes = require("telescope.themes")
           require("telescope").extensions.yank_history.yank_history(themes.get_cursor({
-            previewer = false,
-            -- layout_strategy = "vertical",
+            previewer = true,
+            layout_strategy = "vertical",
             layout_config = {
-              -- preview_height = 0.1,
+              preview_height = 0.1,
               width = { 0.35, min = 80 },
               height = 0.5,
             },

@@ -3,43 +3,6 @@ local M = {
   event = { "BufRead Cargo.toml" },
 }
 
-M.dependencies = {
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        taplo = {
-          keys = {
-            {
-              "K",
-              function()
-                if vim.fn.expand("%:t") == "Cargo.toml" and require("crates").popup_available() then
-                  require("crates").show_popup()
-                else
-                  vim.lsp.buf.hover()
-                end
-              end,
-              desc = "Show Crate Documentation",
-            },
-          },
-        },
-      },
-      setup = {
-        rust_analyzer = function()
-          return true
-        end,
-      },
-    },
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, { name = "crates" })
-    end,
-  },
-}
-
 -- crates load at insert
 M.opts = {
   lsp = {
@@ -48,10 +11,8 @@ M.opts = {
     completion = true,
     hover = true,
   },
-  src = {
-    cmp = {
-      enabled = true,
-    },
+  completion = {
+    cmp = { enabled = true },
   },
   popup = {
     autofocus = true,

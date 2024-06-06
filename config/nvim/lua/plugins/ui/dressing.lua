@@ -2,7 +2,7 @@ return {
   "stevearc/dressing.nvim",
   opts = {
     input = {
-      start_in_insert = false,
+      start_in_insert = true,
     },
     select = {
       get_config = function(opts)

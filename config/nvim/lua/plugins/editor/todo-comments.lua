@@ -6,35 +6,27 @@ return {
   -- If keys is a function, then it override but not merge with the default keys
   keys = function()
     return {
-      {
-        "<leader>mtf",
-        function()
-          local path = vim.fn.expand("%:p")
-          vim.cmd("TodoTrouble cwd=" .. path)
-        end,
-        desc = "File TODOs",
-      },
-      { "<leader>mtw", "<cmd>TodoTrouble<cr>", desc = "Workspace TODOs" },
-      { "<leader>mtW", "<cmd>TodoTelescope<cr>", desc = "Workspace TODOs (Telescope)" },
       -- {
-      --   "<leader>mf",
+      --   "<leader>qtb",
       --   function()
       --     local path = vim.fn.expand("%:p")
-      --     vim.cmd("TodoTelescope cwd=" .. path)
+      --     vim.cmd("Trouble todo cwd=" .. path)
       --   end,
-      --   desc = "TODO in Current File (Telescope)",
+      --   desc = "Buffer TODOs",
       -- },
+      { "<leader>dt", "<cmd>Trouble todo filter = {tag = {TODO}}<cr>", desc = "Workspace TODOs" },
+      { "<leader>dT", "<cmd>TodoTelescope keywords=TODO<cr>", desc = "Workspace TODOs (Telescope)" },
+      -- {
+      --   "<leader>qfb",
+      --   function()
+      --     local path = vim.fn.expand("%:p")
+      --     vim.cmd("TodoTrouble cwd=" .. path)
+      --   end,
+      --   desc = "Buffer TODO/FIX",
+      -- },
+      { "<leader>df", "<cmd>Trouble todo filter = {tag = {TODO,FIX,FIXME}}<cr>", desc = "Workspace TODO/FIX" },
       {
-        "<leader>mff",
-        function()
-          local path = vim.fn.expand("%:p")
-          vim.cmd("TodoTrouble cwd=" .. path)
-        end,
-        desc = "File TODO/FIX",
-      },
-      { "<leader>mfw", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Workspace TODO/FIX" },
-      {
-        "<leader>mfW",
+        "<leader>dF",
         "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",
         desc = "Workspace TODO/FIX (Telescope)",
       },
@@ -57,7 +49,7 @@ return {
     map({ "n", "x", "o" }, "]t", next_todo_repeat, "Next TODO")
     map({ "n", "x", "o" }, "[t", prev_todo_repeat, "Prev TODO")
     require("which-key").register({
-      ["<leader>m"] = {
+      ["<leader>q"] = {
         t = { name = "TODO" },
         f = { name = "TODO/FIX" },
       },

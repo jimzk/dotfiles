@@ -2,7 +2,7 @@ local M = {
   "jedrzejboczar/possession.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    { "folk/persistence.nvim", enabled = false },
+    { "folke/persistence.nvim", enabled = false },
   },
   -- event = "VimEnter",
   cmd = { "PossessionLoad" },
@@ -26,7 +26,7 @@ M.keys = {
         prompt = "Overwrite Session",
       }, function(choice)
         if not choice then
-          vim.notify("No session overwritten or saved", vim.log.levels.WARN, { title = "Posession" })
+          vim.notify("No session overwritten or saved", vim.log.levels.WARN, { title = "Possession" })
           return
         end
         if choice == "[Create New]" then
@@ -66,11 +66,21 @@ M.opts = {
     current = true,
   },
   hooks = {
+    before_save = function(name)
+      local copilot_chat = require("CopilotChat")
+      if copilot_chat.response() then
+        copilot_chat.save(name)
+      end
+      return {}
+    end,
     --   before_save = function(_)
     --     vim.cmd([[wincmd =]]) -- Turn off full windows
     --     return {}
     --   end,
     after_load = function(name, user_data)
+      local copilot_chat = require("CopilotChat")
+      copilot_chat.load(name)
+      copilot_chat.close()
       local manager = require("neo-tree.sources.manager")
       local renderer = require("neo-tree.ui.renderer")
       local state = manager.get_state("filesystem")
@@ -97,12 +107,13 @@ M.opts = {
       preserve_layout = false, -- do not preserse empty window
       match = {
         filetype = {
-          -- "neo-tree",
+          "neo-tree",
           -- "aerial",
           -- "edgy",
           "NeogitStatus",
           "NeogitCommitView",
-          "Trouble",
+          "trouble",
+          "copilot-chat",
           -- "markdown",
         },
       },

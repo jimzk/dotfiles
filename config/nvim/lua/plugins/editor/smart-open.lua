@@ -1,4 +1,4 @@
-local key = "<C-g>"
+local key = "<Tab>"
 return {
   "danielfalk/smart-open.nvim",
   -- branch = "0.2.x",
@@ -42,6 +42,10 @@ return {
       local line = action_state.get_current_line()
       local themes = require("telescope.themes")
       require("telescope").extensions.smart_open.smart_open(themes.get_dropdown({
+        -- smart-open configuration
+        -- https://github.com/barklan/smart-open.nvim/blob/main/lua/telescope/_extensions/smart_open/default_config.lua
+        ignore_patterns = { "*.git/*", "*/tmp/*" },
+        -- Telescope configuration
         cwd_only = true,
         filename_first = true,
         -- Telescope config
@@ -60,14 +64,26 @@ return {
           --   })
           -- end, { buffer = prompt_bufnr })
           local actions = require("telescope.actions")
-          map("i", key, actions.close, { desc = "close" })
-          actions.pin_buffer = function()
-            local state = require("telescope.actions.state")
-            local entry = state.get_selected_entry()
-            local path = vim.fn.fnamemodify(entry.path, ":~:.")
-            require("arrow.persist").toggle(path)
-          end
-          map("i", "<M-p>", actions.pin_buffer, { desc = "Pin Buffer" })
+          map("i", key, function(prompt_bufnr)
+            local position = vim.api.nvim_win_get_cursor(0)
+            local is_at_line_start = position[2] == 4
+            if is_at_line_start then
+              actions.close(prompt_bufnr)
+            else
+              vim.api.nvim_buf_set_lines(prompt_bufnr, position[1] - 1, position[1], false, { "" })
+            end
+          end, { desc = "Close or Clean" })
+          map("i", "<cr>", actions.overwrite_select_default, { desc = "overwrite_select_default" })
+          map("i", "<C-cr>", actions.select_default + actions.center)
+
+          -- actions.pin_buffer = function(prompt_bufnr)
+          --   local state = require("telescope.actions.state")
+          --   local entry = state.get_selected_entry()
+          --   local path = vim.fn.fnamemodify(entry.path, ":~:.")
+          --   require("arrow.persist").toggle(path)
+          --   -- actions.close(prompt_bufnr)
+          -- end
+          -- map("i", "<M-p>", actions.pin_buffer, { desc = "Pin Buffer" })
           return true
         end,
       }))

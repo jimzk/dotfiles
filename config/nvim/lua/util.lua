@@ -40,6 +40,18 @@ local get_wins = function(tabnr)
   return winnrs
 end
 
+M.is_buffer_visible = function(bufnr)
+  local winnr = vim.fn.bufwinnr(bufnr)
+  return winnr ~= "-1"
+  -- local windows = vim.api.nvim_list_wins()
+  -- for _, winnr in pairs(windows) do
+  --   if vim.api.nvim_win_get_buf(winnr) == bufnr then
+  --     return true
+  --   end
+  -- end
+  -- return false
+end
+
 M.map = function(mode, lhs, rhs, desc, opts)
   opts = opts or {}
   if rhs == nil then

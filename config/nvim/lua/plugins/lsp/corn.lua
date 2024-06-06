@@ -1,32 +1,23 @@
 local M = {
   -- Show Diagnostic in right hand side
   "RaafatTurki/corn.nvim",
+  event = "VeryLazy",
   enabled = true,
-  event = "BufReadPost",
-}
-
-local diagnostics_icons = {
-  [vim.diagnostic.severity.ERROR] = require("lazyvim.config").icons.diagnostics.Error,
-  [vim.diagnostic.severity.WARN] = require("lazyvim.config").icons.diagnostics.Warn,
-  [vim.diagnostic.severity.HINT] = require("lazyvim.config").icons.diagnostics.Hint,
-  [vim.diagnostic.severity.INFO] = require("lazyvim.config").icons.diagnostics.Info,
 }
 
 local enabled_diagnostics_opts = {
+  underline = true,
+  update_in_insert = false,
   virtual_text = {
     spacing = 1,
     source = "if_many",
-    prefix = function(diagnostic)
-      return diagnostics_icons[diagnostic.severity] or "?"
-    end,
-    -- format = function(diagnostic)
-    --   return ""
-    -- end,
+    prefix = "●",
   },
+  severity_sort = true,
 }
 
 local disabled_diagnostics_opts = {
-  underline = false,
+  underline = true,
   virtual_text = false,
 }
 
@@ -46,15 +37,11 @@ M.opts = {
     vim.diagnostic.config(opts)
   end,
   icons = {
-    error = require("lazyvim.config").icons.diagnostics.Error,
-    warn = require("lazyvim.config").icons.diagnostics.Warn,
-    hint = require("lazyvim.config").icons.diagnostics.Hint,
-    info = require("lazyvim.config").icons.diagnostics.Info,
+    error = LazyVim.config.icons.diagnostics.Error,
+    warn = LazyVim.config.icons.diagnostics.Warn,
+    hint = LazyVim.config.icons.diagnostics.Hint,
+    info = LazyVim.config.icons.diagnostics.Info,
   },
-  -- Disable truncation
-  item_preprocess_func = function(item)
-    return item
-  end,
 }
 
 M.config = function(_, opts)

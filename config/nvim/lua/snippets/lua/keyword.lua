@@ -55,21 +55,7 @@ local util = require("snippets.util")
 
 local M = {
   s(
-    "fn",
-    fmt(
-      [[
-  function({})
-    {}
-  end{}
-  ]],
-      { i(2), i(0), i(1) }
-    ),
-    {
-      show_condition = conds_expand.always_false,
-    }
-  ),
-  s(
-    "function",
+    { trig = "(fun|function)", trigEngine = "ecma", name = "function", desc = "function()\n\t…\nend" },
     fmt(
       [[
   function({})
@@ -117,12 +103,24 @@ local M = {
     i(0),
     t({ "", "end" }),
   }),
-  s("rq", fmt('require("{}")', { i(1) }), { show_condition = conds_expand.always_false }),
-  s("r", fmt("return {}", { i(1) }), { show_condition = conds_expand.always_false }),
-  s("l", fmt("local {} = {}", { i(1), i(2) }), { show_condition = conds_expand.always_false }),
-  s("require", fmt('require("{}")', { i(1) })),
-  s("return", fmt("return {}", { i(1) })),
-  s("local", fmt("local {} = {}", { i(1), i(2) })),
+  s({
+    trig = "(req|require)",
+    trigEngine = "ecma",
+    name = "require",
+    desc = 'require("…")',
+  }, fmt('require("{}")', { i(1) })),
+  s({
+    trig = "(ret|return)",
+    trigEngine = "ecma",
+    name = "return",
+    desc = "return …",
+  }, fmt("return {}", { i(1) }), {}),
+  s({
+    trig = "(l|local)",
+    trigEngine = "ecma",
+    name = "local",
+    desc = "local … = …",
+  }, fmt("local {} = {}", { i(1), i(2) })),
   s(
     { trig = "if", desc = "if then" },
     fmt(

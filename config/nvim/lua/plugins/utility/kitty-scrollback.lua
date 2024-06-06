@@ -4,7 +4,7 @@ return {
   -- * <C-S-g> (Mine is cmd+b) toggle kitty-scrollback for last command output
   -- See more: https://github.com/mikesmithgh/kitty-scrollback.nvim#-features
   "mikesmithgh/kitty-scrollback.nvim",
-  enabled = true,
+  enabled = false,
   lazy = true,
   cmd = { "KittyScrollbackGenerateKittens", "KittyScrollbackCheckHealth" },
   event = { "User KittyScrollbackLaunch" },

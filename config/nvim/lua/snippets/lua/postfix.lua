@@ -8,8 +8,10 @@ local postfix = require("luasnip.extras.postfix").postfix
 
 return {
   postfix({
-    trig = "local",
-    desc = "local $1 = x",
+    trig = "(l|local)",
+    trigEngine = "ecma",
+    name = "local",
+    desc = "local … = x",
   }, { t("local "), i(1), l(" = " .. l.POSTFIX_MATCH) }),
   postfix({
     trig = "remove",
@@ -38,7 +40,8 @@ return {
     {
       trig = "if",
       desc = {
-        "if $1 then",
+        "if … then",
+        "…",
         "end",
       },
     },

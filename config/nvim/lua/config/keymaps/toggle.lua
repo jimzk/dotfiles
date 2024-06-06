@@ -11,6 +11,7 @@ end
 
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L112C18-L112C18
 -- stylua: ignore start
+del("n", "<leader>uI")
 del("n", "<leader>ub")
 del("n", "<leader>uf")
 del("n", "<leader>uF")
@@ -27,7 +28,7 @@ del("n", "<leader>ul")
 map("n", "<leader>ol", function() toggle("cursorline") end, "Toggle Cursorline" )
 map("n", "<leader>on", function() toggle("number") end, "Toggle Line Numbers" )
 del("n", "<leader>ud")
-map("n", "<leader>od", function() toggle("diagnostics") end, "Toggle Diagnostics" )
+map("n", "<leader>oD", function() toggle("diagnostics") end, "Toggle Diagnostics" )
 map("n", "<leader>oc", function() toggle("ignorecase") end, "Toggle Case Ignore" )
 del("n", "<leader>uc")
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
@@ -41,18 +42,20 @@ end, "Toggle Inlay Hints")
 
 del("n", "<leader>uT")
 map("n", "<leader>oh", function()
-  Util.toggle(vim.b.ts_highlight, {
+  local is_enabled = vim.b.ts_highlight
+  local toggle_fn = {
     vim.treesitter.start,
     vim.treesitter.stop,
-  }, "Treesitter Highlight")
+  }
+  Util.toggle(is_enabled, toggle_fn, "Treesitter Highlight")
 end, "Toggle Treesitter Highlight")
 
-map("n", "<leader>oD", function()
-  Util.toggle(function()
-    return vim.diagnostic.config().virtual_text
-  end, function()
+map("n", "<leader>od", function()
+  local is_enabled = vim.diagnostic.config().virtual_text
+  local toggle_fn = function()
     vim.cmd("Corn toggle")
-  end, "Inline Diagnostics")
+  end
+  Util.toggle(is_enabled, toggle_fn, "Inline Diagnostics")
 end, "Toggle Inline Diagnostics")
 
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L135C1-L136C1
@@ -61,17 +64,41 @@ map("n", "<leader>np", vim.show_pos, "Inspect Treesitter")
 
 map("n", "<leader>om", function()
   local bo = vim.bo[0]
-  Util.toggle(vim.bo[0].modifiable, function()
-    bo.readonly = not bo.readonly
+  local is_enabled = bo.modifiable
+  local toggle_fn = function()
+    -- bo.readonly = not bo.readonly
     bo.modifiable = not bo.modifiable
-  end, "File Modifiable")
+  end
+  Util.toggle(is_enabled, toggle_fn, "File Modifiable")
 end, "Toggle Modifiable")
+
+map("n", "<leader>o<cr>", function()
+  local opt = vim.wo
+  local is_enabled = opt.scrolloff > 100
+  local toggle_fn = function()
+    opt.scrolloff = 999 - vim.o.scrolloff
+    if not is_enabled then -- Now it is enabled
+      local buf_star_line = 0
+      local buf_end_line = vim.api.nvim_buf_line_count(0)
+      local current_line = vim.fn.line(".")
+
+      local win_info = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1]
+      local shown_lines = win_info.botline - win_info.topline + 1
+      local offset = shown_lines / 2
+
+      if (current_line - buf_star_line > offset) and (buf_end_line - current_line > offset) then
+        vim.cmd("normal! zz")
+      end
+    end
+  end
+  Util.toggle(is_enabled, toggle_fn, "Always Center")
+end, "Toggle Always Center")
 
 -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/config/keymaps.lua#L47
 del("n", "<leader>ur")
 map(
   "n",
-  "<leader>o<cr>",
+  "<leader>o<esc>",
   "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
   "Redraw / Clear hlsearch / Diff Update"
 )

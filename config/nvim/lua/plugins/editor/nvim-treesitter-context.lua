@@ -10,11 +10,10 @@ return {
         function()
           local tsc = require("treesitter-context")
           tsc.toggle()
-          require("notify").dismiss({ silent = true, pending = false })
           if LazyVim.inject.get_upvalue(tsc.toggle, "enabled") then
-            LazyVim.info("Enable Treesitter Context", { title = "Treesitter" })
+            LazyVim.info("Enable Treesitter Context", { title = "Option" })
           else
-            LazyVim.warn("Disable Treesitter Context", { title = "Treesitter" })
+            LazyVim.warn("Disable Treesitter Context", { title = "Option" })
           end
         end,
         desc = "Toggle Treesitter Context",

@@ -3,29 +3,33 @@ return {
   cmd = "Copilot",
   build = ":Copilot auth",
   keys = {
-    { mode = "i", "<M-i>", "<CMD>Copilot panel<CR>", desc = "[copilot] open panel" },
+    { mode = { "i", "n", "x" }, "<C-M-Cr>", "<CMD>Copilot panel<CR>", desc = "[copilot] open panel" },
   },
   opts = {
     suggestion = {
       enabled = true,
       auto_trigger = true,
       keymap = {
-        accept = "<C-CR>",
-        accept_word = "<C-M-CR>",
-        accept_line = false,
-        next = "<M-n>",
-        prev = "<M-p>",
-        dismiss = "<M-c>",
+        accept = false,
+        accept_word = "<C-l>",
+        accept_line = "<C-S-l>",
+        next = "<M-]>",
+        prev = "<M-[>",
+        dismiss = "<M-\\>",
       },
     },
     panel = {
       enabled = true,
       keymap = {
-        jump_next = "<M-n>",
-        jump_prev = "<M-p>",
+        jump_next = "<M-]>",
+        jump_prev = "<M-[>",
         accept = "<CR>",
         refresh = "r",
-        open = false,
+        open = "<M-CR>",
+      },
+      layout = {
+        position = "left", -- | top | left | right
+        ratio = 0.3,
       },
     },
     filetypes = {

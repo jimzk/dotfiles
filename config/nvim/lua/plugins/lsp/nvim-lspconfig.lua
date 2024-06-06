@@ -2,56 +2,53 @@ local M = {
   "neovim/nvim-lspconfig",
 }
 
--- Override keymaps:
--- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/plugins/lsp/keymaps.lua#L15
--- https://www.lazyvim.org/plugins/lsp#%EF%B8%8F-customizing-lsp-keymaps
-local goto_preview = function(method, opts)
-  return function()
-    require("goto-preview")[method](opts)
-  end
-end
-
 M.init = function()
-  require("which-key").register({ ["g<leader>"] = { name = "+native lsp method" } })
-
+  -- Override keymaps:
+  -- https://github.com/LazyVim/LazyVim/blob/879e29504d43e9f178d967ecc34d482f902e5a91/lua/lazyvim/plugins/lsp/keymaps.lua#L15
+  -- https://www.lazyvim.org/plugins/lsp#%EF%B8%8F-customizing-lsp-keymaps
+  local goto_preview = function(method, opts)
+    return function()
+      require("goto-preview")[method](opts)
+    end
+  end
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local keymaps = {
     { "<leader>nl", "<cmd>LspInfo<cr>", desc = "Print LSP Info" },
+    -- {
+    --   "<leader>nL",
+    --   ":lua print(vim.inspect(vim.lsp.get_active_clients()[1].config.settings))<CR>",
+    --   desc = "Print LSP Configuration",
+    -- },
     {
-      "<leader>nL",
-      ":lua print(vim.inspect(vim.lsp.get_active_clients()[1].config.settings))<CR>",
-      desc = "Print LSP Configuration",
-    },
-    {
-      "<leader>n<C-L>",
-      ":lua copy(vim.lsp.get_active_clients()[1])<CR>",
-      desc = "Copy LSP Configuration",
+      "<leader>nl",
+      ":lua = copy(vim.lsp.get_active_clients()[1])<CR>",
+      desc = "Print and Copy LSP Configuration",
     },
 
-    { "g<leader>d", vim.lsp.buf.definition, desc = "Go Definition", has = "definition" },
+    { "gd", vim.lsp.buf.definition, desc = "Go Definition", has = "definition" },
     -- {
     --   "g<leader>D",
     --   "<cmd>tab split | lua vim.lsp.buf.definition()<CR>",
     --   desc = "Go Definition and Split",
     --   has = "definition",
     -- },
-    { "g<leader>D", vim.lsp.buf.declaration, desc = "Go Declaration" },
-    { "g<leader>b", vim.lsp.buf.type_definition, desc = "Go Type Definition" },
+    { "gD", vim.lsp.buf.declaration, desc = "Go Declaration" },
+    { "gb", vim.lsp.buf.type_definition, desc = "Go Type Definition" },
 
-    {
-      "gr",
-      -- Exclude declaration. See: https://www.reddit.com/r/neovim/comments/r4y1jt/comment/hmjmmb9
-      function()
-        vim.lsp.buf.references({ includeDeclaration = false })
-      end,
-      desc = "Go References",
-    },
+    -- {
+    --   "gr",
+    --   function()
+    --     -- Exclude declaration. See: https://www.reddit.com/r/neovim/comments/r4y1jt/comment/hmjmmb9
+    --     vim.lsp.buf.references({ includeDeclaration = false })
+    --   end,
+    --   desc = "Go References",
+    -- },
+    { "gr", "<cmd>Trouble lsp_references refresh=false<cr>", desc = "Go References" },
+
     { "gI", vim.lsp.buf.implementation, desc = "Go Implementation" },
-    -- { "gr", "<cmd>Trouble lsp_references<cr>", desc = "Go References (Trouble)" },
-    -- { "gI", "<cmd>Trouble lsp_implementations<cr>", desc = "Go Implementation (Trouble)" },
-    { "gd", goto_preview("goto_preview_definition"), desc = "Go Definition", has = "definition" },
-    { "gD", goto_preview("goto_preview_declaration"), desc = "Go Declaration" },
-    { "gb", goto_preview("goto_preview_type_definition"), desc = "Go Type Definition" },
+    { "g<M-d>", goto_preview("goto_preview_definition"), desc = "Go Definition (Preview)", has = "definition" },
+    { "g<M-S-d>", goto_preview("goto_preview_declaration"), desc = "Go Declaration (Preview)" },
+    { "g<M-b>", goto_preview("goto_preview_type_definition"), desc = "Go Type Definition (Preview)" },
     -- goto-preview show references and implementations by telescope. I don't like.
     -- { "gr", goto_preview("goto_preview_references"), desc = "Go References" },
     -- { "gI", goto_preview("goto_preview_implementation"), desc = "Go Implementation" },
@@ -123,7 +120,7 @@ M.opts = {
   inlay_hints = {
     enabled = true,
   },
-  -- FIX: taplo has bug.
+  -- FIX: rust-analyer has bug. It attach non-rust files.
   codelens = {
     enabled = false,
   },

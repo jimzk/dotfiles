@@ -1,3 +1,7 @@
+-- Alternative:
+-- - https://github.com/amitds1997/remote-nvim.nvim
+--   - https://www.reddit.com/r/neovim/comments/1cxr5hm/remotenvimnvim_now_supports_dev_containers
+-- - https://github.com/jamestthompson3/nvim-remote-containers
 return {
   -- Remote edit file from ssh/sftp/ftp/Docker...
   -- Usage:

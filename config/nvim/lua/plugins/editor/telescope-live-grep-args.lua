@@ -3,6 +3,7 @@ local M = {
   dependencies = {
     "nvim-telescope/telescope.nvim",
   },
+  event = "VeryLazy",
 }
 
 M.keys = function()
@@ -23,7 +24,7 @@ M.keys = function()
 
   local search_in_buf = function()
     local path = vim.fn.fnameescape(vim.fn.expand("%:p:."))
-    LazyVim.telescope("current_buffer_fuzzy_find", {
+    LazyVim.pick("current_buffer_fuzzy_find", {
       prompt_title = "Fuzzy Search in Buffer (" .. path:gsub("^" .. vim.env.HOME, "~") .. ")",
       default_text = get_prompt(),
       sorting_strategy = "ascending",
@@ -32,7 +33,7 @@ M.keys = function()
   return {
     { mode = { "v", "n" }, "<C-f>", search, desc = "Search" },
     { "<C-M-f>", search, desc = "Search Cursor Word" },
-    { mode = { "v", "n" }, "<leader>rs", search_in_buf, desc = "Search in Buffer (Telescope)" },
+    { mode = { "v", "n" }, "<leader>s<Tab>", search_in_buf, desc = "Search in Buffer (Telescope)" },
   }
 end
 

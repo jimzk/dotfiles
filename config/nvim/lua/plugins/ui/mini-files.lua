@@ -4,7 +4,7 @@ return {
   "echasnovski/mini.files",
   keys = {
     {
-      "<C-p>",
+      "<C-r>p",
       function()
         local ft = vim.bo.filetype
         if ft == "minifiles" then
@@ -18,24 +18,6 @@ return {
         end
       end,
       desc = "Open Mini Files",
-    },
-    {
-      "<C-M-P>",
-      function()
-        local ft = vim.bo.filetype
-        local win_id = 0
-        if ft == "minifiles" or vim.bo.buflisted then
-          win_id = require("window-picker").pick_window()
-          if not win_id then
-            vim.notify("Can't find any window", vim.log.levels.ERROR, { title = "mini.files" })
-            return
-          end
-        end
-        local buf_id = vim.api.nvim_win_get_buf(win_id)
-        path = vim.api.nvim_buf_get_name(buf_id)
-        MiniFiles.open(path)
-      end,
-      "Open Mini Files And Locate Buffer",
     },
   },
   opts = {
@@ -77,19 +59,48 @@ return {
       callback = function(opts)
         local opts = { buffer = opts.buf }
         local map = Util.map
-        map("n", "<Esc>", MiniFiles.close, nil, opts)
-        -- map("n", "l", function()
-        --   if MiniFiles.get_fs_entry().fs_type == "directory" then
-        --     MiniFiles.go_in()
-        --   end
-        -- end, nil, opts)
+        -- map("n", "<Esc>", MiniFiles.close, nil, opts)
+
         map("n", "<cr>", function()
+          local entry = MiniFiles.get_fs_entry()
           MiniFiles.go_in()
-          local fs_type = MiniFiles.get_fs_entry().fs_type
-          if fs_type == "file" then
+          if entry.fs_type == "file" then
             MiniFiles.close()
           end
-        end, "Open File", ops)
+        end, "Open File", opts)
+
+        map("n", "<C-f>", function()
+          local win_id = require("window-picker").pick_window()
+          if win_id then
+            local buf_id = vim.api.nvim_win_get_buf(win_id)
+            local path = vim.api.nvim_buf_get_name(buf_id)
+            MiniFiles.open(path)
+          end
+        end, "Locate Buffer", opts)
+
+        local map_split = function(lhs, direction)
+          local rhs = function()
+            local new_target_window
+            vim.api.nvim_win_call(MiniFiles.get_target_window(), function()
+              vim.cmd(direction .. " split")
+              new_target_window = vim.api.nvim_get_current_win()
+            end)
+            MiniFiles.set_target_window(new_target_window)
+            MiniFiles.go_in()
+            MiniFiles.close()
+          end
+          -- local desc = "Split " .. direction
+          map("n", lhs, rhs, nil, opts)
+        end
+        map_split("<C-s>", "belowright horizontal")
+        map_split("<C-v>", "belowright vertical")
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "MiniFilesActionRename",
+      callback = function(event)
+        LazyVim.lsp.on_rename(event.data.from, event.data.to)
       end,
     })
   end,

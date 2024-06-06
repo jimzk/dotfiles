@@ -9,11 +9,10 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 require("config.vscode")
 require("lazy").setup({
   spec = {
-    { import = "plugins.text.flash" },
     { import = "plugins.text.nvim-treesitter" },
     { import = "plugins.text.nvim-surround" },
     { import = "plugins.text.spider" },
-    { import = "plugins.text.dial" },
+    -- { import = "plugins.text.dial" },
     { import = "plugins.text.mini-ai" },
     { import = "plugins.text.mini-operators" },
     { import = "plugins.text.nvim-treesitter-textobjects" },
@@ -22,6 +21,60 @@ require("lazy").setup({
     { import = "plugins.text.vim-textobj-user" },
     { import = "plugins.editor.gx" },
     { import = "plugins.text.yanky" },
+    {
+      "folke/flash.nvim",
+      event = "VeryLazy",
+      keys = {
+        {
+          "R",
+          mode = { "o" },
+          function()
+            require("flash").remote()
+          end,
+          desc = "Remote (Flash)",
+        },
+        {
+          "r",
+          mode = { "o", "x" },
+          function()
+            require("flash").treesitter_search({
+              label = { rainbow = { enabled = true } },
+            })
+          end,
+          desc = "Treesitter Search (Flash)",
+        },
+        {
+          "<CR>",
+          mode = { "n", "o", "x" },
+          function()
+            require("flash").treesitter({
+              label = { rainbow = { enabled = true } },
+            })
+          end,
+          desc = "Treesitter Scope (Flash)",
+        },
+      },
+      opts = {
+        modes = {
+          search = {
+            enabled = true,
+          },
+          char = {
+            enabled = true,
+            keys = { "f", "F" },
+            -- autohide = true,
+            jump_labels = true,
+            label = {
+              exclude = "hjkliardcAZTU",
+              rainbow = {
+                enabled = false,
+              },
+            },
+          },
+        },
+      },
+    },
+
     -- { import = "plugins.ui.mini-files" },
   },
   defaults = {

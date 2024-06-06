@@ -37,26 +37,26 @@ M.opts = {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
       goto_next_start = {
-        ["]]"] = { query = "@function.outer", desc = "Next Method Start" },
-        ["]x"] = { query = "@class.outer", desc = "Next Class Start" },
+        ["]m"] = { query = "@function.outer", desc = "Next Function Start" },
+        ["]c"] = { query = "@class.outer", desc = "Next Class Start" },
       },
       goto_next_end = {
-        ["]["] = { query = "@function.outer", desc = "Next Method End" },
-        ["]X"] = { query = "@class.outer", desc = "Next Class End" },
+        ["]M"] = { query = "@function.outer", desc = "Next Function End" },
+        ["]C"] = { query = "@class.outer", desc = "Next Class End" },
       },
       goto_previous_start = {
-        ["[["] = { query = "@function.outer", desc = "Prev Method Start" },
-        ["[x"] = { query = "@class.outer", desc = "Prev class Start" },
+        ["[m"] = { query = "@function.outer", desc = "Prev Function Start" },
+        ["[c"] = { query = "@class.outer", desc = "Prev class Start" },
       },
       goto_previous_end = {
-        ["[]"] = { query = "@function.outer", desc = "Prev Method End" },
-        ["[X"] = { query = "@class.outer", desc = "Prev Class End" },
+        ["[M"] = { query = "@function.outer", desc = "Prev Function End" },
+        ["[C"] = { query = "@class.outer", desc = "Prev Class End" },
       },
       goto_next = {
-        ["]O"] = { "@conditional.outer", desc = "Condition" },
+        ["]o"] = { "@conditional.outer", desc = "Condition" },
       },
       goto_previous = {
-        ["[O"] = { "@conditional.outer", desc = "Condition" },
+        ["[o"] = { "@conditional.outer", desc = "Condition" },
       },
     },
     lsp_interop = {
@@ -73,11 +73,15 @@ M.opts = {
 
 M.config = function(_, opts)
   require("nvim-treesitter.configs").setup(opts)
+  local map = Util.map
   -- Repeat movement with ; and ,
   -- ensure ; goes forward and , goes backward regardless of the last direction
   local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-  vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-  vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+  map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+  map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+
+  -- map("n", "<C-ScrollWheelDown>", ']]"yy$', "Next Function", { remap = true })
+  -- map("n", "<C-ScrollWheelUp>", '[["yy$', "Prev Function", { remap = true })
 end
 
 return M

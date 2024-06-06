@@ -16,10 +16,10 @@ M.dependencies = {
   "hrsh7th/cmp-buffer",
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-cmdline",
-  "saadparwaiz1/cmp_luasnip",
+  -- "saadparwaiz1/cmp_luasnip",
+  "jimzk/cmp_luasnip",
   "zbirenbaum/copilot.lua",
   { "jimzk/cmp-luasnip-choice", opts = {} },
-
   "abecodes/tabout.nvim",
   "altermo/ultimate-autopair.nvim",
   "windwp/nvim-autopairs",
@@ -53,8 +53,8 @@ M.opts = function(_, opts)
   opts.mapping = {}
 
   local override = {
-    preselect = cmp.PreselectMode.None,
-    -- preselect = cmp.PreselectMode.Item,
+    preselect = cmp.PreselectMode.Item,
+    -- preselect = cmp.PreselectMode.None,
     completion = {
       -- completeopt = "menu,menuone,noselect", -- Shoud add by manual or preselect == None not work
       -- completeopt = "menu,menuone",
@@ -66,6 +66,14 @@ M.opts = function(_, opts)
     experimental = {
       -- this feature conflict with copilot.vim's preview.
       ghost_text = false,
+    },
+
+    view = {
+      entries = {
+        -- https://github.com/hrsh7th/nvim-cmp/pull/1701
+        vertical_positioning = "above",
+        follow_cursor = false,
+      },
     },
     -- mapping = cmp.mapping.preset.insert(keymaps.mapping),
     mapping = keymaps.mapping,
@@ -80,7 +88,7 @@ M.opts = function(_, opts)
     },
     window = {
       completion = {
-        border = "single",
+        border = "none",
         col_offset = 2,
       },
       documentation = {

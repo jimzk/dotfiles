@@ -1,8 +1,7 @@
 return {
-  -- NOTE: alternative: LeonHeidelbach/trailblazer.nvim
   "tomasky/bookmarks.nvim",
   event = "VeryLazy",
-  enabled = true,
+  enabled = false,
   config = function()
     require("bookmarks").setup({
       -- sign_priority = 8,  --set bookmark sign priority to cover other sign

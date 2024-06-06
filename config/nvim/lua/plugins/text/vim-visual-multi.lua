@@ -1,30 +1,48 @@
-local map = Util.map
 return {
-  -- Alternative:
-  -- - https://github.com/otavioschwanck/cool-substitute.nvim
   "mg979/vim-visual-multi",
   event = "VeryLazy",
   init = function()
-    local map = Util.map
-    map({ "n", "x" }, "<C-n>", nil, "Add Word to Selection")
-    map("n", "<M-S-j>", nil, "Add Cursor Down")
-    map("n", "<M-S-k>", nil, "Add Cursor Up")
     -- :h vim-visual-multi
+    -- :h vm-faq-custom-mappings
+    -- :h vm-faq-mappings
+    -- :h vm-mappings-all
     vim.g.VM_maps = {
-      ["Add Cursor Down"] = "<M-S-j>",
-      ["Add Cursor Up"] = "<M-S-k>",
-      -- ["VM Select Cursor Up"] = "<S-up>",
-      -- ["VM Select Cursor Down"] = "<S-down>",
+      ["Add Cursor Down"] = "<M-Down>",
+      ["Add Cursor Up"] = "<M-Up>",
+      ["Find Under"] = "<C-g>",
+      ["Find Subword Under"] = "<C-g>",
+      ["Select All"] = "<C-M-g>",
+      ["Visual All"] = "<C-M-g>",
+      ["Mouse Cursor"] = "<M-LeftMouse>",
+      ["Mouse Word"] = "<M-RightMouse>",
+      -- ["Mouse Column"] = "<M-LeftMouse>",
       -- ["VM Select h"] = "<S-left>",
       -- ["VM Select l"] = "<S-right>",
     }
-    vim.g.VM_leader = "\\"
-    -- vim.g.VM_default_mappings = 0
+
+    -- hslens mess up highlighting
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "visual_multi_start",
+      callback = function(args)
+        vim.cmd([[HlSearchLensDisable]])
+      end,
+    })
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "visual_multi_exit",
+      callback = function(args)
+        vim.cmd([[HlSearchLensEnable]])
+      end,
+    })
 
     -- Help: :h vm-highlight
-    vim.g.VM_Mono_hl = "Cursor" -- All cursors
-    vim.g.VM_Cursor_hl = "Cursor" -- Cursor in selection
-    vim.g.VM_Extend_hl = "CurSearch" -- Selected items in selection
-    -- vim.g.VM_Insert_hl = 'IncSearch' -- Multi insert place atfer selection
+    -- vim.g.VM_theme = "neon"
+    vim.defer_fn(function()
+      vim.cmd([[
+        hi! link VM_Mono CurSearch
+        hi! link VM_Extend CurSearch
+        hi! link VM_Cursor CurSearch
+        hi! VM_Insert guibg=#F977C2 guifg=#111111  " Same as my cursor
+      ]])
+    end, 1000)
   end,
 }

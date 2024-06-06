@@ -1,3 +1,78 @@
+""" Map leader to space ---------------------
+nnoremap " " <Nop>
+let mapleader=" "
+
+""" Common settings -------------------------
+set clipboard=unnamed " sync with system clipboard
+set magic  " regular expression support
+" search
+set hlsearch " highlight search text
+set incsearch " highlight first matched text immediately
+set ignorecase smartcase " capital insensitive when typing lowercase, but not when typing uppercase
+" turn off bell
+set belloff=all
+set novisualbell noerrorbells
+
+""" key map -------------------------
+nmap q :q<cr>
+" How to find action:
+" - :actionlist [pattern]
+" Close group
+" nmap <C-q> <Action>(CloseAllEditors)
+nmap <tab> <Action>(GotoFile)
+nmap <leader>u <Action>(Vcs.RollbackChangedLines)
+nmap ) <Action>(VcsShowNextChangeMarker)
+nmap ( <Action>(VcsShowPrevChangeMarker)
+
+" move to wrapped line
+nnoremap j gj
+nnoremap k gk
+nnoremap 0 g^
+nnoremap ^ g0
+nnoremap $ g$
+xnoremap $ g$h
+nnoremap Y y$
+
+nnoremap v m`v
+nnoremap V m`V
+nnoremap <C-v> m`<C-v>
+nnoremap gv m`gv
+
+" not copy when paste in visual mode
+vmap p "_dP
+nnoremap U <c-r>
+
+" https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
+xnoremap <  <gv
+xnoremap >  >gv
+" https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+nnoremap <expr> n  'Nn'[v:searchforward]
+nnoremap <expr> N  'nN'[v:searchforward]
+
+" windows
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+nmap <C-S-h> <Action>(StretchSplitToLeft)
+nmap <C-S-j> <Action>(StretchSplitToBotto)
+nmap <C-S-k> <Action>(StretchSplitToTop)
+nmap <C-S-l> <Action>(StretchSplitToRight)
+nmap <C-w>q <Action>(CloseAllUnpinnedEditors)
+
+""" settings in settings
+sethandler <C-;> a:vim
+sethandler <C-S-;> a:vim
+sethandler <M-;> a:vim
+sethandler <M-S-;> a:vim
+sethandler <C-D> a:vim
+sethandler <C-H> a:vim
+sethandler <C-J> a:vim
+sethandler <C-K> a:vim
+sethandler <C-L> a:vim
+sethandler <C-O> a:vim
+
+""" Plugins  --------------------------------
 set easymotion
 set commentary
 set surround
@@ -8,52 +83,35 @@ set textobj-entire
 set multiple-cursors
 set vim-paragraph-motion
 set exchange
+set matchit
 
-source ~/.config/nvim/minimal.vim
-
-" Easymotion
-" Move to word
-map ,w <Plug>(easymotion-w)
-map ,b <Plug>(easymotion-b)
-map ,e <Plug>(easymotion-e)
-map ,ge <Plug>(easymotion-ge)
-" Move to word in current line
-map ,l <Plug>(easymotion-lineforward)
-map ,h <Plug>(easymotion-linebackward)
-" Move to line
-map ,j <Plug>(easymotion-j)
-map ,k <Plug>(easymotion-k)
-map ,n <Plug>(easymotion-bd-jk)
-nmap ,n <Plug>(easymotion-overwin-line)
-" nmap <Leader>L <Plug>(easymotion-overwin-line)
-" Search (followed by {char})
-map ,f <Plug>(easymotion-f)
-map ,F <Plug>(easymotion-F)
-map ,t <Plug>(easymotion-t)
-map ,T <Plug>(easymotion-T)
-"  map ,/ <Plug>(easymotion-sn)
-" default configs: https://github.com/easymotion/vim-easymotion/blob/master/plugin/EasyMotion.vim
-let g:EasyMotion_space_jump_first = 1
-let g:EasyMotion_startofline = 1 " set 0 if you want to kepp cursor at the same column after line move
-let g:EasyMotion_smartcase = 1 " smart case sensitive (type `l` and match `l`&`L`)
-let g:EasyMotion_use_smartsign_us = 1 " Smartsign (type `3` and match `3`&`#`)
-let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj;'
-
+""" Easymotion  --------------------------------
+" https://github.com/AlexPl292/IdeaVim-EasyMotion
+" Disable default mapping
+let g:EasyMotion_do_mapping = 0
+" Search by typing
+" map <tab> <Plug>(easymotion-s)
+map <C-;> <Plug>(easymotion-bd-jk)
+" Search by char
+map f <Plug>(easymotion-f)
+map F <Plug>(easymotion-F)
+omap f <Plug>(easymotion-t)
+omap F <Plug>(easymotion-T)
 
 " targets.vim
-let g:targets_aiAI = 'aIAi'
-autocmd User targets#mappings#user call targets#mappings#extend({
-\ 'a': {'argument': [{'o': '[({[]', 'c': '[]})]', 's': ','}]},
-\ 'b': {'pair': [{'o':'(', 'c':')'}, {'o':'[', 'c':']'}, {'o':'{', 'c':'}'}, {'o':'<', 'c':'>'}]},
-\ })
-"  Prefer multiline targets around cursor over distant targets within cursor line:
-"  https://github.com/wellle/targets.vim#gtargets_seekranges
-let g:targets_seekRanges = 'cc cr cb cB lc ac Ac lr lb ar ab lB Ar aB Ab AB rr ll rb al rB Al bb aa bB Aa BB AA'
-
-" multiple-cursor.vim
-let g:multi_cursor_select_all_key = 'g<C-n>'
-
-" expand-region.vim
-map _ <Plug>(expand_region_expand)
-map + <Plug>(expand_region_shrink)
-let g:expand_region_use_select_mode = 0
+" let g:targets_aiAI = 'aIAi'
+" autocmd User targets#mappings#user call targets#mappings#extend({
+" \ 'a': {'argument': [{'o': '[({[]', 'c': '[]})]', 's': ','}]},
+" \ 'b': {'pair': [{'o':'(', 'c':')'}, {'o':'[', 'c':']'}, {'o':'{', 'c':'}'}, {'o':'<', 'c':'>'}]},
+" \ })
+" "  Prefer multiline targets around cursor over distant targets within cursor line:
+" "  https://github.com/wellle/targets.vim#gtargets_seekranges
+" let g:targets_seekRanges = 'cc cr cb cB lc ac Ac lr lb ar ab lB Ar aB Ab AB rr ll rb al rB Al bb aa bB Aa BB AA'
+"
+" " multiple-cursor.vim
+" let g:multi_cursor_select_all_key = 'g<C-n>'
+"
+" " expand-region.vim
+" map _ <Plug>(expand_region_expand)
+" map + <Plug>(expand_region_shrink)
+" let g:expand_region_use_select_mode = 0

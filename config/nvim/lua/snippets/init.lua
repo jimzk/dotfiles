@@ -83,6 +83,9 @@ postfix.postfix = function(context, nodes, opts)
   context, nodes, opts = wrap(context, nodes, opts)
   if not context.disabled_prefix then
     context.trig = postfix_trigger .. context.trig -- add prefix
+    if context.trigEngine == "ecma" then
+      context.trig = "\\" .. context.trig
+    end
   end
   if context.match_pattern == nil then
     -- local pattern = [[['"%w%.%_%-%(%)?&!*:<>]*]]
@@ -95,6 +98,9 @@ postfix.postfix = function(context, nodes, opts)
     -- See https://zjp-cn.github.io/neovim0.6-blogs/nvim/luasnip/doc1.html#postfix
     context.match_pattern = pattern .. match_pattern_postfix
     -- context.match_pattern = [[['"%w%.%_%-%(%)?&!*:<>]*[%w%)?>'"]+$]]
+  end
+  if context.hidden == nil then
+    context.hidden = true
   end
   -- Default is 1000. Make sure postfix is the highest priority.
   context.priority = 2000

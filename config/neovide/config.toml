@@ -1,0 +1,3 @@
+# https://neovide.dev/config-file.html
+fork = true
+frame = "none" # "full" | "none" | "transparent" | "buttonless"

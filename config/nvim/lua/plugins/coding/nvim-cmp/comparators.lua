@@ -57,13 +57,13 @@ local luasnip_first = function(entry1, entry2)
   local is_luasnip2 = entry2.source.name == "luasnip"
 
   if is_luasnip1 and is_luasnip2 then
-    local is_postfix_luasnip1 = entry1.completion_item.label:sub(1, 1) == "@"
-    local is_postfix_luasnip2 = entry2.completion_item.label:sub(1, 1) == "@"
-    if is_postfix_luasnip1 and not is_postfix_luasnip2 then
-      return true
-    elseif not is_postfix_luasnip1 and is_postfix_luasnip2 then
-      return false
-    end
+    -- local is_postfix_luasnip1 = entry1.completion_item.label:sub(1, 1) == "@"
+    -- local is_postfix_luasnip2 = entry2.completion_item.label:sub(1, 1) == "@"
+    -- if is_postfix_luasnip1 and not is_postfix_luasnip2 then
+    --   return true
+    -- elseif not is_postfix_luasnip1 and is_postfix_luasnip2 then
+    --   return false
+    -- end
 
     local exact_len = function(cursor_before_line, label)
       cursor_before_line = string.lower(cursor_before_line)
@@ -85,7 +85,9 @@ local luasnip_first = function(entry1, entry2)
     local len2 = exact_len(cursor_before_line, entry2.completion_item.label)
 
     if len1 == len2 then
-      return entry1.id < entry2.id
+      return nil
+      -- return #entry1.completion_item.label < #entry2.completion_item.label
+      -- return entry1.id < entry2.id
     else
       return len1 > len2
     end
