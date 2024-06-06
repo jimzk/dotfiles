@@ -167,10 +167,10 @@ alias du='_f(){ du -sh $@ | sort -h }; _f'
 alias 'du.'='_f(){ du -sh * | sort -h }; _f'
 alias trn='tr -d "\n"'
 # Fix neovim highlight in tmux: https://gist.github.com/gutoyr/4192af1aced7a1b555df06bd3781a722
-# alias tmux='env TERM=screen-256color tmux'
-# alias tn='tmux new -A -s main'
-# alias ta='tmux attach'
-# alias tl='tmux list-session'
+alias tmux='env TERM=screen-256color tmux'
+alias tn='tmux new -A -s main'
+alias ta='tmux attach'
+alias tl='tmux list-session'
 # Copilot CLI
 # https://docs.github.com/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli#setting-up-aliases-for-copilot-in-the-cli
 # eval "$(gh copilot alias -- zsh)"
