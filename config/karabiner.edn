@@ -92,6 +92,7 @@
     :script "/usr/local/bin/bash ~/.dotfiles/karabiner/scripts/%s"
 
     :openObsidian "/usr/local/bin/hs -c \"spoon.Win.openOrHideObsidian('%s')\""
+    :zellij "/opt/homebrew/bin/zellij -s 'default' action %s"
   }
 
   ;;; helper function to generate things little bit quicker
@@ -163,6 +164,33 @@
         ; [:!Tr :!CTS4]  ;; Look word up in Eudic dictionary
         [:!Ty [:openApp "网易有道翻译"]]
         [:!T0 [:hs "spoon.Win.activate()"]] ;; Window management
+
+        ; [:!Cw [:zellij "close-pane"] :Alacritty]
+        ; [:!Ch [:zellij "move-pane left"] :Alacritty]
+        ; [:!Cj [:zellij "move-pane down"] :Alacritty]
+        ; [:!Ck [:zellij "move-pane up"] :Alacritty]
+        ; [:!Cl [:zellij "move-pane right"] :Alacritty]
+        ; [:!Cd [:zellij "new-pane -d right"] :Alacritty]
+        ; [:!CSd [:zellij "new-pane -d down"] :Alacritty]
+        ; [:!Cf [:zellij "switch-mode EnterSearch"] :Alacritty]
+        ; [:!Ct [:zellij "new-tab"] :Alacritty]
+        ; [:!CSclose_bracket [:zellij "go-to-next-tab"] :Alacritty]
+        ; [:!CSopen_bracket [:zellij "go-to-previous-tab"] :Alacritty]
+        ; [:!Cr [:zellij "switch-mode RenameTab"] :Alacritty]
+        ; [:!COclose_bracket [:zellij "move-tab right"] :Alacritty]
+        ; [:!COopen_bracket [:zellij "move-tab left"] :Alacritty]
+        ; [:!C1 [:zellij "go-to-tab 1"] :Alacritty]
+        ; [:!C2 [:zellij "go-to-tab 2"] :Alacritty]
+        ; [:!C3 [:zellij "go-to-tab 3"] :Alacritty]
+        ; [:!C4 [:zellij "go-to-tab 4"] :Alacritty]
+        ; [:!C5 [:zellij "go-to-tab 5"] :Alacritty]
+        ; [:!C6 [:zellij "go-to-tab 6"] :Alacritty]
+        ; [:!C7 [:zellij "go-to-tab 7"] :Alacritty]
+        ; [:!C8 [:zellij "go-to-tab 8"] :Alacritty]
+        ; [:!C9 [:zellij "go-to-tab 9"] :Alacritty]
+        ; [:!Creturn_or_enter [:zellij "toggle-fullscreen"] :Alacritty]
+        ; [:!Cbackslash [:zellij "toggle-floating-panes"] :Alacritty]
+        ; [:!CObackslash [:zellij "toggle-pane-embed-or-floating"] :Alacritty]
       ]
     }
     {:des "left control"

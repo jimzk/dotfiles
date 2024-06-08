@@ -1,0 +1,6 @@
+layout {
+    pane split_direction="vertical" {
+        pane size="76%" cwd="~/workspace/"
+        pane size="24%" cwd="~/workspace/"
+    }
+}

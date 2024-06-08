@@ -156,6 +156,7 @@ alias wtf='_wtf'
 
 # more efficient
 alias now='date +"%Y-%m-%d %T"'
+alias zj='_f() { if [[ "$#" -eq 0 ]]; then zellij attach -c default; else ls "$@"; fi; }; _f'
 
 # Shorter
 alias o="open"

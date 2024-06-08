@@ -106,3 +106,4 @@ source $DOTFILES_ZSH_HOME/alias.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
 
 eval "$(atuin init zsh --disable-up-arrow)"
+
