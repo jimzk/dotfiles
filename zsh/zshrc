@@ -41,18 +41,17 @@ plugins=(
     # timer
     # fancy-ctrl-Z
     # colored-man-pages
-    globalias
-    # alias-tips
+    alias-tips
     extract
     rust
     zsh-completions
 )
-plugins+=(globalias)
-GLOBALIAS_FILTER_VALUES=(grep vim rm \\rm du
-    l ls ll la lla ls\? ll\?
-    brew\?
-    rg ping mv cp
-)
+# plugins+=(globalias)
+# GLOBALIAS_FILTER_VALUES=(grep vim rm \\rm du
+#     l ls ll la lla ls\? ll\?
+#     brew\?
+#     rg ping mv cp
+# )
 source $ZSH/oh-my-zsh.sh
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -96,14 +95,10 @@ bindkey '^Q' push-line    # [Ctrl-Q]
 # +----------------+
 # brew install without updating (https://github.com/Homebrew/brew/issues/1670)
 export HOMEBREW_NO_AUTO_UPDATE=1
-# thefuck
-eval $(thefuck --alias)
 
 # Load zshenv again to reoder PATH order messed by /etc/zprofile
 source $DOTFILES_ZSH_HOME/zshenv
 source $DOTFILES_ZSH_HOME/zle.zsh
 source $DOTFILES_ZSH_HOME/alias.zsh
+source $DOTFILES_ZSH_HOME/lazy_load.zsh
 [[ -e $DOTFILES_ZSH_HOME/zshrc.local ]] && source $DOTFILES_ZSH_HOME/zshrc.local
-
-eval "$(atuin init zsh --disable-up-arrow)"
-
